@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
@@ -172,6 +173,7 @@ export default function TeamPage() {
             </a>
           </section>
         </main>
+        <Footer />
       </div>
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />

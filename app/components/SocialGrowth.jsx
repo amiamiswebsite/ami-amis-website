@@ -104,10 +104,10 @@ export default function SocialGrowth() {
   }, []);
 
   return (
-    <section className="social-growth" id="contact">
+    <section className="social-growth" id="groei">
       <div className="social-growth__copy">
         <h2>
-          Strategie.Actie.
+          Strategie.<wbr />Actie.
           <span>Groei.</span>
         </h2>
         <p>
@@ -115,7 +115,6 @@ export default function SocialGrowth() {
           for leaders shaping the future.
         </p>
       </div>
-      <div className="script-loop" aria-hidden="true" />
       <div className="phone-scene">
         <div className="phone-frame">
           <img src={assetPath("/assets/social-phone.jpg")} alt="" />

@@ -7,69 +7,248 @@ const VIMEO_EMBED =
 export default function Projects() {
   const [videoOpen, setVideoOpen] = useState(false);
   const sectionRef = useRef(null);
+  const collageRef = useRef(null);
+  const fieldRef = useRef(null);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
+    const viewport = collageRef.current;
+    const field = fieldRef.current;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!section || reduceMotion) {
+    if (!section || !viewport || !field) {
       return undefined;
     }
 
-    let frame = 0;
-    let pointerX = 0;
-    let pointerY = 0;
+    const state = {
+      active: false,
+      didDrag: false,
+      frame: 0,
+      lastX: 0,
+      lastY: 0,
+      lastMoveTime: 0,
+      maxX: 0,
+      maxY: 0,
+      momentumFrame: 0,
+      originX: 0,
+      originY: 0,
+      pointerId: null,
+      startX: 0,
+      startY: 0,
+      velocityX: 0,
+      velocityY: 0,
+      x: 0,
+      y: 0,
+    };
 
-    const items = Array.from(section.querySelectorAll(".project, .projects__scribbles"));
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-    const applyMotion = () => {
-      frame = 0;
-      const rect = section.getBoundingClientRect();
-      const viewport = window.innerHeight || 1;
-      const scrollProgress = Math.max(-1, Math.min(1, (viewport / 2 - rect.top) / viewport));
-      items.forEach((item, index) => {
-        const depth = Number(item.dataset.depth || 0.4);
-        const phase = Number(item.dataset.phase || index) * 0.7;
-        const scrollX = Math.sin(phase) * scrollProgress * 72;
-        const scrollY = Math.cos(phase) * scrollProgress * -64;
-        item.style.setProperty("--tx", `${(pointerX * 74 + scrollX) * depth}px`);
-        item.style.setProperty("--ty", `${(pointerY * 58 + scrollY) * depth}px`);
-        item.style.setProperty("--spin", `${(pointerX * 5 + scrollProgress * Math.sin(phase) * 5) * depth}deg`);
+    const scheduleRender = () => {
+      if (state.frame) {
+        return;
+      }
+      state.frame = window.requestAnimationFrame(() => {
+        state.frame = 0;
+        field.style.setProperty("--pan-x", `${state.x}px`);
+        field.style.setProperty("--pan-y", `${state.y}px`);
       });
     };
 
-    const schedule = () => {
-      if (!frame) {
-        frame = window.requestAnimationFrame(applyMotion);
+    const setPosition = (nextX, nextY) => {
+      state.x = clamp(nextX, -state.maxX, state.maxX);
+      state.y = clamp(nextY, -state.maxY, state.maxY);
+      scheduleRender();
+    };
+
+    const stopMomentum = () => {
+      if (state.momentumFrame) {
+        window.cancelAnimationFrame(state.momentumFrame);
+        state.momentumFrame = 0;
+      }
+    };
+
+    const measureBounds = () => {
+      state.maxX = Math.max(0, (field.offsetWidth - viewport.clientWidth) / 2);
+      state.maxY = Math.max(0, (field.offsetHeight - viewport.clientHeight) / 2);
+      setPosition(state.x, state.y);
+    };
+
+    const runMomentum = (lastTime) => {
+      state.momentumFrame = window.requestAnimationFrame((time) => {
+        const elapsed = Math.min(32, time - lastTime);
+        const decay = Math.pow(0.91, elapsed / 16);
+        state.velocityX *= decay;
+        state.velocityY *= decay;
+
+        const proposedX = state.x + state.velocityX * elapsed;
+        const proposedY = state.y + state.velocityY * elapsed;
+        const nextX = clamp(proposedX, -state.maxX, state.maxX);
+        const nextY = clamp(proposedY, -state.maxY, state.maxY);
+
+        if (nextX !== proposedX) {
+          state.velocityX = 0;
+        }
+        if (nextY !== proposedY) {
+          state.velocityY = 0;
+        }
+
+        setPosition(nextX, nextY);
+
+        if (Math.hypot(state.velocityX, state.velocityY) > 0.025) {
+          runMomentum(time);
+        } else {
+          state.momentumFrame = 0;
+        }
+      });
+    };
+
+    const endDrag = (event) => {
+      if (!state.active || event.pointerId !== state.pointerId) {
+        return;
+      }
+
+      state.active = false;
+      section.classList.remove("is-dragging");
+      document.body.classList.remove("projects-dragging");
+
+      if (state.didDrag) {
+        suppressClickRef.current = true;
+        window.setTimeout(() => {
+          suppressClickRef.current = false;
+        }, 120);
+      }
+
+      if (!reduceMotion && state.didDrag && Math.hypot(state.velocityX, state.velocityY) > 0.045) {
+        runMomentum(performance.now());
+      }
+
+      if (viewport.hasPointerCapture?.(event.pointerId)) {
+        viewport.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    const onPointerDown = (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+      }
+
+      stopMomentum();
+      state.active = true;
+      state.didDrag = false;
+      state.pointerId = event.pointerId;
+      state.startX = event.clientX;
+      state.startY = event.clientY;
+      state.originX = state.x;
+      state.originY = state.y;
+      state.lastX = event.clientX;
+      state.lastY = event.clientY;
+      state.lastMoveTime = performance.now();
+      state.velocityX = 0;
+      state.velocityY = 0;
+      if (event.pointerType !== "touch") {
+        viewport.setPointerCapture?.(event.pointerId);
       }
     };
 
     const onPointerMove = (event) => {
-      const rect = section.getBoundingClientRect();
-      pointerX = (event.clientX - rect.left) / rect.width - 0.5;
-      pointerY = (event.clientY - rect.top) / rect.height - 0.5;
-      schedule();
+      if (!state.active || event.pointerId !== state.pointerId) {
+        return;
+      }
+
+      const dx = event.clientX - state.startX;
+      const dy = event.clientY - state.startY;
+      const distance = Math.hypot(dx, dy);
+      const moveX = event.clientX - state.lastX;
+      const moveY = event.clientY - state.lastY;
+      const horizontalIntent = Math.abs(dx) > Math.abs(dy) * 1.15;
+      const isTouch = event.pointerType === "touch";
+      const now = performance.now();
+      const elapsed = Math.max(8, now - state.lastMoveTime);
+
+      if (isTouch && !horizontalIntent && Math.abs(dy) > 5) {
+        return;
+      }
+
+      state.didDrag = state.didDrag || distance > 5;
+      state.velocityX = (moveX / elapsed) * 0.65 + state.velocityX * 0.35;
+      state.velocityY = (moveY / elapsed) * 0.65 + state.velocityY * 0.35;
+      state.lastX = event.clientX;
+      state.lastY = event.clientY;
+      state.lastMoveTime = now;
+
+      if (state.didDrag) {
+        section.classList.add("is-dragging");
+        document.body.classList.add("projects-dragging");
+        event.preventDefault();
+        viewport.setPointerCapture?.(event.pointerId);
+      }
+
+      setPosition(state.originX + dx, state.originY + dy);
     };
 
-    const onPointerLeave = () => {
-      pointerX = 0;
-      pointerY = 0;
-      schedule();
+    const onWheel = (event) => {
+      if (event.ctrlKey) {
+        return;
+      }
+
+      const horizontalIntent =
+        event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) * 1.15;
+
+      if (!horizontalIntent) {
+        return;
+      }
+
+      event.preventDefault();
+      stopMomentum();
+      const wheelX = event.deltaX || (event.shiftKey ? event.deltaY : 0);
+      setPosition(state.x - wheelX, state.y);
     };
 
-    applyMotion();
-    section.addEventListener("pointermove", onPointerMove);
-    section.addEventListener("pointerleave", onPointerLeave);
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    const onKeyDown = (event) => {
+      const step = event.shiftKey ? 150 : 82;
+      const keyMap = {
+        ArrowLeft: [state.x + step, state.y],
+        ArrowRight: [state.x - step, state.y],
+        ArrowUp: [state.x, state.y + step],
+        ArrowDown: [state.x, state.y - step],
+        Home: [0, 0],
+      };
+
+      if (!keyMap[event.key]) {
+        return;
+      }
+
+      event.preventDefault();
+      stopMomentum();
+      setPosition(keyMap[event.key][0], keyMap[event.key][1]);
+    };
+
+    measureBounds();
+    const measureFrame = window.requestAnimationFrame(measureBounds);
+    viewport.addEventListener("pointerdown", onPointerDown);
+    viewport.addEventListener("pointermove", onPointerMove);
+    viewport.addEventListener("pointerup", endDrag);
+    viewport.addEventListener("pointercancel", endDrag);
+    viewport.addEventListener("lostpointercapture", endDrag);
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    viewport.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", measureBounds);
 
     return () => {
-      section.removeEventListener("pointermove", onPointerMove);
-      section.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      if (frame) {
-        window.cancelAnimationFrame(frame);
+      stopMomentum();
+      viewport.removeEventListener("pointerdown", onPointerDown);
+      viewport.removeEventListener("pointermove", onPointerMove);
+      viewport.removeEventListener("pointerup", endDrag);
+      viewport.removeEventListener("pointercancel", endDrag);
+      viewport.removeEventListener("lostpointercapture", endDrag);
+      viewport.removeEventListener("wheel", onWheel);
+      viewport.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", measureBounds);
+      window.cancelAnimationFrame(measureFrame);
+      document.body.classList.remove("projects-dragging");
+      if (state.frame) {
+        window.cancelAnimationFrame(state.frame);
       }
     };
   }, []);
@@ -94,35 +273,48 @@ export default function Projects() {
     };
   }, [videoOpen]);
 
+  const handleProjectClick = (event) => {
+    if (suppressClickRef.current) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    setVideoOpen(true);
+  };
+
   return (
     <section className="projects" id="werk" ref={sectionRef}>
-      <div className="projects__collage">
-        {workItems.map((item, index) => (
-          <button
-            className={`project project--${index + 1}`}
-            data-depth={item.depth}
-            data-phase={index + 1}
-            key={item.image}
-            onClick={() => setVideoOpen(true)}
-            style={{ "--tilt": item.tilt }}
-            type="button"
-          >
-            <img src={item.image} alt="" loading="lazy" decoding="async" />
-            <span className="sr-only">Open video: {item.title}</span>
-          </button>
-        ))}
-        <div className="projects__scribbles" data-depth="0.62" data-phase="5.5" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
+      <div
+        aria-label="Versleep het projectveld in alle richtingen"
+        className="projects__collage"
+        ref={collageRef}
+        role="region"
+        tabIndex={0}
+      >
+        <div className="projects__field" ref={fieldRef}>
+          {workItems.map((item, index) => (
+            <button
+              className={`project project--${index + 1}`}
+              data-depth={item.depth}
+              data-phase={index + 1}
+              key={item.image}
+              onClick={handleProjectClick}
+              style={{ "--tilt": item.tilt }}
+              type="button"
+            >
+              <img src={item.image} alt="" loading="lazy" decoding="async" />
+              <span className="sr-only">Open video: {item.title}</span>
+            </button>
+          ))}
         </div>
       </div>
       <h2>
         <span>In de kijker</span>
       </h2>
       <a className="button button--red projects__button" href="#werk">
-        Zie alle projecten
+        <span>Zie alle</span>
+        <span>projecten</span>
       </a>
       {videoOpen ? (
         <div className="video-modal" onClick={() => setVideoOpen(false)}>
