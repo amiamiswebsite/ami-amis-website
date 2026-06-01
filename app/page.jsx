@@ -5,6 +5,7 @@ import Approach from "./components/Approach";
 import Brainstorm from "./components/Brainstorm";
 import Hero from "./components/Hero";
 import Intro from "./components/Intro";
+import MenuToggle from "./components/MenuToggle";
 import NavOverlay from "./components/NavOverlay";
 import Projects from "./components/Projects";
 import Punch from "./components/Punch";
@@ -16,17 +17,20 @@ export default function Home() {
 
   return (
     <>
-      <Hero onOpenMenu={() => setMenuOpen(true)} />
-      <main>
-        <Intro />
-        <Projects />
-        <Punch />
-        <Approach />
-        <Testimonials />
-        <Brainstorm />
-        <SocialGrowth />
-      </main>
-      <NavOverlay open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
+        <Hero />
+        <main>
+          <Intro />
+          <Projects />
+          <SocialGrowth />
+          <Approach />
+          <Testimonials />
+          <Brainstorm />
+          <Punch />
+        </main>
+      </div>
+      <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
+      <NavOverlay open={menuOpen} onClose={() => setMenuOpen(false)} activePage="home" />
     </>
   );
 }
