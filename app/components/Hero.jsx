@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { assetPath } from "../../src/lib/assetPath";
 
 export default function Hero({ onOpenMenu }) {
   const heroRef = useRef(null);
@@ -50,7 +51,7 @@ export default function Hero({ onOpenMenu }) {
           <span className="hero__line hero__line--bottom">Durven</span>
         </h1>
         <div className="hero__skydiver" aria-hidden="true">
-          <img src="/assets/brentskydive.png" alt="" />
+          <img src={assetPath("/assets/brentskydive.png")} alt="" />
         </div>
         <button className="menu-button" type="button" onClick={onOpenMenu}>
           <span className="sr-only">Open navigatie</span>

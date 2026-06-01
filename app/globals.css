@@ -1,39 +1,3 @@
-@font-face {
-  font-family: "Neue Haas Black";
-  src: url("/fonts/neue-haas-black.otf") format("opentype");
-  font-display: swap;
-  font-weight: 900;
-}
-
-@font-face {
-  font-family: "Neue Haas";
-  src: url("/fonts/neue-haas-roman.otf") format("opentype");
-  font-display: swap;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Neue Haas";
-  src: url("/fonts/neue-haas-bold.otf") format("opentype");
-  font-display: swap;
-  font-weight: 800;
-}
-
-@font-face {
-  font-family: "Apple Garamond";
-  src: url("/fonts/apple-garamond.ttf") format("truetype");
-  font-display: swap;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Apple Garamond";
-  src: url("/fonts/apple-garamond-bold-italic.ttf") format("truetype");
-  font-display: swap;
-  font-style: italic;
-  font-weight: 800;
-}
-
 :root {
   --red: #ff3500;
   --yellow: #fabb00;
@@ -48,6 +12,8 @@
   --font-sans: "Neue Haas", Arial, sans-serif;
   --font-black: "Neue Haas Black", Arial Black, sans-serif;
   --font-serif: "Apple Garamond", Georgia, serif;
+  --logo-mask-image: url("/assets/logo-black.png");
+  --paper-bg-image: url("/assets/paper-bg.jpg");
 }
 
 * {
@@ -160,8 +126,14 @@ a {
   width: clamp(116px, 11vw, 168px);
   aspect-ratio: 1536 / 637;
   background: var(--paper);
-  -webkit-mask: url("/assets/logo-black.png") center / contain no-repeat;
-  mask: url("/assets/logo-black.png") center / contain no-repeat;
+  -webkit-mask-image: var(--logo-mask-image);
+  mask-image: var(--logo-mask-image);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   transform: translateX(-50%);
 }
 
@@ -454,7 +426,7 @@ a {
   min-height: 710px;
   overflow: hidden;
   background-color: var(--paper);
-  background-image: url("/assets/paper-bg.jpg");
+  background-image: var(--paper-bg-image);
   background-size: cover;
   background-position: center;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { assetPath } from "../../src/lib/assetPath";
 
 const stats = [
   { target: 47, suffix: "", label: "nieuwe volgers" },
@@ -117,13 +118,13 @@ export default function SocialGrowth() {
       <div className="script-loop" aria-hidden="true" />
       <div className="phone-scene">
         <div className="phone-frame">
-          <img src="/assets/social-phone.jpg" alt="" />
+          <img src={assetPath("/assets/social-phone.jpg")} alt="" />
         </div>
-        <img className="social-icon social-icon--heart" src="/assets/social-heart.png" alt="" />
-        <img className="social-icon social-icon--comment" src="/assets/social-comment.png" alt="" />
-        <img className="social-icon social-icon--follow" src="/assets/social-follow.png" alt="" />
-        <img className="social-icon social-icon--bell" src="/assets/social-bell.png" alt="" />
-        <img className="social-icon social-icon--like" src="/assets/social-like.png" alt="" />
+        <img className="social-icon social-icon--heart" src={assetPath("/assets/social-heart.png")} alt="" />
+        <img className="social-icon social-icon--comment" src={assetPath("/assets/social-comment.png")} alt="" />
+        <img className="social-icon social-icon--follow" src={assetPath("/assets/social-follow.png")} alt="" />
+        <img className="social-icon social-icon--bell" src={assetPath("/assets/social-bell.png")} alt="" />
+        <img className="social-icon social-icon--like" src={assetPath("/assets/social-like.png")} alt="" />
       </div>
       <div className={`stats${isCounting ? " is-counting" : ""}`} ref={statsRef}>
         {stats.map((stat, index) => (

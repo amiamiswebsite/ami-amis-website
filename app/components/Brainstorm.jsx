@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { assetPath } from "../../src/lib/assetPath";
 
 export default function Brainstorm() {
   const sectionRef = useRef(null);
@@ -43,7 +44,7 @@ export default function Brainstorm() {
   return (
     <section className="brainstorm" ref={sectionRef}>
       <h2>brainstormen?</h2>
-      <img className="brainstorm__desk" src="/assets/brainstorm-desk.png" alt="" />
+      <img className="brainstorm__desk" src={assetPath("/assets/brainstorm-desk.png")} alt="" />
       <a className="button button--red brainstorm__button" href="#contact">
         Klik dan hier
       </a>

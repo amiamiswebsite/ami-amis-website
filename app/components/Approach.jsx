@@ -1,14 +1,16 @@
+import { assetPath } from "../../src/lib/assetPath";
+
 const steps = [
   {
     number: "1.",
     title: "Koffie",
-    src: "/assets/coffee.png",
+    src: assetPath("/assets/coffee.png"),
     className: "approach-card--coffee",
   },
   {
     number: "2.",
     title: "Sparren",
-    src: "/assets/spar-man.png",
+    src: assetPath("/assets/spar-man.png"),
     className: "approach-card--spar",
   },
   {

@@ -1,3 +1,5 @@
+import { assetPath } from "../../src/lib/assetPath";
+
 const tags = [
   ["Marketing agency", "red"],
   ["Video agency", "yellow"],
@@ -42,7 +44,7 @@ export default function Intro() {
           creatief en consistent naar buiten te brengen.
         </p>
       </div>
-      <img className="intro__camera" src="/assets/hand-camera.png" alt="" />
+      <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
       <div className="tag-cloud" aria-label="Diensten">
         {tags.map(([tag, color]) => (
           <span className={`tag tag--${color}`} key={tag}>

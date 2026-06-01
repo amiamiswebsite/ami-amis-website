@@ -1,11 +1,13 @@
+import { assetPath } from "../../src/lib/assetPath";
+
 const audiences = ["KMO's", "Creatieve bureaus", "Organisaties", "..."];
 
 export default function Punch() {
   return (
     <section className="punch" id="diensten">
       <div className="punch__inner">
-        <img className="punch__crack" src="/assets/crack.png" alt="" />
-        <img className="punch__man" src="/assets/punch-man.png" alt="" />
+        <img className="punch__crack" src={assetPath("/assets/crack.png")} alt="" />
+        <img className="punch__man" src={assetPath("/assets/punch-man.png")} alt="" />
         <div className="punch__copy">
           <h2>Content met punch</h2>
           <p>
