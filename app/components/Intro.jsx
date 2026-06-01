@@ -44,7 +44,17 @@ export default function Intro() {
           creatief en consistent naar buiten te brengen.
         </p>
       </div>
-      <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
+      <div className="intro__camera-wrap" aria-hidden="true">
+        <div className="intro__action-lines">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+        <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
+      </div>
       <div className="tag-cloud" aria-label="Diensten">
         {tags.map(([tag, color]) => (
           <span className={`tag tag--${color}`} key={tag}>

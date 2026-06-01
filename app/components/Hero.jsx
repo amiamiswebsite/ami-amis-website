@@ -12,10 +12,18 @@ export default function Hero() {
       return undefined;
     }
 
-    let frame = 0;
+    let scrollFrame = 0;
     let pointerFrame = 0;
-    let pointerX = 0;
-    let pointerY = 0;
+    const pointer = {
+      active: false,
+      currentX: 0,
+      currentY: 0,
+      targetX: 0,
+      targetY: 0,
+    };
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
     const getMaxFall = () => {
       const width = window.innerWidth;
 
@@ -33,39 +41,70 @@ export default function Hero() {
       const width = window.innerWidth;
 
       if (width <= 768) {
-        return { x: 0, y: 0, roll: 0 };
+        return { x: 24, y: 18, roll: 1.4, lerp: pointer.active ? 0.16 : 0.08 };
       }
 
       if (width <= 1000) {
-        return { x: 54, y: 38, roll: 2.2 };
+        return { x: 54, y: 38, roll: 2.2, lerp: pointer.active ? 0.17 : 0.09 };
       }
 
-      return { x: 92, y: 64, roll: 3.6 };
+      return { x: 92, y: 64, roll: 3.6, lerp: pointer.active ? 0.18 : 0.1 };
     };
 
-    const update = () => {
-      frame = 0;
+    const updateScroll = () => {
+      scrollFrame = 0;
       const rect = hero.getBoundingClientRect();
       const fallWindow = Math.max(1, rect.height * 0.72);
       const rawProgress = Math.max(0, Math.min(1, -rect.top / fallWindow));
       const progress = 1 - Math.pow(1 - rawProgress, 3);
+      const mobile = window.innerWidth <= 768;
 
       hero.style.setProperty("--hero-fall", `${progress * getMaxFall()}px`);
-      hero.style.setProperty("--hero-roll", `${-1 + progress * 2.8}deg`);
+      hero.style.setProperty("--hero-roll", `${-1 + progress * (mobile ? 2.2 : 2.8)}deg`);
+      hero.style.setProperty("--hero-scale", `${1 + progress * (mobile ? 0.035 : 0.025)}`);
+      hero.style.setProperty("--hero-glow-y", `${progress * (mobile ? 7 : 10)}px`);
+      hero.style.setProperty("--hero-glow-blur", `${progress * (mobile ? 7 : 10)}px`);
     };
 
     const updatePointer = () => {
-      pointerFrame = 0;
       const strength = getPointerStrength();
+      const idleDeltaX = pointer.targetX - pointer.currentX;
+      const idleDeltaY = pointer.targetY - pointer.currentY;
 
-      hero.style.setProperty("--hero-pointer-x", `${pointerX * strength.x}px`);
-      hero.style.setProperty("--hero-pointer-y", `${pointerY * strength.y}px`);
-      hero.style.setProperty("--hero-pointer-roll", `${pointerX * strength.roll}deg`);
+      pointer.currentX += idleDeltaX * strength.lerp;
+      pointer.currentY += idleDeltaY * strength.lerp;
+
+      const atTarget =
+        Math.abs(pointer.targetX - pointer.currentX) < 0.002 &&
+        Math.abs(pointer.targetY - pointer.currentY) < 0.002;
+
+      if (atTarget) {
+        pointer.currentX = pointer.targetX;
+        pointer.currentY = pointer.targetY;
+
+        if (!pointer.active && Math.abs(pointer.targetX) < 0.002 && Math.abs(pointer.targetY) < 0.002) {
+          pointer.currentX = 0;
+          pointer.currentY = 0;
+          pointer.targetX = 0;
+          pointer.targetY = 0;
+        }
+
+        pointerFrame = 0;
+      }
+
+      hero.style.setProperty("--hero-pointer-x", `${pointer.currentX * strength.x}px`);
+      hero.style.setProperty("--hero-pointer-y", `${pointer.currentY * strength.y}px`);
+      hero.style.setProperty("--hero-pointer-roll", `${pointer.currentX * strength.roll}deg`);
+      hero.style.setProperty("--hero-glow-x", `${pointer.currentX * strength.x * -0.32}px`);
+
+      if (!atTarget) {
+        pointerFrame = window.requestAnimationFrame(updatePointer);
+      }
     };
 
-    const schedule = () => {
-      if (!frame) {
-        frame = window.requestAnimationFrame(update);
+    const scheduleScroll = () => {
+      if (!scrollFrame) {
+        scrollFrame = window.requestAnimationFrame(updateScroll);
       }
     };
 
@@ -78,31 +117,43 @@ export default function Hero() {
     const handlePointerMove = (event) => {
       const rect = hero.getBoundingClientRect();
 
-      pointerX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
-      pointerY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
+      pointer.active = true;
+      pointer.targetX = clamp(((event.clientX - rect.left) / rect.width - 0.5) * 2, -1, 1);
+      pointer.targetY = clamp(((event.clientY - rect.top) / rect.height - 0.5) * 2, -1, 1);
       schedulePointer();
     };
 
-    const resetPointer = () => {
-      pointerX = 0;
-      pointerY = 0;
+    const resetPointer = (event) => {
+      if (event?.pointerType === "mouse" && event.type !== "pointerleave") {
+        return;
+      }
+
+      pointer.active = false;
+      pointer.targetX = 0;
+      pointer.targetY = 0;
       schedulePointer();
     };
 
-    update();
+    updateScroll();
     updatePointer();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    hero.addEventListener("pointermove", handlePointerMove);
-    hero.addEventListener("pointerleave", resetPointer);
+    window.addEventListener("scroll", scheduleScroll, { passive: true });
+    window.addEventListener("resize", scheduleScroll);
+    window.addEventListener("pointerup", resetPointer, { passive: true });
+    window.addEventListener("pointercancel", resetPointer, { passive: true });
+    hero.addEventListener("pointerdown", handlePointerMove, { passive: true });
+    hero.addEventListener("pointermove", handlePointerMove, { passive: true });
+    hero.addEventListener("pointerleave", resetPointer, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", scheduleScroll);
+      window.removeEventListener("resize", scheduleScroll);
+      window.removeEventListener("pointerup", resetPointer);
+      window.removeEventListener("pointercancel", resetPointer);
+      hero.removeEventListener("pointerdown", handlePointerMove);
       hero.removeEventListener("pointermove", handlePointerMove);
       hero.removeEventListener("pointerleave", resetPointer);
-      if (frame) {
-        window.cancelAnimationFrame(frame);
+      if (scrollFrame) {
+        window.cancelAnimationFrame(scrollFrame);
       }
       if (pointerFrame) {
         window.cancelAnimationFrame(pointerFrame);
