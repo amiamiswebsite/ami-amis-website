@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
@@ -197,6 +198,23 @@ export default function TeamPage() {
     startVideoWithSound({ force: true });
   };
 
+  const scrollTowardTeamVideo = () => {
+    const root = transitionRef.current;
+
+    if (!root) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const rootTop = root.getBoundingClientRect().top + window.scrollY;
+    const targetTop = rootTop + window.innerHeight * 0.72;
+
+    window.scrollTo({
+      top: targetTop,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
   useEffect(() => {
     const root = transitionRef.current;
     const video = videoRef.current;
@@ -376,57 +394,44 @@ export default function TeamPage() {
     }
 
     const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const mobileQuery = window.matchMedia("(max-width: 768px)");
 
-    if (reduceMotionQuery.matches || mobileQuery.matches) {
+    if (reduceMotionQuery.matches) {
       return undefined;
     }
 
-    const viewport = root.querySelector(".team-rail-viewport");
     const track = root.querySelector(".team-rail-track");
 
-    if (!viewport || !track) {
+    if (!track) {
       return undefined;
     }
 
     let frame = 0;
     let current = 0;
     let target = 0;
-    let scrollLength = 1;
-    let railDistance = 0;
 
     const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
     const mix = (from, to, amount) => from + (to - from) * amount;
     const smooth = (value) => value * value * (3 - 2 * value);
     const phase = (value, start, end) => smooth(clamp((value - start) / (end - start)));
 
-    const measure = () => {
-      railDistance = Math.max(0, track.scrollWidth - viewport.clientWidth);
-      scrollLength = Math.max(window.innerHeight * 1.45, railDistance + window.innerHeight * 1.15);
-      root.style.setProperty("--de-amis-scroll-length", `${Math.round(scrollLength)}px`);
-    };
-
     const setProgress = (progress) => {
-      const titleIn = phase(progress, -0.04, 0.06);
-      const subtitleIn = phase(progress, 0.02, 0.1);
-      const cardsIn = phase(progress, 0.08, 0.2);
-      const titleSettle = phase(progress, 0.18, 0.3);
-      const rail = phase(progress, 0.32, 0.94);
+      const titleIn = phase(progress, 0.18, 0.34);
+      const subtitleIn = phase(progress, 0.3, 0.44);
+      const cardsIn = phase(progress, 0.42, 0.72);
+      const titleSettle = phase(progress, 0.24, 0.44);
 
       root.style.setProperty("--de-amis-title-opacity", titleIn.toFixed(3));
-      root.style.setProperty("--de-amis-title-y", `${mix(34, -10, titleSettle).toFixed(2)}px`);
-      root.style.setProperty("--de-amis-title-scale", mix(0.96, 0.76, titleSettle).toFixed(4));
-      root.style.setProperty("--de-amis-title-clip", `${mix(100, 0, titleIn).toFixed(2)}%`);
+      root.style.setProperty("--de-amis-title-y", `${mix(64, 0, titleSettle).toFixed(2)}px`);
+      root.style.setProperty("--de-amis-title-scale", mix(0.96, 1, titleSettle).toFixed(4));
       root.style.setProperty("--de-amis-subtitle-opacity", subtitleIn.toFixed(3));
       root.style.setProperty("--de-amis-cards-opacity", cardsIn.toFixed(3));
       root.style.setProperty("--de-amis-cards-y", `${mix(56, 0, cardsIn).toFixed(2)}px`);
       root.style.setProperty("--de-amis-cards-scale", mix(0.965, 1, cardsIn).toFixed(4));
-      root.style.setProperty("--de-amis-track-x", `${(-railDistance * rail).toFixed(2)}px`);
     };
 
     const calculateProgress = () => {
       const rect = root.getBoundingClientRect();
-      target = clamp(-rect.top / scrollLength);
+      target = clamp((window.innerHeight - rect.top) / (window.innerHeight * 1.05));
     };
 
     const tick = () => {
@@ -448,7 +453,6 @@ export default function TeamPage() {
     };
 
     const refresh = () => {
-      measure();
       calculateProgress();
       setProgress(target);
       schedule();
@@ -472,6 +476,10 @@ export default function TeamPage() {
 
   return (
     <>
+      <Script
+        src="https://unpkg.com/@lottiefiles/lottie-player@2.0.12/dist/lottie-player.js"
+        strategy="afterInteractive"
+      />
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <section
           className={`team-hero team-transition ${isAutoplayBlocked ? "is-sound-blocked" : ""} ${
@@ -499,6 +507,24 @@ export default function TeamPage() {
                 <span className="team-underline">lef</span> en gezond verstand.
               </h1>
             </div>
+
+            <button
+              className="team-video-scroll-cue"
+              type="button"
+              onClick={scrollTowardTeamVideo}
+              aria-label="Scroll naar onze teamvideo"
+            >
+              <span className="team-video-scroll-cue__label">scroll voor onze teamvideo</span>
+              <span className="team-video-scroll-cue__animation" aria-hidden="true">
+                <lottie-player
+                  src={assetPath("/assets/arrow-arc.json")}
+                  background="transparent"
+                  speed="1"
+                  loop
+                  autoplay
+                />
+              </span>
+            </button>
 
             <div className="team-transition__video-shell" aria-label="Ami Amis teamvideo">
               <div className="team-transition__video-frame">
@@ -563,7 +589,7 @@ export default function TeamPage() {
                       href={`#${member.slug}`}
                       id={member.slug}
                       key={member.name}
-                      style={{ "--card-index": index }}
+                      style={{ "--card-delay": `${Math.min(index, 8) * 42}ms` }}
                     >
                       <div className="de-amis-card__frame">
                         <img

@@ -7,7 +7,7 @@ import { assetPath } from "../../src/lib/assetPath";
 
 const mail = "brent@amiamis.be";
 const phone = "+32 472 65 75 95";
-const mailHref = `mailto:${mail}?subject=Koffiedate%20met%20Ami%20Amis`;
+const mailHref = `mailto:${mail}?subject=Contact%20via%20Ami%20Amis`;
 const phoneHref = "tel:+32472657595";
 
 const contactDetails = [
@@ -47,22 +47,42 @@ export default function ContactPage() {
             <a className="hero__logo contact-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
 
             <div className="contact-minimal__inner">
-              <div className="contact-minimal__composition">
-                <p className="contact-kicker">Contact</p>
-                <h1 id="contact-title">
-                  Laten we samen <span>iets cool</span> maken
-                </h1>
-                <div className="contact-minimal__reach" aria-label="Direct contact">
-                  <a className="contact-pill" href={mailHref}>
-                    Plan een koffiedate
+              <div className="contact-minimal__content">
+                <div className="contact-minimal__composition">
+                  <h1 id="contact-title">Durf jij het aan?</h1>
+                  <a className="contact-mail" href={mailHref}>
+                    {mail}
                   </a>
-                  <span className="contact-reach-note" aria-hidden="true">
-                    Reach out
-                  </span>
+                  <figure className="contact-minimal__photo">
+                    <img
+                      src={assetPath("/assets/lucaleeuw.png")}
+                      alt="Luca houdt een stuk vlees omhoog voor een leeuw"
+                      decoding="async"
+                    />
+                  </figure>
                 </div>
-                <a className="contact-mail" href={mailHref}>
-                  {mail}
-                </a>
+
+                <form className="contact-minimal__form" action={mailHref} method="post" encType="text/plain">
+                  <label>
+                    Naam
+                    <input name="naam" autoComplete="name" required />
+                  </label>
+                  <label>
+                    E-mail
+                    <input name="email" type="email" autoComplete="email" required />
+                  </label>
+                  <label>
+                    Telefoon
+                    <input name="telefoon" type="tel" autoComplete="tel" />
+                  </label>
+                  <label>
+                    Bericht
+                    <textarea name="bericht" rows={5} required />
+                  </label>
+                  <button className="contact-minimal__submit button button--red" type="submit">
+                    Verstuur
+                  </button>
+                </form>
               </div>
 
               <div className="contact-minimal__bottom" aria-label="Contactgegevens">

@@ -108,7 +108,7 @@ export default function SocialGrowth() {
       <div className="social-growth__copy">
         <h2>
           Strategie.<wbr />Actie.
-          <span>Groei.</span>
+          <span>Organische groei.</span>
         </h2>
         <p>
           Three days of strategic insight and collaborative workshops designed
@@ -117,7 +117,7 @@ export default function SocialGrowth() {
       </div>
       <div className="phone-scene">
         <div className="phone-frame">
-          <img src={assetPath("/assets/social-phone-luca.png")} alt="" />
+          <img src={assetPath("/assets/social-phone-organic-growth.png")} alt="" />
         </div>
         <img className="social-icon social-icon--heart" src={assetPath("/assets/social-heart.png")} alt="" />
         <img className="social-icon social-icon--comment" src={assetPath("/assets/social-comment.png")} alt="" />
