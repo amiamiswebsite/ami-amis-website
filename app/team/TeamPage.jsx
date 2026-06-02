@@ -231,9 +231,9 @@ export default function TeamPage() {
 
     const setProgress = (progress) => {
       const reveal = phase(progress, 0.06, 0.2);
-      const fullscreen = phase(progress, 0.18, 0.34);
-      const hold = phase(progress, 0.34, 0.52);
-      const shrink = phase(progress, 0.58, 0.88);
+      const fullscreen = phase(progress, 0.18, 0.32);
+      const hold = phase(progress, 0.32, 0.7);
+      const shrink = phase(progress, 0.76, 0.94);
       const videoOpacity = clamp(phase(progress, 0.05, 0.13));
       const copyFade = phase(progress, 0.22, 0.34);
       const fullyVisible = fullscreen >= 0.985 && shrink < 0.02;
@@ -244,7 +244,7 @@ export default function TeamPage() {
       const videoY = `${mix(mix(11, 4, reveal), mix(0, -9, shrink), Math.max(fullscreen, shrink))}vh`;
       const clipTop = mix(mix(35, 0, fullscreen), 6, shrink);
       const clipSide = mix(mix(38, 0, fullscreen), 10, shrink);
-      const radius = mix(mix(26, 0, fullscreen), 30, shrink);
+      const radius = mix(mix(26, 22, fullscreen), 30, shrink);
       const frameScale = mix(mix(1.08, 1, fullscreen), 1.025, shrink);
       const blur = mix(7, 0, fullscreen);
 
@@ -273,12 +273,12 @@ export default function TeamPage() {
         return;
       }
 
-      if (fullyVisible && progress < 0.68) {
+      if (fullyVisible && progress < 0.9) {
         startVideoWithSound();
         return;
       }
 
-      if (progress >= 0.68) {
+      if (progress >= 0.9) {
         pauseVideoForScrollOut({ fade: true });
       }
     };
