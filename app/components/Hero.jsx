@@ -96,6 +96,18 @@ export default function Hero() {
       hero.style.setProperty("--hero-pointer-y", `${pointer.currentY * strength.y}px`);
       hero.style.setProperty("--hero-pointer-roll", `${pointer.currentX * strength.roll}deg`);
       hero.style.setProperty("--hero-glow-x", `${pointer.currentX * strength.x * -0.32}px`);
+      hero.style.setProperty("--mouse-x", pointer.currentX.toFixed(4));
+      hero.style.setProperty("--mouse-y", pointer.currentY.toFixed(4));
+      hero.style.setProperty("--parallax-x", `${pointer.currentX * strength.x}px`);
+      hero.style.setProperty("--parallax-y", `${pointer.currentY * strength.y}px`);
+      hero.style.setProperty("--hero-type-front-x", `${pointer.currentX * strength.x * 0.1}px`);
+      hero.style.setProperty("--hero-type-front-y", `${pointer.currentY * strength.y * 0.085}px`);
+      hero.style.setProperty("--hero-type-depth-x", `${pointer.currentX * strength.x * 0.22}px`);
+      hero.style.setProperty("--hero-type-depth-y", `${pointer.currentY * strength.y * 0.18}px`);
+      hero.style.setProperty("--hero-type-script-x", `${pointer.currentX * strength.x * 0.16}px`);
+      hero.style.setProperty("--hero-type-script-y", `${pointer.currentY * strength.y * 0.12}px`);
+      hero.style.setProperty("--hero-type-rot-x", `${pointer.currentY * -1.8}deg`);
+      hero.style.setProperty("--hero-type-rot-y", `${pointer.currentX * 2.2}deg`);
 
       if (!atTarget) {
         pointerFrame = window.requestAnimationFrame(updatePointer);
@@ -167,11 +179,19 @@ export default function Hero() {
         <div className="hero__logo" aria-label="AMI AMIS" role="img" />
         <h1 className="hero__title" aria-label="Voor merken die durven">
           <span className="hero__line hero__line--top">
-            <span className="hero__word">Voor</span>{" "}
-            <span className="hero__word hero__word--merken">Merken</span>
+            <span className="hero__word" data-text="Voor">
+              Voor
+            </span>{" "}
+            <span className="hero__word hero__word--merken" data-text="Merken">
+              Merken
+            </span>
           </span>
-          <span className="hero__line hero__line--script">die</span>
-          <span className="hero__line hero__line--bottom">Durven</span>
+          <span className="hero__line hero__line--script" data-text="die">
+            die
+          </span>
+          <span className="hero__line hero__line--bottom" data-text="Durven">
+            Durven
+          </span>
         </h1>
         <div className="hero__skydiver" aria-hidden="true">
           <div className="hero__skydiver-drop">

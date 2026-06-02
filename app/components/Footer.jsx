@@ -1,10 +1,10 @@
 "use client";
 
 const contactLinks = [
-  { label: "Mail", value: "hello@amiamis.be", href: "mailto:hello@amiamis.be" },
-  { label: "Telefoon", value: "+32 460 95 33 54", href: "tel:+32460953354" },
-  { label: "Kantooruren", value: "ma - vr 8u30-17u30" },
-  { label: "BTW", value: "BE0778752139" },
+  { label: "Mail", value: "brent@amiamis.be", href: "mailto:brent@amiamis.be" },
+  { label: "Telefoon", value: "+32 472 65 75 95", href: "tel:+32472657595" },
+  { label: "Kantooruren", value: "ma - vr 9u-18u" },
+  { label: "BTW", value: "BE0786.290.512" },
 ];
 
 const locations = [
@@ -20,11 +20,8 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { label: "Privacy", href: "https://www.amiamis.com/privacy-policy" },
-  {
-    label: "Algemene voorwaarden",
-    href: "https://www.amiamis.com/s/Algemene-Voorwaarden-Ami-Amis-BV-18_08_2025.pdf",
-  },
+  { label: "Privacy policy", href: "https://www.amiamis.com/privacy-policy" },
+  { label: "Algemene voorwaarden", href: "https://www.amiamis.com/algemene-voorwaarden" },
 ];
 
 function FooterLink({ href, children, className = "", ...props }) {

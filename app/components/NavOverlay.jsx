@@ -13,12 +13,20 @@ function pageFromPathname(pathname, fallbackPage) {
     return "team";
   }
 
+  if (pathname?.includes("/contact")) {
+    return "contact";
+  }
+
   return fallbackPage;
 }
 
 function activeKeyFromLocation(pathname, hash, fallbackPage) {
   if (pathname?.includes("/team")) {
     return "team";
+  }
+
+  if (pathname?.includes("/contact")) {
+    return "contact";
   }
 
   if (hash === "#werk") {
@@ -56,7 +64,8 @@ function getItems(activePage, activeKey) {
     },
     {
       label: "Contact",
-      href: activePage === "team" ? "#team-contact" : "#contact",
+      href: assetPath("/contact/"),
+      active: activeKey === "contact",
       blue: true,
     },
   ];
