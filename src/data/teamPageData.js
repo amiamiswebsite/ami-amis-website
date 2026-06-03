@@ -1,8 +1,10 @@
 export const teamMembers = [
   {
     name: "Luca Britti",
-    role: "Zaakvoerder & Regisseur",
+    role: "CEO en regisseur",
+    line: "opgepakt wegens de wereld pakken",
     image: "/team/luca.jpg",
+    alt: "Luca Britti",
     slug: "luca-britti",
     objectPosition: "44.5% 7.2%",
     charge: "Te veel ideeen tijdens een meeting.",
@@ -12,7 +14,9 @@ export const teamMembers = [
   {
     name: "Eveline Cerpentier",
     role: "Commercieel Manager",
+    line: "verkoopt geen praatjes, wel plannen",
     image: "/team/eveline.jpg",
+    alt: "Eveline Cerpentier",
     slug: "eveline-cerpentier",
     objectPosition: "43.5% 16%",
     charge: "Saaie briefing verdacht leuk maken.",
@@ -21,8 +25,10 @@ export const teamMembers = [
   },
   {
     name: "Brent Jacobs",
-    role: "Account Manager, Producer",
+    role: "Account Manager & Producer",
+    line: "belt tot het klopt",
     image: "/team/brent.jpg",
+    alt: "Brent Jacobs",
     slug: "brent-jacobs",
     objectPosition: "48.5% 8%",
     charge: "Content laten knallen.",
@@ -32,7 +38,9 @@ export const teamMembers = [
   {
     name: "Tim Slegers",
     role: "Senior Creative & Audio Engineer",
+    line: "hoort wat anderen missen",
     image: "/team/tim.jpg",
+    alt: "Tim Slegers",
     slug: "tim-slegers",
     objectPosition: "45% 0%",
     charge: "Audio net iets te lekker laten klinken.",
@@ -42,7 +50,9 @@ export const teamMembers = [
   {
     name: "Diana Tseboyeva",
     role: "Producer",
+    line: "houdt het overzicht, ook als het stormt",
     image: "/team/diana.jpg",
+    alt: "Diana Tseboyeva",
     slug: "diana-tseboyeva",
     objectPosition: "49% 16%",
     charge: "Chaos verdacht rustig laten lijken.",
@@ -52,7 +62,9 @@ export const teamMembers = [
   {
     name: "Jef Verheijen",
     role: "Business & Subsidiemanager",
+    line: "vindt kansen waar anderen regels zien",
     image: "/team/jef.jpg",
+    alt: "Jef Verheijen",
     slug: "jef-verheijen",
     objectPosition: "46.5% 4%",
     charge: "Budgetten temmen met een balpen.",
@@ -61,8 +73,10 @@ export const teamMembers = [
   },
   {
     name: "Giosi Pinna",
-    role: "Lead Designer, AI specialist",
+    role: "Lead Designer & AI specialist",
+    line: "ontwerpt vandaag, denkt vooruit",
     image: "/team/giosi.jpg",
+    alt: "Giosi Pinna",
     slug: "giosi-pinna",
     objectPosition: "51.5% 18.4%",
     charge: "Grafisch geweld met zachte hand.",
@@ -72,7 +86,9 @@ export const teamMembers = [
   {
     name: "Mathieu Vingerhoets",
     role: "Monteur & Animator",
+    line: "knipt, schuift en tovert verhalen in beweging",
     image: "/team/mathieu.jpg",
+    alt: "Mathieu Vingerhoets",
     slug: "mathieu-vingerhoets",
     objectPosition: "47.5% 32.8%",
     charge: "Frames laten bewegen zonder toestemming.",
@@ -82,7 +98,9 @@ export const teamMembers = [
   {
     name: "Elena Leblon",
     role: "Junior Regisseur & Creative",
+    line: "nieuw in de crew, oud in ideeën",
     image: "/team/elena.jpg",
+    alt: "Elena Leblon",
     slug: "elena-leblon",
     objectPosition: "50% 14%",
     charge: "Briefings omzetten in frisse invalshoeken.",
@@ -92,7 +110,9 @@ export const teamMembers = [
   {
     name: "Stig Hofmans",
     role: "Monteur & Animator",
+    line: "zorgt dat het goed klinkt, altijd en overal",
     image: "/team/stig.jpg",
+    alt: "Stig Hofmans",
     slug: "stig-hofmans",
     objectPosition: "50% 15%",
     charge: "Het verspreiden van aanstekelijke lachbuien.",
@@ -102,7 +122,9 @@ export const teamMembers = [
   {
     name: "Johan Martens",
     role: "Production Sound Mixer",
+    line: "ziet het grote plaatje én de kleine details",
     image: "/team/johan.jpg",
+    alt: "Johan Martens",
     slug: "johan-martens",
     objectPosition: "50% 16%",
     charge: "Alles laten klinken alsof het zo bedoeld was.",

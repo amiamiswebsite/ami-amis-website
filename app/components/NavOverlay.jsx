@@ -17,6 +17,10 @@ function pageFromPathname(pathname, fallbackPage) {
     return "contact";
   }
 
+  if (pathname?.includes("/work")) {
+    return "work";
+  }
+
   return fallbackPage;
 }
 
@@ -27,6 +31,10 @@ function activeKeyFromLocation(pathname, hash, fallbackPage) {
 
   if (pathname?.includes("/contact")) {
     return "contact";
+  }
+
+  if (pathname?.includes("/work")) {
+    return "work";
   }
 
   if (hash === "#werk") {

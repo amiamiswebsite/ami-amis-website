@@ -8,10 +8,49 @@ const stats = [
 ];
 
 export default function SocialGrowth() {
+  const sectionRef = useRef(null);
+  const textRef = useRef(null);
   const statsRef = useRef(null);
   const hasAnimated = useRef(false);
   const [counts, setCounts] = useState(stats.map(() => 0));
   const [isCounting, setIsCounting] = useState(false);
+
+  useEffect(() => {
+    const sectionNode = sectionRef.current;
+    const textNode = textRef.current;
+    const statsNode = statsRef.current;
+
+    if (!sectionNode || !textNode || !statsNode) {
+      return undefined;
+    }
+
+    const alignStats = () => {
+      if (window.innerWidth <= 1180) {
+        sectionNode.style.removeProperty("--social-stats-top");
+        return;
+      }
+
+      const sectionRect = sectionNode.getBoundingClientRect();
+      const textRect = textNode.getBoundingClientRect();
+      const statsRect = statsNode.getBoundingClientRect();
+      const top = Math.max(220, textRect.bottom - sectionRect.top - statsRect.height);
+
+      sectionNode.style.setProperty("--social-stats-top", `${Math.round(top)}px`);
+    };
+
+    alignStats();
+    window.addEventListener("resize", alignStats, { passive: true });
+
+    const observer = "ResizeObserver" in window ? new ResizeObserver(alignStats) : null;
+    observer?.observe(sectionNode);
+    observer?.observe(textNode);
+    observer?.observe(statsNode);
+
+    return () => {
+      window.removeEventListener("resize", alignStats);
+      observer?.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const statsNode = statsRef.current;
@@ -104,15 +143,21 @@ export default function SocialGrowth() {
   }, []);
 
   return (
-    <section className="social-growth" id="groei">
+    <section className="social-growth" id="groei" ref={sectionRef}>
       <div className="social-growth__copy">
         <h2>
           Strategie.<wbr />Actie.
           <span>Organische groei.</span>
         </h2>
-        <p>
-          Three days of strategic insight and collaborative workshops designed
-          for leaders shaping the future.
+        <p ref={textRef}>
+          Een goeie video is niks waard als niemand hem ziet. Daarom helpen we
+          je niet alleen met sterke content, maar ook met de strategie erachter.
+          We denken mee over wat past bij jouw merk, jouw verhaal en jouw
+          doelgroep. Die strategie vertalen we naar slimme marketing en video’s
+          die niet alleen goed gemaakt zijn, maar ook juist ingezet worden. Zo
+          bouwen we stap voor stap aan organische groei. Niet door blind trends
+          te volgen voor snelle pieken, maar door een publiek op te bouwen dat
+          gelooft in je merk, je verhaal en je product.
         </p>
       </div>
       <div className="phone-scene">

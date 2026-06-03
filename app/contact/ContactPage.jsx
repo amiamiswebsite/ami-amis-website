@@ -1,47 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
 
 const mail = "brent@amiamis.be";
-const phone = "+32 472 65 75 95";
 const mailHref = `mailto:${mail}?subject=Contact%20via%20Ami%20Amis`;
-const phoneHref = "tel:+32472657595";
-
-const contactDetails = [
-  { label: "Kantoor", value: "Meir 78 - Stadsfeestzaal, 2000 Antwerpen" },
-  { label: "Hoofdzetel", value: "IJzerenpoortkaai 3, 2000 Antwerpen" },
-  { label: "BTW", value: "BE0786.290.512" },
-];
-
-const legalLinks = [
-  { label: "Algemene voorwaarden", href: "https://www.amiamis.com/algemene-voorwaarden" },
-  { label: "Privacy policy", href: "https://www.amiamis.com/privacy-policy" },
-];
-
-function ExternalLink({ href, children, className = "" }) {
-  const isExternal = href.startsWith("http");
-
-  return (
-    <a
-      className={className}
-      href={href}
-      rel={isExternal ? "noreferrer" : undefined}
-      target={isExternal ? "_blank" : undefined}
-    >
-      {children}
-    </a>
-  );
-}
 
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
+      <div className={`site-shell contact-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className="contact-page" id="contact-main">
           <section className="contact-minimal" aria-labelledby="contact-title">
             <a className="hero__logo contact-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
@@ -49,17 +22,21 @@ export default function ContactPage() {
             <div className="contact-minimal__inner">
               <div className="contact-minimal__content">
                 <div className="contact-minimal__composition">
-                  <h1 id="contact-title">Durf jij het aan?</h1>
+                  <h1 className="contact-title" id="contact-title" aria-label="Durf jij een samenwerking aan te gaan?">
+                    <span className="contact-title__row contact-title__row--intro" aria-hidden="true">
+                      <span className="contact-title__script">Durf</span>
+                      <span>jij</span>
+                    </span>
+                    <span className="contact-title__row contact-title__row--wide" aria-hidden="true">
+                      een samenwerking
+                    </span>
+                    <span className="contact-title__row" aria-hidden="true">
+                      aan te gaan?
+                    </span>
+                  </h1>
                   <a className="contact-mail" href={mailHref}>
                     {mail}
                   </a>
-                  <figure className="contact-minimal__photo">
-                    <img
-                      src={assetPath("/assets/lucaleeuw.png")}
-                      alt="Luca houdt een stuk vlees omhoog voor een leeuw"
-                      decoding="async"
-                    />
-                  </figure>
                 </div>
 
                 <form className="contact-minimal__form" action={mailHref} method="post" encType="text/plain">
@@ -85,29 +62,10 @@ export default function ContactPage() {
                 </form>
               </div>
 
-              <div className="contact-minimal__bottom" aria-label="Contactgegevens">
-                <a className="contact-phone" href={phoneHref}>
-                  {phone}
-                </a>
-                <dl className="contact-list">
-                  {contactDetails.map((item) => (
-                    <div key={item.label}>
-                      <dt>{item.label}</dt>
-                      <dd>{item.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="contact-legal">
-                  {legalLinks.map((link) => (
-                    <ExternalLink href={link.href} key={link.label}>
-                      {link.label}
-                    </ExternalLink>
-                  ))}
-                </div>
-              </div>
             </div>
           </section>
         </main>
+        <Footer variant="paper" />
       </div>
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />

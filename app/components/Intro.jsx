@@ -1,31 +1,28 @@
 import { assetPath } from "../../src/lib/assetPath";
 
 const tags = [
-  ["Marketing agency", "red"],
-  ["Video agency", "yellow"],
-  ["Video marketing", "blue"],
-  ["Video productie", "orange"],
-  ["Social media marketing", "sky"],
-  ["Content marketing", "cream"],
-  ["Fotografie", "red"],
-  ["Grafisch design", "yellow"],
-  ["Animatie", "blue"],
-  ["Audio", "orange"],
+  ["Marketing", "red"],
+  ["Video", "yellow"],
+  ["Screenwriting", "blue"],
+  ["Productie", "orange"],
   ["Copywriting", "sky"],
-  ["Branding", "cream"],
-  ["Campaigns", "red"],
-  ["Reclamespot", "yellow"],
-  ["Social content", "blue"],
-  ["Vertical video", "orange"],
-  ["Shortform video", "sky"],
-  ["Marketingstrategie", "cream"],
-  ["Contentstrategie", "red"],
-  ["Postproductie", "yellow"],
+  ["Webdesign", "cream"],
+  ["Fotografie", "red"],
+  ["Videografie", "yellow"],
   ["Montage", "blue"],
-  ["VFX", "orange"],
-  ["Motion design", "yellow"],
-  ["Websitecreatie", "sky"],
-  ["Website-optimalisatie", "cream"],
+  ["Animatie", "orange"],
+  ["Social media content", "sky"],
+  ["Grafisch design", "cream"],
+  ["Audio", "red"],
+  ["Mixage", "yellow"],
+  ["Grading", "blue"],
+  ["Branding", "orange"],
+  ["Shortform", "sky"],
+  ["Vertical video", "cream"],
+  ["VFX", "red"],
+  ["Campagnes", "yellow"],
+  ["Reclamespot", "blue"],
+  ["….", "orange"],
 ];
 
 export default function Intro() {
@@ -37,11 +34,16 @@ export default function Intro() {
           <span>van A tot Z.</span>
         </h1>
         <p>
-          We vertrekken vanuit video, maar denken verder dan een post, een
-          campagne of een format. We helpen merken met strategie, concept,
-          productie, montage, fotografie, design, audio, animatie, copy, social
-          content en marketing. Alles wat nodig is om je verhaal helder,
-          creatief en consistent naar buiten te brengen.
+          Als marketing agency weten we hoe je een boodschap doet binnenkomen.
+          Storytelling is daarin onze sterkte. We vertalen ideeën naar verhalen
+          die blijven hangen, overtuigen en mensen meenemen. En video speelt
+          daar een grote rol in. Omdat het beeld en geluid combineert, geeft
+          video je de kans om je publiek écht mee te trekken in wat je wil
+          vertellen. Maar voor ons stopt het niet bij een goeie video. We denken
+          mee over de strategie erachter: welke boodschap je brengt, hoe je die
+          het best inzet, waar je die verspreidt, hoe je je kanalen organisch
+          laat groeien en ZO VEEL MEER. Alles hier in woorden uitleggen vinden
+          we daarom niet nodig. Scroll gerust verder en ontdek het zelf.
         </p>
       </div>
       <div className="intro__camera-wrap" aria-hidden="true">

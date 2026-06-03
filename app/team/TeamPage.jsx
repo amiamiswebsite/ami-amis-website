@@ -5,6 +5,7 @@ import Script from "next/script";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import TeamDossierGrid from "../components/TeamDossierGrid";
 import { assetPath } from "../../src/lib/assetPath";
 import { teamMembers } from "../../src/data/teamPageData";
 
@@ -581,32 +582,8 @@ export default function TeamPage() {
                 <p>De gezichten achter Ami Amis</p>
               </div>
 
-              <div className="team-rail-viewport" aria-label="Ami Amis team rail">
-                <div className="team-rail-track">
-                  {teamMembers.map((member, index) => (
-                    <a
-                      className="de-amis-card"
-                      href={`#${member.slug}`}
-                      id={member.slug}
-                      key={member.name}
-                      style={{ "--card-delay": `${Math.min(index, 8) * 42}ms` }}
-                    >
-                      <div className="de-amis-card__frame">
-                        <img
-                          src={assetPath(member.image)}
-                          alt={`${member.name}, ${member.role} bij Ami Amis`}
-                          loading={index < 4 ? "eager" : "lazy"}
-                          decoding="async"
-                          style={{ objectPosition: member.objectPosition }}
-                        />
-                      </div>
-                      <div className="de-amis-card__meta">
-                        <h3>{member.name}</h3>
-                        <p>{member.role}</p>
-                      </div>
-                    </a>
-                  ))}
-                </div>
+              <div className="team-rail-viewport" aria-label="Ami Amis team dossiers">
+                <TeamDossierGrid profiles={teamMembers} />
               </div>
             </div>
           </section>

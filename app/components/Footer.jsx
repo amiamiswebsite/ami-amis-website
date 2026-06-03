@@ -68,11 +68,12 @@ function SocialIcon({ type }) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ variant = "dark" }) {
   const currentYear = new Date().getFullYear();
+  const footerClassName = variant === "paper" ? "site-footer site-footer--paper" : "site-footer";
 
   return (
-    <footer className="site-footer" id="contact">
+    <footer className={footerClassName} id="contact">
       <div className="site-footer__inner">
         <div className="site-footer__grid" aria-label="Footer contact en socials">
           <section className="site-footer__panel">

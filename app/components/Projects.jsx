@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { workItems } from "../../src/data/workItems";
+import { assetPath } from "../../src/lib/assetPath";
 
 const VIMEO_EMBED =
   "https://player.vimeo.com/video/1185178460?h=47641c0ebc&autoplay=1&title=0&byline=0&portrait=0";
+
+const featuredTitle = "In de kijker".split("");
 
 export default function Projects() {
   const [videoOpen, setVideoOpen] = useState(false);
@@ -417,10 +420,16 @@ export default function Projects() {
           ))}
         </div>
       </div>
-      <h2>
-        <span>In de kijker</span>
+      <h2 aria-label="In de kijker">
+        <span className="approach-wave projects__title-wave" aria-hidden="true">
+          {featuredTitle.map((letter, index) => (
+            <span className="approach-wave__char" key={`${letter}-${index}`}>
+              {letter === " " ? "\u00A0" : letter}
+            </span>
+          ))}
+        </span>
       </h2>
-      <a className="button button--red projects__button" href="#werk">
+      <a className="button button--red projects__button" href={assetPath("/work/visitantwerp/")}>
         <span>Zie alle</span>
         <span>projecten</span>
       </a>

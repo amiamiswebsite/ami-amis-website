@@ -108,6 +108,9 @@ export default function Hero() {
       hero.style.setProperty("--hero-type-script-y", `${pointer.currentY * strength.y * 0.12}px`);
       hero.style.setProperty("--hero-type-rot-x", `${pointer.currentY * -1.8}deg`);
       hero.style.setProperty("--hero-type-rot-y", `${pointer.currentX * 2.2}deg`);
+      hero.style.setProperty("--hero-cloud-x", `${pointer.currentX * strength.x * -0.42}px`);
+      hero.style.setProperty("--hero-cloud-y", `${pointer.currentY * strength.y * -0.3}px`);
+      hero.style.setProperty("--hero-cloud-roll", `${pointer.currentX * -1.8}deg`);
 
       if (!atTarget) {
         pointerFrame = window.requestAnimationFrame(updatePointer);
@@ -129,6 +132,7 @@ export default function Hero() {
     const handlePointerMove = (event) => {
       const rect = hero.getBoundingClientRect();
 
+      hero.classList.add("is-cloud-burst");
       pointer.active = true;
       pointer.targetX = clamp(((event.clientX - rect.left) / rect.width - 0.5) * 2, -1, 1);
       pointer.targetY = clamp(((event.clientY - rect.top) / rect.height - 0.5) * 2, -1, 1);
@@ -143,6 +147,7 @@ export default function Hero() {
       pointer.active = false;
       pointer.targetX = 0;
       pointer.targetY = 0;
+      hero.classList.remove("is-cloud-burst");
       schedulePointer();
     };
 
@@ -175,6 +180,9 @@ export default function Hero() {
 
   return (
     <section className="hero" aria-label="Ami Amis hero" ref={heroRef}>
+      <div className="hero__clouds" aria-hidden="true">
+        <img src={assetPath("/assets/hero-clouds.png")} alt="" />
+      </div>
       <div className="hero__inner">
         <div className="hero__logo" aria-label="AMI AMIS" role="img" />
         <h1 className="hero__title" aria-label="Voor merken die durven">
