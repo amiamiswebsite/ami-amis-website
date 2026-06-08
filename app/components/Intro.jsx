@@ -33,18 +33,21 @@ export default function Intro() {
           Video first marketing,
           <span>van A tot Z.</span>
         </h1>
-        <p>
-          Als marketing agency weten we hoe je een boodschap doet binnenkomen.
-          Storytelling is daarin onze sterkte. We vertalen ideeën naar verhalen
-          die blijven hangen, overtuigen en mensen meenemen. En video speelt
-          daar een grote rol in. Omdat het beeld en geluid combineert, geeft
-          video je de kans om je publiek écht mee te trekken in wat je wil
-          vertellen. Maar voor ons stopt het niet bij een goeie video. We denken
-          mee over de strategie erachter: welke boodschap je brengt, hoe je die
-          het best inzet, waar je die verspreidt, hoe je je kanalen organisch
-          laat groeien en ZO VEEL MEER. Alles hier in woorden uitleggen vinden
-          we daarom niet nodig. Scroll gerust verder en ontdek het zelf.
-        </p>
+        <div className="intro__body">
+          <p>
+            Als marketing agency weten we hoe je een boodschap laat binnenkomen.
+            Storytelling is our middle name. Van strategie tot productie,
+            distributie en organische groei: wij denken mee over het volledige
+            plaatje.
+          </p>
+          <p>
+            Video? Grote fan! Vandaag is het een van de krachtigste manieren om
+            mensen te raken, te overtuigen en in beweging te krijgen. Wil je je
+            publiek bereiken via andere kanalen? No problemo, mon ami. We doen
+            het allemaal.
+          </p>
+          <p>Scroll verder en ontdek wat we voor je kunnen doen.</p>
+        </div>
       </div>
       <div className="intro__camera-wrap" aria-hidden="true">
         <div className="intro__action-lines">

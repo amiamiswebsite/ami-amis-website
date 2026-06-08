@@ -62,7 +62,7 @@ function getItems(activePage, activeKey) {
     },
     {
       label: "Ons werk",
-      href: homeHash("#werk", activePage),
+      href: assetPath("/work/"),
       active: activeKey === "work",
     },
     {

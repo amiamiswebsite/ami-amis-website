@@ -500,12 +500,16 @@ export default function TeamPage() {
 
             <div className="team-hero__copy team-transition__copy">
               <h1>
-                Wij zijn Ami Amis: een team dat{" "}
-                <span className="team-mark team-mark--blue">strategie</span>,{" "}
-                <span className="team-mark team-mark--red">creativiteit</span> en{" "}
-                <span className="team-mark team-mark--yellow">video</span> combineert met{" "}
-                <span className="team-script">goesting</span>,{" "}
-                <span className="team-underline">lef</span> en gezond verstand.
+                Wij zijn Ami Amis, een team{" "}
+                <span className="team-mark team-mark--blue">enthousiaste creatievelingen</span>{" "}
+                met een passie voor <span className="team-mark team-mark--red">content</span>.{" "}
+                <span className="team-script">Amicaliteit</span> zit in ons DNA, waardoor we
+                elke samenwerking zien als een basis voor een langdurige{" "}
+                <span className="team-mark team-mark--yellow">vriendschap</span>. Wanneer jij
+                belt, nemen we op. Of het nu is voor een{" "}
+                <span className="team-mark team-mark--blue">coole campagne</span>, een{" "}
+                <span className="team-mark team-mark--red">fancy video</span> of om samen een
+                bank te overvallen - wij staan voor je klaar.
               </h1>
             </div>
 
@@ -563,6 +567,18 @@ export default function TeamPage() {
                     <small>Speel verder</small>
                   </span>
                 </button>
+                <div className="team-video-continue-cue" aria-hidden="true">
+                  <span className="team-video-continue-cue__label">scroll verder</span>
+                  <span className="team-video-continue-cue__animation">
+                    <lottie-player
+                      src={assetPath("/assets/arrow-arc.json")}
+                      background="transparent"
+                      speed="1"
+                      loop
+                      autoplay
+                    />
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -584,6 +600,22 @@ export default function TeamPage() {
 
               <div className="team-rail-viewport" aria-label="Ami Amis team dossiers">
                 <TeamDossierGrid profiles={teamMembers} />
+              </div>
+
+              <div className="de-amis-cta">
+                <p>
+                  <span className="de-amis-cta__line">Op zoek naar totale ontzorging?</span>
+                  <span className="de-amis-cta__highlight">We got you!</span>
+                  <span className="de-amis-cta__body">
+                    Bij ons kan je terecht voor een totaal (content)marketingpakket:
+                    van video, fotografie en animatie tot grafisch design en
+                    websitecreatie -en optimalisatie... Kom eens langs om te sparren
+                    over je marketingstrategie!
+                  </span>
+                </p>
+                <a className="button button--red" href={assetPath("/contact/")}>
+                  Kom sparren
+                </a>
               </div>
             </div>
           </section>

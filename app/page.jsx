@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Approach from "./components/Approach";
 import Brainstorm from "./components/Brainstorm";
 import Footer from "./components/Footer";
+import FilmrollHighlights from "./components/FilmrollHighlights";
 import Hero from "./components/Hero";
 import Intro from "./components/Intro";
 import MenuToggle from "./components/MenuToggle";
@@ -58,6 +59,7 @@ export default function Home() {
         <main className="collage-flow">
           <Intro />
           <Projects />
+          <FilmrollHighlights />
           <SocialGrowth />
           <Approach />
           <Testimonials />

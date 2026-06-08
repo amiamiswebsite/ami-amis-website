@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
+
+const pillarKeys = [
+  { key: "vraag", fallback: "problem", label: "Vraag" },
+  { key: "aanpak", fallback: "approach", label: "Aanpak" },
+  { key: "resultaat", fallback: "result", label: "Resultaat" },
+];
 
 function internalHref(href) {
   if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) {
@@ -18,7 +24,7 @@ function internalHref(href) {
   return assetPath(href);
 }
 
-function resolveMediaItem(item) {
+function normalizeMediaItem(item, fallbackAlt = "Projectbeeld") {
   if (!item) {
     return null;
   }
@@ -26,69 +32,101 @@ function resolveMediaItem(item) {
   if (typeof item === "string") {
     return {
       src: item,
-      alt: "Casebeeld",
+      alt: fallbackAlt,
     };
   }
 
   return item;
 }
 
-function CaseHero({ data }) {
-  const poster = assetPath(data.media.poster);
-  const hasVideo = Boolean(data.media.heroVideo);
+function getPillar(data, item) {
+  return data[item.key] || data[item.fallback] || null;
+}
+
+function ProjectMedia({ mediaType, hero, client, priority = false }) {
+  const poster = hero?.poster || hero?.image || "";
+  const video = hero?.video || hero?.heroVideo || "";
+  const image = hero?.image || hero?.poster || "";
+  const showVideo = mediaType === "video" || mediaType === "animation";
+
+  if (showVideo && video) {
+    return (
+      <video
+        aria-label={`${client} projectvideo`}
+        autoPlay={mediaType === "animation"}
+        controls={mediaType === "video"}
+        loop={mediaType === "animation"}
+        muted={mediaType === "animation"}
+        playsInline
+        poster={poster ? assetPath(poster) : undefined}
+        preload="metadata"
+      >
+        <source src={assetPath(video)} type="video/mp4" />
+      </video>
+    );
+  }
 
   return (
-    <section className="case-hero" aria-labelledby="case-title">
-      <a className="hero__logo case-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
-      <div className="case-hero__inner">
-        <div className="case-hero__copy case-reveal">
-          <p className="case-eyebrow">Case</p>
-          <h1 id="case-title">{data.title}</h1>
-          <p className="case-hero__title">{data.subtitle}</p>
-          <p className="case-hero__intro">{data.heroIntro}</p>
-          <div className="case-hero__actions" aria-label="Case acties">
-            <a className="button button--red" href="#case-core">
-              Bekijk aanpak
+    <img
+      src={assetPath(image || poster)}
+      alt={`${client} projectvisual`}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
+  );
+}
+
+function ProjectHero({ data }) {
+  const hero = data.hero || {
+    video: data.media?.heroVideo,
+    poster: data.media?.poster,
+    image: data.media?.poster,
+  };
+
+  return (
+    <section className="project-case-hero" aria-labelledby="project-case-title">
+      <a className="hero__logo project-case-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+      <div className="project-case-hero__inner">
+        <div className="project-case-hero__copy project-case-reveal">
+          <p className="project-case-label">Ons werk / {data.category}</p>
+          <h1 id="project-case-title">{data.title}</h1>
+          {data.subtitle ? <p className="project-case-hero__subtitle">{data.subtitle}</p> : null}
+          <p className="project-case-hero__intro">{data.intro || data.heroIntro}</p>
+          <div className="project-case-hero__actions">
+            <a className="button button--red" href="#project-vraag">
+              Bekijk de case
             </a>
-            <a className="case-text-link" href="#case-gallery">
-              Bekijk beelden
+            <a className="project-case-link" href="#project-snapshot">
+              Project snapshot
             </a>
           </div>
         </div>
 
-        <figure className="case-hero__media case-paper-media case-reveal">
-          <span className="case-tape" aria-hidden="true" />
-          {hasVideo ? (
-            <video
-              aria-label={`${data.client} case video`}
-              controls
-              playsInline
-              poster={poster}
-              preload="metadata"
-            >
-              <source src={assetPath(data.media.heroVideo)} type="video/mp4" />
-            </video>
-          ) : (
-            <img src={poster} alt={`${data.client} case poster`} loading="eager" decoding="async" />
-          )}
+        <figure className={`project-case-hero__media project-case-media project-case-media--${data.mediaType || "mixed"} project-case-reveal`}>
+          <ProjectMedia client={data.client} hero={hero} mediaType={data.mediaType || "mixed"} priority />
         </figure>
       </div>
     </section>
   );
 }
 
-function CaseFactsBar({ data }) {
-  const facts = [
+function ProjectOverview({ data }) {
+  const overview = [
     ["Klant", data.client],
     ["Type", data.category],
     ["Jaar", data.year],
-    ["Services", data.services.join(", ")],
-  ];
+    ["Deliverables", data.deliverables?.join(", ") || data.services?.join(", ")],
+    ["Kanaal", data.channels?.join(", ") || "Social media"],
+  ].filter(([, value]) => Boolean(value));
 
   return (
-    <section className="case-facts" aria-label="Case details">
-      <dl className="case-facts__grid">
-        {facts.map(([label, value]) => (
+    <section className="project-snapshot project-case-reveal" id="project-snapshot" aria-label="Project snapshot">
+      <div className="project-snapshot__summary">
+        <p className="project-case-label">Case at a glance</p>
+        <h2>{data.summary || data.heroIntro}</h2>
+      </div>
+      <dl className="project-snapshot__facts">
+        {overview.map(([label, value]) => (
           <div key={label}>
             <dt>{label}</dt>
             <dd>{value}</dd>
@@ -99,15 +137,33 @@ function CaseFactsBar({ data }) {
   );
 }
 
-function CaseStats({ stats }) {
+function ProjectStickyNav({ data }) {
+  const items = pillarKeys.filter((item) => getPillar(data, item));
+
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <nav className="project-case-nav" aria-label="Case pijlers">
+      {items.map((item) => (
+        <a href={`#project-${item.key}`} key={item.key}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function ProjectStats({ stats }) {
   if (!stats?.length) {
     return null;
   }
 
   return (
-    <div className="case-stats" aria-label="Case resultaten in cijfers">
+    <div className="project-stats" aria-label="Project resultaten">
       {stats.map((stat) => (
-        <article className="case-stat" key={`${stat.value}-${stat.label}`}>
+        <article className="project-stat" key={`${stat.value}-${stat.label}`}>
           <strong>{stat.value}</strong>
           <span>{stat.label}</span>
         </article>
@@ -116,49 +172,72 @@ function CaseStats({ stats }) {
   );
 }
 
-function CaseContentBlock({ block, variant }) {
+function ProjectSection({ block, item, index }) {
+  if (!block) {
+    return null;
+  }
+
+  const media = normalizeMediaItem(block.media, `${item.label} beeld`);
+
   return (
-    <section className={`case-content-block case-content-block--${variant} case-reveal`}>
-      <div className="case-content-block__label">
-        <p>{block.eyebrow}</p>
+    <section
+      className={`project-pillar project-pillar--${item.key} project-case-reveal`}
+      id={`project-${item.key}`}
+      aria-labelledby={`project-${item.key}-title`}
+    >
+      <div className="project-pillar__index">
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <p>{item.label}</p>
       </div>
-      <div className="case-content-block__body">
-        <h2>{block.title}</h2>
+
+      <div className="project-pillar__content">
+        <h2 id={`project-${item.key}-title`}>{block.title}</h2>
         <p>{block.text}</p>
         {block.bullets?.length ? (
           <ul>
-            {block.bullets.map((item) => (
-              <li key={item}>{item}</li>
+            {block.bullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
             ))}
           </ul>
         ) : null}
-        {block.stats ? <CaseStats stats={block.stats} /> : null}
+        {block.deliverables?.length ? (
+          <div className="project-deliverables" aria-label="Deliverables">
+            {block.deliverables.map((deliverable) => (
+              <span key={deliverable}>{deliverable}</span>
+            ))}
+          </div>
+        ) : null}
+        {block.stats ? <ProjectStats stats={block.stats} /> : null}
       </div>
+
+      {media ? (
+        <figure className="project-pillar__media project-case-media">
+          <img src={assetPath(media.src)} alt={media.alt || `${item.label} projectbeeld`} loading="lazy" decoding="async" />
+        </figure>
+      ) : null}
     </section>
   );
 }
 
-function CaseMediaGallery({ data }) {
-  const stills = data.media.stills.map(resolveMediaItem).filter(Boolean);
+function ProjectGallery({ data }) {
+  const gallery = (data.gallery || data.media?.stills || [])
+    .map((item) => normalizeMediaItem(item, `${data.client} projectbeeld`))
+    .filter(Boolean);
 
-  if (!stills.length) {
+  if (!gallery.length) {
     return null;
   }
 
   return (
-    <section className="case-gallery case-section-pad" id="case-gallery" aria-labelledby="case-gallery-title">
-      <div className="case-gallery__header case-reveal">
-        <p className="case-section-label">Beelden</p>
-        <h2 id="case-gallery-title">Een snelle blik op de case.</h2>
+    <section className="project-gallery project-case-reveal" aria-labelledby="project-gallery-title">
+      <div className="project-gallery__header">
+        <p className="project-case-label">Media / Deliverables</p>
+        <h2 id="project-gallery-title">Nog een paar beelden uit het dossier.</h2>
       </div>
-      <div className="case-gallery__grid">
-        {stills.map((item, index) => (
-          <figure
-            className="case-gallery-card case-reveal"
-            key={`${item.src}-${index}`}
-            style={{ "--case-card-rotate": `${index % 2 ? 0.8 : -0.9}deg` }}
-          >
-            <img src={assetPath(item.src)} alt={item.alt} loading="lazy" decoding="async" />
+      <div className="project-gallery__grid">
+        {gallery.map((item, index) => (
+          <figure className="project-gallery__item" key={`${item.src}-${index}`}>
+            <img src={assetPath(item.src)} alt={item.alt || `${data.client} gallery beeld`} loading="lazy" decoding="async" />
           </figure>
         ))}
       </div>
@@ -166,40 +245,48 @@ function CaseMediaGallery({ data }) {
   );
 }
 
-function CaseCTA({ data }) {
+function ProjectCTA({ data }) {
   return (
-    <section className="case-next case-section-pad" aria-label="Case navigatie">
-      <div className="case-next__cta case-reveal">
-        <div>
-          <p className="case-section-label">Ook zo'n case maken?</p>
-          <h2>Heb je een verhaal dat sterker in beeld mag komen?</h2>
-          <p>Dan denken we graag mee.</p>
-        </div>
-        <a className="button button--red" href={assetPath("/contact/")}>
-          Plan een quick call →
-        </a>
+    <section className="project-case-cta project-case-reveal" aria-label="Project afsluiting">
+      <div className="project-case-cta__copy">
+        <p className="project-case-label">Ook zo'n project maken?</p>
+        <h2>Heb je een verhaal dat sterker in beeld mag komen?</h2>
+        <p>Dan denken we graag mee. Video, foto, design, animatie of iets daartussen: we maken er samen iets strafbaar goed van.</p>
       </div>
+      <a className="button button--red" href={assetPath("/contact/")}>
+        Plan een quick call →
+      </a>
 
-      <nav className="case-next__nav case-reveal" aria-label="Vorige en volgende case">
-        <a href={internalHref(data.previousCase.href)}>
-          <span>Vorige case</span>
-          {data.previousCase.title}
-        </a>
-        <a href={internalHref(data.nextCase.href)}>
-          <span>Volgende case</span>
-          {data.nextCase.title}
-        </a>
-      </nav>
+      {(data.previousCase || data.nextCase) ? (
+        <nav className="project-case-next" aria-label="Andere projecten">
+          {data.previousCase ? (
+            <a href={internalHref(data.previousCase.href)}>
+              <span>Vorige</span>
+              {data.previousCase.title}
+            </a>
+          ) : null}
+          {data.nextCase ? (
+            <a href={internalHref(data.nextCase.href)}>
+              <span>Volgende</span>
+              {data.nextCase.title}
+            </a>
+          ) : null}
+        </nav>
+      ) : null}
     </section>
   );
 }
 
 export default function CasePageTemplate({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pillarItems = useMemo(
+    () => pillarKeys.map((item) => ({ ...item, block: getPillar(caseData, item) })).filter((item) => item.block),
+    [caseData]
+  );
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const items = Array.from(document.querySelectorAll(".case-reveal"));
+    const items = Array.from(document.querySelectorAll(".project-case-reveal"));
 
     if (reduceMotion || !("IntersectionObserver" in window)) {
       items.forEach((item) => item.classList.add("is-visible"));
@@ -215,29 +302,30 @@ export default function CasePageTemplate({ caseData }) {
           }
         });
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 }
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.14 }
     );
 
     items.forEach((item) => observer.observe(item));
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <>
-      <div className={`site-shell case-shell ${menuOpen ? "menu-open" : ""}`}>
-        <main className="case-page">
-          <CaseHero data={caseData} />
-          <CaseFactsBar data={caseData} />
-          <section className="case-core case-section-pad" id="case-core" aria-label="Case aanpak">
-            <CaseContentBlock block={caseData.problem} variant="problem" />
-            <CaseContentBlock block={caseData.approach} variant="approach" />
-            <CaseContentBlock block={caseData.result} variant="result" />
-          </section>
-          <CaseMediaGallery data={caseData} />
-          <CaseCTA data={caseData} />
+      <div className={`site-shell project-case-shell ${menuOpen ? "menu-open" : ""}`}>
+        <main className="project-case-page">
+          <ProjectHero data={caseData} />
+          <ProjectOverview data={caseData} />
+          <ProjectStickyNav data={caseData} />
+
+          <div className="project-pillars" aria-label="Projectverhaal">
+            {pillarItems.map((item, index) => (
+              <ProjectSection block={item.block} index={index} item={item} key={item.key} />
+            ))}
+          </div>
+
+          <ProjectGallery data={caseData} />
+          <ProjectCTA data={caseData} />
         </main>
         <Footer variant="paper" />
       </div>

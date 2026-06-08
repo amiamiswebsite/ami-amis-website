@@ -429,7 +429,7 @@ export default function Projects() {
           ))}
         </span>
       </h2>
-      <a className="button button--red projects__button" href={assetPath("/work/visitantwerp/")}>
+      <a className="button button--red projects__button" href={assetPath("/work/")}>
         <span>Zie alle</span>
         <span>projecten</span>
       </a>

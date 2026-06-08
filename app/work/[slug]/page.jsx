@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import CaseExperimentPage from "../../components/CaseExperimentPage";
+import CasePageTemplate from "../../components/CasePageTemplate";
 import { cases, getCaseBySlug } from "../../../src/data/cases";
 
 export function generateStaticParams() {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${caseData.client} | Ami Amis case`,
-    description: caseData.heroIntro,
+    description: caseData.intro || caseData.heroIntro,
   };
 }
 
@@ -32,5 +32,5 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  return <CaseExperimentPage caseData={caseData} />;
+  return <CasePageTemplate caseData={caseData} />;
 }

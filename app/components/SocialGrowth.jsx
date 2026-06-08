@@ -1,18 +1,83 @@
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 
-const stats = [
-  { target: 47, suffix: "", label: "nieuwe volgers" },
-  { target: 9, suffix: "k", label: "impressies" },
-  { target: 750, suffix: "", label: "verkochte producten" },
+const INSTAGRAM_URL = "https://www.instagram.com/amiamismedia/";
+
+// Optional: sync follower count via Instagram Graph API when authenticated business account access is available.
+const strategyStats = [
+  {
+    value: "747",
+    target: 747,
+    label: "volgers",
+    href: INSTAGRAM_URL,
+    type: "followers",
+  },
+  {
+    value: "30,3k",
+    target: 30.3,
+    suffix: "k",
+    decimals: 1,
+    label: "weergaven / maand",
+    type: "views",
+  },
+  {
+    value: "+33,5%",
+    target: 33.5,
+    prefix: "+",
+    suffix: "%",
+    decimals: 1,
+    label: "nieuwe volgers / maand",
+    type: "growth",
+  },
 ];
+
+const socialBadges = [
+  {
+    icon: "user",
+    value: "747",
+    label: "volgers",
+    href: INSTAGRAM_URL,
+    className: "social-icon--comment",
+  },
+  {
+    icon: "play",
+    value: "30,3k",
+    label: "weergaven / maand",
+    className: "social-icon--follow",
+  },
+];
+
+function formatStatValue(stat, value) {
+  const decimals = stat.decimals || 0;
+  const fixed = decimals ? value.toFixed(decimals) : String(Math.round(value));
+  const localized = fixed.replace(".", ",");
+
+  return `${stat.prefix || ""}${localized}${stat.suffix || ""}`;
+}
+
+function BadgeIcon({ icon }) {
+  if (icon === "play") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 5.8v12.4l10-6.2z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 12.2a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" />
+      <path d="M4.4 20.2c.9-4 3.5-6.2 7.6-6.2s6.7 2.2 7.6 6.2H4.4Z" />
+    </svg>
+  );
+}
 
 export default function SocialGrowth() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
   const statsRef = useRef(null);
   const hasAnimated = useRef(false);
-  const [counts, setCounts] = useState(stats.map(() => 0));
+  const [counts, setCounts] = useState(strategyStats.map(() => 0));
   const [isCounting, setIsCounting] = useState(false);
 
   useEffect(() => {
@@ -63,7 +128,7 @@ export default function SocialGrowth() {
 
     const finish = () => {
       hasAnimated.current = true;
-      setCounts(stats.map((stat) => stat.target));
+      setCounts(strategyStats.map((stat) => stat.target));
       setIsCounting(false);
     };
 
@@ -94,18 +159,20 @@ export default function SocialGrowth() {
         const progress = Math.min(easeOutBack(rawProgress), 1);
 
         setCounts(
-          stats.map((stat) => {
+          strategyStats.map((stat) => {
             if (rawProgress === 0) {
               return 1;
             }
-            return Math.max(1, Math.round(stat.target * progress));
+
+            const multiplier = stat.decimals ? 10 ** stat.decimals : 1;
+            return Math.max(0, Math.round(stat.target * progress * multiplier) / multiplier);
           })
         );
 
         if (rawProgress < 1) {
           frame = window.requestAnimationFrame(tick);
         } else {
-          setCounts(stats.map((stat) => stat.target));
+          setCounts(strategyStats.map((stat) => stat.target));
           window.setTimeout(() => setIsCounting(false), 220);
         }
       };
@@ -150,37 +217,69 @@ export default function SocialGrowth() {
           <span>Organische groei.</span>
         </h2>
         <p ref={textRef}>
-          Een goeie video is niks waard als niemand hem ziet. Daarom helpen we
-          je niet alleen met sterke content, maar ook met de strategie erachter.
-          We denken mee over wat past bij jouw merk, jouw verhaal en jouw
-          doelgroep. Die strategie vertalen we naar slimme marketing en video’s
-          die niet alleen goed gemaakt zijn, maar ook juist ingezet worden. Zo
-          bouwen we stap voor stap aan organische groei. Niet door blind trends
-          te volgen voor snelle pieken, maar door een publiek op te bouwen dat
-          gelooft in je merk, je verhaal en je product.
+          Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet
+          alleen met sterke content, maar ook met de strategie erachter. We
+          denken mee over wat past bij jouw merk, jouw verhaal en jouw doelgroep.
+          Wij bekijken het grote plaatje en vertalen dat naar een campagne met
+          sterke content die juist wordt ingezet.
         </p>
       </div>
       <div className="phone-scene">
         <div className="phone-frame">
-          <img src={assetPath("/assets/social-phone-organic-growth.png")} alt="" />
+          <video
+            aria-hidden="true"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster={assetPath("/assets/social-phone-organic-growth.png")}
+            preload="metadata"
+          >
+            <source src={assetPath("/assets/visit-antwerpen-fashionlocal-loop.mp4")} type="video/mp4" />
+          </video>
         </div>
         <img className="social-icon social-icon--heart" src={assetPath("/assets/social-heart.png")} alt="" />
-        <img className="social-icon social-icon--comment" src={assetPath("/assets/social-comment.png")} alt="" />
-        <img className="social-icon social-icon--follow" src={assetPath("/assets/social-follow.png")} alt="" />
+        {socialBadges.map((badge) => {
+          const Tag = badge.href ? "a" : "div";
+
+          return (
+            <Tag
+              className={`social-icon social-badge ${badge.className}`}
+              href={badge.href}
+              key={badge.type || badge.label}
+              rel={badge.href ? "noopener noreferrer" : undefined}
+              target={badge.href ? "_blank" : undefined}
+              aria-label={badge.href ? "Bekijk Ami Amis op Instagram" : undefined}
+            >
+              <BadgeIcon icon={badge.icon} />
+              <strong>{badge.value}</strong>
+              <span>{badge.label}</span>
+            </Tag>
+          );
+        })}
         <img className="social-icon social-icon--bell" src={assetPath("/assets/social-bell.png")} alt="" />
         <img className="social-icon social-icon--like" src={assetPath("/assets/social-like.png")} alt="" />
       </div>
       <div className={`stats${isCounting ? " is-counting" : ""}`} ref={statsRef}>
-        {stats.map((stat, index) => (
-          <div className="stat" key={stat.label}>
+        {strategyStats.map((stat, index) => {
+          const Tag = stat.href ? "a" : "div";
+
+          return (
+          <Tag
+            className="stat"
+            href={stat.href}
+            key={stat.label}
+            rel={stat.href ? "noopener noreferrer" : undefined}
+            target={stat.href ? "_blank" : undefined}
+            aria-label={stat.href ? "Bekijk Ami Amis op Instagram" : undefined}
+          >
             <strong>
-              {counts[index]}
-              {stat.suffix}
-              <span aria-hidden="true">+</span>
+              {formatStatValue(stat, counts[index])}
             </strong>
             <span>{stat.label}</span>
-          </div>
-        ))}
+          </Tag>
+          );
+        })}
       </div>
     </section>
   );

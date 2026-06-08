@@ -181,11 +181,11 @@ export default function Hero() {
   return (
     <section className="hero" aria-label="Ami Amis hero" ref={heroRef}>
       <div className="hero__clouds" aria-hidden="true">
-        <img src={assetPath("/assets/hero-clouds.png")} alt="" />
+        <img src={`${assetPath("/assets/hero-clouds.png")}?v=20260608`} alt="" />
       </div>
       <div className="hero__inner">
         <div className="hero__logo" aria-label="AMI AMIS" role="img" />
-        <h1 className="hero__title" aria-label="Voor merken die durven">
+        <h1 className="hero__title" aria-label="Voor merken die durven springen">
           <span className="hero__line hero__line--top">
             <span className="hero__word" data-text="Voor">
               Voor
@@ -197,8 +197,8 @@ export default function Hero() {
           <span className="hero__line hero__line--script" data-text="die">
             die
           </span>
-          <span className="hero__line hero__line--bottom" data-text="Durven">
-            Durven
+          <span className="hero__line hero__line--bottom" data-text="Durven springen">
+            Durven springen
           </span>
         </h1>
         <div className="hero__skydiver" aria-hidden="true">
