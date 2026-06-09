@@ -1,11 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
 import { workCases } from "../../src/data/workCases";
+
+const workFilters = [
+  "Alles",
+  "Video & campagnes",
+  "Social content",
+  "Fotografie",
+  "Design & branding",
+  "Animatie & montage",
+  "Audio engineering",
+  "Webdesign & optimalisatie",
+  "Marketingstrategie",
+];
 
 function WorkHero() {
   return (
@@ -14,6 +26,33 @@ function WorkHero() {
       <a className="button button--red work-page__hero-button" href={assetPath("/contact/")}>
         Samenwerken?
       </a>
+    </section>
+  );
+}
+
+function WorkFilters({ activeFilter, count, onFilterChange }) {
+  return (
+    <section className="work-filters" aria-label="Filter cases">
+      <div className="work-filters__topline" aria-live="polite">
+        {count} {count === 1 ? "case" : "cases"}
+      </div>
+      <div className="work-filters__rail" role="list">
+        {workFilters.map((filter) => {
+          const isActive = activeFilter === filter;
+
+          return (
+            <button
+              aria-pressed={isActive}
+              className={`work-filter ${isActive ? "is-active" : ""}`}
+              key={filter}
+              onClick={() => onFilterChange(filter)}
+              type="button"
+            >
+              {filter}
+            </button>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -71,6 +110,14 @@ function WorkGrid({ cases }) {
 
 export default function WorkPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Alles");
+  const filteredCases = useMemo(() => {
+    if (activeFilter === "Alles") {
+      return workCases;
+    }
+
+    return workCases.filter((item) => item.categories.includes(activeFilter));
+  }, [activeFilter]);
 
   return (
     <>
@@ -78,7 +125,8 @@ export default function WorkPage() {
         <main className="work-page">
           <a className="hero__logo work-page__logo" href={assetPath("/")} aria-label="Ami Amis home" />
           <WorkHero />
-          <WorkGrid cases={workCases} />
+          <WorkFilters activeFilter={activeFilter} count={filteredCases.length} onFilterChange={setActiveFilter} />
+          <WorkGrid cases={filteredCases} />
         </main>
         <Footer variant="paper" />
       </div>

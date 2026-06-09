@@ -198,7 +198,8 @@ export default function Hero() {
             die
           </span>
           <span className="hero__line hero__line--bottom" data-text="Durven springen">
-            Durven springen
+            <span>Durven</span>
+            <span>Springen</span>
           </span>
         </h1>
         <div className="hero__skydiver" aria-hidden="true">

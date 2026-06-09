@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import CasePageTemplate from "../../components/CasePageTemplate";
-import { cases, getCaseBySlug } from "../../../src/data/cases";
+import VisitAntwerpenCasePage from "../../components/VisitAntwerpenCasePage";
+import { getAllCaseSlugs, getCaseBySlug } from "../../../src/data/cases";
 
 export function generateStaticParams() {
-  return cases.map((item) => ({
-    slug: item.slug,
+  return getAllCaseSlugs().map((slug) => ({
+    slug,
   }));
 }
 
@@ -19,8 +20,8 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${caseData.client} | Ami Amis case`,
-    description: caseData.intro || caseData.heroIntro,
+    title: caseData.seo?.title || `${caseData.client} | Ami Amis case`,
+    description: caseData.seo?.description || caseData.intro || caseData.heroIntro,
   };
 }
 
@@ -30,6 +31,10 @@ export default async function Page({ params }) {
 
   if (!caseData) {
     notFound();
+  }
+
+  if (caseData.template === "visit-antwerpen-social") {
+    return <VisitAntwerpenCasePage caseData={caseData} />;
   }
 
   return <CasePageTemplate caseData={caseData} />;

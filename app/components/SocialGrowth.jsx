@@ -98,7 +98,11 @@ export default function SocialGrowth() {
       const sectionRect = sectionNode.getBoundingClientRect();
       const textRect = textNode.getBoundingClientRect();
       const statsRect = statsNode.getBoundingClientRect();
-      const top = Math.max(220, textRect.bottom - sectionRect.top - statsRect.height);
+      const phoneNode = sectionNode.querySelector(".phone-scene");
+      const phoneRect = phoneNode?.getBoundingClientRect();
+      const textAlignedTop = textRect.bottom - sectionRect.top - statsRect.height;
+      const phoneSafeTop = phoneRect ? phoneRect.bottom - sectionRect.top + 28 : 0;
+      const top = Math.max(220, textAlignedTop, phoneSafeTop);
 
       sectionNode.style.setProperty("--social-stats-top", `${Math.round(top)}px`);
     };
@@ -223,6 +227,15 @@ export default function SocialGrowth() {
           Wij bekijken het grote plaatje en vertalen dat naar een campagne met
           sterke content die juist wordt ingezet.
         </p>
+        <a
+          className="social-growth__instagram"
+          href={INSTAGRAM_URL}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label="Bekijk Ami Amis op Instagram"
+        >
+          @amiamis
+        </a>
       </div>
       <div className="phone-scene">
         <div className="phone-frame">
@@ -235,10 +248,14 @@ export default function SocialGrowth() {
             poster={assetPath("/assets/social-phone-organic-growth.png")}
             preload="metadata"
           >
-            <source src={assetPath("/assets/visit-antwerpen-fashionlocal-loop.mp4")} type="video/mp4" />
+            <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
           </video>
         </div>
-        <img className="social-icon social-icon--heart" src={assetPath("/assets/social-heart.png")} alt="" />
+        <span className="social-icon social-icon--heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 20.2c-5.1-3.3-8.4-6.4-8.4-10.1 0-2.4 1.7-4.2 4.1-4.2 1.5 0 2.9.8 3.6 2 .7-1.2 2.1-2 3.6-2 2.4 0 4.1 1.8 4.1 4.2 0 3.7-3.3 6.8-8.4 10.1Z" />
+          </svg>
+        </span>
         {socialBadges.map((badge) => {
           const Tag = badge.href ? "a" : "div";
 

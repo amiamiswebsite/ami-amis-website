@@ -97,7 +97,7 @@ function FilmrollProjectFrame({ project, index, onSuppressClick }) {
           <strong>{project.client}</strong>
           <span className="filmroll-frame__type">{project.type}</span>
         </span>
-        <span className="filmroll-frame__cta">Bekijk →</span>
+        <span className="filmroll-frame__cta">Bekijk</span>
       </span>
     </a>
   );
@@ -107,7 +107,6 @@ export default function FilmrollHighlights() {
   const scrollerRef = useRef(null);
   const dragRef = useRef({
     active: false,
-    frame: 0,
     didHint: false,
     pointerId: null,
     startScrollLeft: 0,
@@ -123,52 +122,8 @@ export default function FilmrollHighlights() {
     }
 
     const state = dragRef.current;
-    let setWidth = 0;
+    let hintTimer = 0;
     let observer;
-
-    const measureLoop = () => {
-      const frames = scroller.querySelectorAll(".filmroll-frame");
-      const first = frames[0];
-      const middle = frames[highlightProjects.length];
-
-      if (!first || !middle) {
-        return 0;
-      }
-
-      return middle.offsetLeft - first.offsetLeft;
-    };
-
-    const keepLoopCentered = () => {
-      state.frame = 0;
-
-      if (!setWidth) {
-        setWidth = measureLoop();
-      }
-
-      if (!setWidth) {
-        return;
-      }
-
-      if (scroller.scrollLeft < setWidth * 0.42) {
-        scroller.scrollLeft += setWidth;
-      } else if (scroller.scrollLeft > setWidth * 1.58) {
-        scroller.scrollLeft -= setWidth;
-      }
-    };
-
-    const scheduleLoop = () => {
-      if (!state.frame) {
-        state.frame = window.requestAnimationFrame(keepLoopCentered);
-      }
-    };
-
-    const goToMiddle = () => {
-      setWidth = measureLoop();
-
-      if (setWidth) {
-        scroller.scrollLeft = setWidth;
-      }
-    };
 
     const endDrag = (event) => {
       if (!state.active || event.pointerId !== state.pointerId) {
@@ -217,7 +172,6 @@ export default function FilmrollHighlights() {
 
       event.preventDefault();
       scroller.scrollLeft += event.deltaY + event.deltaX;
-      scheduleLoop();
     };
 
     const onKeyDown = (event) => {
@@ -242,7 +196,7 @@ export default function FilmrollHighlights() {
           }
 
           state.didHint = true;
-          window.setTimeout(() => {
+          hintTimer = window.setTimeout(() => {
             scroller.scrollBy({ left: Math.min(260, scroller.clientWidth * 0.32), behavior: "smooth" });
           }, 420);
         },
@@ -251,8 +205,6 @@ export default function FilmrollHighlights() {
       observer.observe(scroller);
     }
 
-    goToMiddle();
-    scroller.addEventListener("scroll", scheduleLoop, { passive: true });
     scroller.addEventListener("wheel", onWheel, { passive: false });
     scroller.addEventListener("pointerdown", onPointerDown);
     scroller.addEventListener("pointermove", onPointerMove);
@@ -260,11 +212,9 @@ export default function FilmrollHighlights() {
     scroller.addEventListener("pointercancel", endDrag);
     scroller.addEventListener("lostpointercapture", endDrag);
     scroller.addEventListener("keydown", onKeyDown);
-    window.addEventListener("resize", goToMiddle);
 
     return () => {
       observer?.disconnect();
-      scroller.removeEventListener("scroll", scheduleLoop);
       scroller.removeEventListener("wheel", onWheel);
       scroller.removeEventListener("pointerdown", onPointerDown);
       scroller.removeEventListener("pointermove", onPointerMove);
@@ -272,10 +222,9 @@ export default function FilmrollHighlights() {
       scroller.removeEventListener("pointercancel", endDrag);
       scroller.removeEventListener("lostpointercapture", endDrag);
       scroller.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("resize", goToMiddle);
 
-      if (state.frame) {
-        window.cancelAnimationFrame(state.frame);
+      if (hintTimer) {
+        window.clearTimeout(hintTimer);
       }
     };
   }, []);
@@ -306,10 +255,10 @@ export default function FilmrollHighlights() {
           >
             <div className="filmroll-strip">
               <div className="filmroll-track">
-                {[...highlightProjects, ...highlightProjects, ...highlightProjects].map((project, index) => (
+                {highlightProjects.map((project, index) => (
                   <FilmrollProjectFrame
                     index={index}
-                    key={`${project.client}-${project.type}-${index}`}
+                    key={`${project.client}-${project.type}`}
                     onSuppressClick={handleSuppressClick}
                     project={project}
                   />
@@ -319,7 +268,7 @@ export default function FilmrollHighlights() {
           </div>
         </div>
 
-        <a className="filmroll-highlights__cta" href={assetPath("/work/")}>
+        <a className="button button--red filmroll-highlights__cta" href={assetPath("/work/")}>
           Zie alle projecten
         </a>
       </div>

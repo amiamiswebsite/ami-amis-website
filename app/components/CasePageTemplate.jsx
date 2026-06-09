@@ -24,6 +24,18 @@ function internalHref(href) {
   return assetPath(href);
 }
 
+function mediaSrc(src) {
+  if (!src) {
+    return "";
+  }
+
+  if (src.startsWith("http")) {
+    return src;
+  }
+
+  return assetPath(src);
+}
+
 function normalizeMediaItem(item, fallbackAlt = "Projectbeeld") {
   if (!item) {
     return null;
@@ -44,9 +56,9 @@ function getPillar(data, item) {
 }
 
 function ProjectMedia({ mediaType, hero, client, priority = false }) {
-  const poster = hero?.poster || hero?.image || "";
+  const poster = hero?.poster || hero?.image || hero?.sourceMediaUrl || "";
   const video = hero?.video || hero?.heroVideo || "";
-  const image = hero?.image || hero?.poster || "";
+  const image = hero?.image || hero?.poster || hero?.sourceMediaUrl || "";
   const showVideo = mediaType === "video" || mediaType === "animation";
 
   if (showVideo && video) {
@@ -58,17 +70,21 @@ function ProjectMedia({ mediaType, hero, client, priority = false }) {
         loop={mediaType === "animation"}
         muted={mediaType === "animation"}
         playsInline
-        poster={poster ? assetPath(poster) : undefined}
+        poster={poster ? mediaSrc(poster) : undefined}
         preload="metadata"
       >
-        <source src={assetPath(video)} type="video/mp4" />
+        <source src={mediaSrc(video)} type="video/mp4" />
       </video>
     );
   }
 
+  if (!image && !poster) {
+    return null;
+  }
+
   return (
     <img
-      src={assetPath(image || poster)}
+      src={mediaSrc(image || poster)}
       alt={`${client} projectvisual`}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
@@ -81,7 +97,9 @@ function ProjectHero({ data }) {
     video: data.media?.heroVideo,
     poster: data.media?.poster,
     image: data.media?.poster,
+    sourceMediaUrl: data.thumbnail || data.sourceMediaUrl,
   };
+  const hasHeroMedia = Boolean(hero?.video || hero?.heroVideo || hero?.image || hero?.poster || hero?.sourceMediaUrl);
 
   return (
     <section className="project-case-hero" aria-labelledby="project-case-title">
@@ -102,9 +120,11 @@ function ProjectHero({ data }) {
           </div>
         </div>
 
-        <figure className={`project-case-hero__media project-case-media project-case-media--${data.mediaType || "mixed"} project-case-reveal`}>
-          <ProjectMedia client={data.client} hero={hero} mediaType={data.mediaType || "mixed"} priority />
-        </figure>
+        {hasHeroMedia ? (
+          <figure className={`project-case-hero__media project-case-media project-case-media--${data.mediaType || "mixed"} project-case-reveal`}>
+            <ProjectMedia client={data.client} hero={hero} mediaType={data.mediaType || "mixed"} priority />
+          </figure>
+        ) : null}
       </div>
     </section>
   );
@@ -212,9 +232,45 @@ function ProjectSection({ block, item, index }) {
 
       {media ? (
         <figure className="project-pillar__media project-case-media">
-          <img src={assetPath(media.src)} alt={media.alt || `${item.label} projectbeeld`} loading="lazy" decoding="async" />
+          <img src={mediaSrc(media.src)} alt={media.alt || `${item.label} projectbeeld`} loading="lazy" decoding="async" />
         </figure>
       ) : null}
+    </section>
+  );
+}
+
+function ProjectVimeoEmbeds({ data }) {
+  const embeds = data.vimeoEmbeds || data.media?.vimeoEmbeds || [];
+
+  if (!embeds.length) {
+    return null;
+  }
+
+  return (
+    <section className="project-vimeo project-case-reveal" aria-labelledby="project-vimeo-title">
+      <div className="project-gallery__header">
+        <p className="project-case-label">Video / Vimeo</p>
+        <h2 id="project-vimeo-title">Video's uit het dossier.</h2>
+      </div>
+      <div className="project-vimeo__grid">
+        {embeds.map((embed, index) => {
+          const id = typeof embed === "string" ? embed : embed.id;
+          const title = typeof embed === "string" ? `${data.client} video ${index + 1}` : embed.title || `${data.client} video ${index + 1}`;
+
+          return (
+            <figure className="project-vimeo__frame" key={`${id}-${index}`}>
+              <iframe
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                allowFullScreen
+                loading="lazy"
+                src={`https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`}
+                title={title}
+              />
+              <figcaption>{title}</figcaption>
+            </figure>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -237,7 +293,7 @@ function ProjectGallery({ data }) {
       <div className="project-gallery__grid">
         {gallery.map((item, index) => (
           <figure className="project-gallery__item" key={`${item.src}-${index}`}>
-            <img src={assetPath(item.src)} alt={item.alt || `${data.client} gallery beeld`} loading="lazy" decoding="async" />
+            <img src={mediaSrc(item.src)} alt={item.alt || `${data.client} gallery beeld`} loading="lazy" decoding="async" />
           </figure>
         ))}
       </div>
@@ -324,6 +380,7 @@ export default function CasePageTemplate({ caseData }) {
             ))}
           </div>
 
+          <ProjectVimeoEmbeds data={caseData} />
           <ProjectGallery data={caseData} />
           <ProjectCTA data={caseData} />
         </main>

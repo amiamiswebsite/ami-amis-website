@@ -10,7 +10,6 @@ export const workFilters = [
   "Marketingstrategie",
 ];
 
-// TODO: vervang de fallback thumbnails door definitieve casebeelden zodra ze aangeleverd zijn.
 export const workCases = [
   {
     client: "Tarzan en Jane",
@@ -18,20 +17,20 @@ export const workCases = [
     title: "Speelse content voor een gezinsmerk",
     description: "Case-inhoud en thumbnail worden later aangevuld.",
     categories: ["Social content", "Video & campagnes"],
-    image: "/images/work/tarzan-en-jane.jpg",
+    image: "/work/tarzan-en-jane-thumb.png",
     href: "/work/tarzan-en-jane/",
     featured: false,
     status: "needs-content",
   },
   {
     client: "Visit Antwerpen",
-    slug: "visitantwerp",
+    slug: "visit-antwerpen",
     title: "Cultuur in Antwerpen. In 12 uur.",
     description:
       "Een social-first promotievideo voor Stad Antwerpen en Visit Antwerpen rond hoeveel cultuur je in Antwerpen kan beleven in een dag.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     image: "/work/sint-jan.webp",
-    href: "/work/visitantwerp/",
+    href: "/work/visit-antwerpen/",
     featured: true,
     status: "ready",
   },
@@ -41,7 +40,7 @@ export const workCases = [
     title: "Content voor een warme coworking community",
     description: "Case-inhoud en thumbnail worden later aangevuld.",
     categories: ["Social content", "Fotografie", "Marketingstrategie"],
-    image: "/images/work/humgy.jpg",
+    image: "/work/humgy-thumb.png",
     href: "/work/humgy/",
     featured: false,
     status: "needs-content",
@@ -119,14 +118,14 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "Billy Bonkers - Stad Gent",
-    slug: "billy-bonkers-stad-gent",
+    client: "Billy Bonkers",
+    slug: "billy-bonkers",
     title: "Campagne rond duurzaam wonen",
     description:
       "Een creatieve campagne met cinemaspot, campagnebeelden en affiches rond duurzamer verwarmen.",
     categories: ["Video & campagnes", "Design & branding", "Marketingstrategie"],
-    image: "/images/work/billy-bonkers-stad-gent.jpg",
-    href: "/work/billy-bonkers-stad-gent/",
+    image: "/work/billy-bonkers-thumb.webp",
+    href: "/work/billy-bonkers/",
     featured: false,
     status: "ready",
   },
@@ -137,7 +136,7 @@ export const workCases = [
     description:
       "Een uitlegvideo die een technische integratie toegankelijk maakt met motion graphics en humor.",
     categories: ["Video & campagnes", "Animatie & montage", "Design & branding"],
-    image: "/images/work/jurimesh.jpg",
+    image: "/work/jurimesh-thumb.png",
     href: "/work/jurimesh/",
     featured: false,
     status: "ready",
@@ -149,7 +148,7 @@ export const workCases = [
     description:
       "Een cinematografische video over Felipe Nystrom en Younited tijdens de UCI Cyclo-cross World Cup.",
     categories: ["Video & campagnes", "Audio engineering", "Animatie & montage"],
-    image: "/images/work/sporthouse-group.jpg",
+    image: "/work/sporthouse-group-thumb.webp",
     href: "/work/sporthouse-group/",
     featured: false,
     status: "ready",
@@ -161,20 +160,20 @@ export const workCases = [
     description:
       "Foto- en videocontent die Blutsqi zichtbaar maakt via vacaturevideo's en social snippets.",
     categories: ["Video & campagnes", "Fotografie", "Social content", "Marketingstrategie"],
-    image: "/images/work/blutsqi.jpg",
+    image: "/work/blutsqi-thumb.webp",
     href: "/work/blutsqi/",
     featured: false,
     status: "ready",
   },
   {
-    client: "Zorgbedrijf Antwerpen",
-    slug: "zorgbedrijf-antwerpen",
+    client: "Zorgbedrijf",
+    slug: "zorgbedrijf",
     title: "Interne video's met een menselijke twist",
     description:
       "Een creatieve introductie van vier nieuwe directieleden, geinspireerd op Durf te vragen.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
-    image: "/images/work/zorgbedrijf-antwerpen.jpg",
-    href: "/work/zorgbedrijf-antwerpen/",
+    image: "/work/zorgbedrijf-thumb.webp",
+    href: "/work/zorgbedrijf/",
     featured: false,
     status: "ready",
   },
@@ -220,7 +219,7 @@ export const workCases = [
     title: "Content voor een productmerk",
     description: "Case-inhoud en thumbnail worden later aangevuld.",
     categories: ["Social content", "Fotografie", "Video & campagnes"],
-    image: "/images/work/x-oats.jpg",
+    image: "/work/x-oats-thumb.webp",
     href: "/work/x-oats/",
     featured: false,
     status: "needs-content",

@@ -9,6 +9,10 @@ function homeHash(hash, activePage) {
 }
 
 function pageFromPathname(pathname, fallbackPage) {
+  if (pathname?.includes("/diensten")) {
+    return "services";
+  }
+
   if (pathname?.includes("/team")) {
     return "team";
   }
@@ -25,6 +29,10 @@ function pageFromPathname(pathname, fallbackPage) {
 }
 
 function activeKeyFromLocation(pathname, hash, fallbackPage) {
+  if (pathname?.includes("/diensten")) {
+    return "services";
+  }
+
   if (pathname?.includes("/team")) {
     return "team";
   }
@@ -67,7 +75,7 @@ function getItems(activePage, activeKey) {
     },
     {
       label: "Diensten",
-      href: homeHash("#diensten", activePage),
+      href: assetPath("/diensten/"),
       active: activeKey === "services",
     },
     {
