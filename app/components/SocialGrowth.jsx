@@ -90,8 +90,9 @@ export default function SocialGrowth() {
     }
 
     const alignStats = () => {
-      if (window.innerWidth <= 1180) {
+      if (window.innerWidth <= 1280) {
         sectionNode.style.removeProperty("--social-stats-top");
+        sectionNode.style.removeProperty("--social-stats-height");
         return;
       }
 
@@ -105,14 +106,19 @@ export default function SocialGrowth() {
       const top = Math.max(220, textAlignedTop, phoneSafeTop);
 
       sectionNode.style.setProperty("--social-stats-top", `${Math.round(top)}px`);
+      sectionNode.style.setProperty("--social-stats-height", `${Math.round(statsRect.height)}px`);
     };
 
     alignStats();
     window.addEventListener("resize", alignStats, { passive: true });
 
+    const copyNode = sectionNode.querySelector(".social-growth__copy");
     const observer = "ResizeObserver" in window ? new ResizeObserver(alignStats) : null;
     observer?.observe(sectionNode);
     observer?.observe(textNode);
+    if (copyNode) {
+      observer?.observe(copyNode);
+    }
     observer?.observe(statsNode);
 
     return () => {

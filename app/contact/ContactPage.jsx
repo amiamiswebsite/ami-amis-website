@@ -24,8 +24,8 @@ const contactItems = [
   },
   {
     label: "Adres",
-    value: "IJzerenpoortkaai 3, 2000 Antwerpen",
-    href: "https://www.google.com/maps/search/?api=1&query=IJzerenpoortkaai+3+2000+Antwerpen",
+    value: "Meir 78 - Stadsfeestzaal, 2000 Antwerpen",
+    href: "https://www.google.com/maps/search/?api=1&query=Meir+78+Stadsfeestzaal+2000+Antwerpen",
     icon: "location",
   },
 ];

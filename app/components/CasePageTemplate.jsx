@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
 
 const pillarKeys = [
-  { key: "vraag", fallback: "problem", label: "Vraag" },
-  { key: "aanpak", fallback: "approach", label: "Aanpak" },
-  { key: "resultaat", fallback: "result", label: "Resultaat" },
+  { key: "question", fallback: "vraag", label: "Vraag" },
+  { key: "approach", fallback: "aanpak", label: "Aanpak" },
+  { key: "result", fallback: "resultaat", label: "Resultaat" },
 ];
 
 function internalHref(href) {
@@ -51,105 +51,327 @@ function normalizeMediaItem(item, fallbackAlt = "Projectbeeld") {
   return item;
 }
 
+function textFrom(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return value.text || "";
+}
+
 function getPillar(data, item) {
   return data[item.key] || data[item.fallback] || null;
 }
 
-function ProjectMedia({ mediaType, hero, client, priority = false }) {
-  const poster = hero?.poster || hero?.image || hero?.sourceMediaUrl || "";
-  const video = hero?.video || hero?.heroVideo || "";
-  const image = hero?.image || hero?.poster || hero?.sourceMediaUrl || "";
-  const showVideo = mediaType === "video" || mediaType === "animation";
+function getPillarTitle(block, label) {
+  if (!block) {
+    return "";
+  }
 
-  if (showVideo && video) {
+  if (typeof block === "string") {
+    return label;
+  }
+
+  return block.title || label;
+}
+
+function getHeroMedia(data) {
+  if (data.heroMedia) {
+    return data.heroMedia;
+  }
+
+  if (data.media?.hero) {
+    return {
+      type: data.media.hero.type || "video",
+      src: data.media.hero.src,
+      poster: data.media.hero.poster,
+      aspectRatio: "9/16",
+      alt: `${data.client} hero video`,
+    };
+  }
+
+  if (data.hero) {
+    return {
+      type: data.hero.video || data.hero.heroVideo ? "video" : "image",
+      src: data.hero.video || data.hero.heroVideo || data.hero.image || data.hero.sourceMediaUrl || data.hero.poster,
+      poster: data.hero.poster || data.hero.image || data.hero.sourceMediaUrl,
+      aspectRatio: data.mediaType === "vertical-video-grid" ? "9/16" : "16/9",
+      alt: `${data.client} projectbeeld`,
+    };
+  }
+
+  if (data.thumbnail || data.sourceMediaUrl) {
+    return {
+      type: "image",
+      src: data.thumbnail || data.sourceMediaUrl,
+      aspectRatio: "16/9",
+      alt: `${data.client} projectbeeld`,
+    };
+  }
+
+  return null;
+}
+
+function getHeroFacts(data) {
+  if (data.facts?.length) {
+    return data.facts.slice(0, 4);
+  }
+
+  return (data.result?.stats || data.resultaat?.stats || []).slice(0, 4);
+}
+
+function getInfoItems(data) {
+  const stats = data.result?.stats || data.resultaat?.stats || [];
+  const outputFromStats = stats[0] ? `${stats[0].value} ${stats[0].label}` : "";
+  const periodFromStats = stats[1] ? `${stats[1].value} ${stats[1].label}` : "";
+  const output = data.output || outputFromStats || data.deliverables?.slice(0, 3).join(", ") || data.services?.slice(0, 3).join(", ");
+  const period = data.period || periodFromStats || data.year;
+
+  return [
+    { label: "Klant", value: data.client },
+    { label: "Type", value: data.category || data.mediaType },
+    { label: "Output", value: output },
+    { label: data.period ? "Periode" : "Jaar", value: period },
+  ].filter((item) => item.value);
+}
+
+function getOneLiner(data) {
+  return data.oneLiner || data.summary || data.subtitle || data.heroIntro || "";
+}
+
+function CaseMedia({ item, client, priority = false }) {
+  if (!item?.src && !item?.poster) {
+    return null;
+  }
+
+  const type = item.type || (item.src?.endsWith(".mp4") ? "video" : "image");
+
+  if (type === "video") {
     return (
       <video
-        aria-label={`${client} projectvideo`}
-        autoPlay={mediaType === "animation"}
-        controls={mediaType === "video"}
-        loop={mediaType === "animation"}
-        muted={mediaType === "animation"}
+        aria-label={item.alt || item.title || `${client} projectvideo`}
+        controls
+        muted
         playsInline
-        poster={poster ? mediaSrc(poster) : undefined}
-        preload="metadata"
+        poster={item.poster ? mediaSrc(item.poster) : undefined}
+        preload={priority || !item.poster ? "metadata" : "none"}
       >
-        <source src={mediaSrc(video)} type="video/mp4" />
+        <source src={mediaSrc(item.src)} type="video/mp4" />
       </video>
     );
   }
 
-  if (!image && !poster) {
-    return null;
-  }
-
   return (
     <img
-      src={mediaSrc(image || poster)}
-      alt={`${client} projectvisual`}
+      src={mediaSrc(item.src || item.poster)}
+      alt={item.alt || `${client} projectbeeld`}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
     />
   );
 }
 
-function ProjectHero({ data }) {
-  const hero = data.hero || {
-    video: data.media?.heroVideo,
-    poster: data.media?.poster,
-    image: data.media?.poster,
-    sourceMediaUrl: data.thumbnail || data.sourceMediaUrl,
-  };
-  const hasHeroMedia = Boolean(hero?.video || hero?.heroVideo || hero?.image || hero?.poster || hero?.sourceMediaUrl);
+function VimeoFrame({ embed, index, client, featured = false }) {
+  const id = typeof embed === "string" ? embed : embed.id;
+  const title = typeof embed === "string" ? `${client} video ${index + 1}` : embed.title || `${client} video ${index + 1}`;
+
+  if (!id) {
+    return null;
+  }
 
   return (
-    <section className="project-case-hero" aria-labelledby="project-case-title">
-      <a className="hero__logo project-case-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
-      <div className="project-case-hero__inner">
-        <div className="project-case-hero__copy project-case-reveal">
-          <p className="project-case-label">Ons werk / {data.category}</p>
-          <h1 id="project-case-title">{data.title}</h1>
-          {data.subtitle ? <p className="project-case-hero__subtitle">{data.subtitle}</p> : null}
-          <p className="project-case-hero__intro">{data.intro || data.heroIntro}</p>
-          <div className="project-case-hero__actions">
-            <a className="button button--red" href="#project-vraag">
-              Bekijk de case
-            </a>
-            <a className="project-case-link" href="#project-snapshot">
-              Project snapshot
-            </a>
-          </div>
-        </div>
+    <figure className={`case-vimeo-frame${featured ? " case-vimeo-frame--featured" : ""}`}>
+      <iframe
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        allowFullScreen
+        loading="lazy"
+        src={`https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`}
+        title={title}
+      />
+      <figcaption>{title}</figcaption>
+    </figure>
+  );
+}
 
-        {hasHeroMedia ? (
-          <figure className={`project-case-hero__media project-case-media project-case-media--${data.mediaType || "mixed"} project-case-reveal`}>
-            <ProjectMedia client={data.client} hero={hero} mediaType={data.mediaType || "mixed"} priority />
-          </figure>
+function CaseVideoCard({ video, index, featured = false, client }) {
+  if (!video?.src) {
+    return null;
+  }
+
+  return (
+    <article className={`case-video-card${featured ? " case-video-card--featured" : ""}`}>
+      <div className="case-video-card__media">
+        <CaseMedia
+          client={client}
+          item={{ ...video, type: "video", aspectRatio: video.aspectRatio || "9/16" }}
+          priority={featured || index === 0}
+        />
+      </div>
+      <div className="case-video-card__meta">
+        <h3>{video.title || `Video ${index + 1}`}</h3>
+        {featured ? <span>meest bekeken video ooit</span> : null}
+      </div>
+    </article>
+  );
+}
+
+function CaseHero({ data }) {
+  const heroMedia = getHeroMedia(data);
+  const heroFacts = getHeroFacts(data);
+  const oneLiner = getOneLiner(data);
+
+  return (
+    <section className="case-portfolio-hero" aria-labelledby="case-portfolio-title">
+      <a className="hero__logo case-portfolio-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+      <div className="case-portfolio-hero__copy case-portfolio-reveal">
+        <p className="case-portfolio-label">Case</p>
+        <h1 id="case-portfolio-title">{data.title || data.client}</h1>
+        {oneLiner ? <p className="case-portfolio-hero__line">{oneLiner}</p> : null}
+        {data.categories?.length ? (
+          <ul className="case-portfolio-tags" aria-label="Categorieën">
+            {data.categories.slice(0, 4).map((category) => (
+              <li key={category}>{category}</li>
+            ))}
+          </ul>
+        ) : null}
+        {heroFacts.length ? (
+          <dl className="case-portfolio-hero__facts" aria-label="Kerncijfers">
+            {heroFacts.map((fact) => (
+              <div key={`${fact.value}-${fact.label}`}>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         ) : null}
       </div>
+
+      {heroMedia ? (
+        <figure
+          className={`case-portfolio-hero__media case-media-frame case-media-frame--${heroMedia.aspectRatio === "9/16" ? "vertical" : "wide"} case-portfolio-reveal`}
+        >
+          <CaseMedia client={data.client} item={heroMedia} priority />
+        </figure>
+      ) : null}
     </section>
   );
 }
 
-function ProjectOverview({ data }) {
-  const overview = [
-    ["Klant", data.client],
-    ["Type", data.category],
-    ["Jaar", data.year],
-    ["Deliverables", data.deliverables?.join(", ") || data.services?.join(", ")],
-    ["Kanaal", data.channels?.join(", ") || "Social media"],
-  ].filter(([, value]) => Boolean(value));
+function CaseQuote({ data, onOpen }) {
+  if (!data.introQuote) {
+    return null;
+  }
+
+  const [beforeZuidvideo, afterZuidvideo = ""] = data.introQuote.split("Zuidvideo");
 
   return (
-    <section className="project-snapshot project-case-reveal" id="project-snapshot" aria-label="Project snapshot">
-      <div className="project-snapshot__summary">
-        <p className="project-case-label">Case at a glance</p>
-        <h2>{data.summary || data.heroIntro}</h2>
-      </div>
-      <dl className="project-snapshot__facts">
-        {overview.map(([label, value]) => (
-          <div key={label}>
-            <dt>{label}</dt>
-            <dd>{value}</dd>
+    <section className="case-quote-strip case-portfolio-reveal" aria-label="Case quote">
+      <p>
+        {beforeZuidvideo}
+        {data.introQuote.includes("Zuidvideo") && data.media?.zuidVideo?.src ? (
+          <button className="case-quote-strip__trigger" onClick={onOpen} type="button">
+            Zuidvideo
+          </button>
+        ) : null}
+        {afterZuidvideo}
+      </p>
+    </section>
+  );
+}
+
+function CaseShowcase({ data }) {
+  const heroMedia = getHeroMedia(data);
+  const verticalVideos = data.media?.verticalVideos || [];
+  const embeds = data.vimeoEmbeds || data.media?.vimeoEmbeds || [];
+  const gallery = (data.gallery || data.media?.stills || [])
+    .map((item) => normalizeMediaItem(item, `${data.client} projectbeeld`))
+    .filter(Boolean);
+
+  if (verticalVideos.length) {
+    return (
+      <section className="case-showcase case-showcase--vertical case-portfolio-reveal" aria-labelledby="case-showcase-title">
+        <div className="case-showcase__header">
+          <p className="case-portfolio-label">Output</p>
+          <h2 id="case-showcase-title">Gemaakt voor het scherm in je hand.</h2>
+        </div>
+        <div className="case-video-strip">
+          {verticalVideos.slice(0, 5).map((video, index) => (
+            <CaseVideoCard client={data.client} featured={index === 0} index={index} key={video.title || video.src} video={video} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (embeds.length) {
+    return (
+      <section className="case-showcase case-showcase--vimeo case-portfolio-reveal" aria-labelledby="case-showcase-title">
+        <div className="case-showcase__header">
+          <p className="case-portfolio-label">Video</p>
+          <h2 id="case-showcase-title">De content zelf.</h2>
+        </div>
+        <div className="case-vimeo-grid">
+          {embeds.slice(0, 4).map((embed, index) => (
+            <VimeoFrame client={data.client} embed={embed} featured={index === 0} index={index} key={`${typeof embed === "string" ? embed : embed.id}-${index}`} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (gallery.length) {
+    return (
+      <section className={`case-showcase case-showcase--${data.mediaType || "image-gallery"} case-portfolio-reveal`} aria-labelledby="case-showcase-title">
+        <div className="case-showcase__header">
+          <p className="case-portfolio-label">Media</p>
+          <h2 id="case-showcase-title">Een blik op de output.</h2>
+        </div>
+        <div className="case-image-grid">
+          {gallery.slice(0, 8).map((item, index) => (
+            <figure className="case-image-grid__item" key={`${item.src}-${index}`}>
+              <img src={mediaSrc(item.src)} alt={item.alt || `${data.client} projectbeeld`} loading="lazy" decoding="async" />
+            </figure>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (heroMedia) {
+    return (
+      <section className="case-showcase case-showcase--single case-portfolio-reveal" aria-labelledby="case-showcase-title">
+        <div className="case-showcase__header">
+          <p className="case-portfolio-label">Output</p>
+          <h2 id="case-showcase-title">De gemaakte content.</h2>
+        </div>
+        <figure className="case-showcase__single case-media-frame case-media-frame--wide">
+          <CaseMedia client={data.client} item={heroMedia} />
+        </figure>
+      </section>
+    );
+  }
+
+  return null;
+}
+
+function CaseInfoStrip({ data }) {
+  const items = getInfoItems(data).slice(0, 4);
+
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <section className="case-info-strip case-portfolio-reveal" aria-label="Mini case-info">
+      <dl>
+        {items.map((item) => (
+          <div key={item.label}>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
           </div>
         ))}
       </dl>
@@ -157,192 +379,201 @@ function ProjectOverview({ data }) {
   );
 }
 
-function ProjectStickyNav({ data }) {
-  const items = pillarKeys.filter((item) => getPillar(data, item));
+function CaseStory({ data }) {
+  const blocks = data.storyBlocks || data.introTextBlocks || [];
 
-  if (!items.length) {
+  if (!blocks.length) {
     return null;
   }
 
   return (
-    <nav className="project-case-nav" aria-label="Case pijlers">
-      {items.map((item) => (
-        <a href={`#project-${item.key}`} key={item.key}>
-          {item.label}
-        </a>
-      ))}
-    </nav>
-  );
-}
-
-function ProjectStats({ stats }) {
-  if (!stats?.length) {
-    return null;
-  }
-
-  return (
-    <div className="project-stats" aria-label="Project resultaten">
-      {stats.map((stat) => (
-        <article className="project-stat" key={`${stat.value}-${stat.label}`}>
-          <strong>{stat.value}</strong>
-          <span>{stat.label}</span>
+    <section className="case-story-compact case-portfolio-reveal" aria-label="Kort caseverhaal">
+      {blocks.map((block, index) => (
+        <article key={block.kicker || index}>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          {block.kicker ? <h2>{block.kicker}</h2> : null}
+          <p>{block.text}</p>
         </article>
       ))}
+    </section>
+  );
+}
+
+function CasePillars({ data }) {
+  const pillars = pillarKeys
+    .map((item) => ({ ...item, block: getPillar(data, item) }))
+    .filter((item) => item.block && (textFrom(item.block) || getPillarTitle(item.block, item.label)));
+
+  if (!pillars.length) {
+    return null;
+  }
+
+  return (
+    <section className="case-pillars-compact case-portfolio-reveal" aria-label="Vraag aanpak resultaat">
+      {pillars.map((item, index) => {
+        const block = item.block;
+        const stats = typeof block === "string" ? [] : block.stats || [];
+
+        return (
+          <article key={item.key}>
+            <p>{String(index + 1).padStart(2, "0")} / {item.label}</p>
+            <h2>{getPillarTitle(block, item.label)}</h2>
+            {textFrom(block) ? <span>{textFrom(block)}</span> : null}
+            {stats.length ? (
+              <dl className="case-pillars-compact__stats">
+                {stats.slice(0, 4).map((stat) => (
+                  <div key={`${stat.value}-${stat.label}`}>
+                    <dt>{stat.label}</dt>
+                    <dd>{stat.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+          </article>
+        );
+      })}
+    </section>
+  );
+}
+
+function CaseExtraMedia({ data }) {
+  const sections = data.extraSections || [];
+
+  if (!sections.length) {
+    return null;
+  }
+
+  return (
+    <section className="case-extra-output case-portfolio-reveal" aria-label="Extra media-output">
+      {sections.map((section) => (
+        <article key={section.title}>
+          <h2>{section.title}</h2>
+          {section.text ? <p>{section.text}</p> : null}
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function CaseCTA({ data }) {
+  return (
+    <section className="case-portfolio-cta case-portfolio-reveal" aria-label="Case afsluiting">
+      <div>
+        <p className="case-portfolio-label">Klaar?</p>
+        <h2>Klaar om iets te maken dat blijft hangen?</h2>
+      </div>
+      <div className="case-portfolio-cta__actions">
+        <a className="button button--red" href={assetPath("/contact/")}>
+          Plan een quick call
+        </a>
+        <a className="case-text-link" href={assetPath("/work/")}>
+          Bekijk alle cases
+        </a>
+      </div>
+
+      {data.nextCase ? (
+        <a className="case-next-teaser" href={internalHref(data.nextCase.href)} aria-label={`Volgende case: ${data.nextCase.title}`}>
+          {data.nextCase.thumbnail ? <img src={mediaSrc(data.nextCase.thumbnail)} alt="" loading="lazy" decoding="async" /> : null}
+          <span>Volgende case</span>
+          <strong>{data.nextCase.title}</strong>
+        </a>
+      ) : null}
+    </section>
+  );
+}
+
+function CaseVideoModal({ data, open, onClose }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const previousActiveElement = document.activeElement;
+    const dialog = dialogRef.current;
+    const video = videoRef.current;
+
+    closeButtonRef.current?.focus();
+    document.body.classList.add("case-modal-open");
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialog) {
+        return;
+      }
+
+      const focusable = Array.from(dialog.querySelectorAll("button, [href], video, [tabindex]:not([tabindex='-1'])")).filter(
+        (item) => !item.hasAttribute("disabled"),
+      );
+
+      if (!focusable.length) {
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("case-modal-open");
+      video?.pause();
+      previousActiveElement?.focus?.();
+    };
+  }, [open, onClose]);
+
+  if (!open || !data?.src) {
+    return null;
+  }
+
+  return (
+    <div className="case-modal" onMouseDown={onClose} role="presentation">
+      <section
+        aria-label={`${data.label || "Case"} video`}
+        aria-modal="true"
+        className="case-modal__dialog"
+        onMouseDown={(event) => event.stopPropagation()}
+        ref={dialogRef}
+        role="dialog"
+      >
+        <div className="case-modal__topline">
+          <p>{data.label || "Video"}</p>
+          <button aria-label="Sluit video" className="case-modal__close" onClick={onClose} ref={closeButtonRef} type="button">
+            Sluit
+          </button>
+        </div>
+        <video controls playsInline poster={data.poster ? assetPath(data.poster) : undefined} preload="metadata" ref={videoRef}>
+          <source src={assetPath(data.src)} type="video/mp4" />
+        </video>
+      </section>
     </div>
-  );
-}
-
-function ProjectSection({ block, item, index }) {
-  if (!block) {
-    return null;
-  }
-
-  const media = normalizeMediaItem(block.media, `${item.label} beeld`);
-
-  return (
-    <section
-      className={`project-pillar project-pillar--${item.key} project-case-reveal`}
-      id={`project-${item.key}`}
-      aria-labelledby={`project-${item.key}-title`}
-    >
-      <div className="project-pillar__index">
-        <span>{String(index + 1).padStart(2, "0")}</span>
-        <p>{item.label}</p>
-      </div>
-
-      <div className="project-pillar__content">
-        <h2 id={`project-${item.key}-title`}>{block.title}</h2>
-        <p>{block.text}</p>
-        {block.bullets?.length ? (
-          <ul>
-            {block.bullets.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
-            ))}
-          </ul>
-        ) : null}
-        {block.deliverables?.length ? (
-          <div className="project-deliverables" aria-label="Deliverables">
-            {block.deliverables.map((deliverable) => (
-              <span key={deliverable}>{deliverable}</span>
-            ))}
-          </div>
-        ) : null}
-        {block.stats ? <ProjectStats stats={block.stats} /> : null}
-      </div>
-
-      {media ? (
-        <figure className="project-pillar__media project-case-media">
-          <img src={mediaSrc(media.src)} alt={media.alt || `${item.label} projectbeeld`} loading="lazy" decoding="async" />
-        </figure>
-      ) : null}
-    </section>
-  );
-}
-
-function ProjectVimeoEmbeds({ data }) {
-  const embeds = data.vimeoEmbeds || data.media?.vimeoEmbeds || [];
-
-  if (!embeds.length) {
-    return null;
-  }
-
-  return (
-    <section className="project-vimeo project-case-reveal" aria-labelledby="project-vimeo-title">
-      <div className="project-gallery__header">
-        <p className="project-case-label">Video / Vimeo</p>
-        <h2 id="project-vimeo-title">Video's uit het dossier.</h2>
-      </div>
-      <div className="project-vimeo__grid">
-        {embeds.map((embed, index) => {
-          const id = typeof embed === "string" ? embed : embed.id;
-          const title = typeof embed === "string" ? `${data.client} video ${index + 1}` : embed.title || `${data.client} video ${index + 1}`;
-
-          return (
-            <figure className="project-vimeo__frame" key={`${id}-${index}`}>
-              <iframe
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                allowFullScreen
-                loading="lazy"
-                src={`https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`}
-                title={title}
-              />
-              <figcaption>{title}</figcaption>
-            </figure>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function ProjectGallery({ data }) {
-  const gallery = (data.gallery || data.media?.stills || [])
-    .map((item) => normalizeMediaItem(item, `${data.client} projectbeeld`))
-    .filter(Boolean);
-
-  if (!gallery.length) {
-    return null;
-  }
-
-  return (
-    <section className="project-gallery project-case-reveal" aria-labelledby="project-gallery-title">
-      <div className="project-gallery__header">
-        <p className="project-case-label">Media / Deliverables</p>
-        <h2 id="project-gallery-title">Nog een paar beelden uit het dossier.</h2>
-      </div>
-      <div className="project-gallery__grid">
-        {gallery.map((item, index) => (
-          <figure className="project-gallery__item" key={`${item.src}-${index}`}>
-            <img src={mediaSrc(item.src)} alt={item.alt || `${data.client} gallery beeld`} loading="lazy" decoding="async" />
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ProjectCTA({ data }) {
-  return (
-    <section className="project-case-cta project-case-reveal" aria-label="Project afsluiting">
-      <div className="project-case-cta__copy">
-        <p className="project-case-label">Ook zo'n project maken?</p>
-        <h2>Heb je een verhaal dat sterker in beeld mag komen?</h2>
-        <p>Dan denken we graag mee. Video, foto, design, animatie of iets daartussen: we maken er samen iets strafbaar goed van.</p>
-      </div>
-      <a className="button button--red" href={assetPath("/contact/")}>
-        Plan een quick call →
-      </a>
-
-      {(data.previousCase || data.nextCase) ? (
-        <nav className="project-case-next" aria-label="Andere projecten">
-          {data.previousCase ? (
-            <a href={internalHref(data.previousCase.href)}>
-              <span>Vorige</span>
-              {data.previousCase.title}
-            </a>
-          ) : null}
-          {data.nextCase ? (
-            <a href={internalHref(data.nextCase.href)}>
-              <span>Volgende</span>
-              {data.nextCase.title}
-            </a>
-          ) : null}
-        </nav>
-      ) : null}
-    </section>
   );
 }
 
 export default function CasePageTemplate({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pillarItems = useMemo(
-    () => pillarKeys.map((item) => ({ ...item, block: getPillar(caseData, item) })).filter((item) => item.block),
-    [caseData]
-  );
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const items = Array.from(document.querySelectorAll(".project-case-reveal"));
+    const items = Array.from(document.querySelectorAll(".case-portfolio-reveal"));
 
     if (reduceMotion || !("IntersectionObserver" in window)) {
       items.forEach((item) => item.classList.add("is-visible"));
@@ -358,7 +589,7 @@ export default function CasePageTemplate({ caseData }) {
           }
         });
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.14 }
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
     );
 
     items.forEach((item) => observer.observe(item));
@@ -366,27 +597,32 @@ export default function CasePageTemplate({ caseData }) {
     return () => observer.disconnect();
   }, []);
 
+  const hasQuoteModal = useMemo(() => Boolean(caseData.media?.zuidVideo?.src), [caseData.media?.zuidVideo?.src]);
+
   return (
     <>
-      <div className={`site-shell project-case-shell ${menuOpen ? "menu-open" : ""}`}>
-        <main className="project-case-page">
-          <ProjectHero data={caseData} />
-          <ProjectOverview data={caseData} />
-          <ProjectStickyNav data={caseData} />
-
-          <div className="project-pillars" aria-label="Projectverhaal">
-            {pillarItems.map((item, index) => (
-              <ProjectSection block={item.block} index={index} item={item} key={item.key} />
-            ))}
-          </div>
-
-          <ProjectVimeoEmbeds data={caseData} />
-          <ProjectGallery data={caseData} />
-          <ProjectCTA data={caseData} />
+      <div className={`site-shell case-portfolio-shell ${menuOpen ? "menu-open" : ""}`}>
+        <main className="case-portfolio-page">
+          <CaseHero data={caseData} />
+          <CaseQuote data={caseData} onOpen={() => setModalOpen(true)} />
+          <CaseShowcase data={caseData} />
+          <CaseInfoStrip data={caseData} />
+          <CaseStory data={caseData} />
+          <CasePillars data={caseData} />
+          <CaseExtraMedia data={caseData} />
+          {caseData.outro ? (
+            <section className="case-outro-line case-portfolio-reveal" aria-label="Case outro">
+              <p>{caseData.outro}</p>
+            </section>
+          ) : null}
+          <CaseCTA data={caseData} />
         </main>
         <Footer variant="paper" />
       </div>
 
+      {hasQuoteModal ? (
+        <CaseVideoModal data={caseData.media.zuidVideo} onClose={() => setModalOpen(false)} open={modalOpen} />
+      ) : null}
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
       <NavOverlay open={menuOpen} onClose={() => setMenuOpen(false)} activePage="work" />
     </>

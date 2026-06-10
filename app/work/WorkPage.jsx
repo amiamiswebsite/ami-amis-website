@@ -19,17 +19,6 @@ const workFilters = [
   "Marketingstrategie",
 ];
 
-function WorkHero() {
-  return (
-    <section className="work-page__hero" aria-labelledby="work-page-title">
-      <h1 id="work-page-title">Ons werk</h1>
-      <a className="button button--red work-page__hero-button" href={assetPath("/contact/")}>
-        Samenwerken?
-      </a>
-    </section>
-  );
-}
-
 function WorkFilters({ activeFilter, count, onFilterChange }) {
   return (
     <section className="work-filters" aria-label="Filter cases">
@@ -124,7 +113,7 @@ export default function WorkPage() {
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className="work-page">
           <a className="hero__logo work-page__logo" href={assetPath("/")} aria-label="Ami Amis home" />
-          <WorkHero />
+          <h1 className="sr-only">Ons werk</h1>
           <WorkFilters activeFilter={activeFilter} count={filteredCases.length} onFilterChange={setActiveFilter} />
           <WorkGrid cases={filteredCases} />
         </main>
