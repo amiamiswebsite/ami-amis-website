@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
+import VisitAntwerpenCasePage from "./VisitAntwerpenCasePage";
 import { assetPath } from "../../src/lib/assetPath";
 
 const pillarKeys = [
@@ -178,6 +179,8 @@ function CaseMedia({ item, client, priority = false }) {
 function VimeoFrame({ embed, index, client, featured = false }) {
   const id = typeof embed === "string" ? embed : embed.id;
   const title = typeof embed === "string" ? `${client} video ${index + 1}` : embed.title || `${client} video ${index + 1}`;
+  const hash = typeof embed === "string" ? "" : embed.hash || embed.h || "";
+  const hashParam = hash ? `h=${encodeURIComponent(hash)}&` : "";
 
   if (!id) {
     return null;
@@ -189,10 +192,32 @@ function VimeoFrame({ embed, index, client, featured = false }) {
         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         allowFullScreen
         loading="lazy"
-        src={`https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`}
+        src={`https://player.vimeo.com/video/${id}?${hashParam}title=0&byline=0&portrait=0`}
         title={title}
       />
       <figcaption>{title}</figcaption>
+    </figure>
+  );
+}
+
+function CaseHeroMedia({ data, heroMedia }) {
+  if (!heroMedia) {
+    return null;
+  }
+
+  if (heroMedia.type === "vimeo") {
+    return (
+      <div className="case-portfolio-hero__media case-portfolio-hero__media--vimeo case-portfolio-reveal">
+        <VimeoFrame client={data.client} embed={heroMedia} featured index={0} />
+      </div>
+    );
+  }
+
+  return (
+    <figure
+      className={`case-portfolio-hero__media case-media-frame case-media-frame--${heroMedia.aspectRatio === "9/16" ? "vertical" : "wide"} case-portfolio-reveal`}
+    >
+      <CaseMedia client={data.client} item={heroMedia} priority />
     </figure>
   );
 }
@@ -225,7 +250,10 @@ function CaseHero({ data }) {
   const oneLiner = getOneLiner(data);
 
   return (
-    <section className="case-portfolio-hero" aria-labelledby="case-portfolio-title">
+    <section
+      className={`case-portfolio-hero${heroMedia?.type === "vimeo" ? " case-portfolio-hero--vimeo" : ""}`}
+      aria-labelledby="case-portfolio-title"
+    >
       <a className="hero__logo case-portfolio-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="case-portfolio-hero__copy case-portfolio-reveal">
         <p className="case-portfolio-label">Case</p>
@@ -250,13 +278,7 @@ function CaseHero({ data }) {
         ) : null}
       </div>
 
-      {heroMedia ? (
-        <figure
-          className={`case-portfolio-hero__media case-media-frame case-media-frame--${heroMedia.aspectRatio === "9/16" ? "vertical" : "wide"} case-portfolio-reveal`}
-        >
-          <CaseMedia client={data.client} item={heroMedia} priority />
-        </figure>
-      ) : null}
+      <CaseHeroMedia data={data} heroMedia={heroMedia} />
     </section>
   );
 }
@@ -568,6 +590,14 @@ function CaseVideoModal({ data, open, onClose }) {
 }
 
 export default function CasePageTemplate({ caseData }) {
+  if (caseData.template === "visit-antwerpen-social") {
+    return <VisitAntwerpenCasePage caseData={caseData} />;
+  }
+
+  return <GenericCasePage caseData={caseData} />;
+}
+
+function GenericCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 

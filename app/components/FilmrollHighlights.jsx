@@ -8,7 +8,7 @@ const highlightProjects = [
     title: "Tarzan en Jane",
     client: "Tarzan en Jane",
     type: "Video & campagnes",
-    image: "/work/cosy-trendy.webp",
+    image: "/work/tarzan-en-jane-thumb.webp",
     href: "/work/tarzan-en-jane/",
     alt: "Projectbeeld van Tarzan en Jane",
   },

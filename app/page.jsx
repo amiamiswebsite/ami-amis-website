@@ -9,7 +9,6 @@ import Hero from "./components/Hero";
 import Intro from "./components/Intro";
 import MenuToggle from "./components/MenuToggle";
 import NavOverlay from "./components/NavOverlay";
-import Projects from "./components/Projects";
 import Punch from "./components/Punch";
 import SocialGrowth from "./components/SocialGrowth";
 import Testimonials from "./components/Testimonials";
@@ -58,7 +57,6 @@ export default function Home() {
         <Hero />
         <main className="collage-flow">
           <Intro />
-          <Projects />
           <FilmrollHighlights />
           <SocialGrowth />
           <Approach />

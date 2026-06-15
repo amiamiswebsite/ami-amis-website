@@ -233,15 +233,6 @@ export default function SocialGrowth() {
           Wij bekijken het grote plaatje en vertalen dat naar een campagne met
           sterke content die juist wordt ingezet.
         </p>
-        <a
-          className="social-growth__instagram"
-          href={INSTAGRAM_URL}
-          rel="noopener noreferrer"
-          target="_blank"
-          aria-label="Bekijk Ami Amis op Instagram"
-        >
-          @amiamis
-        </a>
       </div>
       <div className="phone-scene">
         <div className="phone-frame">
@@ -257,6 +248,15 @@ export default function SocialGrowth() {
             <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
           </video>
         </div>
+        <a
+          className="social-growth__instagram"
+          href={INSTAGRAM_URL}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label="Bekijk Ami Amis op Instagram"
+        >
+          @amiamis
+        </a>
         <span className="social-icon social-icon--heart" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M12 20.2c-5.1-3.3-8.4-6.4-8.4-10.1 0-2.4 1.7-4.2 4.1-4.2 1.5 0 2.9.8 3.6 2 .7-1.2 2.1-2 3.6-2 2.4 0 4.1 1.8 4.1 4.2 0 3.7-3.3 6.8-8.4 10.1Z" />

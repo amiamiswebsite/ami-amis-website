@@ -15,12 +15,13 @@ export const workCases = [
     client: "Tarzan en Jane",
     slug: "tarzan-en-jane",
     title: "Speelse content voor een gezinsmerk",
-    description: "Case-inhoud en thumbnail worden later aangevuld.",
+    description:
+      "Een kleurrijke videoclip vol energie, ritme en jungleplezier, aangevuld met social content.",
     categories: ["Social content", "Video & campagnes"],
-    image: "/work/tarzan-en-jane-thumb.png",
+    image: "/work/tarzan-en-jane-thumb.webp",
     href: "/work/tarzan-en-jane/",
     featured: false,
-    status: "needs-content",
+    status: "ready",
   },
   {
     client: "Visit Antwerpen",
@@ -29,8 +30,8 @@ export const workCases = [
     description:
       "Een social-first promotievideo voor Stad Antwerpen en Visit Antwerpen rond hoeveel cultuur je in Antwerpen kan beleven in een dag.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
-    image: "/work/sint-jan.webp",
-    href: "/work/visit-antwerpen/",
+    image: "/images/work/visit-antwerpen.jpg",
+    href: "/ons-werk/visit-antwerpen/",
     featured: true,
     status: "ready",
   },
@@ -38,12 +39,13 @@ export const workCases = [
     client: "Humgy",
     slug: "humgy",
     title: "Content voor een warme coworking community",
-    description: "Case-inhoud en thumbnail worden later aangevuld.",
+    description:
+      "Een energieke Work/Vacation-reportage waarin coworking, reizen en community samenkomen.",
     categories: ["Social content", "Fotografie", "Marketingstrategie"],
     image: "/work/humgy-thumb.png",
     href: "/work/humgy/",
     featured: false,
-    status: "needs-content",
+    status: "ready",
   },
   {
     client: "imore",
@@ -136,7 +138,7 @@ export const workCases = [
     description:
       "Een uitlegvideo die een technische integratie toegankelijk maakt met motion graphics en humor.",
     categories: ["Video & campagnes", "Animatie & montage", "Design & branding"],
-    image: "/work/jurimesh-thumb.png",
+    image: "/work/jurimesh-thumb.webp",
     href: "/work/jurimesh/",
     featured: false,
     status: "ready",
@@ -184,7 +186,7 @@ export const workCases = [
     description:
       "Een brandvideo met crash zooms, ongemakkelijke situaties en een fictieve blik op kantoor.",
     categories: ["Video & campagnes", "Marketingstrategie"],
-    image: "/work/frisk.webp",
+    image: "/work/frankie-villager-thumb.webp",
     href: "/work/frankie-villager/",
     featured: false,
     status: "ready",
