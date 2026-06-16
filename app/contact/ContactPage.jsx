@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
@@ -79,9 +79,15 @@ function ContactInfoList() {
   );
 }
 
-function ContactForm() {
+function ContactForm({ isHighlighted }) {
   return (
-    <form className="contact-minimal__form contact-form-card" action={mailHref} method="post" encType="text/plain">
+    <form
+      className={`contact-minimal__form contact-form-card ${isHighlighted ? "is-highlighted" : ""}`}
+      id="contact-form"
+      action={mailHref}
+      method="post"
+      encType="text/plain"
+    >
       <label htmlFor="contact-name">
         Naam
         <input id="contact-name" name="naam" type="text" autoComplete="name" required />
@@ -107,6 +113,50 @@ function ContactForm() {
 
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [formHighlighted, setFormHighlighted] = useState(false);
+  const highlightTimer = useRef(null);
+  const focusTimer = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(highlightTimer.current);
+      window.clearTimeout(focusTimer.current);
+    };
+  }, []);
+
+  const guideToForm = () => {
+    const form = document.getElementById("contact-form");
+    const firstField = document.getElementById("contact-name");
+
+    if (!form || !firstField) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const formRect = form.getBoundingClientRect();
+    const formIsVisible = formRect.top >= 0 && formRect.bottom <= window.innerHeight;
+
+    if (!formIsVisible) {
+      form.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: window.innerWidth < 768 ? "start" : "center",
+      });
+    }
+
+    setFormHighlighted(true);
+    window.clearTimeout(highlightTimer.current);
+    highlightTimer.current = window.setTimeout(() => {
+      setFormHighlighted(false);
+    }, 1500);
+
+    window.clearTimeout(focusTimer.current);
+    focusTimer.current = window.setTimeout(
+      () => {
+        firstField.focus({ preventScroll: true });
+      },
+      formIsVisible || prefersReducedMotion ? 0 : 450
+    );
+  };
 
   return (
     <>
@@ -120,12 +170,31 @@ export default function ContactPage() {
                 <div className="contact-minimal__composition contact-intro">
                   <p className="contact-intro__label">Contact</p>
                   <h1 className="contact-intro__title" id="contact-title">
-                    Durf jij een samenwerking aan te gaan?
+                    Goesting in een samenwerking?
                   </h1>
+                  <div className="contact-choice" aria-label="Samenwerking kiezen">
+                    <button
+                      className="button button--red contact-choice__button"
+                      type="button"
+                      aria-label="Ga naar het contactformulier"
+                      onClick={guideToForm}
+                    >
+                      Ja
+                    </button>
+                    <button
+                      className="button contact-choice__button contact-choice__button--no"
+                      type="button"
+                      aria-label="Toch naar het contactformulier"
+                      onClick={guideToForm}
+                    >
+                      <span className="contact-choice__default">Nee</span>
+                      <span className="contact-choice__hover" aria-hidden="true">Ja</span>
+                    </button>
+                  </div>
                   <ContactInfoList />
                 </div>
 
-                <ContactForm />
+                <ContactForm isHighlighted={formHighlighted} />
               </div>
             </div>
           </section>

@@ -49,16 +49,21 @@ export default function Intro() {
           <p>Scroll verder en ontdek wat we voor je kunnen doen.</p>
         </div>
       </div>
-      <div className="intro__camera-wrap" aria-hidden="true">
-        <div className="intro__action-lines">
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
+      <div className="intro__camera-wrap">
+        <div className="intro__camera-art" aria-hidden="true">
+          <div className="intro__action-lines">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
         </div>
-        <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
+        <a className="button button--red intro__camera-cta" href={assetPath("/contact/")}>
+          eens samenwerken?
+        </a>
       </div>
       <div className="tag-cloud" aria-label="Diensten">
         {tags.map(([tag, color]) => (

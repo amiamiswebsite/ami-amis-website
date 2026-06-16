@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import Approach from "./components/Approach";
 import Brainstorm from "./components/Brainstorm";
 import Footer from "./components/Footer";
-import FilmrollHighlights from "./components/FilmrollHighlights";
 import Hero from "./components/Hero";
 import Intro from "./components/Intro";
 import MenuToggle from "./components/MenuToggle";
 import NavOverlay from "./components/NavOverlay";
 import Punch from "./components/Punch";
+import Projects from "./components/Projects";
 import SocialGrowth from "./components/SocialGrowth";
 import Testimonials from "./components/Testimonials";
 
@@ -57,7 +57,7 @@ export default function Home() {
         <Hero />
         <main className="collage-flow">
           <Intro />
-          <FilmrollHighlights />
+          <Projects />
           <SocialGrowth />
           <Approach />
           <Testimonials />

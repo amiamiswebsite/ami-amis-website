@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 
 const audiences = ["KMO's", "Creatieve bureaus", "Organisaties", "..."];
-const rotatingWords = ["KMO’S", "BEDRIJVEN", "ZELFSTANDIGEN", "PARTNERS", "CREATIVES"];
+const rotatingWords = ["KMO’S", "BEDRIJVEN", "ONDERNEMERS", "MERKEN", "INNOVEERDERS"];
 
 export default function Punch() {
   const [wordAnimationReady, setWordAnimationReady] = useState(false);

@@ -67,56 +67,18 @@ const services = [
   },
 ];
 
-const craftTags = [
-  "Video",
-  "Social content",
-  "Branding",
-  "Webdesign",
-  "Fotografie",
-  "Animatie",
-  "Audio",
-  "Campagnes",
-  "Shortform",
-  "Reels",
-  "Copy",
-  "Editing",
-];
-
 function ServicesHero() {
   return (
     <section className="services-hero" aria-labelledby="services-title">
       <div className="services-hero__copy">
         <p className="services-script-label">Diensten</p>
         <h1 id="services-title">
-          Alles om je merk{" "}
-          <span className="services-visible-word">
-            zichtbaar
-            <svg viewBox="0 0 260 92" aria-hidden="true">
-              <path d="M18 52C35 16 217 8 244 42C269 74 61 90 20 62C7 53 9 39 32 29" />
-            </svg>
-          </span>{" "}
-          te maken.
+          Alles om je merk <span className="services-visible-word">zichtbaar</span> te maken.
         </h1>
-        <p>
-          Strategie, content, productie en distributie. Eén team, één plan, één
-          duidelijke lijn.
-        </p>
+        <p>Een team, een plan, een aanspreekpunt, een duidelijke lijn</p>
         <a className="button button--red services-hero__button" href={assetPath("/contact/")}>
           Plan een quick call
         </a>
-      </div>
-
-      <div className="services-hero__collage" aria-hidden="true">
-        <div className="services-eye-cutout">
-          <img src={assetPath("/images/services/services-eye.jpg")} alt="" decoding="async" />
-        </div>
-        <span className="services-collage-burst">*</span>
-        <div className="services-paper-note">
-          <span>Content</span>
-          <span>met karakter.</span>
-          <i />
-        </div>
-        <span className="services-smiley-sticker">:)</span>
       </div>
     </section>
   );
@@ -226,32 +188,15 @@ function ServicesGrid() {
   );
 }
 
-function ServicesTagCloud() {
-  return (
-    <section className="services-cloud" aria-labelledby="services-cloud-title">
-      <h2 id="services-cloud-title">Wat we maken</h2>
-      <ul className="services-cloud__tags">
-        {craftTags.map((tag) => (
-          <li className="services-cloud__tag" key={tag}>
-            {tag}
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 function ServicesCTA() {
   return (
-    <section className="services-cta" aria-labelledby="services-cta-title">
-      <div className="services-cta__copy">
-        <p>klaar?</p>
-        <h2 id="services-cta-title">Klaar om iets te maken dat blijft hangen?</h2>
-        <a className="button button--black" href={assetPath("/contact/")}>
-          Plan een quick call
+    <section className="va-pdf-cta services-case-cta" aria-labelledby="services-cta-title">
+      <div>
+        <h2 id="services-cta-title">Durf jij een samenwerking aan te gaan?</h2>
+        <a className="button button--yellow" href={assetPath("/contact/")}>
+          Eens afspreken?
         </a>
       </div>
-      <span className="services-cta__accent" aria-hidden="true" />
     </section>
   );
 }
@@ -267,10 +212,9 @@ export default function ServicesPage() {
           <ServicesHero />
           <ServicesFlow />
           <ServicesGrid />
-          <ServicesTagCloud />
           <ServicesCTA />
         </main>
-        <Footer variant="paper" />
+        <Footer />
       </div>
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />

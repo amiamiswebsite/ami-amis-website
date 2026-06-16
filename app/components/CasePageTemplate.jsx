@@ -248,15 +248,22 @@ function CaseHero({ data }) {
   const heroMedia = getHeroMedia(data);
   const heroFacts = getHeroFacts(data);
   const oneLiner = getOneLiner(data);
+  const hasVimeoContent = Boolean(data.vimeoEmbeds?.length || data.media?.vimeoEmbeds?.length);
+  const heroClassName = [
+    "case-portfolio-hero",
+    heroMedia?.type === "vimeo" ? "case-portfolio-hero--vimeo" : "",
+    hasVimeoContent ? "case-portfolio-hero--with-vimeo-content" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <section
-      className={`case-portfolio-hero${heroMedia?.type === "vimeo" ? " case-portfolio-hero--vimeo" : ""}`}
+      className={heroClassName}
       aria-labelledby="case-portfolio-title"
     >
       <a className="hero__logo case-portfolio-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="case-portfolio-hero__copy case-portfolio-reveal">
-        <p className="case-portfolio-label">Case</p>
         <h1 id="case-portfolio-title">{data.title || data.client}</h1>
         {oneLiner ? <p className="case-portfolio-hero__line">{oneLiner}</p> : null}
         {data.categories?.length ? (
@@ -331,14 +338,10 @@ function CaseShowcase({ data }) {
 
   if (embeds.length) {
     return (
-      <section className="case-showcase case-showcase--vimeo case-portfolio-reveal" aria-labelledby="case-showcase-title">
-        <div className="case-showcase__header">
-          <p className="case-portfolio-label">Video</p>
-          <h2 id="case-showcase-title">De content zelf.</h2>
-        </div>
+      <section className="case-showcase case-showcase--vimeo case-portfolio-reveal" aria-label="Video's">
         <div className="case-vimeo-grid">
           {embeds.slice(0, 4).map((embed, index) => (
-            <VimeoFrame client={data.client} embed={embed} featured={index === 0} index={index} key={`${typeof embed === "string" ? embed : embed.id}-${index}`} />
+            <VimeoFrame client={data.client} embed={embed} index={index} key={`${typeof embed === "string" ? embed : embed.id}-${index}`} />
           ))}
         </div>
       </section>
@@ -590,7 +593,7 @@ function CaseVideoModal({ data, open, onClose }) {
 }
 
 export default function CasePageTemplate({ caseData }) {
-  if (caseData.template === "visit-antwerpen-social") {
+  if (caseData.template === "visit-antwerpen-social" || caseData.template === "x-oats-social") {
     return <VisitAntwerpenCasePage caseData={caseData} />;
   }
 

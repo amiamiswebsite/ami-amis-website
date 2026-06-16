@@ -216,14 +216,14 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "X oats",
+    client: "X-Oats",
     slug: "x-oats",
-    title: "Content voor een productmerk",
-    description: "Case-inhoud en thumbnail worden later aangevuld.",
+    title: "X-Oats",
+    description: "Twee advertenties op korte tijd rond de 1.000.000 sales milestone.",
     categories: ["Social content", "Fotografie", "Video & campagnes"],
     image: "/work/x-oats-thumb.webp",
     href: "/work/x-oats/",
     featured: false,
-    status: "needs-content",
+    status: "ready",
   },
 ];

@@ -503,9 +503,7 @@ export default function TeamPage() {
                 Wij zijn Ami Amis, een team{" "}
                 <span className="team-mark team-mark--blue">enthousiaste creatievelingen</span>{" "}
                 met een passie voor <span className="team-mark team-mark--red">content</span>.{" "}
-                <span className="team-script">Amicaliteit</span> zit in ons DNA, waardoor we
-                elke samenwerking zien als een basis voor een langdurige{" "}
-                <span className="team-mark team-mark--yellow">vriendschap</span>. Wanneer jij
+                <span className="team-script">Amicaliteit</span> zit in ons DNA. Wanneer jij
                 belt, nemen we op. Of het nu is voor een{" "}
                 <span className="team-mark team-mark--blue">coole campagne</span>, een{" "}
                 <span className="team-mark team-mark--red">fancy video</span> of om samen een
@@ -595,7 +593,12 @@ export default function TeamPage() {
             <div className="de-amis-pin-stage">
               <div className="de-amis-title-lockup">
                 <h2>De Amis</h2>
-                <p>De gezichten achter Ami Amis</p>
+                <p>
+                  Antwerpen is ons speelveld. En wij? Wij spelen niet altijd
+                  volgens de regels. Want wie wil opvallen, moet durven
+                  afwijken. Braaf binnen de lijntjes blijven? Daarvoor moet je
+                  niet bij ons zijn.
+                </p>
               </div>
 
               <div className="team-rail-viewport" aria-label="Ami Amis team dossiers">

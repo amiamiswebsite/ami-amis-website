@@ -96,6 +96,8 @@ function VideoFrame({ featured = false, priority = false, video }) {
       });
 
       try {
+        videoNode.muted = false;
+        videoNode.volume = 1;
         await videoNode.play();
       } catch {
         setIsPlaying(false);
@@ -114,8 +116,12 @@ function VideoFrame({ featured = false, priority = false, video }) {
     togglePlayback();
   };
 
+  const isLongTitle = (video.title || "").length > 10;
+
   return (
-    <figure className={`va-pdf-video-card${featured ? " va-pdf-video-card--hero" : ""}${isPlaying ? " is-playing" : ""}`}>
+    <figure
+      className={`va-pdf-video-card${featured ? " va-pdf-video-card--hero" : ""}${isLongTitle ? " va-pdf-video-card--long-title" : ""}${isPlaying ? " is-playing" : ""}`}
+    >
       <div
         aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${video.title} video`}
         className="va-pdf-video-card__screen"
@@ -126,19 +132,23 @@ function VideoFrame({ featured = false, priority = false, video }) {
       >
         <video
           aria-label={`${video.title} video`}
-          muted
           onEnded={() => setIsPlaying(false)}
           onPause={() => setIsPlaying(false)}
           onPlay={() => setIsPlaying(true)}
           playsInline
           poster={video.poster ? mediaPath(video.poster) : undefined}
-          preload={priority ? "metadata" : "none"}
+          preload={priority || !video.poster ? "metadata" : "none"}
           ref={videoRef}
         >
           <source src={mediaPath(video.src)} type="video/mp4" />
         </video>
       </div>
-      <figcaption>{video.title}</figcaption>
+      <figcaption>
+        <span className="va-pdf-video-card__title">{video.title}</span>
+        <span aria-hidden="true" className="va-pdf-video-card__play">
+          <span />
+        </span>
+      </figcaption>
     </figure>
   );
 }
@@ -230,28 +240,41 @@ function ZuidvideoModal({ data, onClose, open }) {
 
 function QuoteCard({ data, onOpen }) {
   const quote = data.introQuote || "";
-  const [beforeZuidvideo, afterZuidvideo = ""] = quote.split("Zuidvideo");
+  const hasZuidvideoTrigger = quote.includes("Zuidvideo") && data.media?.zuidVideo?.src;
+  const [beforeZuidvideo, afterZuidvideo = ""] = hasZuidvideoTrigger ? quote.split("Zuidvideo") : [quote, ""];
+  const shouldWrapQuote = quote.trim() && !quote.trim().startsWith("“") && !quote.trim().startsWith('"');
+  const isLongQuote = quote.length > 150;
 
   return (
-    <blockquote className="va-pdf-quote va-pdf-reveal">
+    <blockquote className={`va-pdf-quote${isLongQuote ? " va-pdf-quote--long" : ""} va-pdf-reveal`}>
       <p>
-        “{beforeZuidvideo}
-        {quote.includes("Zuidvideo") && data.media?.zuidVideo?.src ? (
+        {shouldWrapQuote ? "“" : ""}
+        {beforeZuidvideo}
+        {hasZuidvideoTrigger ? (
           <button aria-label="Bekijk de Zuidvideo" className="va-pdf-quote__trigger" onClick={onOpen} type="button">
             Zuidvideo
           </button>
-        ) : (
-          "Zuidvideo"
-        )}
-        {afterZuidvideo}”
+        ) : null}
+        {afterZuidvideo}
+        {shouldWrapQuote ? "”" : ""}
       </p>
     </blockquote>
   );
 }
 
 function Hero({ data, onOpen }) {
+  const heroCollage = data.heroCollage?.src
+    ? data.heroCollage
+    : data.slug === "visitantwerp"
+      ? {
+          src: "/images/cases/visit-antwerpen/visit-antwerpen-cathedral-exact.png",
+          className: "va-pdf-hero__cathedral-collage",
+        }
+      : null;
+  const heroVideo = data.media?.hero ? { ...data.media.hero, title: data.media?.verticalVideos?.[0]?.title || data.media.hero.title || data.title } : null;
+
   return (
-    <section className="va-pdf-hero" aria-labelledby="va-pdf-title">
+    <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}`} aria-labelledby="va-pdf-title">
       <a className="hero__logo va-pdf-logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="va-pdf-hero__inner">
         <div className="va-pdf-hero__copy">
@@ -261,13 +284,8 @@ function Hero({ data, onOpen }) {
           <QuoteCard data={data} onOpen={onOpen} />
         </div>
         <div className="va-pdf-hero__media va-pdf-reveal">
-          <img
-            alt=""
-            aria-hidden="true"
-            className="va-pdf-hero__cathedral-collage"
-            src={assetPath("/images/cases/visit-antwerpen/visit-antwerpen-cathedral-exact.png")}
-          />
-          <VideoFrame featured priority video={{ ...data.media?.hero, title: data.media?.verticalVideos?.[0]?.title || "frituurtour" }} />
+          {heroCollage ? <img alt="" aria-hidden="true" className={heroCollage.className || "va-pdf-hero__cathedral-collage"} src={assetPath(heroCollage.src)} /> : null}
+          <VideoFrame featured priority video={heroVideo} />
         </div>
       </div>
     </section>
@@ -276,21 +294,18 @@ function Hero({ data, onOpen }) {
 
 function Story({ data }) {
   const blocks = data.storyBlocks || [];
+  const highlights = data.storyHighlights || [["10 social media video’s", "4 maanden"], [], ["43K", "1314"]];
 
   return (
     <section className="va-pdf-story" aria-label="Case verhaal">
       <div className="va-pdf-story__inner va-pdf-reveal">
-        {blocks[0]?.text ? (
-          <p>
-            <HighlightedText highlights={["10 social media video’s", "4 maanden"]} text={blocks[0].text} />
-          </p>
-        ) : null}
-        {blocks[1]?.text ? <p>{blocks[1].text}</p> : null}
-        {blocks[2]?.text ? (
-          <p>
-            <HighlightedText highlights={["43K", "1314"]} text={blocks[2].text} />
-          </p>
-        ) : null}
+        {blocks.map((block, index) =>
+          block?.text ? (
+            <p key={`${block.text.slice(0, 24)}-${index}`}>
+              <HighlightedText highlights={highlights[index] || []} text={block.text} />
+            </p>
+          ) : null,
+        )}
       </div>
     </section>
   );
@@ -305,7 +320,7 @@ function StatsRow({ stats }) {
     <section className="va-pdf-stats va-pdf-reveal" aria-label="Resultaten">
       <dl>
         {stats.map((stat) => (
-          <div key={`${stat.value}-${stat.label}`}>
+          <div className={String(stat.value).length > 5 ? "va-pdf-stat--long" : undefined} key={`${stat.value}-${stat.label}`}>
             <dt>{stat.label}</dt>
             <dd>{stat.value}</dd>
           </div>
@@ -321,7 +336,7 @@ function VideoGrid({ videos }) {
   }
 
   return (
-    <section className="va-pdf-video-grid va-pdf-reveal" aria-label="Video's">
+    <section className={`va-pdf-video-grid va-pdf-video-grid--count-${videos.length} va-pdf-reveal`} aria-label="Video's">
       {videos.map((video, index) => (
         <VideoFrame key={video.title || video.src} priority={index === 0} video={video} />
       ))}

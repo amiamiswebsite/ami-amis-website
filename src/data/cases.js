@@ -252,9 +252,9 @@ export const cases = [
     },
     gallery: [{ src: "/work/imore.webp", alt: "imore projectbeeld" }],
     vimeoEmbeds: [
-      vimeo("1055562711", "imore video 1"),
-      vimeo("1055562589", "imore video 2"),
-      vimeo("1055562671", "imore video 3"),
+      vimeo("1055562671", "imore video 1", "688a1873bb"),
+      vimeo("1055562589", "imore video 2", "d817a8a495"),
+      vimeo("1055562711", "imore video 3", "90107e79ed"),
     ],
     needsEditorialSplit: false,
     facts: [
@@ -878,7 +878,11 @@ export const cases = [
         "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/d8c278bf-ba0a-4f68-86d4-1cd1153c8cf3/Groep+maes+Banner.png",
     },
     gallery: [{ src: "/work/groep-maes.webp", alt: "Groep Maes projectbeeld" }],
-    vimeoEmbeds: [vimeo("1055488333", "Groep Maes actiebeelden"), vimeo("1055488422", "Groep Maes vacaturevideo")],
+    vimeoEmbeds: [
+      vimeo("1055488422", "Groep Maes video 1", "66a9e925c9"),
+      vimeo("1055488333", "Groep Maes video 2", "97ea7df7e1"),
+      vimeo("926207596", "Groep Maes video 3"),
+    ],
     needsReview: true,
     needsEditorialSplit: false,
     facts: [
@@ -957,21 +961,98 @@ export const cases = [
   },
   {
     slug: "x-oats",
-    client: "X oats",
-    title: "X oats",
-    subtitle: "Content voor een productmerk.",
+    template: "x-oats-social",
+    client: "X-Oats",
+    title: "X-OATS",
+    oneLiner: "Twee funny maar duidelijke advertenties die samen meer dan een miljoen mensen hebben bereikt.",
     category: "Social content",
     categories: ["Social content", "Fotografie", "Video & campagnes"],
     year: "2026",
-    deliverables: ["Social content", "Fotografie", "Video"],
-    hero: {
-      image: "/images/work/x-oats.jpg",
-      poster: "/images/work/x-oats.jpg",
+    mediaType: "vertical-video-grid",
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    seo: {
+      title: "X-Oats | Ami Amis",
+      description:
+        "Voor X-Oats maakte Ami Amis op korte tijd twee advertenties die samen meer dan een miljoen mensen bereikten.",
     },
-    gallery: [],
-    ...manualNeedsContent,
-    needsReview: true,
-    needsMedia: true,
+    introQuote:
+      "“Over één week vieren wij de mijlpaal van 1.000.000 sales! Kunnen we short notice een advertentieconcept uitwerken én uitvoeren? Binnen enkele dagen, ofzo?” 🫣🫣🫣",
+    intro:
+      "Onze gezonde vrienden van X-Oats mogen altijd komen aankloppen met een creatieve uitdaging. Of zelfs twee. Voor hun ambitieuze mijlpaal schreven, draaiden en monteerden we in no-time twee spotjes. Strak gepland, stevig doorgewerkt en veel plezier gehad.",
+    storyBlocks: [
+      {
+        kicker: "",
+        text:
+          "Onze gezonde vrienden van X-Oats mogen altijd komen aankloppen met een creatieve uitdaging. Of zelfs twee. Voor hun ambitieuze mijlpaal schreven, draaiden en monteerden we in no-time twee spotjes. Strak gepland, stevig doorgewerkt en veel plezier gehad.",
+      },
+      {
+        kicker: "",
+        text:
+          "Voor het eerste spotje werkten we samen met fitfluencer Yinne Gymness. We combineerden iPhone-beelden met beelden van een professionele camera, waardoor de video begon als een herkenbare influencervideo en eindigde als een high-end reclamespot. Echt dope.",
+      },
+      {
+        kicker: "",
+        text:
+          "Terwijl die video werd gedraaid, bouwden we in Humgy Central een kleine set op. ‘s Namiddags veranderden we die in een politie-ondervraging. X-Oats CEO Kevin werd aan de tand gevoeld door onze eigen kapoen Brent. Het resultaat? Episch.",
+      },
+    ],
+    storyHighlights: [[], [], []],
+    outro:
+      "De spots bereikten samen meer dan een miljoen mensen. Great success. Die kaap van 2 miljoen? Die komt er in no time.",
+    deliverables: ["Social content", "Video & campagnes"],
+    hero: {
+      image: "/work/x-oats-thumb.webp",
+      poster: "/work/x-oats-thumb.webp",
+    },
+    question: {
+      label: "Vraag",
+      title: "",
+      text: "Kunnen jullie op drie dagen tijd twee spots schrijven, draaien en opleveren?",
+    },
+    approach: {
+      label: "Aanpak",
+      title: "",
+      text:
+        "X-Oats CEO Kevin had enkele ideeën die wij meteen hebben uitgewerkt. Onze producers schakelden snel en gingen gelijktijdig aan de slag. Twee dagen later stonden we al op shoot! Terwijl de tweede spot werd opgenomen, zat de eerste al in montage. Daarna nog een nachtje doortrekken en tijdig opleveren. Da’s durven. 😏",
+    },
+    result: {
+      label: "Resultaat",
+      title: "",
+      text: "Twee funny maar duidelijke advertenties die samen meer dan een miljoen mensen hebben bereikt.",
+      stats: [
+        { value: "2", label: "spotjes" },
+        { value: "3", label: "dagen" },
+        { value: "1M+", label: "mensen bereikt" },
+        { value: "1.000.000", label: "sales milestone" },
+      ],
+    },
+    media: {
+      hero: {
+        type: "video",
+        src: "/videos/cases/x-oats/x-oats-yinne-gymness.mp4",
+      },
+      verticalVideos: [
+        {
+          title: "Yinne Gymness",
+          src: "/videos/cases/x-oats/x-oats-yinne-gymness.mp4",
+        },
+        {
+          title: "Politie-ondervraging",
+          src: "/videos/cases/x-oats/x-oats-politie-ondervraging.mp4",
+        },
+      ],
+    },
+    services: ["Concept", "Draaien", "Montage", "Social content"],
+    nextCase: {
+      title: "Visit Antwerpen",
+      href: "/work/visitantwerp/",
+    },
   },
 ];
 

@@ -3,10 +3,9 @@ import { assetPath } from "../../src/lib/assetPath";
 export function TeamDossierCard({ profile, index = 0 }) {
   const photoStyle = {
     "--dossier-photo-position": profile.objectPosition || "50% 50%",
-    "--dossier-photo-rotate": profile.tilt || (index % 2 === 0 ? "-2deg" : "2deg"),
-    "--mugshot-plaque-rotate": index % 2 === 0 ? "-3.2deg" : "2.6deg",
     "--card-delay": `${Math.min(index, 8) * 42}ms`,
   };
+  const favoriteFilm = profile.favoriteFilm || "Alien 2";
 
   return (
     <article className="team-dossier-card" id={profile.slug} style={photoStyle}>
@@ -20,10 +19,14 @@ export function TeamDossierCard({ profile, index = 0 }) {
         />
       </figure>
 
-      <div className="team-dossier-card__body" aria-label={`${profile.name}, ${profile.role}, ${profile.line || profile.charge}`}>
+      <div className="team-dossier-card__body" aria-label={`${profile.name}, ${profile.role}, favoriete film: ${favoriteFilm}`}>
         <h3>{profile.name}</h3>
         <p className="team-dossier-card__role">{profile.role}</p>
-        <p className="team-dossier-card__line">{profile.line || profile.charge}</p>
+        <p className="team-dossier-card__favorite" aria-label={`Favoriete film: ${favoriteFilm}`}>
+          <span>Favoriete film:</span>
+          {" "}
+          {favoriteFilm}
+        </p>
       </div>
     </article>
   );
