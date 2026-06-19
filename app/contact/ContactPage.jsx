@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import ContactGame from "./ContactGame";
 import { assetPath } from "../../src/lib/assetPath";
 
 const mail = "brent@amiamis.be";
@@ -198,6 +199,7 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
+          <ContactGame onDropIdea={guideToForm} />
         </main>
         <Footer variant="paper" />
       </div>

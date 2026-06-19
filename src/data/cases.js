@@ -29,27 +29,28 @@ export const cases = [
     categories: ["Social content", "Video & campagnes"],
     year: "2026",
     deliverables: ["Social content", "Video & campagnes"],
-    hero: {
-      image: "/work/tarzan-en-jane-thumb.webp",
-      poster: "/work/tarzan-en-jane-thumb.webp",
+    heroMedia: {
+      type: "vimeo",
+      id: "1202756768",
+      title: "Tarzan en Jane video",
     },
+    hero: null,
     gallery: [],
     ...manualNeedsContent,
+    mediaType: "vimeo-video",
+    hideShowcase: true,
     sourceType: "master-portfolio",
     needsContent: false,
     needsReview: false,
     needsAssetDownload: false,
-    needsMedia: true,
+    needsMedia: false,
     needsEditorialSplit: false,
     oneLiner: "Een kleurrijke videoclip vol energie, ritme en jungleplezier.",
     intro:
       "Voor Tarzan & Jane maakten we een kleurrijke videoclip vol energie, ritme en jungleplezier. De video vormt de start van een bredere contentaanpak waarmee hun speelse wereld online verder groeit.",
     summary:
       "Een energieke videoclip en maandelijkse contentaanpak voor de indoor jungle van Tarzan & Jane.",
-    facts: [
-      { label: "Output", value: "1 videoclip" },
-      { label: "Samenwerking", value: "social content" },
-    ],
+    facts: [],
     question: {
       title: "Hoe breng je een speelse indoorwereld online tot leven?",
       text:
@@ -372,56 +373,215 @@ export const cases = [
   },
   {
     slug: "4allseasons",
-    client: "4allseasons",
-    title: "Campagnes voor vegan cosmetics",
-    subtitle: "Langlopende samenwerking rond spots, content en fotografie.",
+    client: "4 All Seasons",
+    title: "4 All Seasons",
+    subtitle: "Campagnes voor vegan cosmetics",
+    oneLiner: "Campagnes voor vegan cosmetics.",
     category: "Video & campagnes",
-    categories: ["Video & campagnes", "Fotografie", "Marketingstrategie"],
-    year: "2026",
+    categories: ["Video & campagnes", "Fotografie", "Social content", "Marketingstrategie"],
+    year: "2023 — 2024",
+    period: "2023 — 2024",
     sourceUrl: oldSource("/work/4allseasons"),
     sourceType: "old-site",
     needsContent: false,
     needsReview: false,
     needsAssetDownload: false,
-    needsEditorialSplit: true,
+    needsEditorialSplit: false,
     mediaType: "mixed-media",
+    hideShowcase: true,
+    introQuote: "Een samenwerking die al sinds het begin mee groeit.",
     intro:
-      "4 All Seasons is al sinds het begin van ons bestaan een trouwe klant, een samenwerking die getuigt van een diepgeworteld vertrouwen en een gedeelde visie op kwaliteit en duurzaamheid. Door de jaren heen hebben we voor 4 All Seasons een reeks projecten gerealiseerd die niet alleen hun commitment aan vegan en milieuvriendelijke producten benadrukken, maar ook de essentie van hun merk op een authentieke manier naar voren brengen. Een van onze meest memorabele projecten is een high-end televisiecampagne die de ethische waarden van het merk visualiseert, samen met reclamespots voor Kinepolis en televisie, die het bewustzijn en de filosofie van 4 All Seasons vergroten. Onze samenwerking strekte zich verder uit tot een influencer campagne op social media, die het bereik van het merk aanzienlijk heeft vergroot. Daarnaast hebben we 4 All Seasons ondersteund bij het aanvragen van subsidies en het opzetten van een bedrijfsvideo die het verhaal en de missie van het merk belicht. Het recente project, een billboardcampagne gekoppeld aan het VTM-programma Milo, is een voorbeeld van onze vermogen om snel en effectief te handelen - een prestatie die we in minder dan twee uur hebben gerealiseerd. Dit project onderstreept onze flexibiliteit en de naadloze samenwerking tussen onze teams en 4 All Seasons. Dit is een samenwerking die we enorm hard koesteren en waarvan we voelen dat deze nog lang zal blijven doorgaan.",
+      "Voor 4 All Seasons maakten we doorheen de jaren een mix van campagnevideo’s, fotografie, social content en behind the scenes. Van vegan cosmetics voor kinderen tot tv-spots, Kinepolis-reclame en een snelle Milo-billboardcampagne: dit is zo’n samenwerking die voelt als samen bouwen.",
     summary:
-      "Een langlopende samenwerking met tv-spots, Kinepolis-reclame, fotografie, influencer content, subsidies en campagne-ondersteuning.",
-    deliverables: ["Televisiecampagne", "Kinepolis-reclame", "Fotografie", "Influencer content", "Subsidies"],
+      "Campagnes, fotografie en social content voor vegan cosmetics.",
+    deliverables: ["TV-spot", "Kinepolis-reclame", "Fotografie", "BTS"],
+    output: "TV, Kinepolis, social, fotografie",
+    heroMedia: {
+      type: "image",
+      src: "/assets/work/4allseasons/hero.jpg",
+      aspectRatio: "16/9",
+      alt: "Milo billboardcampagne voor 4 All Seasons",
+    },
     hero: {
-      image: "/work/4allseasons.webp",
+      image: "/assets/work/4allseasons/hero.jpg",
       sourceMediaUrl:
         "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/07eb2255-00e7-4772-9ac7-dc8c16b590f9/LinkedIn.png",
     },
-    gallery: [{ src: "/work/4allseasons.webp", alt: "4allseasons projectbeeld" }],
+    storyBlocks: [
+      {
+        kicker: "Samen bouwen",
+        text:
+          "Voor 4 All Seasons maakten we doorheen de jaren een mix van campagnevideo’s, fotografie, social content en behind the scenes. Van vegan cosmetics voor kinderen tot tv-spots, Kinepolis-reclame en een snelle Milo-billboardcampagne: dit is zo’n samenwerking die voelt als samen bouwen.",
+      },
+      {
+        kicker: "Cosmetics for cool kids",
+        text:
+          "4 All Seasons is een vegan cosmeticamerk voor kinderen, opgericht door Annelies Van Gaever. Met “Cosmetics for cool kids” brengen ze producten die speels voelen voor kinderen en vertrouwd voor ouders.",
+      },
+    ],
+    projectFacts: [
+      { label: "Klant", value: "4 All Seasons" },
+      { label: "Type", value: "Video & campagnes, fotografie, social content" },
+      { label: "Output", value: "TV-spot, Kinepolis-reclame, fotografie, BTS" },
+      { label: "Samenwerking", value: "sinds de start" },
+      { label: "Tempo", value: "Milo-billboard in minder dan 2 uur" },
+    ],
+    gallery: [
+      { src: "/assets/work/4allseasons/campagne-01.jpg", alt: "Campagnebeeld voor 4 All Seasons" },
+      { src: "/assets/work/4allseasons/fotografie-01.jpg", alt: "Productfotografie voor 4 All Seasons" },
+    ],
     vimeoEmbeds: [
       vimeo("1071852332", "4allseasons behind the scenes"),
-      vimeo("926238307", "4allseasons aftermovie"),
+      vimeo("926238307", "4AllSeasons - Milo aftermovie", "bfb29739be"),
       vimeo("1073163342", "4allseasons video"),
     ],
-    needsEditorialSplit: false,
-    facts: [
-      { label: "Output", value: "spots en reels" },
-      { label: "Samenwerking", value: "langlopend" },
-    ],
+    facts: [],
     question: {
-      title: "Hoe hou je een duurzaam beautymerk zichtbaar op meerdere kanalen?",
+      title: "Hoe hou je een duurzaam kids beautymerk zichtbaar op meerdere kanalen?",
       text:
-        "4allseasons had nood aan campagnecontent die hun vegan en duurzame positionering duidelijk ondersteunt.",
+        "4 All Seasons had nood aan content die hun vegan, kindvriendelijke en duurzame positionering helder naar buiten brengt. Niet op één kanaal, maar over verschillende momenten en formats heen: van televisie en cinema tot social content en fotografie.",
     },
     approach: {
-      title: "Van tv-spot tot social reel in één visuele lijn.",
+      title: "Van tv-spot tot fotografie, telkens in dezelfde merkwereld.",
       text:
-        "We werkten mee aan reclamespots, Kinepolis-campagnes, fotografie, influencer content en korte social edits. Elke output bleef herkenbaar, fris en inzetbaar per kanaal.",
+        "We bouwden verder op een langlopende samenwerking en schakelden per project de juiste mensen in. Soms volledig uitgewerkt met campagnevideo, fotografie en montage. Soms razendsnel, zoals bij de Milo-billboardcampagne die in minder dan twee uur werd gerealiseerd.",
     },
     result: {
       title: "Een brede contentbasis voor een merk met een duidelijke missie.",
       text:
-        "4allseasons kreeg campagnebeelden en video-assets die hun verhaal consequent blijven versterken.",
+        "4 All Seasons kreeg een reeks campagnebeelden, video-assets, social formats en foto’s die hun verhaal consequent blijven versterken. Speels genoeg voor kinderen, betrouwbaar genoeg voor ouders en helder genoeg voor elk kanaal.",
     },
-    externalVideoUrls: ["https://f.io/Xg5t-mTJ", "https://www.amiamis.com/work/4allseasons"],
+    mediaSectionTitle: "De content zelf.",
+    mediaSectionIntro: "Campagne, fotografie, behind the scenes en video in één compacte kijkruimte.",
+    mediaSections: [
+      {
+        title: "Campagne",
+        key: "campagne",
+        featured: true,
+        items: [
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/hero.jpg",
+            alt: "Milo billboardcampagne voor 4 All Seasons",
+            caption: "Milo billboardcampagne",
+            orientation: "landscape",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/campagne-01.jpg",
+            alt: "Campagnebeeld voor 4 All Seasons",
+            caption: "Campagnebeeld",
+            orientation: "landscape",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/campagne-02.jpg",
+            alt: "Campagne-output voor 4 All Seasons",
+            caption: "Campagne-output",
+            orientation: "portrait",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/campagne-03.jpg",
+            alt: "Social campagnebeeld voor 4 All Seasons",
+            caption: "Social campagne",
+            orientation: "portrait",
+          },
+        ],
+      },
+      {
+        title: "Fotografie",
+        key: "fotografie",
+        items: [
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/fotografie-01.jpg",
+            alt: "Productfotografie voor 4 All Seasons",
+            caption: "Productfotografie",
+            orientation: "portrait",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/fotografie-02.jpg",
+            alt: "Lifestylefotografie voor 4 All Seasons",
+            caption: "Lifestylefotografie",
+            orientation: "portrait",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/fotografie-03.jpg",
+            alt: "Campagnefotografie voor 4 All Seasons",
+            caption: "Campagnefotografie",
+            orientation: "landscape",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/fotografie-04.jpg",
+            alt: "Fotografie voor vegan cosmetics",
+            caption: "Cosmetics for cool kids",
+            orientation: "landscape",
+          },
+        ],
+      },
+      {
+        title: "Behind the scenes",
+        key: "bts",
+        items: [
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/bts-01.jpg",
+            alt: "Behind the scenes tijdens een 4 All Seasons productie",
+            caption: "Behind the scenes",
+            orientation: "landscape",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/bts-02.jpg",
+            alt: "Crewmoment tijdens 4 All Seasons productie",
+            caption: "Op set",
+            orientation: "landscape",
+          },
+          {
+            type: "image",
+            src: "/assets/work/4allseasons/bts-03.jpg",
+            alt: "Behind the scenes beeld voor 4 All Seasons",
+            caption: "BTS content",
+            orientation: "portrait",
+          },
+        ],
+      },
+      {
+        title: "Video",
+        key: "video",
+        items: [
+          {
+            type: "vimeo",
+            id: "926238307",
+            hash: "bfb29739be",
+            title: "Milo aftermovie",
+            caption: "Aftermovie",
+          },
+          {
+            type: "vimeo",
+            id: "1073163342",
+            title: "4 All Seasons video",
+            caption: "Video",
+          },
+          {
+            type: "vimeo",
+            id: "1071852332",
+            title: "Behind the scenes",
+            caption: "Behind the scenes",
+          },
+        ],
+      },
+    ],
+    externalVideoUrls: [
+      "https://vimeo.com/926238307/bfb29739be",
+      "https://vimeo.com/1073163342",
+      "https://vimeo.com/1071852332",
+      "https://www.amiamis.com/work/4allseasons",
+    ],
   },
   {
     slug: "salus",
@@ -855,7 +1015,7 @@ export const cases = [
   {
     slug: "groep-maes",
     client: "Groep Maes",
-    title: "Actiebeelden en vacaturevideo's",
+    title: "Groep Maes",
     subtitle: "Hoogwerkoplossingen in actie.",
     category: "Video & campagnes",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
@@ -867,17 +1027,20 @@ export const cases = [
     needsAssetDownload: false,
     needsEditorialSplit: true,
     mediaType: "vimeo-video",
+    oneLiner:
+      "Drone- en GoPro-beelden voor hoogwerkoplossingen, aangevuld met originele vacaturevideo's en campagnestrategie.",
     intro:
       "Groep Maes blinkt uit in innovatieve hoogwerkoplossingen. Om het unieke “point of view” van een hoogtewerker te laten zien tijdens het installeren van ledverlichting in een voetbalstadion, gebruikten we spectaculaire drone- en GoPro-beelden. Voor het eerste concept van deze aanwervingscampagne gingen we vol enthousiasme mee op pad met enkele hoogtewerkers om unieke vacaturevideo’s te maken – ideaal voor sociale media. Het leukste detail? De video’s worden gepresenteerd door de dochter van de CEO! Een subtiele knipoog naar de warme, familiale sfeer die Groep Maes zo bijzonder maakt.",
     summary:
       "Drone- en GoPro-beelden voor hoogwerkoplossingen, aangevuld met originele vacaturevideo's en campagnestrategie.",
     deliverables: ["Actiebeelden", "Drone", "GoPro", "Vacaturevideo's", "Campagnestrategie"],
-    hero: {
-      image: "/work/groep-maes.webp",
-      sourceMediaUrl:
-        "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/d8c278bf-ba0a-4f68-86d4-1cd1153c8cf3/Groep+maes+Banner.png",
-    },
-    gallery: [{ src: "/work/groep-maes.webp", alt: "Groep Maes projectbeeld" }],
+    hero: null,
+    hideInfoStrip: true,
+    ctaVariant: "blue",
+    ctaTitle: "Durf jij een samenwerking aan te gaan?",
+    ctaButton: "Eens afspreken?",
+    footerVariant: "dark",
+    gallery: [],
     vimeoEmbeds: [
       vimeo("1055488422", "Groep Maes video 1", "66a9e925c9"),
       vimeo("1055488333", "Groep Maes video 2", "97ea7df7e1"),
@@ -885,10 +1048,7 @@ export const cases = [
     ],
     needsReview: true,
     needsEditorialSplit: false,
-    facts: [
-      { label: "Output", value: "actie- en vacaturevideo's" },
-      { label: "Type", value: "employer content" },
-    ],
+    facts: [],
     question: {
       title: "Hoe toon je hoogwerkers én vacatures op een manier die blijft hangen?",
       text:

@@ -44,8 +44,8 @@ export const workItems = [
     tilt: "2deg",
   },
   {
-    title: "4allseasons",
-    image: assetPath("/work/4allseasons.webp"),
+    title: "4 All Seasons",
+    image: assetPath("/assets/work/4allseasons/hero.jpg"),
     depth: 0.5,
     tilt: "-1deg",
   },

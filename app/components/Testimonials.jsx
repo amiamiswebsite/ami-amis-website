@@ -1,6 +1,7 @@
 const testimonials = [
   {
-    quote: "Scherp in ideeën, snel in uitvoering en altijd met een frisse blik. Een samenwerking die vanzelf aanvoelde.",
+    quote:
+      "Wat ons vooral opviel, was hoe creatief én professioneel ze te werk gaan. Ze denken niet gewoon uit wat je vraagt, maar komen zelf met sterke ideeën en hooks die echt werken voor social ads.",
     client: "X-Oats",
     href: "/work/x-oats/",
     variant: "quote--white",

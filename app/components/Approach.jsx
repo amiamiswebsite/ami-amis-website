@@ -32,9 +32,16 @@ const steps = [
   {
     number: "5.",
     title: "Watch Party",
-    text: "Na afloop kijken we wat werkte, wat beter kan en hoe we jullie verder kunnen helpen groeien. Na afloop koppelt uw kapoentje Brent nog eens terug. Dat is wat Amis doen, toch?",
+    text: "Na afloop kijken we wat werkte, wat beter kan en hoe we jullie verder kunnen helpen groeien.",
     src: assetPath("/assets/approach-04-watch.png"),
     className: "approach-card--watch",
+  },
+  {
+    number: "6.",
+    title: "Hallo, Brent nog eens!",
+    text: "Na afloop koppelt uw kapoentje Brent nog eens terug. Dat is wat Amis doen, toch?",
+    src: assetPath("/assets/approach-05-callback.png"),
+    className: "approach-card--callback",
   },
 ];
 

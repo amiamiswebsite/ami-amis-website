@@ -140,6 +140,20 @@ function getInfoItems(data) {
   ].filter((item) => item.value);
 }
 
+function getProjectFacts(data) {
+  return (data.projectFacts || data.caseFacts || [])
+    .filter((fact) => fact?.label && fact?.value);
+}
+
+function getMediaSections(data) {
+  return (data.mediaSections || [])
+    .map((section) => ({
+      ...section,
+      items: (section.items || []).filter((item) => item && (item.src || item.poster || item.id || item.fallbackLabel)),
+    }))
+    .filter((section) => section.items.length);
+}
+
 function getOneLiner(data) {
   return data.oneLiner || data.summary || data.subtitle || data.heroIntro || "";
 }
@@ -253,6 +267,7 @@ function CaseHero({ data }) {
     "case-portfolio-hero",
     heroMedia?.type === "vimeo" ? "case-portfolio-hero--vimeo" : "",
     hasVimeoContent ? "case-portfolio-hero--with-vimeo-content" : "",
+    !heroMedia ? "case-portfolio-hero--text-only" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -313,6 +328,10 @@ function CaseQuote({ data, onOpen }) {
 }
 
 function CaseShowcase({ data }) {
+  if (data.hideShowcase) {
+    return null;
+  }
+
   const heroMedia = getHeroMedia(data);
   const verticalVideos = data.media?.verticalVideos || [];
   const embeds = data.vimeoEmbeds || data.media?.vimeoEmbeds || [];
@@ -384,6 +403,10 @@ function CaseShowcase({ data }) {
 }
 
 function CaseInfoStrip({ data }) {
+  if (data.hideInfoStrip) {
+    return null;
+  }
+
   const items = getInfoItems(data).slice(0, 4);
 
   if (!items.length) {
@@ -420,6 +443,31 @@ function CaseStory({ data }) {
           <p>{block.text}</p>
         </article>
       ))}
+    </section>
+  );
+}
+
+function CaseProjectFacts({ data }) {
+  const facts = getProjectFacts(data);
+
+  if (!facts.length) {
+    return null;
+  }
+
+  return (
+    <section className="case-project-facts case-portfolio-reveal" aria-labelledby="case-project-facts-title">
+      <div>
+        <p className="case-portfolio-label">Project</p>
+        <h2 id="case-project-facts-title">{data.projectFactsTitle || "Project in ’t kort"}</h2>
+      </div>
+      <dl>
+        {facts.map((fact) => (
+          <div key={`${fact.label}-${fact.value}`}>
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }
@@ -461,6 +509,214 @@ function CasePillars({ data }) {
   );
 }
 
+function CaseMediaHubItem({ item, imageIndex, onOpenImage, client }) {
+  const type = item.type || (item.id ? "vimeo" : item.src?.endsWith(".mp4") ? "video" : "image");
+  const caption = item.caption || item.title || "";
+  const rawOrientation = item.orientation || item.aspectRatio || "landscape";
+  const orientation = rawOrientation === "4/5" || rawOrientation === "9/16"
+    ? "portrait"
+    : rawOrientation === "1/1"
+      ? "square"
+      : "landscape";
+
+  if (type === "vimeo") {
+    return (
+      <div className="case-media-hub__item case-media-hub__item--video">
+        <VimeoFrame client={client} embed={item} index={0} />
+      </div>
+    );
+  }
+
+  if (type === "video") {
+    return (
+      <figure className={`case-media-hub__item case-media-hub__item--${orientation}`}>
+        {item.src ? (
+          <video
+            aria-label={item.alt || caption || `${client} video`}
+            controls
+            playsInline
+            poster={item.poster ? mediaSrc(item.poster) : undefined}
+            preload="none"
+          >
+            <source src={mediaSrc(item.src)} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="case-media-hub__placeholder">{item.fallbackLabel || "Video volgt"}</div>
+        )}
+        {caption ? <figcaption>{caption}</figcaption> : null}
+      </figure>
+    );
+  }
+
+  return (
+    <figure className={`case-media-hub__item case-media-hub__item--${orientation}`}>
+      <button
+        aria-label={`Open ${caption || item.alt || `${client} beeld`}`}
+        className="case-media-hub__image-button"
+        onClick={() => onOpenImage(imageIndex)}
+        type="button"
+      >
+        <img
+          src={mediaSrc(item.src || item.poster)}
+          alt={item.alt || caption || `${client} projectbeeld`}
+          loading="lazy"
+          decoding="async"
+        />
+      </button>
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+function CaseMediaLightbox({ images, index, onClose, onMove }) {
+  const closeButtonRef = useRef(null);
+  const item = typeof index === "number" ? images[index] : null;
+
+  useEffect(() => {
+    if (!item) {
+      return undefined;
+    }
+
+    closeButtonRef.current?.focus();
+    document.body.classList.add("case-modal-open");
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+
+      if (event.key === "ArrowLeft") {
+        onMove(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        onMove(1);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("case-modal-open");
+    };
+  }, [item, onClose, onMove]);
+
+  if (!item) {
+    return null;
+  }
+
+  return (
+    <div className="case-media-lightbox" onMouseDown={onClose} role="presentation">
+      <section
+        aria-label={item.caption || item.alt || "Casebeeld"}
+        aria-modal="true"
+        className="case-media-lightbox__dialog"
+        onMouseDown={(event) => event.stopPropagation()}
+        role="dialog"
+      >
+        <div className="case-media-lightbox__topline">
+          <p>{item.caption || "Casebeeld"}</p>
+          <button aria-label="Sluit beeld" className="case-media-lightbox__close" onClick={onClose} ref={closeButtonRef} type="button">
+            Sluit
+          </button>
+        </div>
+        <img src={mediaSrc(item.src || item.poster)} alt={item.alt || item.caption || "Casebeeld"} />
+        {images.length > 1 ? (
+          <div className="case-media-lightbox__nav">
+            <button onClick={() => onMove(-1)} type="button">Vorige</button>
+            <button onClick={() => onMove(1)} type="button">Volgende</button>
+          </div>
+        ) : null}
+      </section>
+    </div>
+  );
+}
+
+function CaseMediaHub({ data }) {
+  const sections = getMediaSections(data);
+  const [activeKey, setActiveKey] = useState(sections[0]?.key || sections[0]?.title || "");
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
+  useEffect(() => {
+    if (sections.length && !sections.some((section) => (section.key || section.title) === activeKey)) {
+      setActiveKey(sections[0].key || sections[0].title);
+    }
+  }, [activeKey, sections]);
+
+  if (!sections.length) {
+    return null;
+  }
+
+  const activeSection = sections.find((section) => (section.key || section.title) === activeKey) || sections[0];
+  const imageItems = activeSection.items.filter((item) => (item.type || (item.id ? "vimeo" : "image")) === "image" && (item.src || item.poster));
+  const layoutClass =
+    activeSection.items.length === 1
+      ? "case-media-hub__grid--single"
+      : activeSection.items.length >= 5
+        ? "case-media-hub__grid--scroll"
+        : "case-media-hub__grid--mosaic";
+
+  function moveLightbox(delta) {
+    setLightboxIndex((current) => {
+      if (typeof current !== "number" || !imageItems.length) {
+        return current;
+      }
+
+      return (current + delta + imageItems.length) % imageItems.length;
+    });
+  }
+
+  return (
+    <section className="case-media-hub case-portfolio-reveal" aria-labelledby="case-media-hub-title">
+      <div className="case-media-hub__header">
+        <div>
+          <p className="case-portfolio-label">Media</p>
+          <h2 id="case-media-hub-title">{data.mediaSectionTitle || "De content zelf."}</h2>
+        </div>
+        {data.mediaSectionIntro ? <p>{data.mediaSectionIntro}</p> : null}
+      </div>
+
+      {sections.length > 1 ? (
+        <div className="case-media-hub__tabs" aria-label="Media filters">
+          {sections.map((section) => {
+            const key = section.key || section.title;
+            const active = key === activeKey;
+
+            return (
+              <button aria-pressed={active} key={key} onClick={() => setActiveKey(key)} type="button">
+                {section.title}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+
+      <div className={`case-media-hub__grid ${layoutClass}`}>
+        {activeSection.items.map((item, index) => {
+          const imageIndex = imageItems.findIndex((image) => image === item);
+
+          return (
+            <CaseMediaHubItem
+              client={data.client}
+              imageIndex={imageIndex}
+              item={item}
+              key={`${item.src || item.id || item.caption || item.title}-${index}`}
+              onOpenImage={(nextIndex) => {
+                if (nextIndex >= 0) {
+                  setLightboxIndex(nextIndex);
+                }
+              }}
+            />
+          );
+        })}
+      </div>
+
+      <CaseMediaLightbox images={imageItems} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onMove={moveLightbox} />
+    </section>
+  );
+}
+
 function CaseExtraMedia({ data }) {
   const sections = data.extraSections || [];
 
@@ -481,15 +737,19 @@ function CaseExtraMedia({ data }) {
 }
 
 function CaseCTA({ data }) {
+  const ctaVariant = data.ctaVariant || "red";
+  const ctaTitle = data.ctaTitle || "Klaar om iets te maken dat blijft hangen?";
+  const ctaButton = data.ctaButton || "Plan een quick call";
+
   return (
-    <section className="case-portfolio-cta case-portfolio-reveal" aria-label="Case afsluiting">
+    <section className={`case-portfolio-cta case-portfolio-cta--${ctaVariant} case-portfolio-reveal`} aria-label="Case afsluiting">
       <div>
-        <p className="case-portfolio-label">Klaar?</p>
-        <h2>Klaar om iets te maken dat blijft hangen?</h2>
+        {ctaVariant === "blue" ? null : <p className="case-portfolio-label">Klaar?</p>}
+        <h2>{ctaTitle}</h2>
       </div>
       <div className="case-portfolio-cta__actions">
         <a className="button button--red" href={assetPath("/contact/")}>
-          Plan een quick call
+          {ctaButton}
         </a>
         <a className="case-text-link" href={assetPath("/work/")}>
           Bekijk alle cases
@@ -641,7 +901,9 @@ function GenericCasePage({ caseData }) {
           <CaseShowcase data={caseData} />
           <CaseInfoStrip data={caseData} />
           <CaseStory data={caseData} />
+          <CaseProjectFacts data={caseData} />
           <CasePillars data={caseData} />
+          <CaseMediaHub data={caseData} />
           <CaseExtraMedia data={caseData} />
           {caseData.outro ? (
             <section className="case-outro-line case-portfolio-reveal" aria-label="Case outro">
@@ -650,7 +912,7 @@ function GenericCasePage({ caseData }) {
           ) : null}
           <CaseCTA data={caseData} />
         </main>
-        <Footer variant="paper" />
+        <Footer variant={caseData.footerVariant === "dark" ? "dark" : "paper"} />
       </div>
 
       {hasQuoteModal ? (

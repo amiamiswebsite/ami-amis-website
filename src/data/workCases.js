@@ -84,13 +84,13 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "4allseasons",
+    client: "4 All Seasons",
     slug: "4allseasons",
     title: "Campagnes voor vegan cosmetics",
     description:
-      "Een langlopende samenwerking met spots, fotografie, influencer content en campagne-ondersteuning.",
-    categories: ["Video & campagnes", "Fotografie", "Marketingstrategie"],
-    image: "/work/4allseasons.webp",
+      "Campagnes, fotografie en social content voor vegan cosmetics.",
+    categories: ["Video & campagnes", "Fotografie", "Social content", "Marketingstrategie"],
+    image: "/assets/work/4allseasons/hero.jpg",
     href: "/work/4allseasons/",
     featured: false,
     status: "ready",
