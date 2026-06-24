@@ -62,6 +62,7 @@ export default function SocialGrowth() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
   const statsRef = useRef(null);
+  const videoRef = useRef(null);
   const hasAnimated = useRef(false);
   const [counts, setCounts] = useState(strategyStats.map(() => 0));
   const [isCounting, setIsCounting] = useState(false);
@@ -205,6 +206,61 @@ export default function SocialGrowth() {
     };
   }, []);
 
+  useEffect(() => {
+    const videoNode = videoRef.current;
+
+    if (!videoNode) {
+      return undefined;
+    }
+
+    let stopped = false;
+    let retryTimer = 0;
+
+    const playVideo = () => {
+      if (stopped || !videoNode.paused) {
+        return;
+      }
+
+      videoNode.muted = true;
+      videoNode.playsInline = true;
+
+      const playPromise = videoNode.play();
+
+      if (playPromise?.catch) {
+        playPromise.catch(() => {
+          if (!stopped) {
+            retryTimer = window.setTimeout(playVideo, 650);
+          }
+        });
+      }
+    };
+
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        playVideo();
+      }
+    };
+
+    videoNode.load();
+    playVideo();
+
+    window.addEventListener("pageshow", playVideo);
+    document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("scroll", playVideo, { passive: true });
+    window.addEventListener("touchstart", playVideo, { passive: true });
+    window.addEventListener("pointerdown", playVideo, { passive: true });
+
+    return () => {
+      stopped = true;
+      window.clearTimeout(retryTimer);
+      window.removeEventListener("pageshow", playVideo);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("scroll", playVideo);
+      window.removeEventListener("touchstart", playVideo);
+      window.removeEventListener("pointerdown", playVideo);
+    };
+  }, []);
+
   return (
     <section className="social-growth" id="groei" ref={sectionRef}>
       <div className="social-growth__copy">
@@ -228,8 +284,8 @@ export default function SocialGrowth() {
             loop
             muted
             playsInline
-            poster={assetPath("/assets/social-phone-organic-growth.png")}
-            preload="metadata"
+            preload="auto"
+            ref={videoRef}
           >
             <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
           </video>
