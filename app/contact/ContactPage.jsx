@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
-import ContactGame from "./ContactGame";
 import { assetPath } from "../../src/lib/assetPath";
 
 const mail = "brent@amiamis.be";
@@ -169,9 +168,9 @@ export default function ContactPage() {
             <div className="contact-minimal__inner">
               <div className="contact-minimal__content">
                 <div className="contact-minimal__composition contact-intro">
-                  <p className="contact-intro__label">Contact</p>
                   <h1 className="contact-intro__title" id="contact-title">
-                    Goesting in een samenwerking?
+                    <span>Goesting in een</span>
+                    <span>samenwerking?</span>
                   </h1>
                   <div className="contact-choice" aria-label="Samenwerking kiezen">
                     <button
@@ -199,7 +198,6 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
-          <ContactGame onDropIdea={guideToForm} />
         </main>
         <Footer variant="paper" />
       </div>

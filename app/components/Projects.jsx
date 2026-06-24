@@ -15,8 +15,8 @@ const highlightedProjects = highlightedProjectSlugs
   .filter(Boolean);
 const titleWaveLetters = "In de kijker".split("");
 const centerProjectIndex = 1;
-const loopGroupCount = 3;
-const centerLoopGroup = 1;
+const loopGroupCount = 7;
+const centerLoopGroup = Math.floor(loopGroupCount / 2);
 const loopedProjects = Array.from({ length: loopGroupCount }).flatMap((_, groupIndex) =>
   highlightedProjects.map((item, projectIndex) => ({
     item,
@@ -31,6 +31,8 @@ function resolveHref(href) {
 }
 
 export default function Projects() {
+  const initialProjectIndex = highlightedProjects[centerProjectIndex] ? centerProjectIndex : 0;
+  const initialLoopIndex = centerLoopGroup * highlightedProjects.length + initialProjectIndex;
   const carouselRef = useRef(null);
   const dragStateRef = useRef({
     isActive: false,
@@ -40,7 +42,8 @@ export default function Projects() {
     startX: 0,
   });
   const suppressClickRef = useRef(false);
-  const [activeSlug, setActiveSlug] = useState(highlightedProjects[centerProjectIndex]?.slug ?? "");
+  const [activeProjectIndex, setActiveProjectIndex] = useState(initialProjectIndex);
+  const [activeLoopIndex, setActiveLoopIndex] = useState(initialLoopIndex);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -83,15 +86,37 @@ export default function Projects() {
       }
 
       const left = target.offsetLeft - (carousel.clientWidth - target.offsetWidth) / 2;
-      carousel.scrollTo({ left, behavior: reduceMotionQuery.matches ? "auto" : behavior });
+
+      if (behavior === "auto" || reduceMotionQuery.matches) {
+        const previousScrollBehavior = carousel.style.scrollBehavior;
+        const previousScrollSnapType = carousel.style.scrollSnapType;
+
+        carousel.style.scrollBehavior = "auto";
+        carousel.style.scrollSnapType = "none";
+        carousel.scrollLeft = left;
+
+        window.requestAnimationFrame(() => {
+          carousel.style.scrollBehavior = previousScrollBehavior;
+          carousel.style.scrollSnapType = previousScrollSnapType;
+        });
+
+        return;
+      }
+
+      carousel.scrollTo({ left, behavior });
     };
 
     const updateActiveFromCenter = () => {
       const centeredCard = getCenteredCard();
-      const slug = centeredCard?.getAttribute("data-project-slug");
+      const projectIndex = Number(centeredCard?.getAttribute("data-project-index"));
+      const loopIndex = Number(centeredCard?.getAttribute("data-loop-index"));
 
-      if (slug) {
-        setActiveSlug(slug);
+      if (Number.isFinite(projectIndex)) {
+        setActiveProjectIndex(projectIndex);
+      }
+
+      if (Number.isFinite(loopIndex)) {
+        setActiveLoopIndex(loopIndex);
       }
     };
 
@@ -107,6 +132,12 @@ export default function Projects() {
         return;
       }
 
+      const groupIndex = Math.floor(loopIndex / projectCount);
+
+      if (groupIndex > 1 && groupIndex < loopGroupCount - 2) {
+        return;
+      }
+
       const projectIndex = ((loopIndex % projectCount) + projectCount) % projectCount;
       const normalizedLoopIndex = centerLoopGroup * projectCount + projectIndex;
 
@@ -117,11 +148,14 @@ export default function Projects() {
     };
 
     const alignInitialSlide = () => {
+      const targetLoopIndex = centerLoopGroup * projectCount + centerProjectIndex;
+
       if (mobileQuery.matches) {
-        scrollToLoopIndex(centerLoopGroup * projectCount + centerProjectIndex, "auto");
+        scrollToLoopIndex(targetLoopIndex, "auto");
       }
 
-      setActiveSlug(highlightedProjects[centerProjectIndex]?.slug ?? highlightedProjects[0]?.slug ?? "");
+      setActiveProjectIndex(centerProjectIndex);
+      setActiveLoopIndex(targetLoopIndex);
     };
 
     const handleScroll = () => {
@@ -174,7 +208,8 @@ export default function Projects() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const left = target.offsetLeft - (carousel.clientWidth - target.offsetWidth) / 2;
     carousel.scrollTo({ left, behavior: prefersReducedMotion ? "auto" : "smooth" });
-    setActiveSlug(highlightedProjects[projectIndex]?.slug ?? "");
+    setActiveProjectIndex(projectIndex);
+    setActiveLoopIndex(centerLoopGroup * highlightedProjects.length + projectIndex);
   };
 
   const handlePointerDown = (event) => {
@@ -298,7 +333,7 @@ export default function Projects() {
           <div className="projects__carousel-track">
             {loopedProjects.map(({ item, projectIndex, loopIndex, isClone }) => (
               <a
-                className={`projects__carousel-card ${item.slug === activeSlug ? "is-active" : ""}`}
+                className={`projects__carousel-card ${loopIndex === activeLoopIndex ? "is-active" : ""}`}
                 data-clone={isClone ? "true" : undefined}
                 data-loop-index={loopIndex}
                 data-project-index={projectIndex}
@@ -327,7 +362,7 @@ export default function Projects() {
           {highlightedProjects.map((item, index) => (
             <button
               aria-label={`Toon ${projectLabels[item.slug] ?? item.client}`}
-              aria-pressed={item.slug === activeSlug}
+              aria-pressed={index === activeProjectIndex}
               className="projects__carousel-dot"
               key={`dot-${item.slug}`}
               onClick={() => scrollToProject(index)}

@@ -207,6 +207,17 @@ export default function TeamPage() {
     }
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia("(max-width: 768px)").matches;
+    const videoShell = root.querySelector(".team-transition__video-shell");
+
+    if (mobile && videoShell) {
+      videoShell.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+      return;
+    }
+
     const rootTop = root.getBoundingClientRect().top + window.scrollY;
     const targetTop = rootTop + window.innerHeight * 0.72;
 
@@ -530,6 +541,7 @@ export default function TeamPage() {
             </button>
 
             <div className="team-transition__video-shell" aria-label="Ami Amis teamvideo">
+              <h2 className="team-transition__video-title">Teamvideo</h2>
               <div className="team-transition__video-frame">
                 <video
                   ref={videoRef}
