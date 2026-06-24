@@ -1,190 +1,275 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
 
 const highlightedProjectSlugs = ["visit-antwerpen", "x-oats", "tarzan-en-jane"];
+const projectLabels = {
+  "visit-antwerpen": "Visit Antwerp",
+  "x-oats": "X-Oats",
+  "tarzan-en-jane": "Tarzan & Jane",
+};
 const highlightedProjects = highlightedProjectSlugs
   .map((slug) => workCases.find((item) => item.slug === slug))
   .filter(Boolean);
-const featuredProjects = [
-  ...highlightedProjects,
-  ...workCases.filter((item) => !highlightedProjectSlugs.includes(item.slug)),
-].slice(0, 12);
-const initialProjectIndex = Math.min(1, featuredProjects.length - 1);
 const titleWaveLetters = "In de kijker".split("");
+const centerProjectIndex = 1;
+const loopGroupCount = 3;
+const centerLoopGroup = 1;
+const loopedProjects = Array.from({ length: loopGroupCount }).flatMap((_, groupIndex) =>
+  highlightedProjects.map((item, projectIndex) => ({
+    item,
+    projectIndex,
+    loopIndex: groupIndex * highlightedProjects.length + projectIndex,
+    isClone: groupIndex !== centerLoopGroup,
+  }))
+);
 
 function resolveHref(href) {
   return href.startsWith("/") ? assetPath(href) : href;
 }
 
 export default function Projects() {
-  const [activeProjectIndex, setActiveProjectIndex] = useState(initialProjectIndex);
   const carouselRef = useRef(null);
-  const carouselCardRefs = useRef([]);
-  const dragRef = useRef({
-    active: false,
+  const dragStateRef = useRef({
+    isActive: false,
+    moved: false,
     pointerId: null,
     startScrollLeft: 0,
     startX: 0,
-    suppressClick: false,
   });
+  const suppressClickRef = useRef(false);
+  const [activeSlug, setActiveSlug] = useState(highlightedProjects[centerProjectIndex]?.slug ?? "");
+  const [isDragging, setIsDragging] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const carousel = carouselRef.current;
-    const cards = carouselCardRefs.current.filter(Boolean);
 
-    if (!carousel || !cards.length) {
+    if (!carousel || highlightedProjects.length === 0) {
       return undefined;
     }
 
+    const mobileQuery = window.matchMedia("(max-width: 768px)");
     const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
+    const projectCount = highlightedProjects.length;
+    let resizeFrame = 0;
+    let scrollFrame = 0;
+    let settleTimer = 0;
 
-    const setCardState = () => {
-      frame = 0;
-      const carouselRect = carousel.getBoundingClientRect();
-      const carouselCenter = carouselRect.left + carouselRect.width / 2;
-      let closestIndex = 0;
-      let closestDistance = Infinity;
+    const getCards = () => Array.from(carousel.querySelectorAll("[data-loop-index]"));
 
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        const cardCenter = rect.left + rect.width / 2;
-        const distance = Math.abs(carouselCenter - cardCenter);
+    const getCenteredCard = () => {
+      const cards = getCards();
+      const viewportCenter = carousel.scrollLeft + carousel.clientWidth / 2;
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
+      return cards.reduce((closest, card) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(cardCenter - viewportCenter);
+
+        if (!closest || distance < closest.distance) {
+          return { card, distance };
         }
 
-        if (!reduceMotionQuery.matches) {
-          const normalized = Math.min(1, distance / Math.max(1, carouselRect.width * 0.62));
-          const direction = cardCenter < carouselCenter ? -1 : 1;
-          card.style.setProperty("--spotlight-scale", (1 - normalized * 0.1).toFixed(3));
-          card.style.setProperty("--spotlight-opacity", (1 - normalized * 0.2).toFixed(3));
-          card.style.setProperty("--spotlight-rotate", `${(direction * normalized * 3).toFixed(2)}deg`);
-          card.style.setProperty("--spotlight-y", `${(normalized * 10).toFixed(2)}px`);
-        }
+        return closest;
+      }, null)?.card;
+    };
+
+    const scrollToLoopIndex = (loopIndex, behavior = "smooth") => {
+      const target = carousel.querySelector(`[data-loop-index="${loopIndex}"]`);
+
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const left = target.offsetLeft - (carousel.clientWidth - target.offsetWidth) / 2;
+      carousel.scrollTo({ left, behavior: reduceMotionQuery.matches ? "auto" : behavior });
+    };
+
+    const updateActiveFromCenter = () => {
+      const centeredCard = getCenteredCard();
+      const slug = centeredCard?.getAttribute("data-project-slug");
+
+      if (slug) {
+        setActiveSlug(slug);
+      }
+    };
+
+    const normalizeLoopPosition = () => {
+      if (!mobileQuery.matches) {
+        return;
+      }
+
+      const centeredCard = getCenteredCard();
+      const loopIndex = Number(centeredCard?.getAttribute("data-loop-index"));
+
+      if (!Number.isFinite(loopIndex)) {
+        return;
+      }
+
+      const projectIndex = ((loopIndex % projectCount) + projectCount) % projectCount;
+      const normalizedLoopIndex = centerLoopGroup * projectCount + projectIndex;
+
+      if (loopIndex !== normalizedLoopIndex) {
+        scrollToLoopIndex(normalizedLoopIndex, "auto");
+        window.requestAnimationFrame(updateActiveFromCenter);
+      }
+    };
+
+    const alignInitialSlide = () => {
+      if (mobileQuery.matches) {
+        scrollToLoopIndex(centerLoopGroup * projectCount + centerProjectIndex, "auto");
+      }
+
+      setActiveSlug(highlightedProjects[centerProjectIndex]?.slug ?? highlightedProjects[0]?.slug ?? "");
+    };
+
+    const handleScroll = () => {
+      window.cancelAnimationFrame(scrollFrame);
+      window.clearTimeout(settleTimer);
+
+      scrollFrame = window.requestAnimationFrame(() => {
+        updateActiveFromCenter();
+        settleTimer = window.setTimeout(normalizeLoopPosition, 180);
       });
-
-      cards.forEach((card, index) => {
-        card.classList.toggle("is-active", index === closestIndex);
-      });
-
-      setActiveProjectIndex((currentIndex) =>
-        currentIndex === closestIndex ? currentIndex : closestIndex
-      );
     };
 
-    const schedule = () => {
-      if (!frame) {
-        frame = window.requestAnimationFrame(setCardState);
-      }
+    const handleScrollEnd = () => {
+      updateActiveFromCenter();
+      normalizeLoopPosition();
     };
 
-    const endDrag = (event) => {
-      if (!dragRef.current.active || event.pointerId !== dragRef.current.pointerId) {
-        return;
-      }
-
-      dragRef.current.active = false;
-      dragRef.current.pointerId = null;
-      carousel.classList.remove("is-dragging");
-      carousel.releasePointerCapture?.(event.pointerId);
+    const handleResize = () => {
+      window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(alignInitialSlide);
     };
 
-    const onPointerDown = (event) => {
-      if (event.pointerType !== "mouse" || event.button !== 0) {
-        return;
-      }
-
-      dragRef.current.active = true;
-      dragRef.current.pointerId = event.pointerId;
-      dragRef.current.startX = event.clientX;
-      dragRef.current.startScrollLeft = carousel.scrollLeft;
-      dragRef.current.suppressClick = false;
-      carousel.classList.add("is-dragging");
-      carousel.setPointerCapture?.(event.pointerId);
-    };
-
-    const onPointerMove = (event) => {
-      if (!dragRef.current.active || event.pointerId !== dragRef.current.pointerId) {
-        return;
-      }
-
-      const delta = event.clientX - dragRef.current.startX;
-
-      if (Math.abs(delta) > 5) {
-        dragRef.current.suppressClick = true;
-      }
-
-      carousel.scrollLeft = dragRef.current.startScrollLeft - delta;
-      event.preventDefault();
-    };
-
-    const onWheel = (event) => {
-      if (event.ctrlKey) {
-        return;
-      }
-
-      const horizontalIntent =
-        event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY);
-      const scrollDelta = horizontalIntent ? event.deltaX || event.deltaY : event.deltaY;
-
-      if (!scrollDelta) {
-        return;
-      }
-
-      event.preventDefault();
-      carousel.scrollBy({ left: scrollDelta, behavior: reduceMotionQuery.matches ? "auto" : "smooth" });
-    };
-
-    window.requestAnimationFrame(() => {
-      const initialCard = cards[initialProjectIndex];
-
-      if (initialCard) {
-        carousel.scrollLeft =
-          initialCard.offsetLeft + initialCard.offsetWidth / 2 - carousel.clientWidth / 2;
-      }
-
-      setCardState();
-    });
-    carousel.addEventListener("scroll", schedule, { passive: true });
-    carousel.addEventListener("pointerdown", onPointerDown);
-    carousel.addEventListener("pointermove", onPointerMove);
-    carousel.addEventListener("pointerup", endDrag);
-    carousel.addEventListener("pointercancel", endDrag);
-    carousel.addEventListener("lostpointercapture", endDrag);
-    carousel.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("resize", schedule);
-    reduceMotionQuery.addEventListener?.("change", schedule);
+    window.requestAnimationFrame(alignInitialSlide);
+    carousel.addEventListener("scroll", handleScroll, { passive: true });
+    carousel.addEventListener("scrollend", handleScrollEnd);
+    window.addEventListener("resize", handleResize);
+    mobileQuery.addEventListener?.("change", handleResize);
 
     return () => {
-      carousel.removeEventListener("scroll", schedule);
-      carousel.removeEventListener("pointerdown", onPointerDown);
-      carousel.removeEventListener("pointermove", onPointerMove);
-      carousel.removeEventListener("pointerup", endDrag);
-      carousel.removeEventListener("pointercancel", endDrag);
-      carousel.removeEventListener("lostpointercapture", endDrag);
-      carousel.removeEventListener("wheel", onWheel);
-      window.removeEventListener("resize", schedule);
-      reduceMotionQuery.removeEventListener?.("change", schedule);
-
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-      }
+      window.cancelAnimationFrame(resizeFrame);
+      window.cancelAnimationFrame(scrollFrame);
+      window.clearTimeout(settleTimer);
+      carousel.removeEventListener("scroll", handleScroll);
+      carousel.removeEventListener("scrollend", handleScrollEnd);
+      window.removeEventListener("resize", handleResize);
+      mobileQuery.removeEventListener?.("change", handleResize);
     };
   }, []);
 
-  const handleCardClick = (event) => {
-    if (!dragRef.current.suppressClick) {
+  const scrollToProject = (projectIndex) => {
+    const carousel = carouselRef.current;
+    const target = carousel?.querySelector(
+      `[data-loop-index="${centerLoopGroup * highlightedProjects.length + projectIndex}"]`
+    );
+
+    if (!(carousel instanceof HTMLElement) || !(target instanceof HTMLElement)) {
       return;
     }
 
-    event.preventDefault();
-    dragRef.current.suppressClick = false;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const left = target.offsetLeft - (carousel.clientWidth - target.offsetWidth) / 2;
+    carousel.scrollTo({ left, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    setActiveSlug(highlightedProjects[projectIndex]?.slug ?? "");
+  };
+
+  const handlePointerDown = (event) => {
+    if (event.pointerType === "touch") {
+      return;
+    }
+
+    const carousel = carouselRef.current;
+
+    if (!(carousel instanceof HTMLElement)) {
+      return;
+    }
+
+    dragStateRef.current = {
+      isActive: true,
+      moved: false,
+      pointerId: event.pointerId,
+      startScrollLeft: carousel.scrollLeft,
+      startX: event.clientX,
+    };
+    setIsDragging(true);
+    carousel.setPointerCapture?.(event.pointerId);
+  };
+
+  const handlePointerMove = (event) => {
+    const carousel = carouselRef.current;
+    const dragState = dragStateRef.current;
+
+    if (!(carousel instanceof HTMLElement) || !dragState.isActive) {
+      return;
+    }
+
+    const distance = event.clientX - dragState.startX;
+
+    if (Math.abs(distance) > 4) {
+      dragState.moved = true;
+      carousel.scrollLeft = dragState.startScrollLeft - distance;
+      event.preventDefault();
+    }
+  };
+
+  const finishPointerDrag = (event) => {
+    const carousel = carouselRef.current;
+    const dragState = dragStateRef.current;
+
+    if (!dragState.isActive) {
+      return;
+    }
+
+    if (dragState.moved) {
+      suppressClickRef.current = true;
+      window.setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
+
+      if (carousel instanceof HTMLElement) {
+        window.requestAnimationFrame(() => {
+          const cards = Array.from(carousel.querySelectorAll("[data-loop-index]"));
+          const viewportCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+          const closest = cards.reduce((current, card) => {
+            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            const distance = Math.abs(cardCenter - viewportCenter);
+
+            if (!current || distance < current.distance) {
+              return { card, distance };
+            }
+
+            return current;
+          }, null);
+
+          if (closest?.card instanceof HTMLElement) {
+            const left = closest.card.offsetLeft - (carousel.clientWidth - closest.card.offsetWidth) / 2;
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            carousel.scrollTo({ left, behavior: prefersReducedMotion ? "auto" : "smooth" });
+          }
+        });
+      }
+    }
+
+    dragStateRef.current = {
+      isActive: false,
+      moved: false,
+      pointerId: null,
+      startScrollLeft: 0,
+      startX: 0,
+    };
+    setIsDragging(false);
+    carousel?.releasePointerCapture?.(event.pointerId);
+  };
+
+  const handleCarouselClickCapture = (event) => {
+    if (suppressClickRef.current) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   };
 
   return (
@@ -199,39 +284,60 @@ export default function Projects() {
         </span>
       </h2>
 
-      <div className="projects__mobile-showcase" aria-label="Projecten carousel">
-        <div className="projects__carousel" ref={carouselRef}>
+      <div className="projects__mobile-showcase" aria-label="Uitgelichte projecten">
+        <div
+          className={`projects__carousel${isDragging ? " is-dragging" : ""}`}
+          ref={carouselRef}
+          onClickCapture={handleCarouselClickCapture}
+          onPointerCancel={finishPointerDrag}
+          onPointerDown={handlePointerDown}
+          onPointerLeave={finishPointerDrag}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerDrag}
+        >
           <div className="projects__carousel-track">
-            {featuredProjects.map((item, index) => (
+            {loopedProjects.map(({ item, projectIndex, loopIndex, isClone }) => (
               <a
-                className={`projects__carousel-card ${index === activeProjectIndex ? "is-active" : ""}`}
+                className={`projects__carousel-card ${item.slug === activeSlug ? "is-active" : ""}`}
+                data-clone={isClone ? "true" : undefined}
+                data-loop-index={loopIndex}
+                data-project-index={projectIndex}
+                data-project-slug={item.slug}
+                draggable={false}
                 href={resolveHref(item.href)}
-                key={`project-${item.slug}`}
-                onClick={handleCardClick}
-                onFocus={() => {
-                  carouselCardRefs.current[index]?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "center",
-                  });
-                }}
-                ref={(node) => {
-                  carouselCardRefs.current[index] = node;
-                }}
-                style={{ "--tilt": `${index % 2 === 0 ? "-1.2deg" : "1.2deg"}` }}
-                aria-label={`Bekijk case ${item.client}`}
+                key={`project-${loopIndex}-${item.slug}`}
+                onDragStart={(event) => event.preventDefault()}
+                style={{ "--tilt": `${projectIndex % 2 === 0 ? "-1.2deg" : "1.2deg"}` }}
+                aria-label={`Bekijk case ${projectLabels[item.slug] ?? item.client}`}
               >
-                <img src={assetPath(item.image)} alt={`${item.client} projectbeeld`} loading="lazy" decoding="async" />
+                <img
+                  src={assetPath(item.image)}
+                  alt={`${projectLabels[item.slug] ?? item.client} projectbeeld`}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                />
+                <span className="projects__card-title">{projectLabels[item.slug] ?? item.client}</span>
               </a>
             ))}
           </div>
         </div>
-        <p className="projects__active-title" aria-live="polite" key={featuredProjects[activeProjectIndex]?.client}>
-          {featuredProjects[activeProjectIndex]?.client}
-        </p>
+
+        <div className="projects__carousel-dots" aria-label="Uitgelicht project kiezen">
+          {highlightedProjects.map((item, index) => (
+            <button
+              aria-label={`Toon ${projectLabels[item.slug] ?? item.client}`}
+              aria-pressed={item.slug === activeSlug}
+              className="projects__carousel-dot"
+              key={`dot-${item.slug}`}
+              onClick={() => scrollToProject(index)}
+              type="button"
+            />
+          ))}
+        </div>
       </div>
 
-      <a className="button button--red projects__button" href={assetPath("/work/")}>
+      <a className="button projects__button projects__button--yellow" href={assetPath("/work/")}>
         <span>Zie alle</span>
         <span>projecten</span>
       </a>

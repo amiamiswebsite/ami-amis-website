@@ -1,3 +1,5 @@
+import { assetPath } from "../../src/lib/assetPath";
+
 const testimonials = [
   {
     quote:
@@ -35,19 +37,21 @@ export default function Testimonials() {
           <a
             aria-label={`Bekijk de case van ${item.client}`}
             className={`quote ${item.variant}`}
-            href={item.href}
+            href={assetPath(item.href)}
             key={item.client}
           >
             <span className="quote-mark">"</span>
             <p>{item.quote}</p>
             <span className="quote__footer">
-              <span className="quote__case-link">zie case</span>
+              <span className="quote__case-link">
+                <span>zie case</span>
+              </span>
               <strong>{item.client}</strong>
             </span>
           </a>
         ))}
-        <a className="button button--black testimonials__button" href="#contact">
-          Samen iets moois maken?
+        <a className="button button--black testimonials__button" href={assetPath("/contact/")}>
+          vrienden worden?
         </a>
       </div>
     </section>

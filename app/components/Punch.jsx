@@ -61,7 +61,7 @@ export default function Punch() {
               </span>
             ))}
           </div>
-          <a className="button button--red punch__button" href="#contact">
+          <a className="button button--red punch__button" href={assetPath("/contact/")}>
             Eens afspreken?
           </a>
         </div>

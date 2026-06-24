@@ -6,13 +6,6 @@ const INSTAGRAM_URL = "https://www.instagram.com/amiamismedia/";
 // Optional: sync follower count via Instagram Graph API when authenticated business account access is available.
 const strategyStats = [
   {
-    value: "747",
-    target: 747,
-    label: "volgers",
-    href: INSTAGRAM_URL,
-    type: "followers",
-  },
-  {
     value: "30,3k",
     target: 30.3,
     suffix: "k",
@@ -32,13 +25,6 @@ const strategyStats = [
 ];
 
 const socialBadges = [
-  {
-    icon: "user",
-    value: "747",
-    label: "volgers",
-    href: INSTAGRAM_URL,
-    className: "social-icon--comment",
-  },
   {
     icon: "play",
     value: "30,3k",
@@ -223,8 +209,8 @@ export default function SocialGrowth() {
     <section className="social-growth" id="groei" ref={sectionRef}>
       <div className="social-growth__copy">
         <h2>
-          Strategie.<wbr />Actie.
-          <span>Organische groei.</span>
+          Organische groei.
+          <span>door strategie en actie.</span>
         </h2>
         <p ref={textRef}>
           Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet
@@ -285,22 +271,16 @@ export default function SocialGrowth() {
       </div>
       <div className={`stats${isCounting ? " is-counting" : ""}`} ref={statsRef}>
         {strategyStats.map((stat, index) => {
-          const Tag = stat.href ? "a" : "div";
-
           return (
-          <Tag
+          <div
             className="stat"
-            href={stat.href}
             key={stat.label}
-            rel={stat.href ? "noopener noreferrer" : undefined}
-            target={stat.href ? "_blank" : undefined}
-            aria-label={stat.href ? "Bekijk Ami Amis op Instagram" : undefined}
           >
             <strong>
               {formatStatValue(stat, counts[index])}
             </strong>
             <span>{stat.label}</span>
-          </Tag>
+          </div>
           );
         })}
       </div>

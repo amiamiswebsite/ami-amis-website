@@ -594,10 +594,10 @@ export default function TeamPage() {
               <div className="de-amis-title-lockup">
                 <h2>De Amis</h2>
                 <p>
-                  Antwerpen is ons speelveld. En wij? Wij spelen niet altijd
-                  volgens de regels. Want wie wil opvallen, moet durven
-                  afwijken. Braaf binnen de lijntjes blijven? Daarvoor moet je
-                  niet bij ons zijn.
+                  Ami awie? Ami Amis. Ons team van strijders en durvers verzet
+                  bergen. Vanuit ons hoofdkwartier op de drukste winkelstraat
+                  van Antwerpen smeden we de lijpste ideeën en produceren we de
+                  graafste content.
                 </p>
               </div>
 

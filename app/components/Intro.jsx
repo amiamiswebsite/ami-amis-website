@@ -14,7 +14,6 @@ const tags = [
   ["animatie", "sky"],
   ["short form content", "cream"],
   ["audio design", "red"],
-  ["audio engineering", "yellow"],
   ["grading", "blue"],
   ["productie", "orange"],
   ["VFX", "sky"],
@@ -60,7 +59,7 @@ export default function Intro() {
           <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
         </div>
         <a className="button button--red intro__camera-cta" href={assetPath("/contact/")}>
-          eens samenwerken?
+          eens afspreken?
         </a>
       </div>
       <div className="tag-cloud" aria-label="Diensten">
@@ -69,6 +68,11 @@ export default function Intro() {
             {tag}
           </span>
         ))}
+      </div>
+      <div className="intro__mobile-cta-row">
+        <a className="button button--red intro__mobile-cta" href={assetPath("/contact/")}>
+          eens afspreken?
+        </a>
       </div>
     </section>
   );

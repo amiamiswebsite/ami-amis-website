@@ -325,7 +325,7 @@ export default function Brainstorm() {
           <div className="desk-storm-layer desk-storm-base-layer">
             <img
               className="desk-storm-image desk-storm-base"
-              src={assetPath("/assets/pennydesk.png")}
+              src={assetPath("/assets/pennydeskstorm.png")}
               alt=""
               loading="lazy"
               decoding="async"
@@ -351,7 +351,7 @@ export default function Brainstorm() {
           </div>
         </div>
       </div>
-      <a className="button button--red brainstorm__button" href="#contact">
+      <a className="button button--red brainstorm__button" href={assetPath("/contact/")}>
         Klik dan hier
       </a>
     </section>

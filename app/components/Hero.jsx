@@ -23,6 +23,11 @@ export default function Hero() {
     };
 
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const smoothStep = (value) => {
+      const t = clamp(value, 0, 1);
+      return t * t * (3 - 2 * t);
+    };
+    const phase = (value, start, end) => smoothStep((value - start) / (end - start));
 
     const getMaxFall = () => {
       const width = window.innerWidth;
@@ -58,6 +63,34 @@ export default function Hero() {
       const rawProgress = Math.max(0, Math.min(1, -rect.top / fallWindow));
       const progress = 1 - Math.pow(1 - rawProgress, 3);
       const mobile = window.innerWidth <= 768;
+
+      if (mobile) {
+        const mobileWindow = Math.max(1, window.innerHeight * 0.72);
+        const mobileRawProgress = Math.max(0, Math.min(1, -rect.top / mobileWindow));
+        const mobileProgress = smoothStep(mobileRawProgress);
+        const dropProgress = phase(mobileRawProgress, 0.12, 0.58);
+        const exitProgress = phase(mobileRawProgress, 0.58, 0.92);
+        const skyY = -72 + dropProgress * 110 - exitProgress * 72;
+        const sceneY = exitProgress * -74;
+
+        hero.style.setProperty("--hero-mobile-progress", mobileProgress.toFixed(4));
+        hero.style.setProperty("--hero-mobile-scene-y", `${sceneY.toFixed(2)}svh`);
+        hero.style.setProperty("--hero-mobile-sky-y", `${skyY.toFixed(2)}svh`);
+        hero.style.setProperty("--hero-mobile-sky-opacity", `${Math.min(1, dropProgress * 1.35).toFixed(4)}`);
+        hero.style.setProperty("--hero-mobile-sky-scale", `${(0.93 + dropProgress * 0.09).toFixed(4)}`);
+        hero.style.setProperty("--hero-mobile-sky-rotate", `${(-5 + dropProgress * 4 + exitProgress * 2).toFixed(2)}deg`);
+        hero.style.setProperty("--hero-mobile-cloud-y", `${(-8 * mobileProgress + sceneY * 0.38).toFixed(2)}svh`);
+        hero.style.setProperty("--hero-mobile-cloud-opacity", `${(0.22 + dropProgress * 0.12 - exitProgress * 0.16).toFixed(4)}`);
+      } else {
+        hero.style.setProperty("--hero-mobile-progress", "1");
+        hero.style.setProperty("--hero-mobile-scene-y", "0svh");
+        hero.style.setProperty("--hero-mobile-sky-y", "0svh");
+        hero.style.setProperty("--hero-mobile-sky-opacity", "1");
+        hero.style.setProperty("--hero-mobile-sky-scale", "1");
+        hero.style.setProperty("--hero-mobile-sky-rotate", "0deg");
+        hero.style.setProperty("--hero-mobile-cloud-y", "0px");
+        hero.style.setProperty("--hero-mobile-cloud-opacity", "0.52");
+      }
 
       hero.style.setProperty("--hero-fall", `${progress * getMaxFall()}px`);
       hero.style.setProperty("--hero-roll", `${-1 + progress * (mobile ? 2.2 : 2.8)}deg`);
@@ -200,6 +233,14 @@ export default function Hero() {
           <span className="hero__line hero__line--bottom" data-text="Durven springen">
             <span>Durven</span>
             <span>Springen</span>
+          </span>
+          <span className="hero__mobile-lockup" aria-hidden="true">
+            <span className="hero__mobile-line hero__mobile-line--top">VOOR MERKEN</span>
+            <span className="hero__mobile-line hero__mobile-line--middle">
+              <span>DIE</span>
+              <em>durven</em>
+            </span>
+            <span className="hero__mobile-line hero__mobile-line--bottom">SPRINGEN</span>
           </span>
         </h1>
         <div className="hero__skydiver" aria-hidden="true">
