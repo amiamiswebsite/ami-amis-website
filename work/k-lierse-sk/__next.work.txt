@@ -2,4 +2,4 @@
 2:I[39756,["/ami-amis-website/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
 3:I[37457,["/ami-amis-website/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
 4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"S2lyWg_94JwE-18e6ODxF"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"Xl9x0i3539hCFlEczN7xB"}
