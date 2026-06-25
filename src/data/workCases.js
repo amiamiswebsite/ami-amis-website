@@ -12,12 +12,12 @@ export const workFilters = [
 
 export const workCases = [
   {
-    client: "Tarzan en Jane",
+    client: "Tarzan & Jane",
     slug: "tarzan-en-jane",
-    title: "Speelse content voor een gezinsmerk",
+    title: "Een videoclip vol energie, kleur en plezier",
     description:
-      "Een kleurrijke videoclip vol energie, ritme en jungleplezier, aangevuld met social content.",
-    categories: ["Social content", "Video & campagnes"],
+      "Samen maken we content die even levendig is als hun speeltuin: vrolijk, kleurrijk en 100% Tarzan & Jane.",
+    categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding"],
     image: "/work/tarzan-en-jane-thumb.webp",
     href: "/work/tarzan-en-jane/",
     featured: false,
@@ -30,7 +30,7 @@ export const workCases = [
     description:
       "Een social-first promotievideo voor Stad Antwerpen en Visit Antwerpen rond hoeveel cultuur je in Antwerpen kan beleven in een dag.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
-    image: "/images/work/visit-antwerpen.jpg",
+    image: "/work/visit-antwerpen-thumb-portrait.jpg",
     href: "/ons-werk/visit-antwerpen/",
     featured: true,
     status: "ready",
@@ -48,11 +48,11 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "imore",
+    client: "Imore",
     slug: "imore",
-    title: "Social media van A-Z",
+    title: "Premium interieurs vragen premium content",
     description:
-      "Voor imore nemen we het social proces uit handen: concept, contentcreatie, copywriting en planning.",
+      "Een samenhangende reeks content die Imore toont zoals het hoort: stijlvol, kwalitatief en volledig on brand.",
     categories: ["Social content", "Fotografie", "Marketingstrategie"],
     image: "/work/imore.webp",
     href: "/work/imore/",
@@ -187,7 +187,7 @@ export const workCases = [
       "Een brandvideo met crash zooms, ongemakkelijke situaties en een fictieve blik op kantoor.",
     categories: ["Video & campagnes", "Marketingstrategie"],
     image: "/work/frankie-villager-thumb.webp",
-    href: "/work/frankie-villager/",
+    href: "/ons-werk/frankie-villager/",
     featured: false,
     status: "ready",
   },
@@ -221,7 +221,7 @@ export const workCases = [
     title: "X-Oats",
     description: "Twee advertenties op korte tijd rond de 1.000.000 sales milestone.",
     categories: ["Social content", "Fotografie", "Video & campagnes"],
-    image: "/work/x-oats-thumb.webp",
+    image: "/work/x-oats-thumb-portrait.jpg",
     href: "/work/x-oats/",
     featured: false,
     status: "ready",

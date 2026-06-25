@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 
-const INSTAGRAM_URL = "https://www.instagram.com/amiamismedia/";
+const VISIT_ANTWERPEN_CASE_URL = "/ons-werk/visit-antwerpen/";
 
 // Optional: sync follower count via Instagram Graph API when authenticated business account access is available.
 const strategyStats = [
@@ -277,7 +277,11 @@ export default function SocialGrowth() {
         </p>
       </div>
       <div className="phone-scene">
-        <div className="phone-frame">
+        <a
+          aria-label="Bekijk de case van Visit Antwerpen"
+          className="phone-frame"
+          href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
+        >
           <video
             aria-hidden="true"
             autoPlay
@@ -289,15 +293,13 @@ export default function SocialGrowth() {
           >
             <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
           </video>
-        </div>
+        </a>
         <a
           className="social-growth__instagram"
-          href={INSTAGRAM_URL}
-          rel="noopener noreferrer"
-          target="_blank"
-          aria-label="Bekijk Ami Amis op Instagram"
+          href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
+          aria-label="Bekijk de case van Visit Antwerpen"
         >
-          @amiamis
+          Visit Antwerpen
         </a>
         <span className="social-icon social-icon--heart" aria-hidden="true">
           <svg viewBox="0 0 24 24">

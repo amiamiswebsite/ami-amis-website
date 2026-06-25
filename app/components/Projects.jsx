@@ -304,6 +304,7 @@ export default function Projects() {
     if (suppressClickRef.current) {
       event.preventDefault();
       event.stopPropagation();
+      suppressClickRef.current = false;
     }
   };
 

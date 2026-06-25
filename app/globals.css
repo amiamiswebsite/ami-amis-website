@@ -1451,6 +1451,441 @@ a {
   }
 }
 
+/* Friends testimonials - composition 1 */
+.friends-testimonials {
+  padding: clamp(72px, 7vw, 112px) var(--page-pad) clamp(92px, 8vw, 136px);
+  overflow: hidden;
+  background: var(--yellow);
+  background-image: none;
+}
+
+.friends-testimonials__inner {
+  width: min(1360px, 100%);
+  max-width: 100%;
+  position: relative;
+}
+
+.friends-testimonials h2 {
+  max-width: none;
+  margin-inline: auto;
+  padding: 0;
+  color: var(--ink);
+  font-size: clamp(4.2rem, 7.7vw, 8.4rem);
+  line-height: 0.86;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.friends-testimonials h2 span {
+  color: inherit;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.friends-testimonials__viewport {
+  margin-top: clamp(40px, 4.7vw, 72px);
+  overflow: visible;
+}
+
+.friends-testimonials__rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(44px, 6vw, 96px);
+  align-items: start;
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.friend-testimonial {
+  min-width: 0;
+}
+
+.friend-testimonial__link,
+.friend-testimonial--visit-antwerpen .friend-testimonial__link {
+  position: relative;
+  display: block;
+  min-height: clamp(410px, 32vw, 500px);
+  padding: 0;
+  color: var(--ink);
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.friend-testimonial__link:focus-visible {
+  border-radius: 2px;
+  outline: 4px solid var(--blue);
+  outline-offset: 10px;
+}
+
+.friend-testimonial__photo,
+.friend-testimonial--x-oats .friend-testimonial__photo,
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  position: absolute;
+  z-index: 1;
+  top: clamp(82px, 6.6vw, 112px);
+  width: clamp(148px, 12.4vw, 184px);
+  margin: 0;
+  padding: clamp(8px, 0.8vw, 12px) clamp(8px, 0.8vw, 12px) clamp(28px, 2.8vw, 44px);
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.9), rgba(255, 250, 229, 0.9)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.42rem 0.52rem 0 rgba(28, 28, 28, 0.13),
+    0 0.9rem 1.35rem rgba(28, 28, 28, 0.1);
+  transform: rotate(var(--friend-photo-rotate, -4deg));
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.friend-testimonial__photo::before {
+  display: none;
+  content: none;
+}
+
+.friend-testimonial__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--paper);
+}
+
+.friend-testimonial__note,
+.friend-testimonial--x-oats .friend-testimonial__note,
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  position: absolute;
+  z-index: 2;
+  top: clamp(20px, 2.8vw, 46px);
+  display: flex;
+  flex-direction: column;
+  width: min(79%, 500px);
+  min-height: clamp(322px, 24vw, 386px);
+  margin: 0;
+  padding: clamp(36px, 3.2vw, 52px) clamp(30px, 3vw, 46px) clamp(26px, 2.4vw, 36px);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 250, 229, 0) 0 30px,
+      rgba(0, 97, 252, 0.13) 31px 32px,
+      rgba(255, 250, 229, 0) 33px 42px
+    ),
+    linear-gradient(rgba(255, 250, 229, 0.86), rgba(255, 250, 229, 0.96)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.46rem 0.56rem 0 rgba(28, 28, 28, 0.13),
+    0 1rem 1.55rem rgba(28, 28, 28, 0.08);
+  transform: rotate(var(--friend-note-rotate, 1deg));
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.friend-testimonial__note::before {
+  position: absolute;
+  top: clamp(-17px, -1.3vw, -12px);
+  left: 50%;
+  width: clamp(88px, 8vw, 132px);
+  height: clamp(24px, 2.2vw, 34px);
+  background:
+    linear-gradient(90deg, rgba(255, 250, 229, 0.48), rgba(255, 250, 229, 0.88)),
+    rgba(255, 250, 229, 0.72);
+  border: 1px solid rgba(28, 28, 28, 0.05);
+  content: "";
+  opacity: 0.84;
+  transform: translateX(-50%) rotate(var(--friend-note-tape-rotate, -1deg));
+}
+
+.friend-testimonial__mark {
+  display: block;
+  height: 0.45em;
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(3.3rem, 4.4vw, 5rem);
+  line-height: 0.58;
+}
+
+.friend-testimonial__note p {
+  flex: 1;
+  margin: clamp(18px, 1.7vw, 26px) 0 clamp(22px, 2vw, 30px);
+  font-family: var(--font-serif);
+  font-size: clamp(1.06rem, 1.28vw, 1.48rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.13;
+}
+
+.friend-testimonial__note footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(12px, 1.8vw, 22px);
+  margin-top: auto;
+}
+
+.friend-testimonial__case-link {
+  color: var(--red);
+  font-family: var(--font-serif);
+  font-size: clamp(1.34rem, 1.65vw, 1.92rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.9;
+}
+
+.friend-testimonial cite {
+  max-width: 52%;
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(1.08rem, 1.5vw, 1.78rem);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 0.92;
+  text-align: right;
+  text-transform: none;
+}
+
+.friend-testimonial--x-oats {
+  --friend-photo-rotate: -7deg;
+  --friend-note-rotate: 1.4deg;
+  --friend-note-tape-rotate: -2deg;
+}
+
+.friend-testimonial--x-oats .friend-testimonial__photo {
+  right: auto;
+  left: 0;
+}
+
+.friend-testimonial--x-oats .friend-testimonial__note {
+  right: 0;
+  left: auto;
+}
+
+.friend-testimonial--visit-antwerpen {
+  --friend-photo-rotate: 5deg;
+  --friend-note-rotate: -1.2deg;
+  --friend-note-tape-rotate: 2deg;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  right: 0;
+  left: auto;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  right: auto;
+  left: 0;
+}
+
+.friend-testimonial__link:hover .friend-testimonial__note,
+.friend-testimonial__link:focus-visible .friend-testimonial__note {
+  box-shadow:
+    0.6rem 0.7rem 0 rgba(28, 28, 28, 0.16),
+    0 1.1rem 1.7rem rgba(28, 28, 28, 0.09);
+  transform: rotate(calc(var(--friend-note-rotate, 1deg) * 0.55)) translate3d(0, -4px, 0);
+}
+
+.friend-testimonial__link:hover .friend-testimonial__photo,
+.friend-testimonial__link:focus-visible .friend-testimonial__photo {
+  box-shadow:
+    0.58rem 0.68rem 0 rgba(28, 28, 28, 0.16),
+    0 1.08rem 1.55rem rgba(28, 28, 28, 0.1);
+  transform: rotate(calc(var(--friend-photo-rotate, -4deg) * 0.68)) translate3d(0, -4px, 0);
+}
+
+.friends-testimonials__dots {
+  display: none;
+}
+
+.friends-testimonials__cta {
+  display: flex;
+  width: fit-content;
+  min-width: clamp(250px, 24vw, 350px);
+  margin: clamp(22px, 2.8vw, 38px) auto 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(1rem, 1.16vw, 1.18rem);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1080px) {
+  .friends-testimonials__rail {
+    gap: clamp(28px, 3.5vw, 44px);
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(370px, 35vw, 440px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: clamp(78px, 7vw, 98px);
+    width: clamp(128px, 14vw, 164px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    width: min(80%, 390px);
+    min-height: clamp(300px, 29vw, 354px);
+    padding: clamp(32px, 3.4vw, 42px) clamp(24px, 2.9vw, 34px) clamp(24px, 2.7vw, 30px);
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(0.98rem, 1.45vw, 1.22rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .friends-testimonials {
+    padding: clamp(58px, 15vw, 78px) 0 clamp(86px, 18vw, 116px);
+  }
+
+  .friends-testimonials__inner {
+    width: 100%;
+  }
+
+  .friends-testimonials h2 {
+    max-width: 8.8em;
+    padding-inline: var(--page-pad);
+    font-size: clamp(2.85rem, 12.4vw, 4.25rem);
+    text-align: center;
+  }
+
+  .friends-testimonials__viewport {
+    margin-top: clamp(30px, 8vw, 42px);
+    overflow: hidden;
+  }
+
+  .friends-testimonials__rail {
+    display: flex;
+    gap: clamp(36px, 9vw, 46px);
+    align-items: stretch;
+    width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 10px var(--page-pad) 28px;
+    scroll-padding-inline: var(--page-pad);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .friends-testimonials__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--visit-antwerpen {
+    flex: 0 0 calc(100vw - (var(--page-pad) * 2));
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: 0;
+    padding-top: clamp(72px, 19vw, 96px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: 0;
+    width: clamp(132px, 39vw, 172px);
+    padding: 7px 7px clamp(22px, 6.6vw, 30px);
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__photo {
+    left: clamp(4px, 2vw, 12px);
+  }
+
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    right: clamp(4px, 2vw, 12px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: 100%;
+    min-height: 0;
+    margin: clamp(78px, 20vw, 104px) 0 0;
+    padding: clamp(31px, 8.2vw, 40px) clamp(22px, 6.2vw, 30px) clamp(24px, 6.4vw, 32px);
+  }
+
+  .friend-testimonial__mark {
+    font-size: clamp(2.95rem, 13vw, 4rem);
+  }
+
+  .friend-testimonial__note p {
+    margin-top: clamp(16px, 4vw, 22px);
+    font-size: clamp(1.12rem, 5vw, 1.42rem);
+    line-height: 1.12;
+  }
+
+  .friend-testimonial__case-link {
+    font-size: clamp(1.2rem, 5.4vw, 1.62rem);
+  }
+
+  .friend-testimonial cite {
+    font-size: clamp(1.02rem, 4.9vw, 1.48rem);
+  }
+
+  .friends-testimonials__dots {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 0;
+  }
+
+  .friends-testimonials__dot {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0;
+    background: rgba(255, 250, 229, 0.7);
+    box-shadow: 2px 2px 0 rgba(28, 28, 28, 0.26);
+    cursor: pointer;
+  }
+
+  .friends-testimonials__dot[aria-current="true"] {
+    background: var(--red);
+  }
+
+  .friends-testimonials__dot:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 4px;
+  }
+
+  .friends-testimonials__cta {
+    min-width: min(320px, calc(100vw - (var(--page-pad) * 2)));
+    margin-top: clamp(24px, 8vw, 36px);
+  }
+}
+
+@media (max-width: 390px) {
+  .friend-testimonial__note p {
+    font-size: clamp(1.02rem, 4.75vw, 1.24rem);
+  }
+
+  .friend-testimonial cite {
+    max-width: 50%;
+  }
+}
+
 .audience-row {
   justify-self: center;
   display: flex;
@@ -2630,6 +3065,7 @@ a {
   z-index: 3;
   top: 28px;
   left: clamp(52px, 5vw, 64px);
+  display: block;
   width: min(202px, 18vw);
   aspect-ratio: 0.58;
   padding: 3px;
@@ -2638,6 +3074,11 @@ a {
   background: #101010;
   box-shadow: 0 0 0 5px var(--paper), 10px 14px 0 rgba(28, 28, 28, 0.24);
   transform: rotate(10deg);
+}
+
+.phone-frame:focus-visible {
+  outline: 4px solid var(--blue);
+  outline-offset: 8px;
 }
 
 .phone-frame::before {
@@ -15547,7 +15988,7 @@ body.collage-ready .filmroll-highlights__cta {
 
 .work-card:hover .work-card__media,
 .work-card:focus-visible .work-card__media {
-  box-shadow: 4px 4px 0 var(--blue), 10px 10px 0 rgba(28, 28, 28, 0.9);
+  box-shadow: 10px 10px 0 var(--blue);
   transform: rotate(-0.5deg);
 }
 
@@ -16592,7 +17033,7 @@ body.collage-ready .filmroll-highlights__cta {
   line-height: 1;
   text-align: right;
   text-decoration: none;
-  text-transform: lowercase;
+  text-transform: none;
   transition:
     color 180ms ease,
     text-decoration-color 180ms ease,
@@ -19961,6 +20402,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 
 .va-pdf-page {
   overflow: clip;
+  overflow-x: clip;
   background:
     radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.3), transparent 20rem),
     var(--paper-bg-image),
@@ -20095,6 +20537,11 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   pointer-events: none;
 }
 
+.va-pdf-hero__sticker {
+  display: none;
+  pointer-events: none;
+}
+
 .va-pdf-video-card {
   --va-video-caption-inset: clamp(0.78rem, 1.25vw, 1.08rem);
   position: relative;
@@ -20112,6 +20559,10 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   transform: rotate(-2deg);
 }
 
+.va-pdf-video-card--wide {
+  width: min(100%, 34rem);
+}
+
 .va-pdf-video-card:hover {
   filter: drop-shadow(0.5rem 0.7rem 0 rgba(28, 28, 28, 0.16));
   transform: translateY(-4px);
@@ -20122,21 +20573,37 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 }
 
 .va-pdf-video-card__screen {
+  --va-video-frame-border: clamp(0.32rem, 0.7vw, 0.55rem);
+  --va-video-frame-radius: clamp(1.25rem, 2vw, 1.8rem);
   position: relative;
+  box-sizing: border-box;
   overflow: hidden;
-  aspect-ratio: 9 / 16;
-  border: clamp(0.32rem, 0.7vw, 0.55rem) solid var(--va-black);
-  border-radius: clamp(1.25rem, 2vw, 1.8rem);
+  aspect-ratio: var(--va-video-aspect, 9 / 16);
+  border: 0;
+  border-radius: var(--va-video-frame-radius);
+  padding: var(--va-video-frame-border);
   background: var(--va-black);
   box-shadow:
     0.35rem 0.45rem 0 rgba(28, 28, 28, 0.82),
     inset 0 0 0 0.12rem rgba(255, 250, 229, 0.75);
+  clip-path: inset(0 round var(--va-video-frame-radius));
   cursor: pointer;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+.va-pdf-video-card--vimeo .va-pdf-video-card__screen {
+  cursor: default;
+}
+
+.va-pdf-video-card--image .va-pdf-video-card__screen {
+  background: var(--va-paper);
+  cursor: default;
 }
 
 .va-pdf-video-card__screen::after {
   position: absolute;
-  inset: auto 0 0;
+  inset: auto var(--va-video-frame-border) var(--va-video-frame-border);
   z-index: 1;
   height: 42%;
   background: linear-gradient(
@@ -20145,6 +20612,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     rgba(28, 28, 28, 0.42) 42%,
     rgba(28, 28, 28, 0.78) 100%
   );
+  border-radius: 0 0 calc(var(--va-video-frame-radius) - var(--va-video-frame-border)) calc(var(--va-video-frame-radius) - var(--va-video-frame-border));
   content: "";
   pointer-events: none;
 }
@@ -20160,6 +20628,30 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   z-index: 0;
   width: 100%;
   height: 100%;
+  border-radius: calc(var(--va-video-frame-radius) - var(--va-video-frame-border));
+  clip-path: inset(0 round calc(var(--va-video-frame-radius) - var(--va-video-frame-border)));
+  object-fit: cover;
+}
+
+.va-pdf-video-card__screen iframe {
+  display: block;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: calc(var(--va-video-frame-radius) - var(--va-video-frame-border));
+  clip-path: inset(0 round calc(var(--va-video-frame-radius) - var(--va-video-frame-border)));
+}
+
+.va-pdf-video-card__screen img {
+  display: block;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--va-video-frame-radius) - var(--va-video-frame-border));
+  clip-path: inset(0 round calc(var(--va-video-frame-radius) - var(--va-video-frame-border)));
   object-fit: cover;
 }
 
@@ -20285,6 +20777,10 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     margin: auto;
   }
 
+  .va-pdf-hero--plain .va-pdf-video-card--hero.va-pdf-video-card--wide {
+    width: clamp(22rem, 42vw, 38rem);
+  }
+
   .va-pdf-hero__cathedral-collage {
     z-index: 2;
     top: clamp(5.4rem, 7.2vw, 7.4rem);
@@ -20292,6 +20788,84 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     bottom: auto;
     width: clamp(19rem, 27vw, 31rem);
     transform: rotate(2deg);
+  }
+
+  .va-pdf-hero--plain {
+    display: grid;
+    align-items: center;
+    min-height: min(720px, 78vh);
+    padding-top: clamp(7.2rem, 8vw, 9rem);
+    padding-bottom: clamp(4rem, 5.8vw, 5.6rem);
+  }
+
+  .va-pdf-hero--plain .va-pdf-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(20rem, 0.82fr) minmax(32rem, 1.18fr);
+    align-items: center;
+    gap: clamp(2.25rem, 4.6vw, 5.5rem);
+    width: min(1280px, 100%);
+    height: auto;
+    min-height: clamp(30rem, 36vw, 38rem);
+  }
+
+  .va-pdf-hero--plain .va-pdf-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(1.75rem, 3vw, 2.8rem);
+    min-width: 0;
+  }
+
+  .va-pdf-hero--plain h1 {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, 8.2em);
+    max-width: none;
+    margin: 0;
+    font-size: clamp(4.45rem, 5.45vw, 6.7rem);
+    line-height: 0.86;
+  }
+
+  .va-pdf-hero--plain .va-pdf-quote {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, 38rem);
+    min-height: clamp(10.8rem, 13vw, 14rem);
+    margin: 0 0 0 clamp(0.2rem, 0.8vw, 0.7rem);
+    padding: clamp(2.25rem, 2.8vw, 3.15rem) clamp(2.1rem, 3vw, 3.3rem) clamp(1.9rem, 2.6vw, 2.85rem);
+    transform: rotate(-2.5deg);
+  }
+
+  .va-pdf-hero--plain .va-pdf-hero__media {
+    position: relative;
+    top: auto;
+    right: auto;
+    display: grid;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    place-items: center;
+  }
+
+  .va-pdf-hero--plain .va-pdf-video-card--hero,
+  .va-pdf-hero--plain .va-pdf-video-card--hero.va-pdf-video-card--wide {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, clamp(34rem, 45vw, 43rem));
+    margin: 0;
+    transform: rotate(1.25deg);
+  }
+
+  .va-pdf-hero--plain .va-pdf-video-card--hero:not(.va-pdf-video-card--wide) {
+    width: min(100%, clamp(16rem, 21vw, 22rem));
+  }
+
+  .va-pdf-hero--plain .va-pdf-video-card--hero:hover {
+    transform: rotate(0deg) translateY(-4px);
   }
 }
 
@@ -20321,23 +20895,51 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 }
 
 .va-pdf-stats {
-  padding: clamp(1rem, 3vw, 2.2rem) clamp(1.25rem, 5vw, 5rem);
+  padding: clamp(1rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem);
 }
 
 .va-pdf-stats dl {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
-  width: min(880px, 100%);
+  width: min(1120px, 100%);
   margin: 0 auto;
+  padding: clamp(1.15rem, 2.9vw, 2.7rem) clamp(0.55rem, 2.4vw, 2rem);
+  overflow: hidden;
+  background-color: rgba(255, 250, 229, 0.9);
+  background-image:
+    linear-gradient(rgba(255, 250, 229, 0.68), rgba(255, 250, 229, 0.68)),
+    var(--paper-bg-image);
+  background-blend-mode: normal, multiply;
+  border: 1px solid rgba(29, 29, 29, 0.07);
+  border-radius: clamp(1rem, 2.4vw, 1.75rem);
+  box-shadow:
+    0 0.42rem 1.25rem rgba(29, 29, 29, 0.08),
+    inset 0 0 0 1px rgba(29, 29, 29, 0.03);
+  backdrop-filter: blur(2px);
+}
+
+.va-pdf-stats dl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 16% 24%, rgba(29, 29, 29, 0.1) 0 0.8px, transparent 1.2px),
+    radial-gradient(circle at 72% 34%, rgba(29, 29, 29, 0.08) 0 0.7px, transparent 1.1px);
+  background-size: 3.9rem 3.4rem, 4.6rem 4.2rem;
+  opacity: 0.18;
+  pointer-events: none;
 }
 
 .va-pdf-stats dl:has(.va-pdf-stat--long) {
-  width: min(1040px, 100%);
+  width: min(1180px, 100%);
 }
 
 .va-pdf-stats div {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20347,12 +20949,28 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 .va-pdf-stats div + div::before {
   content: "";
   position: absolute;
-  top: 18%;
-  bottom: 18%;
+  top: 50%;
   left: 0;
-  width: 3px;
+  width: clamp(0.28rem, 0.45vw, 0.42rem);
+  height: clamp(3.9rem, 5.1vw, 5.7rem);
   background: var(--va-blue);
-  border-radius: 999px;
+  transform: translate(-50%, -50%) rotate(var(--stat-stroke-tilt, -1deg));
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 3 C4.5 19 7.8 34 5.4 50 C3.7 65 7.4 82 5.8 99 C5.4 106 5.9 112 6.8 117' fill='none' stroke='black' stroke-width='5.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 3 C4.5 19 7.8 34 5.4 50 C3.7 65 7.4 82 5.8 99 C5.4 106 5.9 112 6.8 117' fill='none' stroke='black' stroke-width='5.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.va-pdf-stats div:nth-child(3)::before {
+  --stat-stroke-tilt: 1.2deg;
+}
+
+.va-pdf-stats div:nth-child(4)::before {
+  --stat-stroke-tilt: -0.6deg;
 }
 
 .va-pdf-stats dd,
@@ -20400,6 +21018,15 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   justify-self: center;
 }
 
+.va-pdf-video-grid--count-1 {
+  grid-template-columns: minmax(0, 1fr);
+  width: min(760px, calc(100% - 2.5rem));
+}
+
+.va-pdf-video-grid--count-1 .va-pdf-video-card {
+  width: min(100%, 34rem);
+}
+
 .va-pdf-video-grid--count-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   width: min(760px, calc(100% - 2.5rem));
@@ -20409,6 +21036,33 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   width: min(100%, 22rem);
 }
 
+.va-pdf-video-grid--count-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(980px, calc(100% - 2.5rem));
+}
+
+.va-pdf-video-grid--count-3 .va-pdf-video-card {
+  width: min(100%, 22rem);
+}
+
+.va-pdf-video-grid--count-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: min(1040px, calc(100% - 2.5rem));
+}
+
+.va-pdf-video-grid--count-4 .va-pdf-video-card {
+  width: min(100%, 17.5rem);
+}
+
+.va-pdf-video-grid--count-4.va-pdf-video-grid--wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(1080px, calc(100% - 2.5rem));
+}
+
+.va-pdf-video-grid--count-4.va-pdf-video-grid--wide .va-pdf-video-card {
+  width: min(100%, 34rem);
+}
+
 .va-pdf-outro {
   display: grid;
   place-items: center;
@@ -20416,53 +21070,69 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 }
 
 .va-pdf-outro p {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
+  max-width: min(64rem, 100%);
   margin: 0;
   color: var(--va-paper);
   font-family: var(--font-serif);
   font-size: clamp(1.55rem, 3.4vw, 3rem);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1.18;
   text-align: center;
 }
 
 .va-pdf-outro span {
-  display: block;
-  width: fit-content;
-  padding: 0.05em 0.34em 0.12em;
+  display: inline;
+  padding: 0.02em 0.34em 0.16em;
   background: var(--va-red);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.va-pdf-outro span::after {
+  content: "\A";
+  white-space: pre;
+}
+
+.va-pdf-outro span:last-child::after {
+  content: "";
 }
 
 .va-pdf-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  width: min(980px, calc(100% - 2.5rem));
+  gap: clamp(2rem, 3.4vw, 3.6rem);
+  width: min(980px, calc(100% - 4rem));
   margin: 0 auto clamp(3rem, 7vw, 6rem);
 }
 
 .va-pdf-summary article {
   position: relative;
-  min-height: 15rem;
-  padding: clamp(1.2rem, 2vw, 2rem) clamp(1.1rem, 2vw, 1.8rem);
-}
-
-.va-pdf-summary article + article {
-  border-left: 3px solid var(--va-yellow);
+  display: grid;
+  grid-template-columns: clamp(2.55rem, 3.9vw, 3.35rem) minmax(0, 1fr);
+  align-content: start;
+  align-items: center;
+  column-gap: clamp(0.8rem, 1.2vw, 1rem);
+  row-gap: clamp(0.85rem, 1.4vw, 1.05rem);
+  min-height: 13.5rem;
+  padding: clamp(1rem, 1.8vw, 1.65rem) 0;
 }
 
 .va-pdf-summary img {
+  grid-column: 1;
+  grid-row: 1;
   display: block;
-  width: clamp(3.4rem, 6.2vw, 5.8rem);
-  height: clamp(3.4rem, 6.2vw, 5.8rem);
-  margin: 0 0 0.9rem auto;
+  width: 100%;
+  height: auto;
+  margin: 0;
   object-fit: contain;
+  filter: drop-shadow(0.16rem 0.2rem 0 rgba(28, 28, 28, 0.1));
 }
 
 .va-pdf-summary h2 {
-  margin: 0 0 0.9rem;
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
   color: var(--va-red);
   font-family: var(--font-black);
   font-size: clamp(1.1rem, 1.8vw, 1.55rem);
@@ -20472,7 +21142,9 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 }
 
 .va-pdf-summary p {
+  grid-column: 1 / -1;
   margin: 0;
+  max-width: 29ch;
   font-family: var(--font-sans);
   font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   font-weight: 700;
@@ -20637,6 +21309,38 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     display: none;
   }
 
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain {
+    padding-top: clamp(6.35rem, 9vw, 7.9rem);
+    padding-bottom: clamp(4.8rem, 9vw, 6.4rem);
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain h1 {
+    max-width: min(58vw, 7.1em);
+    margin-top: clamp(4.35rem, 8.5vw, 6rem);
+    font-size: clamp(3.55rem, 8.6vw, 5.45rem);
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain .va-pdf-quote {
+    width: min(34rem, 58vw);
+    margin-top: clamp(1.2rem, 2.5vw, 1.9rem);
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain .va-pdf-hero__media {
+    top: clamp(6.3rem, 12vw, 8.2rem);
+    right: clamp(1.25rem, 7vw, 4.25rem);
+    display: block;
+    width: clamp(8.4rem, 19.5vw, 12rem);
+    height: auto;
+    transform: rotate(5deg);
+  }
+
+  .va-pdf-hero--has-sticker .va-pdf-hero__sticker {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0.45rem 0.55rem 0 rgba(28, 28, 28, 0.16));
+  }
+
   .va-pdf-hero__cathedral-collage {
     top: 0;
     right: 0;
@@ -20651,17 +21355,41 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     width: min(680px, calc(100% - 2.5rem));
   }
 
+  .va-pdf-video-grid--count-1 {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(620px, calc(100% - 2.5rem));
+  }
+
   .va-pdf-video-grid--count-2 {
     width: min(620px, calc(100% - 2.5rem));
   }
 
+  .va-pdf-video-grid--count-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(680px, calc(100% - 2.5rem));
+  }
+
+  .va-pdf-video-grid--count-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(680px, calc(100% - 2.5rem));
+  }
+
+  .va-pdf-video-grid--count-4 .va-pdf-video-card {
+    width: min(100%, 17.5rem);
+  }
+
+  .va-pdf-video-grid--count-4.va-pdf-video-grid--wide .va-pdf-video-card {
+    width: min(100%, 34rem);
+  }
+
   .va-pdf-summary {
     grid-template-columns: 1fr;
+    gap: clamp(1.4rem, 4vw, 2.4rem);
+    width: min(39rem, calc(100% - 3rem));
   }
 
   .va-pdf-summary article + article {
-    border-top: 3px solid var(--va-yellow);
-    border-left: 0;
+    border: 0;
   }
 
   .va-pdf-summary article {
@@ -20669,27 +21397,70 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .va-pdf-summary img {
-    margin-left: 0;
+    margin: 0;
   }
 }
 
 @media (max-width: 640px) {
   .va-pdf-hero {
-    padding-top: 5.85rem;
+    overflow: hidden;
+    padding-top: clamp(5.55rem, 15vw, 6.65rem);
     padding-bottom: clamp(4rem, 11vw, 5.8rem);
   }
 
+  .va-pdf-hero__inner,
+  .va-pdf-story__inner {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .va-pdf-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "media"
+      "title"
+      "quote";
+    row-gap: clamp(0.55rem, 2.6vw, 0.95rem);
+    align-items: start;
+  }
+
+  .va-pdf-hero__copy {
+    display: contents;
+  }
+
   .va-pdf-hero h1 {
-    margin-top: clamp(6rem, 18vw, 7.5rem);
-    font-size: clamp(4.25rem, 17vw, 6.15rem);
+    grid-area: title;
+    width: 100%;
+    max-width: min(100%, calc(100vw - 2.5rem));
+    margin: 0;
+    font-size: clamp(2.45rem, 12.8vw, 4.2rem);
     line-height: 0.88;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .va-pdf-hero--plain h1 {
+    max-width: calc(100vw - 2.5rem);
+    font-size: clamp(2.45rem, 12.8vw, 4.05rem);
+    overflow-wrap: normal;
   }
 
   .va-pdf-quote {
+    grid-area: quote;
     min-height: clamp(18rem, 63vw, 24rem);
     width: 100%;
+    margin-top: clamp(2rem, 5.4vw, 2.65rem);
     padding: clamp(3.8rem, 9vw, 5rem) clamp(2.15rem, 7vw, 3.4rem) clamp(3rem, 8vw, 4.3rem);
     transform: rotate(-2deg);
+  }
+
+  .va-pdf-hero--plain .va-pdf-quote {
+    width: min(100%, calc(100vw - 3.5rem));
+    min-height: auto;
+    margin-inline: auto;
+    padding: clamp(2.8rem, 8vw, 3.7rem) clamp(1.65rem, 6vw, 2.4rem) clamp(2.45rem, 7vw, 3.4rem);
   }
 
   .va-pdf-quote::before {
@@ -20708,23 +21479,111 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     line-height: 1.14;
   }
 
-  .va-pdf-hero__media {
-    top: clamp(2rem, 8vw, 3.4rem);
-    right: clamp(1.6rem, 7vw, 3.4rem);
-    width: clamp(9rem, 32vw, 12.5rem);
+  .va-pdf-hero--plain .va-pdf-quote p {
+    font-size: clamp(1.32rem, 6.2vw, 1.95rem);
+    line-height: 1.08;
+    overflow-wrap: break-word;
   }
 
-  .va-pdf-hero--plain .va-pdf-hero__media {
+  .va-pdf-story p {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .va-pdf-hero__media {
+    position: relative;
+    z-index: 4;
+    grid-area: media;
+    justify-self: end;
+    top: auto;
+    right: auto;
+    width: clamp(6rem, 31vw, 9.1rem);
+    height: auto;
+    min-height: 0;
+    margin: 0 clamp(0.35rem, 3vw, 1rem) clamp(-0.6rem, -2vw, -0.25rem) 0;
+  }
+
+  .va-pdf-hero__cathedral-collage {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    display: block;
+    width: 100%;
+    transform: rotate(4deg);
+  }
+
+  .va-pdf-hero--plain:not(.va-pdf-hero--has-sticker) .va-pdf-hero__media {
     display: none;
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain {
+    min-height: 0;
+    padding-top: clamp(5.55rem, 15vw, 6.65rem);
+    padding-bottom: clamp(3.7rem, 10vw, 4.8rem);
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain h1 {
+    max-width: calc(100vw - 2.5rem);
+    margin: 0;
+    font-size: clamp(2.35rem, 12.3vw, 4rem);
+    line-height: 0.88;
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain .va-pdf-quote {
+    width: min(100%, calc(100vw - 3.6rem));
+    margin-top: clamp(2rem, 5.2vw, 2.6rem);
+  }
+
+  .va-pdf-hero--has-sticker.va-pdf-hero--plain .va-pdf-hero__media {
+    display: block;
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-self: end;
+    width: clamp(6rem, 31vw, 9rem);
+    margin: 0 clamp(0.25rem, 2.6vw, 0.9rem) clamp(-0.75rem, -2.4vw, -0.3rem) 0;
+    transform: rotate(5deg);
+  }
+
+  .va-pdf-stats {
+    padding-inline: clamp(0.65rem, 3.2vw, 1rem);
   }
 
   .va-pdf-stats dl {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.4rem 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    padding: clamp(0.8rem, 4.5vw, 1.1rem) clamp(0.2rem, 1.8vw, 0.45rem);
+    border-radius: clamp(0.75rem, 4vw, 1.15rem);
+    gap: 0;
+  }
+
+  .va-pdf-stats div {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .va-pdf-stats div + div::before {
+    width: clamp(0.18rem, 1.15vw, 0.28rem);
+    height: clamp(1.85rem, 10vw, 2.35rem);
+  }
+
+  .va-pdf-stats dd {
+    font-size: clamp(1.55rem, 8.5vw, 2.35rem);
+    line-height: 0.9;
+    white-space: nowrap;
+  }
+
+  .va-pdf-stats dt {
+    margin-top: clamp(0.08rem, 0.8vw, 0.18rem);
+    font-size: clamp(0.48rem, 2.5vw, 0.64rem);
+    white-space: nowrap;
   }
 
   .va-pdf-stats div:nth-child(3)::before {
-    display: none;
+    display: block;
   }
 
   .va-pdf-video-grid {
@@ -20740,57 +21599,52 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     scroll-snap-align: center;
   }
 
+  .va-pdf-video-grid--count-1 .va-pdf-video-card {
+    flex-basis: min(86vw, 34rem);
+  }
+
   .va-pdf-outro p {
-    align-items: flex-start;
     font-size: clamp(1.2rem, 7vw, 2rem);
-    text-align: left;
+    text-align: center;
   }
 
   .va-pdf-summary {
-    display: block;
-    width: 100%;
+    display: grid;
+    width: min(100%, 36rem);
     margin: 0 auto clamp(3.2rem, 11vw, 5rem);
     padding: clamp(2.6rem, 9vw, 3.6rem) clamp(1.45rem, 5vw, 2.1rem) clamp(3.4rem, 11vw, 4.8rem);
+    gap: clamp(2rem, 8vw, 3rem);
   }
 
   .va-pdf-summary article {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: clamp(2.65rem, 10vw, 3.35rem) minmax(0, 1fr);
     column-gap: clamp(0.8rem, 3vw, 1.25rem);
     row-gap: clamp(0.85rem, 3vw, 1.25rem);
     min-height: 0;
-    padding: clamp(2rem, 8vw, 3.1rem) 0;
-  }
-
-  .va-pdf-summary article:first-child {
-    padding-top: 0;
-  }
-
-  .va-pdf-summary article:last-child {
-    padding-bottom: 0;
+    padding: 0;
   }
 
   .va-pdf-summary article + article {
-    border-top: 3px solid var(--orange, #f29a2c);
-    border-left: 0;
+    border: 0;
   }
 
   .va-pdf-summary img {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 1;
-    align-self: start;
-    justify-self: end;
-    width: clamp(2.8rem, 10.5vw, 3.8rem);
-    height: clamp(2.8rem, 10.5vw, 3.8rem);
-    margin: -0.1rem 0 0;
+    align-self: center;
+    justify-self: start;
+    width: 100%;
+    height: auto;
+    margin: 0;
     object-fit: contain;
     filter: drop-shadow(0.18rem 0.22rem 0 rgba(28, 28, 28, 0.12));
   }
 
   .va-pdf-summary h2 {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
-    align-self: start;
+    align-self: center;
     margin: 0;
     font-size: clamp(1.45rem, 6.5vw, 2rem);
     line-height: 1;
@@ -20799,7 +21653,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   .va-pdf-summary p {
     grid-column: 1 / -1;
     margin: 0;
-    max-width: 100%;
+    max-width: 31rem;
     font-size: clamp(1rem, 4.35vw, 1.18rem);
     font-weight: 500;
     line-height: 1.35;
@@ -21281,11 +22135,22 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   display: none;
 }
 
-@media (max-width: 860px) {
+@media (min-width: 769px) and (max-width: 860px) {
+  .projects--carousel .projects__carousel {
+    width: min(100%, 52rem);
+  }
+
   .projects--carousel .projects__carousel-track {
-    grid-template-columns: 1fr;
-    max-width: 420px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.72rem, 1.8vw, 1rem);
+    max-width: 100%;
     margin-inline: auto;
+  }
+
+  .projects__card-title {
+    max-width: 100%;
+    padding: clamp(0.42rem, 0.85vw, 0.58rem) clamp(0.72rem, 1.7vw, 1rem) clamp(0.36rem, 0.72vw, 0.5rem);
+    font-size: clamp(1rem, 2.45vw, 1.42rem);
   }
 }
 
@@ -22627,12 +23492,13 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .intro__mobile-cta {
-    width: min(100%, 14rem);
+    width: min(100%, 16.25rem);
     min-height: 56px;
     padding: 0.9rem clamp(1.55rem, 8vw, 2.35rem) 0.78rem;
     border-width: 3px;
     box-shadow: 6px 6px 0 var(--ink);
     font-size: clamp(0.92rem, 3.8vw, 1.08rem);
+    white-space: nowrap;
   }
 
   @media (max-height: 800px), (max-width: 370px) {
@@ -22655,7 +23521,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     }
 
     .intro__mobile-cta {
-      width: min(100%, 13.25rem);
+      width: min(100%, 15rem);
       min-height: 52px;
       padding-block: 0.82rem 0.7rem;
     }
@@ -23024,13 +23890,18 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .projects__carousel-dots {
+    align-items: center;
     display: flex;
     justify-content: center;
     gap: 0.55rem;
     margin-top: clamp(0.15rem, 1.8vw, 0.5rem);
+    padding: 0.25rem 0 0.5rem;
+    overflow: visible;
   }
 
   .projects__carousel-dot {
+    display: block;
+    flex: 0 0 auto;
     width: 0.72rem;
     height: 0.72rem;
     border: 2px solid var(--ink);
@@ -23775,5 +24646,1856 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   .social-growth .stat + .stat {
     border-top: 1px solid rgba(255, 250, 229, 0.18);
     border-left: 0;
+  }
+}
+
+/* Friends testimonials collage */
+.friends-testimonials {
+  position: relative;
+  min-height: 0;
+  padding: clamp(64px, 6vw, 96px) clamp(20px, 4.5vw, 72px) clamp(88px, 6.6vw, 126px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255, 250, 229, 0.32), transparent 26rem),
+    radial-gradient(circle at 78% 58%, rgba(255, 60, 26, 0.1), transparent 32rem),
+    var(--yellow);
+}
+
+.friends-testimonials__inner {
+  position: relative;
+  z-index: 2;
+  width: min(1480px, 100%);
+  margin: 0 auto;
+}
+
+.friends-testimonials h2 {
+  max-width: none;
+  margin: 0 auto;
+  color: var(--ink);
+  font-family: var(--font-black);
+  font-size: clamp(4.2rem, 7.2vw, 8.25rem);
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.friends-testimonials h2 span {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.friends-testimonials__viewport {
+  margin-top: clamp(36px, 3.7vw, 58px);
+}
+
+.friends-testimonials__rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(26px, 3vw, 54px);
+  align-items: start;
+  width: 100%;
+  overflow: visible;
+}
+
+.friend-testimonial {
+  min-width: 0;
+}
+
+.friend-testimonial__link {
+  position: relative;
+  display: block;
+  min-height: 0;
+  padding-bottom: clamp(18px, 2vw, 32px);
+  color: var(--ink);
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.friend-testimonial__link:focus-visible {
+  outline: 4px solid var(--blue);
+  outline-offset: 10px;
+}
+
+.friend-testimonial__photo {
+  position: absolute;
+  z-index: 1;
+  width: clamp(132px, 12.8vw, 220px);
+  margin: 0;
+  padding: clamp(7px, 0.9vw, 12px) clamp(7px, 0.9vw, 12px) clamp(26px, 2.8vw, 44px);
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.9), rgba(255, 250, 229, 0.9)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.55rem 0.65rem 0 rgba(28, 28, 28, 0.16),
+    0 1.1rem 1.6rem rgba(28, 28, 28, 0.12);
+  transform: rotate(var(--friend-photo-rotate, -4deg));
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.friend-testimonial__photo::before {
+  position: absolute;
+  top: clamp(-14px, -1vw, -10px);
+  left: 50%;
+  width: clamp(72px, 7vw, 112px);
+  height: clamp(20px, 1.8vw, 30px);
+  background:
+    linear-gradient(90deg, rgba(255, 250, 229, 0.45), rgba(255, 250, 229, 0.82)),
+    rgba(255, 250, 229, 0.7);
+  border: 1px solid rgba(28, 28, 28, 0.05);
+  content: "";
+  opacity: 0.78;
+  transform: translateX(-50%) rotate(var(--friend-tape-rotate, 2deg));
+}
+
+.friend-testimonial__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--paper);
+}
+
+.friend-testimonial__note {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 31rem);
+  min-height: clamp(280px, 21vw, 350px);
+  margin: clamp(72px, 6.4vw, 112px) 0 0;
+  padding: clamp(32px, 2.8vw, 48px) clamp(28px, 2.7vw, 44px) clamp(24px, 2.3vw, 36px);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 250, 229, 0) 0 31px,
+      rgba(0, 97, 252, 0.13) 32px 33px,
+      rgba(255, 250, 229, 0) 34px 42px
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 250, 229, 0.96)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.52rem 0.62rem 0 rgba(28, 28, 28, 0.14),
+    0 1rem 1.7rem rgba(28, 28, 28, 0.09);
+  transform: rotate(var(--friend-note-rotate, 1deg));
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.friend-testimonial__note::before {
+  position: absolute;
+  top: clamp(-17px, -1.2vw, -12px);
+  left: 50%;
+  width: clamp(86px, 8vw, 130px);
+  height: clamp(24px, 2.2vw, 36px);
+  background:
+    linear-gradient(90deg, rgba(255, 250, 229, 0.44), rgba(255, 250, 229, 0.86)),
+    rgba(255, 250, 229, 0.72);
+  border: 1px solid rgba(28, 28, 28, 0.05);
+  content: "";
+  opacity: 0.82;
+  transform: translateX(-50%) rotate(var(--friend-note-tape-rotate, -1deg));
+}
+
+.friend-testimonial__mark {
+  display: block;
+  height: 0.46em;
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(3.4rem, 4.5vw, 5rem);
+  line-height: 0.6;
+}
+
+.friend-testimonial__note p {
+  flex: 1;
+  margin: clamp(18px, 1.7vw, 26px) 0 clamp(22px, 2vw, 32px);
+  font-family: var(--font-serif);
+  font-size: clamp(1.06rem, 1.28vw, 1.55rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.13;
+}
+
+.friend-testimonial__note em {
+  font-style: italic;
+}
+
+.friend-testimonial__note footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(12px, 1.8vw, 24px);
+  margin-top: auto;
+}
+
+.friend-testimonial__case-link {
+  position: relative;
+  flex: 0 0 auto;
+  color: var(--red);
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 1.65vw, 2rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.9;
+}
+
+.friend-testimonial__case-link::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.14em;
+  left: 0;
+  height: 0.12em;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.72) rotate(-1deg);
+  transform-origin: left;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.friend-testimonial cite {
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(1.15rem, 1.55vw, 1.9rem);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 0.9;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.friend-testimonial__link:hover .friend-testimonial__note,
+.friend-testimonial__link:focus-visible .friend-testimonial__note {
+  box-shadow:
+    0.7rem 0.82rem 0 rgba(28, 28, 28, 0.18),
+    0 1.2rem 1.9rem rgba(28, 28, 28, 0.1);
+  transform: rotate(calc(var(--friend-note-rotate, 1deg) * 0.55)) translate3d(0, -4px, 0);
+}
+
+.friend-testimonial__link:hover .friend-testimonial__photo,
+.friend-testimonial__link:focus-visible .friend-testimonial__photo {
+  box-shadow:
+    0.72rem 0.82rem 0 rgba(28, 28, 28, 0.19),
+    0 1.2rem 1.8rem rgba(28, 28, 28, 0.13);
+  transform: rotate(calc(var(--friend-photo-rotate, -4deg) * 0.65)) translate3d(0, -4px, 0);
+}
+
+.friend-testimonial__link:hover .friend-testimonial__case-link::after,
+.friend-testimonial__link:focus-visible .friend-testimonial__case-link::after {
+  opacity: 0.92;
+  transform: scaleX(1) rotate(-1deg);
+}
+
+.friend-testimonial--x-oats {
+  --friend-photo-rotate: -7deg;
+  --friend-note-rotate: 1.2deg;
+  --friend-tape-rotate: -5deg;
+  --friend-note-tape-rotate: 1deg;
+}
+
+.friend-testimonial--x-oats .friend-testimonial__photo {
+  top: clamp(58px, 5.7vw, 96px);
+  left: clamp(-44px, -2.8vw, -18px);
+}
+
+.friend-testimonial--x-oats .friend-testimonial__note {
+  width: calc(100% - clamp(54px, 5.4vw, 86px));
+  margin-left: clamp(54px, 5.4vw, 86px);
+}
+
+.friend-testimonial--visit-antwerpen {
+  --friend-photo-rotate: 4.5deg;
+  --friend-note-rotate: 2deg;
+  --friend-tape-rotate: 3deg;
+  --friend-note-tape-rotate: 1.5deg;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  top: clamp(68px, 6vw, 104px);
+  right: clamp(-16px, -1vw, -6px);
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  width: calc(100% - clamp(56px, 5.8vw, 96px));
+  margin-right: clamp(56px, 5.8vw, 96px);
+}
+
+.friends-testimonials__dots {
+  display: none;
+}
+
+.friends-testimonials__cta {
+  display: flex;
+  width: fit-content;
+  min-width: clamp(260px, 25vw, 360px);
+  margin: clamp(22px, 2.8vw, 42px) auto 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(1rem, 1.2vw, 1.22rem);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1120px) {
+  .friends-testimonials h2 {
+    font-size: clamp(3.6rem, 9vw, 6.6rem);
+  }
+
+  .friends-testimonials__rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 46px);
+  }
+
+  .friend-testimonial--visit-antwerpen {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(50%, 31rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .friends-testimonials {
+    padding: clamp(58px, 15vw, 78px) 0 clamp(86px, 18vw, 118px);
+  }
+
+  .friends-testimonials__inner {
+    width: 100%;
+  }
+
+  .friends-testimonials h2 {
+    max-width: 8.4em;
+    margin: 0;
+    padding-inline: var(--page-pad);
+    padding-right: clamp(72px, 20vw, 90px);
+    font-size: clamp(2.8rem, 12.3vw, 4.25rem);
+    line-height: 0.87;
+    text-align: left;
+  }
+
+  .friends-testimonials__viewport {
+    margin-top: clamp(30px, 8vw, 42px);
+    overflow: hidden;
+  }
+
+  .friends-testimonials__rail {
+    display: flex;
+    gap: clamp(16px, 4vw, 22px);
+    align-items: stretch;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 12px var(--page-pad) 26px;
+    scroll-padding-inline: var(--page-pad);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .friends-testimonials__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--visit-antwerpen {
+    flex: 0 0 min(86vw, 23.5rem);
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .friend-testimonial__link {
+    min-height: clamp(444px, 118vw, 540px);
+  }
+
+  .friend-testimonial__photo {
+    width: clamp(126px, 41vw, 168px);
+    padding: 7px 7px clamp(22px, 7vw, 32px);
+  }
+
+  .friend-testimonial__note {
+    width: 100%;
+    min-height: clamp(258px, 73vw, 330px);
+    margin: clamp(138px, 43vw, 178px) 0 0;
+    padding: clamp(28px, 8vw, 38px) clamp(24px, 7vw, 32px) clamp(22px, 6vw, 30px);
+  }
+
+  .friend-testimonial__mark {
+    font-size: clamp(3rem, 13vw, 4rem);
+  }
+
+  .friend-testimonial__note p {
+    margin-top: clamp(16px, 4vw, 22px);
+    font-size: clamp(1.16rem, 5.15vw, 1.48rem);
+    line-height: 1.12;
+  }
+
+  .friend-testimonial__case-link {
+    font-size: clamp(1.22rem, 5.7vw, 1.72rem);
+  }
+
+  .friend-testimonial cite {
+    font-size: clamp(1.08rem, 5.2vw, 1.62rem);
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__photo {
+    top: 8px;
+    left: clamp(2px, 2vw, 10px);
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: 14px;
+    right: clamp(0px, 2vw, 10px);
+  }
+
+  .friends-testimonials__dots {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 0;
+  }
+
+  .friends-testimonials__dot {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0;
+    background: rgba(255, 250, 229, 0.62);
+    box-shadow: 2px 2px 0 rgba(28, 28, 28, 0.28);
+    cursor: pointer;
+  }
+
+  .friends-testimonials__dot[aria-current="true"] {
+    background: var(--red);
+  }
+
+  .friends-testimonials__dot:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 4px;
+  }
+
+  .friends-testimonials__cta {
+    min-width: min(320px, calc(100vw - (var(--page-pad) * 2)));
+    margin-top: clamp(24px, 8vw, 36px);
+  }
+}
+
+@media (max-width: 380px) {
+  .friends-testimonials h2 {
+    font-size: clamp(2.72rem, 14.8vw, 3.55rem);
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--visit-antwerpen {
+    flex-basis: calc(100vw - (var(--page-pad) * 2));
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(1.04rem, 5vw, 1.28rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.collage-ready .friend-testimonial {
+    opacity: 0;
+    translate: 0 24px;
+    transition:
+      opacity 520ms ease,
+      translate 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body.collage-ready .is-visible .friend-testimonial {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  body.collage-ready .is-visible .friend-testimonial:nth-child(2) {
+    transition-delay: 80ms;
+  }
+
+  body.collage-ready .is-visible .friend-testimonial:nth-child(3) {
+    transition-delay: 150ms;
+  }
+}
+
+/* Friends testimonials final two-card layout */
+.friends-testimonials {
+  background: var(--yellow);
+}
+
+.friends-testimonials__rail {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(44px, 5.5vw, 92px);
+  width: min(1280px, 100%);
+  margin-inline: auto;
+}
+
+.friend-testimonial__link {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(18px, 2.2vw, 34px);
+  align-items: center;
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+.friend-testimonial__photo {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  width: min(100%, clamp(190px, 15vw, 258px));
+  transform: rotate(var(--friend-photo-rotate, -4deg));
+}
+
+.friend-testimonial__note,
+.friend-testimonial--x-oats .friend-testimonial__note,
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  min-height: clamp(285px, 21vw, 352px);
+  margin: 0;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__link {
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 0.42fr);
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  grid-column: 1;
+}
+
+@media (max-width: 980px) {
+  .friends-testimonials__rail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(34px, 5vw, 52px);
+    width: min(760px, 100%);
+  }
+
+  .friend-testimonial--visit-antwerpen {
+    grid-column: auto;
+    justify-self: stretch;
+    width: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .friends-testimonials__rail {
+    display: flex;
+    gap: clamp(44px, 10vw, 56px);
+    width: 100%;
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--visit-antwerpen {
+    flex: 0 0 calc(100vw - (var(--page-pad) * 2));
+    width: auto;
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(14px, 4vw, 20px);
+    min-height: 0;
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    grid-column: 1;
+    grid-row: 1;
+    width: clamp(150px, 48vw, 205px);
+    margin: 0;
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__photo {
+    justify-self: start;
+    margin-left: clamp(6px, 2vw, 12px);
+  }
+
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    justify-self: end;
+    margin-right: clamp(6px, 2vw, 12px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+  }
+}
+
+/* Friends testimonials composition 1 - final override */
+.friends-testimonials {
+  padding: clamp(72px, 7vw, 112px) var(--page-pad) clamp(92px, 8vw, 136px);
+  overflow: hidden;
+  background: var(--yellow);
+  background-image: none;
+}
+
+.friends-testimonials__inner {
+  width: min(1360px, 100%);
+  max-width: 100%;
+}
+
+.friends-testimonials h2 {
+  max-width: none;
+  margin-inline: auto;
+  padding: 0;
+  color: var(--ink);
+  font-size: clamp(4.2rem, 7.7vw, 8.4rem);
+  line-height: 0.86;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.friends-testimonials h2 span {
+  color: inherit;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.friends-testimonials__viewport {
+  margin-top: clamp(40px, 4.7vw, 72px);
+  overflow: visible;
+}
+
+.friends-testimonials__rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(44px, 6vw, 96px);
+  align-items: start;
+  width: min(1280px, 100%);
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.friend-testimonial,
+.friend-testimonial--visit-antwerpen {
+  width: auto;
+  min-width: 0;
+}
+
+.friend-testimonial__link,
+.friend-testimonial--visit-antwerpen .friend-testimonial__link {
+  position: relative;
+  display: block;
+  min-height: clamp(410px, 32vw, 500px);
+  padding: 0;
+  color: var(--ink);
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.friend-testimonial__photo,
+.friend-testimonial--x-oats .friend-testimonial__photo,
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  position: absolute;
+  z-index: 1;
+  top: clamp(82px, 6.6vw, 112px);
+  grid-column: auto;
+  grid-row: auto;
+  width: clamp(148px, 12.4vw, 184px);
+  margin: 0;
+  padding: clamp(8px, 0.8vw, 12px) clamp(8px, 0.8vw, 12px) clamp(28px, 2.8vw, 44px);
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.9), rgba(255, 250, 229, 0.9)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.42rem 0.52rem 0 rgba(28, 28, 28, 0.13),
+    0 0.9rem 1.35rem rgba(28, 28, 28, 0.1);
+  transform: rotate(var(--friend-photo-rotate, -4deg));
+}
+
+.friend-testimonial__photo::before {
+  display: none;
+  content: none;
+}
+
+.friend-testimonial__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--paper);
+}
+
+.friend-testimonial__note,
+.friend-testimonial--x-oats .friend-testimonial__note,
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  position: absolute;
+  z-index: 2;
+  top: clamp(20px, 2.8vw, 46px);
+  grid-column: auto;
+  grid-row: auto;
+  display: flex;
+  flex-direction: column;
+  width: min(74%, 470px);
+  min-height: clamp(322px, 24vw, 386px);
+  margin: 0;
+  padding: clamp(36px, 3.2vw, 52px) clamp(30px, 3vw, 46px) clamp(26px, 2.4vw, 36px);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 250, 229, 0) 0 30px,
+      rgba(0, 97, 252, 0.13) 31px 32px,
+      rgba(255, 250, 229, 0) 33px 42px
+    ),
+    linear-gradient(rgba(255, 250, 229, 0.86), rgba(255, 250, 229, 0.96)),
+    var(--paper-bg-image);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  box-shadow:
+    0.46rem 0.56rem 0 rgba(28, 28, 28, 0.13),
+    0 1rem 1.55rem rgba(28, 28, 28, 0.08);
+  transform: rotate(var(--friend-note-rotate, 1deg));
+}
+
+.friend-testimonial__note::before {
+  position: absolute;
+  top: clamp(-17px, -1.3vw, -12px);
+  left: 50%;
+  width: clamp(88px, 8vw, 132px);
+  height: clamp(24px, 2.2vw, 34px);
+  background:
+    linear-gradient(90deg, rgba(255, 250, 229, 0.48), rgba(255, 250, 229, 0.88)),
+    rgba(255, 250, 229, 0.72);
+  border: 1px solid rgba(28, 28, 28, 0.05);
+  content: "";
+  opacity: 0.84;
+  transform: translateX(-50%) rotate(var(--friend-note-tape-rotate, -1deg));
+}
+
+.friend-testimonial__mark {
+  display: block;
+  height: 0.45em;
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(3.3rem, 4.4vw, 5rem);
+  line-height: 0.58;
+}
+
+.friend-testimonial__note p {
+  flex: 1;
+  margin: clamp(18px, 1.7vw, 26px) 0 clamp(22px, 2vw, 30px);
+  font-family: var(--font-serif);
+  font-size: clamp(1.06rem, 1.28vw, 1.48rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.13;
+}
+
+.friend-testimonial__note footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(12px, 1.8vw, 22px);
+  margin-top: auto;
+}
+
+.friend-testimonial__case-link {
+  color: var(--red);
+  font-family: var(--font-serif);
+  font-size: clamp(1.34rem, 1.65vw, 1.92rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.9;
+}
+
+.friend-testimonial cite {
+  max-width: 52%;
+  color: var(--blue);
+  font-family: var(--font-black);
+  font-size: clamp(1.08rem, 1.5vw, 1.78rem);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 0.92;
+  text-align: right;
+  text-transform: none;
+}
+
+.friend-testimonial--x-oats {
+  --friend-photo-rotate: -7deg;
+  --friend-note-rotate: 1.4deg;
+  --friend-note-tape-rotate: -2deg;
+}
+
+.friend-testimonial--x-oats .friend-testimonial__photo {
+  right: auto;
+  left: 0;
+}
+
+.friend-testimonial--x-oats .friend-testimonial__note {
+  right: 0;
+  left: auto;
+}
+
+.friend-testimonial--visit-antwerpen {
+  --friend-photo-rotate: 5deg;
+  --friend-note-rotate: -1.2deg;
+  --friend-note-tape-rotate: 2deg;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  right: 0;
+  left: auto;
+}
+
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  right: auto;
+  left: 0;
+}
+
+.friend-testimonial__link:hover .friend-testimonial__note,
+.friend-testimonial__link:focus-visible .friend-testimonial__note {
+  box-shadow:
+    0.6rem 0.7rem 0 rgba(28, 28, 28, 0.16),
+    0 1.1rem 1.7rem rgba(28, 28, 28, 0.09);
+  transform: rotate(calc(var(--friend-note-rotate, 1deg) * 0.55)) translate3d(0, -4px, 0);
+}
+
+.friend-testimonial__link:hover .friend-testimonial__photo,
+.friend-testimonial__link:focus-visible .friend-testimonial__photo {
+  box-shadow:
+    0.58rem 0.68rem 0 rgba(28, 28, 28, 0.16),
+    0 1.08rem 1.55rem rgba(28, 28, 28, 0.1);
+  transform: rotate(calc(var(--friend-photo-rotate, -4deg) * 0.68)) translate3d(0, -4px, 0);
+}
+
+.friends-testimonials__dots {
+  display: none;
+}
+
+.friends-testimonials__cta {
+  display: flex;
+  width: fit-content;
+  min-width: clamp(250px, 24vw, 350px);
+  margin: clamp(22px, 2.8vw, 38px) auto 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(1rem, 1.16vw, 1.18rem);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1080px) {
+  .friends-testimonials__rail {
+    gap: clamp(28px, 3.5vw, 44px);
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(370px, 35vw, 440px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: clamp(78px, 7vw, 98px);
+    width: clamp(128px, 14vw, 164px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    width: min(74%, 370px);
+    min-height: clamp(300px, 29vw, 354px);
+    padding: clamp(32px, 3.4vw, 42px) clamp(24px, 2.9vw, 34px) clamp(24px, 2.7vw, 30px);
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(0.98rem, 1.45vw, 1.22rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .friends-testimonials {
+    padding: clamp(58px, 15vw, 78px) 0 clamp(86px, 18vw, 116px);
+  }
+
+  .friends-testimonials__inner {
+    width: 100%;
+  }
+
+  .friends-testimonials h2 {
+    max-width: 8.8em;
+    padding-inline: var(--page-pad);
+    font-size: clamp(2.85rem, 12.4vw, 4.25rem);
+    text-align: center;
+  }
+
+  .friends-testimonials__viewport {
+    margin-top: clamp(30px, 8vw, 42px);
+    overflow: hidden;
+  }
+
+  .friends-testimonials__rail {
+    display: flex;
+    gap: clamp(36px, 9vw, 46px);
+    align-items: stretch;
+    width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 10px var(--page-pad) 28px;
+    scroll-padding-inline: var(--page-pad);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .friends-testimonials__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--visit-antwerpen {
+    flex: 0 0 calc(100vw - (var(--page-pad) * 2));
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: 0;
+    padding-top: clamp(72px, 19vw, 96px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: 0;
+    width: clamp(132px, 39vw, 172px);
+    padding: 7px 7px clamp(22px, 6.6vw, 30px);
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__photo {
+    left: clamp(4px, 2vw, 12px);
+  }
+
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    right: clamp(4px, 2vw, 12px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: 100%;
+    min-height: 0;
+    margin: clamp(78px, 20vw, 104px) 0 0;
+    padding: clamp(31px, 8.2vw, 40px) clamp(22px, 6.2vw, 30px) clamp(24px, 6.4vw, 32px);
+  }
+
+  .friend-testimonial__mark {
+    font-size: clamp(2.95rem, 13vw, 4rem);
+  }
+
+  .friend-testimonial__note p {
+    margin-top: clamp(16px, 4vw, 22px);
+    font-size: clamp(1.12rem, 5vw, 1.42rem);
+    line-height: 1.12;
+  }
+
+  .friend-testimonial__case-link {
+    font-size: clamp(1.2rem, 5.4vw, 1.62rem);
+  }
+
+  .friend-testimonial cite {
+    font-size: clamp(1.02rem, 4.9vw, 1.48rem);
+  }
+
+  .friends-testimonials__dots {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 0;
+  }
+
+  .friends-testimonials__dot {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0;
+    background: rgba(255, 250, 229, 0.7);
+    box-shadow: 2px 2px 0 rgba(28, 28, 28, 0.26);
+    cursor: pointer;
+  }
+
+  .friends-testimonials__dot[aria-current="true"] {
+    background: var(--red);
+  }
+
+  .friends-testimonials__dot:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 4px;
+  }
+
+  .friends-testimonials__cta {
+    min-width: min(320px, calc(100vw - (var(--page-pad) * 2)));
+    margin-top: clamp(24px, 8vw, 36px);
+  }
+}
+
+@media (max-width: 390px) {
+  .friend-testimonial__note p {
+    font-size: clamp(1.02rem, 4.75vw, 1.24rem);
+  }
+
+  .friend-testimonial cite {
+    max-width: 50%;
+  }
+}
+
+/* Friends testimonials composition 1 - Tarzan & Jane refinement */
+.friend-testimonial--tarzan-en-jane {
+  --friend-photo-aspect: 1 / 1;
+  --friend-photo-rotate: 4deg;
+  --friend-note-rotate: -1.2deg;
+  --friend-note-tape-rotate: 2deg;
+}
+
+.friend-testimonial--x-oats {
+  --friend-photo-aspect: 9 / 16;
+}
+
+.friend-testimonial__photo img {
+  aspect-ratio: var(--friend-photo-aspect, 4 / 5);
+  object-fit: contain;
+}
+
+.friend-testimonial--tarzan-en-jane .friend-testimonial__photo {
+  right: 0;
+  left: auto;
+  width: clamp(158px, 13vw, 204px);
+}
+
+.friend-testimonial--tarzan-en-jane .friend-testimonial__note {
+  right: auto;
+  left: 0;
+}
+
+@media (max-width: 1080px) {
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo {
+    width: clamp(136px, 14.2vw, 168px);
+  }
+}
+
+@media (max-width: 760px) {
+  .friend-testimonial--tarzan-en-jane {
+    flex: 0 0 calc(100vw - (var(--page-pad) * 2));
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link {
+    min-height: 0;
+    padding-top: clamp(72px, 19vw, 96px);
+  }
+
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo {
+    top: 0;
+    right: clamp(4px, 2vw, 12px);
+    width: clamp(142px, 42vw, 184px);
+    padding: 7px 7px clamp(22px, 6.6vw, 30px);
+  }
+
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: 100%;
+    min-height: 0;
+    margin: clamp(78px, 20vw, 104px) 0 0;
+    padding: clamp(31px, 8.2vw, 40px) clamp(22px, 6.2vw, 30px) clamp(24px, 6.4vw, 32px);
+  }
+
+  .friend-testimonial--x-oats .friend-testimonial__note {
+    margin-top: clamp(192px, 52vw, 224px);
+  }
+}
+
+/* Friends testimonials reference-balanced collage */
+.friends-testimonials__viewport {
+  margin-top: clamp(44px, 4.8vw, 70px);
+}
+
+.friends-testimonials__rail {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(40px, 4.6vw, 76px);
+  width: min(1360px, 100%);
+  align-items: start;
+}
+
+.friend-testimonial,
+.friend-testimonial--tarzan-en-jane,
+.friend-testimonial--visit-antwerpen {
+  width: auto;
+  min-width: 0;
+}
+
+.friend-testimonial__link,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+.friend-testimonial--visit-antwerpen .friend-testimonial__link {
+  position: relative;
+  display: block;
+  min-height: clamp(396px, 30vw, 488px);
+  padding: 0;
+}
+
+.friend-testimonial__photo,
+.friend-testimonial--x-oats .friend-testimonial__photo,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  position: absolute;
+  z-index: 1;
+  top: clamp(58px, 5vw, 86px);
+  right: clamp(-86px, -4.2vw, -46px);
+  left: auto;
+  width: clamp(208px, 16vw, 292px);
+  margin: 0;
+  padding: clamp(8px, 0.72vw, 12px) clamp(8px, 0.72vw, 12px) clamp(30px, 2.25vw, 42px);
+  transform: rotate(var(--friend-photo-rotate, 4deg));
+}
+
+.friend-testimonial__photo img {
+  aspect-ratio: var(--friend-photo-aspect, 4 / 5);
+  object-fit: cover;
+}
+
+.friend-testimonial__note,
+.friend-testimonial--x-oats .friend-testimonial__note,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  position: absolute;
+  z-index: 2;
+  top: clamp(22px, 2.1vw, 38px);
+  right: auto;
+  left: 0;
+  width: min(72%, 500px);
+  min-height: clamp(318px, 23vw, 378px);
+  margin: 0;
+  padding: clamp(38px, 3vw, 52px) clamp(30px, 2.8vw, 46px) clamp(25px, 2.1vw, 34px);
+}
+
+.friend-testimonial--x-oats {
+  --friend-photo-aspect: 4 / 5;
+  --friend-photo-rotate: 4.5deg;
+  --friend-note-rotate: -1.6deg;
+  --friend-note-tape-rotate: 1.5deg;
+}
+
+.friend-testimonial--tarzan-en-jane {
+  --friend-photo-aspect: 1 / 1;
+  --friend-photo-rotate: 4deg;
+  --friend-note-rotate: -1.2deg;
+  --friend-note-tape-rotate: 2deg;
+}
+
+.friend-testimonial__note p {
+  max-width: 100%;
+  font-size: clamp(1.1rem, 1.18vw, 1.42rem);
+  line-height: 1.15;
+}
+
+.friend-testimonial__note footer {
+  align-items: flex-end;
+}
+
+.friend-testimonial cite {
+  max-width: 56%;
+}
+
+@media (max-width: 1120px) {
+  .friends-testimonials__rail {
+    gap: clamp(28px, 3.3vw, 48px);
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(360px, 35vw, 430px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    right: clamp(-64px, -4.4vw, -34px);
+    width: clamp(168px, 17vw, 222px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    width: min(74%, 430px);
+    min-height: clamp(298px, 29vw, 348px);
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(1rem, 1.45vw, 1.2rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .friends-testimonials__viewport {
+    overflow: hidden;
+  }
+
+  .friends-testimonials__rail {
+    display: flex;
+    gap: clamp(38px, 8vw, 54px);
+    width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 10px var(--page-pad) 28px;
+    scroll-padding-inline: var(--page-pad);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .friends-testimonials__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--tarzan-en-jane,
+  .friend-testimonial--visit-antwerpen {
+    flex: 0 0 min(88vw, 40rem);
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(390px, 63vw, 500px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: clamp(8px, 2vw, 18px);
+    right: clamp(-54px, -4.6vw, -26px);
+    width: clamp(154px, 32vw, 220px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    position: absolute;
+    top: clamp(42px, 6vw, 66px);
+    left: 0;
+    width: min(72%, 31rem);
+    min-height: clamp(286px, 40vw, 348px);
+    margin: 0;
+  }
+
+  .friends-testimonials__dots {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .friends-testimonials__rail {
+    gap: clamp(34px, 8vw, 46px);
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--tarzan-en-jane,
+  .friend-testimonial--visit-antwerpen {
+    flex-basis: calc(100vw - (var(--page-pad) * 2));
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: 0;
+    padding-top: clamp(204px, 55vw, 236px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: 0;
+    right: clamp(8px, 3vw, 18px);
+    width: clamp(136px, 42vw, 176px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    min-height: 0;
+    margin-top: 0;
+    padding: clamp(31px, 8vw, 40px) clamp(22px, 6vw, 30px) clamp(24px, 6vw, 32px);
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(1.03rem, 4.7vw, 1.26rem);
+  }
+}
+
+/* Friends testimonials single-feature carousel */
+.friends-testimonials__viewport {
+  width: min(1220px, 100%);
+  margin: clamp(42px, 4.8vw, 70px) auto 0;
+  overflow: hidden;
+}
+
+.friends-testimonials__rail {
+  display: flex;
+  grid-template-columns: none;
+  align-items: stretch;
+  gap: clamp(44px, 5.5vw, 82px);
+  width: 100%;
+  margin: 0;
+  padding: 16px clamp(18px, 3.8vw, 52px) 34px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: clamp(18px, 3.8vw, 52px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.friends-testimonials__rail::-webkit-scrollbar {
+  display: none;
+}
+
+.friend-testimonial,
+.friend-testimonial--tarzan-en-jane,
+.friend-testimonial--visit-antwerpen {
+  flex: 0 0 100%;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  scroll-snap-align: center;
+}
+
+.friend-testimonial__link,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+.friend-testimonial--visit-antwerpen .friend-testimonial__link {
+  min-height: clamp(510px, 39vw, 600px);
+}
+
+.friend-testimonial__note,
+.friend-testimonial--x-oats .friend-testimonial__note,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+.friend-testimonial--visit-antwerpen .friend-testimonial__note {
+  top: clamp(74px, 6vw, 96px);
+  left: 0;
+  width: min(63%, 690px);
+  min-height: clamp(360px, 28vw, 430px);
+  padding: clamp(70px, 5.8vw, 88px) clamp(42px, 4.2vw, 60px) clamp(36px, 3.2vw, 48px);
+}
+
+.friend-testimonial__photo,
+.friend-testimonial--x-oats .friend-testimonial__photo,
+.friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+.friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+  top: clamp(30px, 2.8vw, 46px);
+  right: clamp(34px, 5vw, 72px);
+  left: auto;
+  width: clamp(260px, 23vw, 350px);
+  padding: clamp(9px, 0.9vw, 13px) clamp(9px, 0.9vw, 13px) clamp(34px, 3vw, 50px);
+}
+
+.friend-testimonial__note p {
+  flex: 0 1 auto;
+  margin-top: clamp(26px, 2.6vw, 38px);
+  margin-bottom: clamp(18px, 1.8vw, 28px);
+  font-size: clamp(1.42rem, 1.95vw, 2.12rem);
+  line-height: 1.12;
+}
+
+.friend-testimonial__note footer {
+  margin-top: 0;
+}
+
+.friend-testimonial__case-link {
+  font-size: clamp(1.48rem, 2vw, 2.28rem);
+}
+
+.friend-testimonial cite {
+  font-size: clamp(1.24rem, 1.85vw, 2.12rem);
+}
+
+.friends-testimonials__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  margin: clamp(6px, 1.2vw, 18px) 0 0;
+  padding: 0.25rem 0 0.5rem;
+  overflow: visible;
+}
+
+.friends-testimonials__arrows {
+  position: absolute;
+  z-index: 6;
+  top: clamp(330px, 33vw, 450px);
+  right: clamp(8px, 1.8vw, 28px);
+  left: clamp(8px, 1.8vw, 28px);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.friends-testimonials__arrow {
+  appearance: none;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 4.8vw, 64px);
+  height: clamp(48px, 4.8vw, 64px);
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.82), rgba(255, 250, 229, 0.96)),
+    var(--paper-bg-image);
+  box-shadow: 5px 6px 0 var(--ink);
+  cursor: pointer;
+  pointer-events: auto;
+  transform: rotate(var(--friends-arrow-rotate, -3deg));
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.friends-testimonials__arrow::before {
+  content: "";
+  width: 32%;
+  height: 32%;
+  border-top: 5px solid var(--ink);
+  border-right: 5px solid var(--ink);
+}
+
+.friends-testimonials__arrow--prev {
+  --friends-arrow-rotate: -4deg;
+}
+
+.friends-testimonials__arrow--prev::before {
+  transform: translateX(12%) rotate(-135deg);
+}
+
+.friends-testimonials__arrow--next {
+  --friends-arrow-rotate: 4deg;
+}
+
+.friends-testimonials__arrow--next::before {
+  transform: translateX(-12%) rotate(45deg);
+}
+
+.friends-testimonials__arrow:hover,
+.friends-testimonials__arrow:focus-visible {
+  outline: none;
+  box-shadow: 7px 8px 0 var(--blue);
+  transform: translate3d(-2px, -2px, 0) rotate(0deg);
+}
+
+.friends-testimonials__arrow:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 5px;
+}
+
+.friends-testimonials__dot {
+  appearance: none;
+  display: block;
+  flex: 0 0 auto;
+  width: 0.72rem;
+  height: 0.72rem;
+  min-width: 0.72rem;
+  min-height: 0.72rem;
+  padding: 0;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.friends-testimonials__dot[aria-current="true"] {
+  background: var(--red);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate3d(-1px, -1px, 0);
+}
+
+.friends-testimonials__dot:hover,
+.friends-testimonials__dot:focus-visible {
+  outline: none;
+  transform: translate3d(-1px, -1px, 0);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.friends-testimonials__dot:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 5px;
+}
+
+.friends-testimonials__cta {
+  margin-top: clamp(34px, 3.8vw, 58px);
+}
+
+@media (max-width: 1120px) {
+  .friends-testimonials__viewport {
+    width: min(980px, 100%);
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(430px, 54vw, 535px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    top: clamp(58px, 6vw, 78px);
+    width: min(67%, 590px);
+    min-height: clamp(330px, 40vw, 410px);
+    padding: clamp(56px, 6vw, 72px) clamp(34px, 4.5vw, 50px) clamp(30px, 3.8vw, 42px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    right: clamp(18px, 3.4vw, 42px);
+    width: clamp(210px, 28vw, 300px);
+  }
+
+  .friend-testimonial__note p {
+    font-size: clamp(1.2rem, 2.3vw, 1.72rem);
+  }
+
+  .friends-testimonials__arrows {
+    top: clamp(286px, 38vw, 385px);
+  }
+}
+
+@media (max-width: 760px) {
+  .friends-testimonials__viewport {
+    width: 100%;
+    margin-top: clamp(30px, 8vw, 42px);
+  }
+
+  .friends-testimonials__rail {
+    gap: clamp(34px, 8vw, 46px);
+    padding: 10px var(--page-pad) 28px;
+    scroll-padding-inline: var(--page-pad);
+  }
+
+  .friend-testimonial,
+  .friend-testimonial--tarzan-en-jane,
+  .friend-testimonial--visit-antwerpen {
+    flex-basis: calc(100vw - (var(--page-pad) * 2));
+  }
+
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(340px, 92vw, 430px);
+    padding-top: 0;
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: clamp(18px, 5.8vw, 34px);
+    right: clamp(0px, 1.8vw, 12px);
+    width: clamp(132px, 41vw, 176px);
+    padding: 7px 7px clamp(22px, 6.6vw, 30px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    position: absolute;
+    top: clamp(50px, 13vw, 70px);
+    left: clamp(0px, 1vw, 8px);
+    width: clamp(166px, 54%, 292px);
+    min-height: 0;
+    margin: 0;
+    padding: clamp(30px, 7vw, 42px) clamp(15px, 4vw, 24px) clamp(18px, 5vw, 28px);
+  }
+
+  .friend-testimonial__mark {
+    height: 0.36em;
+    font-size: clamp(2.3rem, 9vw, 3.35rem);
+  }
+
+  .friend-testimonial__note p {
+    flex: 0 1 auto;
+    margin: clamp(12px, 3vw, 18px) 0 clamp(16px, 4vw, 24px);
+    font-size: clamp(0.8rem, 3.35vw, 1.05rem);
+    line-height: 1.08;
+  }
+
+  .friend-testimonial__note footer {
+    gap: clamp(8px, 2.5vw, 14px);
+    margin-top: 0;
+  }
+
+  .friends-testimonials__arrows {
+    display: none;
+  }
+
+  .friend-testimonial__case-link {
+    font-size: clamp(1rem, 4.2vw, 1.32rem);
+  }
+
+  .friend-testimonial cite {
+    max-width: 64%;
+    font-size: clamp(0.8rem, 3.5vw, 1.12rem);
+  }
+
+  .friends-testimonials__dot {
+    width: 0.72rem;
+    height: 0.72rem;
+    min-width: 0.72rem;
+    min-height: 0.72rem;
+    border-width: 2px;
+  }
+}
+
+@media (min-width: 521px) and (max-width: 760px) {
+  .friend-testimonial__link,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__link,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__link {
+    min-height: clamp(360px, 57vw, 430px);
+  }
+
+  .friend-testimonial__photo,
+  .friend-testimonial--x-oats .friend-testimonial__photo,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__photo,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__photo {
+    top: clamp(18px, 4vw, 30px);
+    right: clamp(12px, 4vw, 34px);
+    width: clamp(210px, 31vw, 282px);
+    padding: 8px 8px clamp(28px, 4.6vw, 38px);
+  }
+
+  .friend-testimonial__note,
+  .friend-testimonial--x-oats .friend-testimonial__note,
+  .friend-testimonial--tarzan-en-jane .friend-testimonial__note,
+  .friend-testimonial--visit-antwerpen .friend-testimonial__note {
+    top: clamp(42px, 7.4vw, 58px);
+    width: clamp(320px, 58%, 420px);
+    padding: clamp(44px, 7.4vw, 58px) clamp(28px, 5vw, 40px) clamp(24px, 4vw, 32px);
+  }
+
+  .friend-testimonial__note p {
+    margin: clamp(16px, 3vw, 22px) 0 clamp(16px, 3vw, 22px);
+    font-size: clamp(1.08rem, 2.45vw, 1.34rem);
+    line-height: 1.1;
+  }
+
+  .friend-testimonial__case-link {
+    font-size: clamp(1.32rem, 3vw, 1.68rem);
+  }
+
+  .friend-testimonial cite {
+    font-size: clamp(1.08rem, 2.55vw, 1.45rem);
+  }
+}
+
+/* Home intro tag balance */
+.collage-flow > .intro {
+  padding-bottom: clamp(5rem, 7.2vw, 7.25rem);
+}
+
+.tag-cloud {
+  gap: clamp(0.82rem, 1.15vw, 1.05rem) clamp(0.95rem, 1.5vw, 1.35rem);
+  width: min(100%, var(--content-max));
+  margin-top: clamp(34px, 5vw, 56px);
+}
+
+.tag {
+  min-height: clamp(29px, 2.5vw, 36px);
+  padding: clamp(0.35rem, 0.48vw, 0.48rem) clamp(0.95rem, 1.25vw, 1.2rem);
+  font-size: clamp(0.76rem, 1.02vw, 1rem);
+}
+
+@media (max-width: 768px) {
+  .collage-flow > .intro {
+    padding-bottom: clamp(5.8rem, 17vw, 7.6rem);
+  }
+
+  .tag-cloud {
+    gap: 8px 9px;
+    width: min(100%, 352px);
+    margin-top: clamp(20px, 5vw, 30px);
+  }
+
+  .tag {
+    min-height: 25px;
+    padding: 4px 12px 3px;
+    font-size: clamp(0.68rem, 2.85vw, 0.8rem);
+  }
+}
+
+@media (max-height: 800px), (max-width: 370px) {
+  .tag-cloud {
+    width: min(100%, 340px);
+    margin-top: clamp(18px, 4.5vw, 24px);
+  }
+
+  .tag {
+    padding-inline: 10px;
+    font-size: clamp(0.61rem, 2.55vw, 0.7rem);
+  }
+}
+
+/* Brainstorm transition polish */
+.collage-flow > .brainstorm {
+  z-index: 6;
+}
+
+.brainstorm {
+  overflow: visible;
+}
+
+.brainstorm::before {
+  position: absolute;
+  z-index: 1;
+  top: clamp(-64px, -5vw, -42px);
+  right: -5%;
+  left: -5%;
+  height: clamp(70px, 6vw, 104px);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(0, 97, 252, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 97, 252, 0.055) 1px, transparent 1px),
+    var(--paper-bg-image);
+  background-position: 0 0, 0 0, center;
+  background-size: 32px 32px, 32px 32px, 720px auto;
+  clip-path: polygon(0 42%, 7% 54%, 15% 38%, 25% 58%, 36% 43%, 48% 62%, 62% 40%, 73% 55%, 85% 39%, 100% 52%, 100% 100%, 0 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.brainstorm__storm {
+  top: clamp(-80px, -6vw, -50px);
+  bottom: 0;
+  height: auto;
+}
+
+.brainstorm__wind-line--1 {
+  top: clamp(30px, 3.2vw, 48px);
+  left: 13%;
+}
+
+.brainstorm__wind-line--2 {
+  top: clamp(24px, 2.8vw, 42px);
+  right: 16%;
+}
+
+.brainstorm__paper-flake--1 {
+  top: clamp(52px, 5vw, 78px);
+  left: 21%;
+}
+
+.brainstorm__paper-flake--2 {
+  top: clamp(16px, 2.4vw, 36px);
+  right: 30%;
+}
+
+.desk-storm-scene,
+.desk-storm-inner,
+.desk-storm-layer {
+  overflow: visible;
+}
+
+@media (max-width: 760px) {
+  .brainstorm::before {
+    top: -42px;
+    height: 72px;
+  }
+
+  .brainstorm__storm {
+    top: -48px;
+  }
+
+  .brainstorm__wind-line--1 {
+    top: 24px;
+    left: 9%;
+  }
+
+  .brainstorm__wind-line--2 {
+    top: 20px;
+    right: 12%;
+  }
+
+  .brainstorm__paper-flake--1 {
+    top: 46px;
+    left: 18%;
+  }
+
+  .brainstorm__paper-flake--2 {
+    top: 18px;
+    right: 25%;
   }
 }

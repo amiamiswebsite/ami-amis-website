@@ -73,15 +73,69 @@ function HighlightedText({ highlights = [], text }) {
   return parts;
 }
 
+function getVimeoId(video) {
+  if (!video) {
+    return "";
+  }
+
+  if (video.type === "youtube") {
+    return "";
+  }
+
+  if (video.type === "vimeo" && video.id) {
+    return String(video.id);
+  }
+
+  if (video.id && String(video.id).match(/^\d+$/)) {
+    return String(video.id);
+  }
+
+  const url = video.url || video.src || "";
+  const match = String(url).match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  return match?.[1] || "";
+}
+
+function getYouTubeId(video) {
+  if (!video) {
+    return "";
+  }
+
+  if (video.type === "youtube" && video.id) {
+    return String(video.id);
+  }
+
+  const url = String(video.url || video.src || "");
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]+)/);
+  return match?.[1] || "";
+}
+
 function VideoFrame({ featured = false, priority = false, video }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const vimeoId = getVimeoId(video);
+  const youTubeId = getYouTubeId(video);
+  const isVimeo = video?.type === "vimeo" || Boolean(vimeoId);
+  const isYouTube = video?.type === "youtube" || Boolean(youTubeId);
+  const isEmbed = isVimeo || isYouTube;
+  const rawSrc = video?.src || video?.poster || "";
+  const isImage =
+    video?.type === "image" ||
+    (!isEmbed && rawSrc && !String(rawSrc).match(/\.(mp4|webm|mov)(\?.*)?$/i));
 
-  if (!video?.src) {
+  if (!rawSrc && !vimeoId && !youTubeId) {
     return null;
   }
 
+  const hash = video?.hash || video?.h || "";
+  const hashParam = hash ? `h=${encodeURIComponent(hash)}&` : "";
+  const vimeoSrc = vimeoId ? `https://player.vimeo.com/video/${vimeoId}?${hashParam}title=0&byline=0&portrait=0` : "";
+  const youTubeSrc = youTubeId ? `https://www.youtube.com/embed/${youTubeId}?rel=0&modestbranding=1` : "";
+
   const togglePlayback = async () => {
+    if (isEmbed || isImage) {
+      return;
+    }
+
     const videoNode = videoRef.current;
 
     if (!videoNode) {
@@ -120,34 +174,49 @@ function VideoFrame({ featured = false, priority = false, video }) {
 
   return (
     <figure
-      className={`va-pdf-video-card${featured ? " va-pdf-video-card--hero" : ""}${isLongTitle ? " va-pdf-video-card--long-title" : ""}${isPlaying ? " is-playing" : ""}`}
+      className={`va-pdf-video-card${featured ? " va-pdf-video-card--hero" : ""}${video.wide ? " va-pdf-video-card--wide" : ""}${isEmbed ? " va-pdf-video-card--vimeo" : ""}${isImage ? " va-pdf-video-card--image" : ""}${isLongTitle ? " va-pdf-video-card--long-title" : ""}${isPlaying ? " is-playing" : ""}`}
+      style={{ "--va-video-aspect": video.aspectRatio || (video.wide ? "16 / 9" : "9 / 16") }}
     >
       <div
         aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${video.title} video`}
         className="va-pdf-video-card__screen"
-        onClick={togglePlayback}
-        onKeyDown={onKeyDown}
-        role="button"
-        tabIndex={0}
+        onClick={isEmbed || isImage ? undefined : togglePlayback}
+        onKeyDown={isEmbed || isImage ? undefined : onKeyDown}
+        role={isEmbed || isImage ? undefined : "button"}
+        tabIndex={isEmbed || isImage ? undefined : 0}
       >
-        <video
-          aria-label={`${video.title} video`}
-          onEnded={() => setIsPlaying(false)}
-          onPause={() => setIsPlaying(false)}
-          onPlay={() => setIsPlaying(true)}
-          playsInline
-          poster={video.poster ? mediaPath(video.poster) : undefined}
-          preload={priority || !video.poster ? "metadata" : "none"}
-          ref={videoRef}
-        >
-          <source src={mediaPath(video.src)} type="video/mp4" />
-        </video>
+        {isEmbed ? (
+          <iframe
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+            allowFullScreen
+            loading={priority ? "eager" : "lazy"}
+            src={vimeoSrc || youTubeSrc}
+            title={video.title || (isYouTube ? "YouTube video" : "Vimeo video")}
+          />
+        ) : isImage ? (
+          <img alt={video.alt || video.title || "Casebeeld"} src={mediaPath(rawSrc)} loading={priority ? "eager" : "lazy"} decoding="async" />
+        ) : (
+          <video
+            aria-label={`${video.title} video`}
+            onEnded={() => setIsPlaying(false)}
+            onPause={() => setIsPlaying(false)}
+            onPlay={() => setIsPlaying(true)}
+            playsInline
+            poster={video.poster ? mediaPath(video.poster) : undefined}
+            preload={priority || !video.poster ? "metadata" : "none"}
+            ref={videoRef}
+          >
+            <source src={mediaPath(video.src)} type="video/mp4" />
+          </video>
+        )}
       </div>
       <figcaption>
         <span className="va-pdf-video-card__title">{video.title}</span>
-        <span aria-hidden="true" className="va-pdf-video-card__play">
-          <span />
-        </span>
+        {isImage ? null : (
+          <span aria-hidden="true" className="va-pdf-video-card__play">
+            <span />
+          </span>
+        )}
       </figcaption>
     </figure>
   );
@@ -272,19 +341,21 @@ function Hero({ data, onOpen }) {
         }
       : null;
   const heroVideo = data.media?.hero ? { ...data.media.hero, title: data.media?.verticalVideos?.[0]?.title || data.media.hero.title || data.title } : null;
+  const heroSticker = data.heroSticker?.src ? data.heroSticker : null;
 
   return (
-    <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}`} aria-labelledby="va-pdf-title">
+    <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}${heroSticker ? " va-pdf-hero--has-sticker" : ""}`} aria-labelledby="va-pdf-title">
       <a className="hero__logo va-pdf-logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="va-pdf-hero__inner">
         <div className="va-pdf-hero__copy">
           <h1 className="va-pdf-reveal" id="va-pdf-title">
-            {data.title}
+            {data.heroTitle || data.title}
           </h1>
           <QuoteCard data={data} onOpen={onOpen} />
         </div>
         <div className="va-pdf-hero__media va-pdf-reveal">
           {heroCollage ? <img alt="" aria-hidden="true" className={heroCollage.className || "va-pdf-hero__cathedral-collage"} src={assetPath(heroCollage.src)} /> : null}
+          {heroSticker ? <img alt="" aria-hidden="true" className="va-pdf-hero__sticker" src={assetPath(heroSticker.src)} /> : null}
           <VideoFrame featured priority video={heroVideo} />
         </div>
       </div>
@@ -319,8 +390,8 @@ function StatsRow({ stats }) {
   return (
     <section className="va-pdf-stats va-pdf-reveal" aria-label="Resultaten">
       <dl>
-        {stats.map((stat) => (
-          <div className={String(stat.value).length > 5 ? "va-pdf-stat--long" : undefined} key={`${stat.value}-${stat.label}`}>
+        {stats.map((stat, index) => (
+          <div className={String(stat.value).length > 5 ? "va-pdf-stat--long" : undefined} key={`${stat.value}-${stat.label}-${index}`}>
             <dt>{stat.label}</dt>
             <dd>{stat.value}</dd>
           </div>
@@ -335,8 +406,13 @@ function VideoGrid({ videos }) {
     return null;
   }
 
+  const hasWideVideos = videos.some((video) => video?.wide);
+
   return (
-    <section className={`va-pdf-video-grid va-pdf-video-grid--count-${videos.length} va-pdf-reveal`} aria-label="Video's">
+    <section
+      className={`va-pdf-video-grid va-pdf-video-grid--count-${videos.length}${hasWideVideos ? " va-pdf-video-grid--wide" : ""} va-pdf-reveal`}
+      aria-label="Video's"
+    >
       {videos.map((video, index) => (
         <VideoFrame key={video.title || video.src} priority={index === 0} video={video} />
       ))}
