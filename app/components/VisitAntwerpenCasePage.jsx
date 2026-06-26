@@ -27,6 +27,12 @@ const summaryItems = [
   },
 ];
 
+const xOatsSummaryIcons = {
+  question: "/images/cases/x-oats/icon-question.png",
+  approach: "/images/cases/x-oats/icon-approach.png",
+  result: "/images/cases/x-oats/icon-result.png",
+};
+
 function mediaPath(src) {
   if (!src) {
     return "";
@@ -109,8 +115,57 @@ function getYouTubeId(video) {
   return match?.[1] || "";
 }
 
+function slugifyId(value) {
+  return String(value || "video")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function getVimeoEmbedSrc({ hash = "", id, playerId }) {
+  const params = new URLSearchParams({
+    api: "1",
+    autoplay: "0",
+    autopause: "0",
+    byline: "0",
+    controls: "0",
+    dnt: "1",
+    muted: "0",
+    playsinline: "1",
+    portrait: "0",
+    title: "0",
+  });
+
+  if (hash) {
+    params.set("h", hash);
+  }
+
+  if (playerId) {
+    params.set("player_id", playerId);
+  }
+
+  return `https://player.vimeo.com/video/${id}?${params.toString()}`;
+}
+
+function sendVimeoCommand(iframe, method, value) {
+  if (!iframe?.contentWindow) {
+    return;
+  }
+
+  const message = value === undefined ? { method } : { method, value };
+  const payload = JSON.stringify(message);
+
+  try {
+    iframe.contentWindow.postMessage(payload, "https://player.vimeo.com");
+  } catch {
+    iframe.contentWindow.postMessage(payload, "*");
+  }
+}
+
 function VideoFrame({ featured = false, priority = false, video }) {
   const videoRef = useRef(null);
+  const iframeRef = useRef(null);
+  const isVimeoPlayingRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const vimeoId = getVimeoId(video);
   const youTubeId = getYouTubeId(video);
@@ -122,16 +177,71 @@ function VideoFrame({ featured = false, priority = false, video }) {
     video?.type === "image" ||
     (!isEmbed && rawSrc && !String(rawSrc).match(/\.(mp4|webm|mov)(\?.*)?$/i));
 
+  const hash = video?.hash || video?.h || "";
+  const vimeoPlayerId = vimeoId ? `va-pdf-vimeo-${vimeoId}-${featured ? "hero" : "card"}-${slugifyId(video?.title)}` : "";
+  const vimeoSrc = vimeoId ? getVimeoEmbedSrc({ hash, id: vimeoId, playerId: vimeoPlayerId }) : "";
+  const youTubeSrc = youTubeId ? `https://www.youtube.com/embed/${youTubeId}?rel=0&modestbranding=1` : "";
+
+  useEffect(() => {
+    if (!isVimeo || !vimeoPlayerId) {
+      return undefined;
+    }
+
+    const onOtherVimeoPlay = (event) => {
+      if (event.detail?.playerId !== vimeoPlayerId) {
+        isVimeoPlayingRef.current = false;
+        setIsPlaying(false);
+      }
+    };
+
+    window.addEventListener("case-vimeo-play", onOtherVimeoPlay);
+    return () => window.removeEventListener("case-vimeo-play", onOtherVimeoPlay);
+  }, [isVimeo, vimeoPlayerId]);
+
   if (!rawSrc && !vimeoId && !youTubeId) {
     return null;
   }
 
-  const hash = video?.hash || video?.h || "";
-  const hashParam = hash ? `h=${encodeURIComponent(hash)}&` : "";
-  const vimeoSrc = vimeoId ? `https://player.vimeo.com/video/${vimeoId}?${hashParam}title=0&byline=0&portrait=0` : "";
-  const youTubeSrc = youTubeId ? `https://www.youtube.com/embed/${youTubeId}?rel=0&modestbranding=1` : "";
+  const toggleVimeoPlayback = () => {
+    if (!isVimeo) {
+      return;
+    }
+
+    const iframe = iframeRef.current;
+
+    if (isVimeoPlayingRef.current) {
+      sendVimeoCommand(iframe, "pause");
+      isVimeoPlayingRef.current = false;
+      setIsPlaying(false);
+      return;
+    }
+
+    document.querySelectorAll("iframe[data-case-vimeo-player]").forEach((otherIframe) => {
+      if (otherIframe !== iframe) {
+        sendVimeoCommand(otherIframe, "pause");
+      }
+    });
+    document.querySelectorAll(".va-pdf-video-card__screen video, .case-video-card video, .case-media-frame video, .case-media-hub__item video").forEach((otherVideo) => {
+      otherVideo.pause();
+    });
+
+    window.dispatchEvent(new CustomEvent("case-vimeo-play", { detail: { playerId: vimeoPlayerId } }));
+    isVimeoPlayingRef.current = true;
+    setIsPlaying(true);
+    sendVimeoCommand(iframe, "setVolume", 1);
+    sendVimeoCommand(iframe, "play");
+    window.setTimeout(() => {
+      sendVimeoCommand(iframe, "setVolume", 1);
+      sendVimeoCommand(iframe, "play");
+    }, 160);
+  };
 
   const togglePlayback = async () => {
+    if (isVimeo) {
+      toggleVimeoPlayback();
+      return;
+    }
+
     if (isEmbed || isImage) {
       return;
     }
@@ -147,6 +257,9 @@ function VideoFrame({ featured = false, priority = false, video }) {
         if (otherVideo !== videoNode) {
           otherVideo.pause();
         }
+      });
+      document.querySelectorAll("iframe[data-case-vimeo-player]").forEach((otherIframe) => {
+        sendVimeoCommand(otherIframe, "pause");
       });
 
       try {
@@ -180,16 +293,18 @@ function VideoFrame({ featured = false, priority = false, video }) {
       <div
         aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${video.title} video`}
         className="va-pdf-video-card__screen"
-        onClick={isEmbed || isImage ? undefined : togglePlayback}
-        onKeyDown={isEmbed || isImage ? undefined : onKeyDown}
-        role={isEmbed || isImage ? undefined : "button"}
-        tabIndex={isEmbed || isImage ? undefined : 0}
+        onClick={isImage || isYouTube ? undefined : togglePlayback}
+        onKeyDown={isImage || isYouTube ? undefined : onKeyDown}
+        role={isImage || isYouTube ? undefined : "button"}
+        tabIndex={isImage || isYouTube ? undefined : 0}
       >
         {isEmbed ? (
           <iframe
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             allowFullScreen
+            data-case-vimeo-player={isVimeo ? vimeoPlayerId : undefined}
             loading={priority ? "eager" : "lazy"}
+            ref={isVimeo ? iframeRef : undefined}
             src={vimeoSrc || youTubeSrc}
             title={video.title || (isYouTube ? "YouTube video" : "Vimeo video")}
           />
@@ -211,11 +326,27 @@ function VideoFrame({ featured = false, priority = false, video }) {
         )}
       </div>
       <figcaption>
-        <span className="va-pdf-video-card__title">{video.title}</span>
-        {isImage ? null : (
-          <span aria-hidden="true" className="va-pdf-video-card__play">
-            <span />
-          </span>
+        {isVimeo ? (
+          <button
+            aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${video.title} met geluid`}
+            className="va-pdf-video-card__trigger"
+            onClick={toggleVimeoPlayback}
+            type="button"
+          >
+            <span className="va-pdf-video-card__title">{video.title}</span>
+            <span aria-hidden="true" className="va-pdf-video-card__play">
+              <span />
+            </span>
+          </button>
+        ) : (
+          <>
+            <span className="va-pdf-video-card__title">{video.title}</span>
+            {isImage ? null : (
+              <span aria-hidden="true" className="va-pdf-video-card__play">
+                <span />
+              </span>
+            )}
+          </>
         )}
       </figcaption>
     </figure>
@@ -460,6 +591,66 @@ function ThreeColumnSummary({ data }) {
   );
 }
 
+function getSummaryBlocks(data) {
+  return summaryItems
+    .map((item, index) => {
+      const block = data[item.key];
+
+      if (!block?.text) {
+        return null;
+      }
+
+      return {
+        ...item,
+        icon: data.slug === "x-oats" ? xOatsSummaryIcons[item.key] || item.icon : item.icon,
+        index,
+        title: block.title || item.label,
+        text: block.text,
+      };
+    })
+    .filter(Boolean);
+}
+
+function SummaryVariantCard({ block, compact = false }) {
+  return (
+    <article className={`x-oats-var-card x-oats-var-card--${block.key}${compact ? " x-oats-var-card--compact" : ""}`}>
+      <span
+        className="x-oats-var-card__icon"
+        style={{ "--x-oats-icon-url": `url(${assetPath(block.icon)})` }}
+        aria-hidden="true"
+      />
+      <div className="x-oats-var-card__heading">
+        <span>{block.number}</span>
+        <h3>{block.label}</h3>
+      </div>
+      <p>{block.text}</p>
+    </article>
+  );
+}
+
+function XOatsFinalSummary({ data }) {
+  const blocks = getSummaryBlocks(data);
+
+  if (blocks.length < 3) {
+    return null;
+  }
+
+  return (
+    <section className="x-oats-final-summary va-pdf-reveal" aria-label="Vraag aanpak resultaat">
+      <div className="x-oats-final-summary__grid">
+        {blocks.map((block) => (
+          <SummaryVariantCard block={block} compact key={`x-oats-final-${block.key}`} />
+        ))}
+      </div>
+      <div className="x-oats-final-summary__grid x-oats-final-summary__grid--open">
+        {blocks.map((block) => (
+          <SummaryVariantCard block={block} compact key={`x-oats-final-open-${block.key}`} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function CaseCTA() {
   return (
     <section className="va-pdf-cta va-pdf-reveal" aria-label="Contact">
@@ -518,7 +709,7 @@ export default function VisitAntwerpenCasePage({ caseData }) {
           <StatsRow stats={caseData.result?.stats} />
           <VideoGrid videos={caseData.media?.verticalVideos} />
           <Outro text={caseData.outro} />
-          <ThreeColumnSummary data={caseData} />
+          {caseData.slug === "x-oats" ? <XOatsFinalSummary data={caseData} /> : <ThreeColumnSummary data={caseData} />}
           <CaseCTA />
         </main>
         <Footer />

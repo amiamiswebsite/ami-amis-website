@@ -58,10 +58,10 @@ export default function Intro() {
           </div>
           <img className="intro__camera" src={assetPath("/assets/hand-camera.png")} alt="" />
         </div>
-        <a className="button button--red intro__camera-cta" href={assetPath("/contact/")}>
-          eens afspreken?
-        </a>
       </div>
+      <a className="button button--red intro__camera-cta" href={assetPath("/contact/")}>
+        eens afspreken?
+      </a>
       <div className="tag-cloud" aria-label="Diensten">
         {tags.map(([tag, color]) => (
           <span className={`tag tag--${color}`} key={tag}>

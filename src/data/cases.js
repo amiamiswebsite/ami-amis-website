@@ -1846,7 +1846,7 @@ export const cases = [
         { value: "2", label: "spotjes" },
         { value: "3", label: "dagen" },
         { value: "1M+", label: "mensen bereikt" },
-        { value: "1.000.000", label: "sales milestone" },
+        { value: "1M", label: "sales milestone" },
       ],
     },
     media: {

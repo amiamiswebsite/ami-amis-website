@@ -53,7 +53,10 @@ function WorkCard({ item, index }) {
     <a
       className="work-card"
       href={assetPath(item.href)}
-      style={{ "--work-card-delay": `${Math.min(index, 8) * 46}ms` }}
+      style={{
+        "--work-card-delay": `${Math.min(index, 8) * 46}ms`,
+        ...(item.imagePosition ? { "--work-image-position": item.imagePosition } : {}),
+      }}
       aria-label={`Bekijk case ${item.client}`}
     >
       <figure className={`work-card__media ${imageFailed ? "is-fallback" : ""}`}>

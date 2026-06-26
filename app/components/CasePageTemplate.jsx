@@ -190,26 +190,155 @@ function CaseMedia({ item, client, priority = false }) {
   );
 }
 
+function slugifyPlayerId(value) {
+  return String(value || "video")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function getVimeoFrameSrc({ hash = "", id, playerId }) {
+  const params = new URLSearchParams({
+    api: "1",
+    autoplay: "0",
+    autopause: "0",
+    byline: "0",
+    controls: "0",
+    dnt: "1",
+    muted: "0",
+    playsinline: "1",
+    portrait: "0",
+    title: "0",
+  });
+
+  if (hash) {
+    params.set("h", hash);
+  }
+
+  if (playerId) {
+    params.set("player_id", playerId);
+  }
+
+  return `https://player.vimeo.com/video/${id}?${params.toString()}`;
+}
+
+function postVimeoCommand(iframe, method, value) {
+  if (!iframe?.contentWindow) {
+    return;
+  }
+
+  const message = value === undefined ? { method } : { method, value };
+  const payload = JSON.stringify(message);
+
+  try {
+    iframe.contentWindow.postMessage(payload, "https://player.vimeo.com");
+  } catch {
+    iframe.contentWindow.postMessage(payload, "*");
+  }
+}
+
 function VimeoFrame({ embed, index, client, featured = false }) {
+  const iframeRef = useRef(null);
+  const isPlayingRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const id = typeof embed === "string" ? embed : embed.id;
   const title = typeof embed === "string" ? `${client} video ${index + 1}` : embed.title || `${client} video ${index + 1}`;
   const hash = typeof embed === "string" ? "" : embed.hash || embed.h || "";
-  const hashParam = hash ? `h=${encodeURIComponent(hash)}&` : "";
+  const playerId = id ? `case-vimeo-${id}-${featured ? "featured" : index}-${slugifyPlayerId(title)}` : "";
+  const src = id ? getVimeoFrameSrc({ hash, id, playerId }) : "";
+
+  useEffect(() => {
+    if (!playerId) {
+      return undefined;
+    }
+
+    const onOtherVimeoPlay = (event) => {
+      if (event.detail?.playerId !== playerId) {
+        isPlayingRef.current = false;
+        setIsPlaying(false);
+      }
+    };
+
+    window.addEventListener("case-vimeo-play", onOtherVimeoPlay);
+    return () => window.removeEventListener("case-vimeo-play", onOtherVimeoPlay);
+  }, [playerId]);
 
   if (!id) {
     return null;
   }
 
+  const togglePlayback = () => {
+    const iframe = iframeRef.current;
+
+    if (isPlayingRef.current) {
+      postVimeoCommand(iframe, "pause");
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+      return;
+    }
+
+    document.querySelectorAll("iframe[data-case-vimeo-player]").forEach((otherIframe) => {
+      if (otherIframe !== iframe) {
+        postVimeoCommand(otherIframe, "pause");
+      }
+    });
+    document.querySelectorAll(".case-video-card video, .case-media-frame video, .case-media-hub__item video, .va-pdf-video-card__screen video").forEach((video) => {
+      video.pause();
+    });
+
+    window.dispatchEvent(new CustomEvent("case-vimeo-play", { detail: { playerId } }));
+    isPlayingRef.current = true;
+    setIsPlaying(true);
+    postVimeoCommand(iframe, "setVolume", 1);
+    postVimeoCommand(iframe, "play");
+    window.setTimeout(() => {
+      postVimeoCommand(iframe, "setVolume", 1);
+      postVimeoCommand(iframe, "play");
+    }, 160);
+  };
+
+  const onScreenKeyDown = (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+
+    event.preventDefault();
+    togglePlayback();
+  };
+
   return (
-    <figure className={`case-vimeo-frame${featured ? " case-vimeo-frame--featured" : ""}`}>
-      <iframe
-        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-        allowFullScreen
-        loading="lazy"
-        src={`https://player.vimeo.com/video/${id}?${hashParam}title=0&byline=0&portrait=0`}
-        title={title}
-      />
-      <figcaption>{title}</figcaption>
+    <figure className={`case-vimeo-frame${featured ? " case-vimeo-frame--featured" : ""}${isPlaying ? " is-playing" : ""}`}>
+      <div
+        aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${title} met geluid`}
+        className="case-vimeo-frame__screen"
+        onClick={togglePlayback}
+        onKeyDown={onScreenKeyDown}
+        role="button"
+        tabIndex={0}
+      >
+        <iframe
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          allowFullScreen
+          data-case-vimeo-player={playerId}
+          loading="lazy"
+          ref={iframeRef}
+          src={src}
+          title={title}
+        />
+      </div>
+      <figcaption>
+        <button
+          aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${title} met geluid`}
+          className="case-vimeo-frame__trigger"
+          onClick={togglePlayback}
+          type="button"
+        >
+          <span>{title}</span>
+          <span aria-hidden="true" className="case-vimeo-frame__play">
+            <span />
+          </span>
+        </button>
+      </figcaption>
     </figure>
   );
 }

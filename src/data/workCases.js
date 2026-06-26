@@ -222,6 +222,7 @@ export const workCases = [
     description: "Twee advertenties op korte tijd rond de 1.000.000 sales milestone.",
     categories: ["Social content", "Fotografie", "Video & campagnes"],
     image: "/work/x-oats-thumb-portrait.jpg",
+    imagePosition: "50% 24%",
     href: "/work/x-oats/",
     featured: false,
     status: "ready",

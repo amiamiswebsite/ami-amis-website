@@ -26,10 +26,9 @@ const strategyStats = [
 
 const socialBadges = [
   {
-    icon: "play",
-    value: "30,3k",
-    label: "weergaven / maand",
+    icon: "follow",
     className: "social-icon--follow",
+    type: "follow",
   },
 ];
 
@@ -42,6 +41,21 @@ function formatStatValue(stat, value) {
 }
 
 function BadgeIcon({ icon }) {
+  if (icon === "follow") {
+    return (
+      <svg className="social-follow-icon" viewBox="0 0 122.88 114.42" aria-hidden="true">
+        <path
+          className="social-follow-icon__bubble"
+          d="M9.32,0H113.56a9.35,9.35,0,0,1,9.32,9.32V82.94a9.37,9.37,0,0,1-9.32,9.32H83.84L67.68,111.32a8.17,8.17,0,0,1-12.82,0L39,92.26H9.32A9.36,9.36,0,0,1,0,82.94V9.32A9.34,9.34,0,0,1,9.32,0Z"
+        />
+        <path
+          className="social-follow-icon__person"
+          d="M46.47,49.89H76.41a11,11,0,0,1,11,11v4.29a1.35,1.35,0,0,1-1.35,1.34H36.83a1.35,1.35,0,0,1-1.35-1.34V60.88a11,11,0,0,1,11-11Zm15-32.33A14.22,14.22,0,1,1,47.22,31.78,14.22,14.22,0,0,1,61.44,17.56Z"
+        />
+      </svg>
+    );
+  }
+
   if (icon === "play") {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -293,13 +307,7 @@ export default function SocialGrowth() {
           >
             <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
           </video>
-        </a>
-        <a
-          className="social-growth__instagram"
-          href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
-          aria-label="Bekijk de case van Visit Antwerpen"
-        >
-          Visit Antwerpen
+          <span className="social-growth__case-label">Visit Antwerpen</span>
         </a>
         <span className="social-icon social-icon--heart" aria-hidden="true">
           <svg viewBox="0 0 24 24">
@@ -319,8 +327,8 @@ export default function SocialGrowth() {
               aria-label={badge.href ? "Bekijk Ami Amis op Instagram" : undefined}
             >
               <BadgeIcon icon={badge.icon} />
-              <strong>{badge.value}</strong>
-              <span>{badge.label}</span>
+              {badge.value ? <strong>{badge.value}</strong> : null}
+              {badge.label ? <span>{badge.label}</span> : null}
             </Tag>
           );
         })}

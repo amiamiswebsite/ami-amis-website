@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import Script from "next/script";
 import { assetPath } from "../../src/lib/assetPath";
 
 export default function Hero() {
@@ -224,10 +223,6 @@ export default function Hero() {
 
   return (
     <>
-      <Script
-        src="https://unpkg.com/@lottiefiles/lottie-player@2.0.12/dist/lottie-player.js"
-        strategy="afterInteractive"
-      />
       <section className="hero" aria-label="Ami Amis hero" ref={heroRef}>
         <div className="hero__clouds" aria-hidden="true">
           <img src={`${assetPath("/assets/hero-clouds.png")}?v=20260608`} alt="" />
@@ -265,15 +260,7 @@ export default function Hero() {
             </div>
           </div>
           <button className="hero__scroll-cue" type="button" onClick={scrollToIntro} aria-label="Scroll verder">
-            <span className="hero__scroll-cue-animation" aria-hidden="true">
-              <lottie-player
-                src={assetPath("/assets/arrow-arc.json")}
-                background="transparent"
-                speed="1"
-                loop
-                autoplay
-              />
-            </span>
+            <span className="hero__scroll-cue-animation" aria-hidden="true" />
           </button>
         </div>
       </section>

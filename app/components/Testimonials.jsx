@@ -23,6 +23,8 @@ const testimonials = [
   },
 ];
 
+const friendsWord = "vrienden".split("");
+
 export default function Testimonials() {
   const railRef = useRef(null);
   const animationFrameRef = useRef(0);
@@ -118,8 +120,16 @@ export default function Testimonials() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="friends-testimonials__inner">
-        <h2 id="friends-testimonials-title">
-          Wat <span>vrienden</span> zeggen.
+        <h2 id="friends-testimonials-title" aria-label="Wat vrienden zeggen.">
+          Wat{" "}
+          <span className="approach-wave friends-testimonials__title-wave" aria-hidden="true">
+            {friendsWord.map((letter, index) => (
+              <span className="approach-wave__char" key={`${letter}-${index}`}>
+                {letter}
+              </span>
+            ))}
+          </span>{" "}
+          zeggen.
         </h2>
 
         <div className="friends-testimonials__viewport">

@@ -34,17 +34,8 @@ export default function Projects() {
   const initialProjectIndex = highlightedProjects[centerProjectIndex] ? centerProjectIndex : 0;
   const initialLoopIndex = centerLoopGroup * highlightedProjects.length + initialProjectIndex;
   const carouselRef = useRef(null);
-  const dragStateRef = useRef({
-    isActive: false,
-    moved: false,
-    pointerId: null,
-    startScrollLeft: 0,
-    startX: 0,
-  });
-  const suppressClickRef = useRef(false);
   const [activeProjectIndex, setActiveProjectIndex] = useState(initialProjectIndex);
   const [activeLoopIndex, setActiveLoopIndex] = useState(initialLoopIndex);
-  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -212,102 +203,6 @@ export default function Projects() {
     setActiveLoopIndex(centerLoopGroup * highlightedProjects.length + projectIndex);
   };
 
-  const handlePointerDown = (event) => {
-    if (event.pointerType === "touch") {
-      return;
-    }
-
-    const carousel = carouselRef.current;
-
-    if (!(carousel instanceof HTMLElement)) {
-      return;
-    }
-
-    dragStateRef.current = {
-      isActive: true,
-      moved: false,
-      pointerId: event.pointerId,
-      startScrollLeft: carousel.scrollLeft,
-      startX: event.clientX,
-    };
-    setIsDragging(true);
-    carousel.setPointerCapture?.(event.pointerId);
-  };
-
-  const handlePointerMove = (event) => {
-    const carousel = carouselRef.current;
-    const dragState = dragStateRef.current;
-
-    if (!(carousel instanceof HTMLElement) || !dragState.isActive) {
-      return;
-    }
-
-    const distance = event.clientX - dragState.startX;
-
-    if (Math.abs(distance) > 4) {
-      dragState.moved = true;
-      carousel.scrollLeft = dragState.startScrollLeft - distance;
-      event.preventDefault();
-    }
-  };
-
-  const finishPointerDrag = (event) => {
-    const carousel = carouselRef.current;
-    const dragState = dragStateRef.current;
-
-    if (!dragState.isActive) {
-      return;
-    }
-
-    if (dragState.moved) {
-      suppressClickRef.current = true;
-      window.setTimeout(() => {
-        suppressClickRef.current = false;
-      }, 0);
-
-      if (carousel instanceof HTMLElement) {
-        window.requestAnimationFrame(() => {
-          const cards = Array.from(carousel.querySelectorAll("[data-loop-index]"));
-          const viewportCenter = carousel.scrollLeft + carousel.clientWidth / 2;
-          const closest = cards.reduce((current, card) => {
-            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-            const distance = Math.abs(cardCenter - viewportCenter);
-
-            if (!current || distance < current.distance) {
-              return { card, distance };
-            }
-
-            return current;
-          }, null);
-
-          if (closest?.card instanceof HTMLElement) {
-            const left = closest.card.offsetLeft - (carousel.clientWidth - closest.card.offsetWidth) / 2;
-            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            carousel.scrollTo({ left, behavior: prefersReducedMotion ? "auto" : "smooth" });
-          }
-        });
-      }
-    }
-
-    dragStateRef.current = {
-      isActive: false,
-      moved: false,
-      pointerId: null,
-      startScrollLeft: 0,
-      startX: 0,
-    };
-    setIsDragging(false);
-    carousel?.releasePointerCapture?.(event.pointerId);
-  };
-
-  const handleCarouselClickCapture = (event) => {
-    if (suppressClickRef.current) {
-      event.preventDefault();
-      event.stopPropagation();
-      suppressClickRef.current = false;
-    }
-  };
-
   return (
     <section className="projects projects--carousel" id="werk">
       <h2 aria-label="In de kijker">
@@ -321,16 +216,7 @@ export default function Projects() {
       </h2>
 
       <div className="projects__mobile-showcase" aria-label="Uitgelichte projecten">
-        <div
-          className={`projects__carousel${isDragging ? " is-dragging" : ""}`}
-          ref={carouselRef}
-          onClickCapture={handleCarouselClickCapture}
-          onPointerCancel={finishPointerDrag}
-          onPointerDown={handlePointerDown}
-          onPointerLeave={finishPointerDrag}
-          onPointerMove={handlePointerMove}
-          onPointerUp={finishPointerDrag}
-        >
+        <div className="projects__carousel" ref={carouselRef}>
           <div className="projects__carousel-track">
             {loopedProjects.map(({ item, projectIndex, loopIndex, isClone }) => (
               <a
