@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[44360,["/ami-amis-website/_next/static/chunks/0dbhjjzl8qfwv.js","/ami-amis-website/_next/static/chunks/0yfav9cz_27t-.js"],"default"]
+2:I[44360,["/ami-amis-website/_next/static/chunks/0dbhjjzl8qfwv.js","/ami-amis-website/_next/static/chunks/0z-2v2iqy.5xe.js"],"default"]
 3:I[97367,["/ami-amis-website/_next/static/chunks/0dbhjjzl8qfwv.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/ami-amis-website/_next/static/chunks/0yfav9cz_27t-.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"Xl9x0i3539hCFlEczN7xB"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/ami-amis-website/_next/static/chunks/0z-2v2iqy.5xe.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"yMGWIkkLjNhH_qF1ryQI7"}
 5:null
