@@ -59,8 +59,8 @@ function WorkCard({ item, index }) {
       }}
       aria-label={`Bekijk case ${item.client}`}
     >
-      <figure className={`work-card__media ${imageFailed ? "is-fallback" : ""}`}>
-        {!imageFailed ? (
+      <figure className={`work-card__media ${!item.image || imageFailed ? "is-fallback" : ""}`}>
+        {item.image && !imageFailed ? (
           <img
             src={assetPath(item.image)}
             alt={`${item.client} projectbeeld`}

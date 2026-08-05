@@ -149,7 +149,7 @@ function getMediaSections(data) {
   return (data.mediaSections || [])
     .map((section) => ({
       ...section,
-      items: (section.items || []).filter((item) => item && (item.src || item.poster || item.id || item.fallbackLabel)),
+      items: (section.items || []).filter((item) => item && (item.src || item.poster || item.id || item.url || item.fallbackLabel)),
     }))
     .filter((section) => section.items.length);
 }
@@ -243,6 +243,7 @@ function VimeoFrame({ embed, index, client, featured = false }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const id = typeof embed === "string" ? embed : embed.id;
   const title = typeof embed === "string" ? `${client} video ${index + 1}` : embed.title || `${client} video ${index + 1}`;
+  const hideCaption = typeof embed === "string" ? false : Boolean(embed.hideCaption || embed.hideTitle);
   const hash = typeof embed === "string" ? "" : embed.hash || embed.h || "";
   const playerId = id ? `case-vimeo-${id}-${featured ? "featured" : index}-${slugifyPlayerId(title)}` : "";
   const src = id ? getVimeoFrameSrc({ hash, id, playerId }) : "";
@@ -333,7 +334,7 @@ function VimeoFrame({ embed, index, client, featured = false }) {
           onClick={togglePlayback}
           type="button"
         >
-          <span>{title}</span>
+          {hideCaption ? null : <span>{title}</span>}
           <span aria-hidden="true" className="case-vimeo-frame__play">
             <span />
           </span>
@@ -366,6 +367,14 @@ function CaseHeroMedia({ data, heroMedia }) {
 }
 
 function CaseVideoCard({ video, index, featured = false, client }) {
+  if (video?.type === "vimeo" || video?.id) {
+    return (
+      <article className={`case-video-card case-video-card--vimeo${featured ? " case-video-card--featured" : ""}`}>
+        <VimeoFrame client={client} embed={video} index={index} />
+      </article>
+    );
+  }
+
   if (!video?.src) {
     return null;
   }
@@ -618,8 +627,8 @@ function CasePillars({ data }) {
 
         return (
           <article key={item.key}>
-            <p>{String(index + 1).padStart(2, "0")} / {item.label}</p>
-            <h2>{getPillarTitle(block, item.label)}</h2>
+            <p>{String(index + 1).padStart(2, "0")} / {block.label || item.label}</p>
+            <h2>{getPillarTitle(block, block.label || item.label)}</h2>
             {textFrom(block) ? <span>{textFrom(block)}</span> : null}
             {stats.length ? (
               <dl className="case-pillars-compact__stats">
@@ -653,6 +662,28 @@ function CaseMediaHubItem({ item, imageIndex, onOpenImage, client }) {
       <div className="case-media-hub__item case-media-hub__item--video">
         <VimeoFrame client={client} embed={item} index={0} />
       </div>
+    );
+  }
+
+  if (type === "instagram" || type === "external") {
+    return (
+      <figure className="case-media-hub__item case-media-hub__item--video">
+        <a
+          aria-label={`Open ${caption || item.fallbackLabel || `${client} video`}`}
+          className="case-external-video"
+          href={item.url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span className="case-vimeo-frame__screen case-external-video__screen">
+            <span className="case-external-video__label">{item.fallbackLabel || "Bekijk video"}</span>
+            <span aria-hidden="true" className="case-vimeo-frame__play">
+              <span />
+            </span>
+          </span>
+        </a>
+        {item.hideCaption ? null : caption ? <figcaption>{caption}</figcaption> : null}
+      </figure>
     );
   }
 
@@ -982,11 +1013,7 @@ function CaseVideoModal({ data, open, onClose }) {
 }
 
 export default function CasePageTemplate({ caseData }) {
-  if (caseData.template === "visit-antwerpen-social" || caseData.template === "x-oats-social") {
-    return <VisitAntwerpenCasePage caseData={caseData} />;
-  }
-
-  return <GenericCasePage caseData={caseData} />;
+  return <VisitAntwerpenCasePage caseData={caseData} />;
 }
 
 function GenericCasePage({ caseData }) {

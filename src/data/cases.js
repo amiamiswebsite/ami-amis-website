@@ -46,7 +46,7 @@ const manualNeedsContent = {
   summary: missingCaseText,
 };
 
-export const cases = [
+const rawCases = [
   {
     slug: "tarzan-en-jane",
     template: "visit-antwerpen-social",
@@ -306,62 +306,163 @@ export const cases = [
     category: "Social content",
     categories: ["Social content", "Fotografie", "Marketingstrategie"],
     year: "2026",
-    deliverables: ["Social content", "Fotografie", "Marketingstrategie"],
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "mixed-media",
+    oneLiner: "Een professionele, high-end social feed die perfect weerspiegelt waar Humgy voor staat.",
+    seo: {
+      title: "Humgy | Ami Amis",
+      description:
+        "Voor Humgy neemt Ami Amis maandelijks de volledige social contentflow over: strategie, planning, shooting, montage en publicatie.",
+    },
+    intro:
+      "Hoe vertalen we de sfeer van een bruisende coworking naar een social-mediafeed? 👀",
+    summary:
+      "Een professionele, high-end social feed die leeft, members betrekt en nieuwe klanten overtuigt.",
+    introQuote:
+      "Hoe vertalen we de sfeer van een bruisende coworking naar een social-mediafeed? 👀",
+    storyBlocks: [
+      {
+        text:
+          "Vier coworkinglocaties, een bruisende community en altijd wel iets te vertellen. Alleen ontbrak er één klein detail: de tijd om dat allemaal consequent op social media te krijgen.",
+      },
+      {
+        text:
+          "Gelukkig zitten de kapoenen van Ami Amis gewoon mee in huis om dat op te lossen.😌",
+      },
+      {
+        text:
+          "Humgy ging met ons een maandelijkse samenwerking aan waarbij wij de volledige contentflow overnemen: van planning en ideeën tot shooting, montage en publicatie. Zo hoeft Humgy zich geen zorgen meer te maken over wat ze moeten posten, wanneer ze moeten posten of wie er nog snel een caption uit zijn mouw moet schudden.",
+      },
+      {
+        text: "Wij zorgen voor de volledige ontzorging. 📸🎥",
+      },
+      {
+        text:
+          "Voor de look kozen we voor een high-end look die perfect past bij de stijlvolle locaties, zonder de warme en losse communitysfeer te verliezen. De content gaat dan ook alle kanten uit: aftermovies van events, testimonials, snackable video’s, grappige formats en content waarin we de troeven van Humgy stevig in de kijker zetten.",
+      },
+      {
+        text:
+          "Ook de members krijgen regelmatig hun moment in de spotlight. Want bij Humgy huur je niet gewoon een bureau. Je wordt deel van een community vol ondernemers, bedrijven en verhalen. En die verdienen het natuurlijk ook om eens te shinen. ✨",
+      },
+      {
+        text:
+          "Zo groeide de feed stilaan uit tot een digitale rondleiding door Humgy. Potentiële members zien meteen hoe de locaties eruitzien, wie er werkt en waarom het er nét dat tikkeltje leuker is dan op een klassiek kantoor.",
+      },
+      {
+        text:
+          "Het resultaat? Een professionele, herkenbare feed die leeft, members betrekt en nieuwe klanten overtuigt. Zonder dat Humgy zelf zich met captions, camera’s of contentkalenders moet bezighouden. Win-win. 🤝",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], [], [], []],
+    deliverables: ["Social strategie", "Contentplanning", "Shooting", "Montage", "Publicatie"],
+    heroMedia: vimeoCaseMedia("1215737500", "Humgy member spotlight"),
     hero: {
       image: "/work/humgy-thumb.png",
       poster: "/work/humgy-thumb.png",
     },
     gallery: [{ src: "/work/humgy-thumb.png", alt: "Humgy projectbeeld" }],
-    ...manualNeedsContent,
-    sourceType: "master-portfolio",
-    needsContent: false,
-    needsReview: false,
-    needsMedia: true,
-    needsEditorialSplit: false,
-    oneLiner: "Een Work/Vacation-verhaal dat coworking, reizen en community samenbrengt.",
-    intro:
-      "Voor Humgy brachten we hun Work/Vacation-concept in Marokko in beeld. Een week vol werken, ontdekken, ontspannen en community werd vertaald naar spontane social content.",
-    summary:
-      "Een energieke reportage van Humgy's Work/Vacation-concept, gemaakt voor social en communitybuilding.",
-    introQuote: "Humgy wilde hun Work/Vacation-concept tastbaar maken voor ondernemers die werken en beleven willen combineren.",
-    storyBlocks: [
-      {
-        text:
-          "Voor Humgy brachten we hun Work/Vacation-concept in Marokko in beeld. Een week vol werken, ontdekken, ontspannen en community werd vertaald naar spontane social content.",
-      },
-    ],
-    storyHighlights: [[]],
     media: {
-      hero: imageCaseMedia("/work/humgy-thumb.png", "Humgy projectbeeld"),
-      verticalVideos: [imageCaseMedia("/work/humgy-thumb.png", "Humgy projectbeeld")],
+      hero: vimeoCaseMedia("1215737500", "Humgy member spotlight"),
+      verticalVideos: [
+        vimeoCaseMedia("1215737500", "Humgy member spotlight"),
+        vimeoCaseMedia("1215737499", "Humgy member spotlight"),
+      ],
     },
+    vimeoEmbeds: [
+      vimeo("1215737500", "Humgy member spotlight"),
+      vimeo("1215737499", "Humgy member spotlight"),
+    ],
     facts: [
-      { label: "Output", value: "1 video" },
-      { label: "Format", value: "social content" },
+      { label: "Output", value: "maandelijkse social content" },
+      { label: "Locaties", value: "4 coworkinglocaties" },
+      { label: "Link", value: "instagram.com/humgy.cowork.antwerp" },
     ],
     question: {
-      title: "Hoe toon je dat coworking meer kan zijn dan een bureau?",
+      label: "Probleem",
+      title: "",
       text:
-        "Humgy wilde hun Work/Vacation-concept tastbaar maken voor ondernemers die werken en beleven willen combineren.",
+        "Humgy heeft een bruisende community en vier prachtige locaties, maar te weinig tijd en expertise om dat verhaal consequent op sociale media te vertellen.",
     },
     approach: {
-      title: "Een spontane mix van werk, reizen en sfeer.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We volgden de groep doorheen werkmomenten, activiteiten en ontspannen tussenstops. De focus lag op echte interacties, locatiegevoel en teamdynamiek.",
+        "Ami Amis nam de volledige contentflow over: strategie, contentplanning, shootings, montage en publicatie. Elke maand zorgen we voor een mix van aftermovies, testimonials, snackable video’s en content die zowel de locaties als de members in de kijker zet.",
     },
     result: {
-      title: "Een warm communityverhaal met goesting.",
+      label: "Resultaat",
+      title: "",
       text:
-        "Content die de energie van Humgy laat voelen en het Work/Vacation-format duidelijker positioneert.",
+        "Een professionele, high-end social feed die perfect weerspiegelt waar Humgy voor staat. Bestaande members voelen zich betrokken, terwijl potentiële klanten meteen de sfeer, community en meerwaarde van Humgy ervaren. En Humgy? Die kunnen zich gewoon bezighouden met waar zij goed in zijn. 😉",
       stats: [
-        { value: "1", label: "video" },
-        { value: "Work/Vacation", label: "format" },
-        { value: "Marokko", label: "locatie" },
+        { value: "4", label: "locaties" },
+        { value: "maandelijks", label: "contentflow" },
+        { value: "IG", label: "social feed" },
         { value: "PLACEHOLDER", label: "extra cijfer" },
       ],
     },
-    outro: "Content die de energie van Humgy laat voelen en het Work/Vacation-format duidelijker positioneert.",
-    externalVideoUrl: "https://f.io/FG9AAvBN",
+    outro:
+      "Een professionele, herkenbare feed die leeft, members betrekt en nieuwe klanten overtuigt.",
+    mediaSectionTitle: "De content zelf.",
+    mediaSectionIntro:
+      "Afters, grappige formats, snackable content en member stories, verwerkt als compacte play-cards.",
+    mediaSections: [
+      {
+        title: "Social feed",
+        key: "instagram",
+        featured: true,
+        items: [
+          {
+            type: "instagram",
+            url: "https://www.instagram.com/p/DXHhKvGEXw8/",
+            fallbackLabel: "Instagram",
+            hideCaption: true,
+          },
+          {
+            type: "instagram",
+            url: "https://www.instagram.com/p/DMx-wVHhOTA/",
+            fallbackLabel: "Instagram",
+            hideCaption: true,
+          },
+          {
+            type: "instagram",
+            url: "https://www.instagram.com/p/DNWAzo4x8g0/",
+            fallbackLabel: "Instagram",
+            hideCaption: true,
+          },
+        ],
+      },
+      {
+        title: "Members",
+        key: "members",
+        items: [
+          {
+            type: "vimeo",
+            id: "1215737500",
+            title: "Humgy member spotlight",
+            hideCaption: true,
+          },
+          {
+            type: "vimeo",
+            id: "1215737499",
+            title: "Humgy member spotlight",
+            hideCaption: true,
+          },
+        ],
+      },
+    ],
+    externalVideoUrls: [
+      "https://www.instagram.com/humgy.cowork.antwerp/",
+      "https://www.instagram.com/p/DXHhKvGEXw8/",
+      "https://www.instagram.com/p/DMx-wVHhOTA/",
+      "https://www.instagram.com/p/DNWAzo4x8g0/",
+      "https://vimeo.com/1215737500?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215737499?share=copy&fl=sv&fe=ci",
+    ],
   },
   {
     slug: "imore",
@@ -453,9 +554,9 @@ export const cases = [
       { label: "Format", value: "interieurcontent" },
     ],
     question: {
-      label: "Vraag",
+      label: "Probleem",
       title: "",
-      text: "Maak content die echt bij ons past.",
+      text: "Imore zocht een manier om hun designs tot leven te brengen op een manier die écht bij hen past.",
     },
     approach: {
       label: "Aanpak",
@@ -574,17 +675,25 @@ export const cases = [
       title: "Videopartnership Lierse",
     },
     intro:
-      "GOOOAAAAAL! Dat horen we tegenwoordig wel vaker, want we zijn trotse videopartner van K.Lierse S.K. We staan altijd klaar om de spannende wedstrijden in het Lisp (het iconische Lierse stadion) vast te leggen. Of het nu gaat om een video voor de aankondiging van de nieuwe stadionnaam, een Kerstvideo, een aftermovie van een event of het bekendmaken van de nieuwe trainer - Lierse kan altijd rekenen op ons vakmanschap! Bekijk hier alvast de video die we maakten voor de match Lierse - La Louvière.",
+      "GOAAALLLLL! 💛🖤",
     summary:
-      "Als videopartner leggen we wedstrijden, events, aankondigingen en clubmomenten vast voor K. Lierse S.K.",
-    introQuote: "PLACEHOLDER: concrete vraag van K. Lierse S.K. aanvullen.",
+      "Een constante stroom herkenbare clubcontent die supporters betrokken houdt, voor meer interactie zorgt en blijft scoren.",
+    introQuote: "GOAAALLLLL! 💛🖤",
     storyBlocks: [
       {
         text:
-          "GOOOAAAAAL! Dat horen we tegenwoordig wel vaker, want we zijn trotse videopartner van K.Lierse S.K. We staan altijd klaar om de spannende wedstrijden in het Lisp (het iconische Lierse stadion) vast te leggen. Of het nu gaat om een video voor de aankondiging van de nieuwe stadionnaam, een Kerstvideo, een aftermovie van een event of het bekendmaken van de nieuwe trainer - Lierse kan altijd rekenen op ons vakmanschap! Bekijk hier alvast de video die we maakten voor de match Lierse - La Louvière.",
+          "Een voetbalclub leeft van beleving, maar die stopt niet na 90 minuten.",
+      },
+      {
+        text:
+          "Als videopartner van de grootste kleinste club van het land brengen we die beleving van Lierse SK mee tot bij de supporters.",
+      },
+      {
+        text:
+          "Van sfeervolle fancontent tot aftermovies en alles daartussen. Op én naast het veld zorgen wij ervoor dat de passie van de club ook online blijft leven.",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], []],
     deliverables: ["Videopartnership", "Wedstrijdvideo", "Aftermovie", "Clubcontent"],
     hero: {
       image: "/work/lierse.webp",
@@ -607,18 +716,22 @@ export const cases = [
       { label: "Type", value: "videopartnership" },
     ],
     question: {
-      title: "PLACEHOLDER: vraag-titel toevoegen",
-      text: "PLACEHOLDER: concrete vraag van K. Lierse S.K. aanvullen.",
+      label: "Probleem",
+      title: "",
+      text:
+        "Lierse SK wilde ook buiten de 90 minuten zichtbaar blijven. Want een voetbalclub leeft niet alleen op wedstrijddagen. Supporters willen hun favoriete momenten van een match opnieuw beleven, of weten wat er gaande is in de club.",
     },
     approach: {
-      title: "PLACEHOLDER: aanpak-titel toevoegen",
+      label: "Oplossing",
+      title: "",
       text:
-        "We staan altijd klaar om de spannende wedstrijden in het Lisp (het iconische Lierse stadion) vast te leggen.",
+        "Wij maken video’s die fans dichter bij de club brengen, de sfeer van het moment vangen en belangrijke momenten nog eens laten herbeleven. Van op het veld tot ver daarbuiten.",
     },
     result: {
-      title: "PLACEHOLDER: resultaat-titel toevoegen",
+      label: "Resultaat",
+      title: "",
       text:
-        "Als videopartner leggen we wedstrijden, events, aankondigingen en clubmomenten vast voor K. Lierse S.K.",
+        "Een constante stroom herkenbare clubcontent die supporters betrokken houdt, voor meer interactie zorgt en blijft scoren! ⚽",
       stats: [
         { value: "1", label: "matchvideo" },
         { value: "1", label: "stadionnaamvideo" },
@@ -626,7 +739,8 @@ export const cases = [
         { value: "PLACEHOLDER", label: "clubcontent" },
       ],
     },
-    outro: "Als videopartner leggen we wedstrijden, events, aankondigingen en clubmomenten vast voor K. Lierse S.K.",
+    outro:
+      "Een constante stroom herkenbare clubcontent die supporters betrokken houdt, voor meer interactie zorgt en blijft scoren! ⚽",
     externalVideoUrls: [
       "https://vimeo.com/1055593959/ef72b6897c",
       "https://vimeo.com/1055589802/3b7c6b293a",
@@ -987,6 +1101,14 @@ export const cases = [
           wide: true,
           aspectRatio: "16 / 9",
         },
+        {
+          type: "vimeo",
+          id: "1215730779",
+          title: "Salus spot 5",
+          url: "https://vimeo.com/1215730779?share=copy&fl=sv&fe=ci",
+          wide: true,
+          aspectRatio: "16 / 9",
+        },
       ],
     },
     vimeoEmbeds: [
@@ -994,6 +1116,7 @@ export const cases = [
       vimeo("1055217563", "Salus spot 2", "86c6a93452"),
       vimeo("1204531088", "Salus spot 3"),
       vimeo("1204533594", "Salus spot 4"),
+      vimeo("1215730779", "Salus spot 5"),
     ],
     facts: [
       { label: "Output", value: "reclamespots" },
@@ -1001,21 +1124,22 @@ export const cases = [
       { label: "Resultaat", value: "40 bedden in één maand" },
     ],
     question: {
-      label: "Vraag",
-      title: "PLACEHOLDER: vraag-titel toevoegen",
-      text: "“Kunnen jullie onze Medicair-bedden in de kijker zetten?”",
+      label: "Probleem",
+      title: "",
+      text:
+        "De Salus Medicair-bedden 🛏️ kregen nog niet de aandacht die ze verdienden. De verkoop bleef achter, dus zocht Salus naar een opvallende manier om het product bekender én aantrekkelijker te maken.",
     },
     approach: {
       label: "Aanpak",
-      title: "PLACEHOLDER: aanpak-titel toevoegen",
+      title: "",
       text:
-        "We schreven opvallende reclamespots die de doelgroep aanspreken met humor, herkenbaarheid en storytelling.",
+        "We schreven een reeks reclamespots die de doelgroep niet bestookten met technische verkooppraat, maar aanspraken met humor, herkenbaarheid en een sterk verhaal.",
     },
     result: {
       label: "Resultaat",
-      title: "PLACEHOLDER: resultaat-titel toevoegen",
+      title: "",
       text:
-        "Een reeks grappige en kwalitatieve spots, waarvan eentje de verkoop van de Salus Medicair-bedden opvallend deed stijgen.",
+        "Een reeks grappige, kwalitatieve spots die bleven hangen. Eén spot sprong er extra uit en zorgde voor een opvallende stijging in de verkoop van de Salus Medicair-bedden 🤭.",
       stats: [
         { value: "bijna 8x", label: "meer Medicair-bedden" },
         { value: "40", label: "bedden in één maand" },
@@ -1029,6 +1153,7 @@ export const cases = [
       "https://vimeo.com/1055217563/86c6a93452",
       "https://vimeo.com/1204531088?share=copy&fl=sv&fe=ci",
       "https://vimeo.com/1204533594?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215730779?share=copy&fl=sv&fe=ci",
     ],
   },
   {
@@ -1123,17 +1248,34 @@ export const cases = [
     needsEditorialSplit: true,
     mediaType: "mixed-media",
     intro:
-      "Voor de Stad Gent ontwikkelden we een creatieve campagne rond duurzaam wonen. De centrale boodschap luidde: “Er zijn betere manieren om je huis te verwarmen.” We werkten hiervoor een krachtige cinemaspot uit, aangevuld met drie opvallende campagnebeelden die als affiches zouden dienen. De campagne zet in op bewustmaking en gedragsverandering bij de Gentse burger. Humor en herkenbare situaties zorgen voor een laagdrempelige insteek. De visuele stijl sluit naadloos aan bij de huisstijl van de stad. We kozen voor heldere beelden en een directe boodschap. De cinemaspot werd ingezet in de cinema van Gent. Voor de online kanalen maakten we een variatie van 15 seconden. De affiches versterkten de zichtbaarheid in het straatbeeld. Samen vormen ze een coherent geheel dat impact creëert én blijft hangen.",
+      "Hoe overtuig je Gentenaars dat hun huis verwarmen ook slimmer, duurzamer én beter kan? 🔥",
     summary:
-      "Een creatieve campagne voor Stad Gent met cinemaspot, campagnebeelden en affiches rond duurzamer verwarmen.",
-    introQuote: "Stad Gent wilde een campagne die bewust maakt zonder belerend te worden.",
+      "Een campagne die zichtbaar was in de cinema, online én in het straatbeeld.",
+    introQuote:
+      "Hoe overtuig je Gentenaars dat hun huis verwarmen ook slimmer, duurzamer én beter kan? 🔥",
     storyBlocks: [
       {
         text:
-          "Voor de Stad Gent ontwikkelden we een creatieve campagne rond duurzaam wonen. De centrale boodschap luidde: “Er zijn betere manieren om je huis te verwarmen.” We werkten hiervoor een krachtige cinemaspot uit, aangevuld met drie opvallende campagnebeelden die als affiches zouden dienen. De campagne zet in op bewustmaking en gedragsverandering bij de Gentse burger. Humor en herkenbare situaties zorgen voor een laagdrempelige insteek. De visuele stijl sluit naadloos aan bij de huisstijl van de stad. We kozen voor heldere beelden en een directe boodschap. De cinemaspot werd ingezet in de cinema van Gent. Voor de online kanalen maakten we een variatie van 15 seconden. De affiches versterkten de zichtbaarheid in het straatbeeld. Samen vormen ze een coherent geheel dat impact creëert én blijft hangen.",
+          "Voor Stad Gent mochten we samen met Billie Bonkers aan de slag met een campagne rond duurzaam wonen. De boodschap was helder: “Er zijn betere manieren om je huis te verwarmen.” Alleen: hoe breng je zo’n boodschap zonder dat het voelt als een belerend vingertje?",
+      },
+      {
+        text:
+          "Juist ja. Met humor, herkenbaarheid en beelden die blijven plakken.",
+      },
+      {
+        text:
+          "We werkten een cinemaspot uit die Gentenaars op een laagdrempelige manier aan het denken zet over hoe ze hun woning verwarmen. De dramatische muziek en absurde toon grijpen meteen de aandacht van de kijker. Zo landde de boodschap op een speelse en herkenbare manier ;).",
+      },
+      {
+        text:
+          "Naast de spot maakten we ook drie opvallende campagnebeelden voor affiches. Die trokken de lijn van de video door naar het straatbeeld en zorgden ervoor dat de campagne niet alleen in de cinema, maar ook onderweg opviel.",
+      },
+      {
+        text:
+          "Visueel hielden we alles fris, helder en helemaal in lijn met de huisstijl van Stad Gent. De cinemaspot kreeg een plek in de Gentse cinema’s, en voor online maakten we een kortere versie van 15 seconden. Zo kreeg de campagne op elk kanaal de juiste vorm, zonder aan kracht te verliezen.",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], [], [], []],
     deliverables: ["Cinemaspot", "Campagnebeelden", "Affiches", "Storyboard"],
     hero: {
       sourceMediaUrl:
@@ -1160,19 +1302,22 @@ export const cases = [
       { label: "Type", value: "campagne" },
     ],
     question: {
-      title: "Hoe maak je duurzaam verwarmen herkenbaar voor de Gentse burger?",
+      label: "Probleem",
+      title: "",
       text:
-        "Stad Gent wilde een campagne die bewust maakt zonder belerend te worden.",
+        "Hoe maken we Gentenaars bewust van duurzamer verwarmen op een manier die helder, herkenbaar en niet belerend aanvoelt?",
     },
     approach: {
-      title: "Humor, herkenbare situaties en één duidelijke boodschap.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We werkten een cinemaspot, korte online variant en campagnebeelden uit rond de boodschap dat er betere manieren zijn om je huis te verwarmen.",
+        "Een creatieve campagne met een cinemaspot, online cutdown en drie sterke campagnebeelden. Met humor, herkenbare situaties en een duidelijke visuele stijl brachten we de boodschap laagdrempelig tot bij de Gentse burger.",
     },
     result: {
-      title: "Een campagne die blijft hangen in cinema, online en straatbeeld.",
+      label: "Resultaat",
+      title: "",
       text:
-        "De video en affiches vormen samen een helder geheel rond duurzamer wonen.",
+        "Een campagne die zichtbaar was in de cinema, online én in het straatbeeld. Eentje die duurzaam wonen bespreekbaar maakt, de boodschap simpel houdt en vooral: opvalt!",
       stats: [
         { value: "2", label: "video’s" },
         { value: "3", label: "campagnebeelden" },
@@ -1180,7 +1325,8 @@ export const cases = [
         { value: "Gent", label: "cinema" },
       ],
     },
-    outro: "De video en affiches vormen samen een helder geheel rond duurzamer wonen.",
+    outro:
+      "Een campagne die zichtbaar was in de cinema, online én in het straatbeeld. Eentje die duurzaam wonen bespreekbaar maakt, de boodschap simpel houdt en vooral: opvalt!",
     externalVideoUrl: "https://f.io/JOJD6hvM",
   },
   {
@@ -1201,17 +1347,25 @@ export const cases = [
     needsEditorialSplit: true,
     mediaType: "vimeo-video",
     intro:
-      "Voor Jurimesh ontwikkelden we een video die hun nieuwe integratie met Virtual Vaults op een heldere, toegankelijke en herkenbare manier uitlegt. Het doel van deze productie was om een technisch complexe samenwerking begrijpelijk te maken voor hun doelgroep, met een mix van dramatische opbouw, duidelijke visualisatie én een speelse punchline die de boodschap luchtig afsluit. We namen het volledige creatieve proces voor onze rekening: van het uitdenken van het concept en het schrijven van een verhalend script tot de opnames, motion graphics en technische afwerking. We zorgden ervoor dat de look-and-feel naadloos aansloot bij de identiteit van zowel Jurimesh als Virtual Vaults, zodat de video geloofwaardig aanvoelt binnen beide ecosystemen. Door de combinatie van uitleg, storytelling en humor konden we de meerwaarde van de integratie scherp in beeld brengen: sneller inzicht, minder risico’s en een workflow die juridisch én operationeel volledig op elkaar aansluit. De video wordt vandaag ingezet in sales- en marketingcontext als krachtig startpunt om de samenwerking uit te leggen, nieuwe leads te overtuigen en bestaande klanten te informeren. Dankzij een heldere verhaallijn en visuele eenvoud helpt deze productie Jurimesh om hun technologie toegankelijk en aantrekkelijk te positioneren.",
+      "Een technische integratie uitleggen zonder dat iedereen na tien seconden afhaakt? Challenge accepted. 😏",
     summary:
-      "Een uitlegvideo die de integratie met Virtual Vaults toegankelijk maakt via storytelling, motion graphics en humor.",
-    introQuote: "Jurimesh wilde hun integratie met Virtual Vaults toegankelijk uitleggen voor sales, marketing en klanten.",
+      "Een heldere video die snel inzicht geeft en Jurimesh helpt om hun technologie toegankelijker te maken.",
+    introQuote:
+      "Een technische integratie uitleggen zonder dat iedereen na tien seconden afhaakt? Challenge accepted. 😏",
     storyBlocks: [
       {
         text:
-          "Voor Jurimesh ontwikkelden we een video die hun nieuwe integratie met Virtual Vaults op een heldere, toegankelijke en herkenbare manier uitlegt. Het doel van deze productie was om een technisch complexe samenwerking begrijpelijk te maken voor hun doelgroep, met een mix van dramatische opbouw, duidelijke visualisatie én een speelse punchline die de boodschap luchtig afsluit. We namen het volledige creatieve proces voor onze rekening: van het uitdenken van het concept en het schrijven van een verhalend script tot de opnames, motion graphics en technische afwerking. We zorgden ervoor dat de look-and-feel naadloos aansloot bij de identiteit van zowel Jurimesh als Virtual Vaults, zodat de video geloofwaardig aanvoelt binnen beide ecosystemen. Door de combinatie van uitleg, storytelling en humor konden we de meerwaarde van de integratie scherp in beeld brengen: sneller inzicht, minder risico’s en een workflow die juridisch én operationeel volledig op elkaar aansluit. De video wordt vandaag ingezet in sales- en marketingcontext als krachtig startpunt om de samenwerking uit te leggen, nieuwe leads te overtuigen en bestaande klanten te informeren. Dankzij een heldere verhaallijn en visuele eenvoud helpt deze productie Jurimesh om hun technologie toegankelijk en aantrekkelijk te positioneren.",
+          "Voor Jurimesh ontwikkelden we een video over hun nieuwe integratie met Virtual Vaults. Een samenwerking die achter de schermen behoorlijk technisch is, maar die we vertaalden naar een helder verhaal met dramatische opbouw, duidelijke visualisaties en een speelse punchline die alles netjes afmaakt. 🎬",
+      },
+      {
+        text:
+          "We namen het volledige creatieve proces voor onze rekening: van concept en script tot opnames, motion graphics en technische afwerking. Daarbij zorgden we ervoor dat de stijl perfect aansloot bij zowel Jurimesh als Virtual Vaults zodat de video geloofwaardig aanvoelt binnen beide ecosystemen.",
+      },
+      {
+        text: "Wil je ook een complex verhaal in een heldere video gieten? Bel Ami Amis 📞",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], []],
     deliverables: ["Concept", "Script", "Opnames", "Motion graphics", "Technische afwerking"],
     hero: {
       image: "/work/jurimesh-thumb.webp",
@@ -1238,19 +1392,22 @@ export const cases = [
       { label: "Focus", value: "motion graphics" },
     ],
     question: {
-      title: "Hoe maak je een technische integratie begrijpelijk zonder ze plat te slaan?",
+      label: "Probleem",
+      title: "",
       text:
-        "Jurimesh wilde hun integratie met Virtual Vaults toegankelijk uitleggen voor sales, marketing en klanten.",
+        "Jurimesh wilde hun nieuwe integratie aankondigen. Voordelen genoeg, maar niet bepaald voer voor één sexy oneliner. Zonder een helder verhaal dreigde de doelgroep al snel te verdrinken in technische details. 🧩",
     },
     approach: {
-      title: "Storytelling, motion graphics en een luchtige punchline.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We vertaalden de technische samenwerking naar een helder script, visuele opbouw en herkenbare afwerking binnen beide merkwerelden.",
+        "Met sterke storytelling, duidelijke visuals en een welgemikte dosis humor vertaalden we de complexe materie naar een herkenbare video die laat zien hoe de integratie werkt én waarom ze ertoe doet. 💡",
     },
     result: {
-      title: "Een technische boodschap die sneller landt.",
+      label: "Resultaat",
+      title: "",
       text:
-        "De video maakt de meerwaarde van de integratie duidelijk en bruikbaar in sales- en marketingcontext.",
+        "Een heldere video die snel inzicht geeft, risico’s begrijpelijk maakt en toont hoe juridische en operationele workflows vlot in elkaar klikken. Jurimesh gebruikt de video vandaag in sales en marketing om leads sneller mee te krijgen, klanten te informeren en hun technologie een pak toegankelijker te maken. 🚀",
       stats: [
         { value: "1", label: "uitlegvideo" },
         { value: "sales", label: "inzet" },
@@ -1258,7 +1415,8 @@ export const cases = [
         { value: "motion", label: "graphics" },
       ],
     },
-    outro: "De video maakt de meerwaarde van de integratie duidelijk en bruikbaar in sales- en marketingcontext.",
+    outro:
+      "Een heldere video die snel inzicht geeft, risico’s begrijpelijk maakt en toont hoe juridische en operationele workflows vlot in elkaar klikken.",
     externalVideoUrl: "https://f.io/qsJgMwfl",
   },
   {
@@ -1357,17 +1515,33 @@ export const cases = [
     needsEditorialSplit: true,
     mediaType: "vimeo-video",
     intro:
-      "Blutsqi, een gerenommeerd carrosseriebedrijf, schakelde ons in om hun employer brand visueel kracht bij te zetten. Met de krapte op de arbeidsmarkt wilden ze vacatures invullen via krachtige foto- en videocontent. In deze case brachten we de volgende troeven in beeld: Mensgerichte storytelling: Geen gladde campagnes, maar echte mensen in hun werkcontext. Via korte vacaturevideo’s en een overkoepelende employer branding video tonen we hoe het is om bij Blutsqi te werken – eerlijk, betrokken en vakgericht. Visuele authenticiteit: We draaiden volledig op locatie, met oog voor realisme én visuele aantrekkingskracht. De ruwe schoonheid van het vak en de onderlinge sfeer kwamen zo treffend in beeld. Platformgerichte output: Naast langere video's leverden we snackable content aan voor social media. Zo kreeg de campagne een breed bereik en directe respons van geïnteresseerde kandidaten. Met deze aanpak hielpen we Blutsqi niet alleen aan meer zichtbaarheid als werkgever, maar ook aan nieuwe collega’s die perfect in hun cultuur passen.",
+      "Hoe trekken we het juiste talent aan voor onze carrosserie? 🔧",
     summary:
-      "Foto- en videocontent die Blutsqi als werkgever zichtbaar maakt via vacaturevideo's, employer branding en social snippets.",
-    introQuote: "Blutsqi wilde vacatures zichtbaarder maken met een eerlijk beeld van hun mensen, jobs en cultuur.",
+      "Meer zichtbaarheid als werkgever, sterke content voor verschillende kanalen en nieuwe collega’s die perfect binnen het team passen.",
+    introQuote: "Hoe trekken we het juiste talent aan voor onze carrosserie? 🔧",
     storyBlocks: [
       {
         text:
-          "Blutsqi, een gerenommeerd carrosseriebedrijf, schakelde ons in om hun employer brand visueel kracht bij te zetten. Met de krapte op de arbeidsmarkt wilden ze vacatures invullen via krachtige foto- en videocontent. In deze case brachten we de volgende troeven in beeld: Mensgerichte storytelling: Geen gladde campagnes, maar echte mensen in hun werkcontext. Via korte vacaturevideo’s en een overkoepelende employer branding video tonen we hoe het is om bij Blutsqi te werken – eerlijk, betrokken en vakgericht. Visuele authenticiteit: We draaiden volledig op locatie, met oog voor realisme én visuele aantrekkingskracht. De ruwe schoonheid van het vak en de onderlinge sfeer kwamen zo treffend in beeld. Platformgerichte output: Naast langere video's leverden we snackable content aan voor social media. Zo kreeg de campagne een breed bereik en directe respons van geïnteresseerde kandidaten. Met deze aanpak hielpen we Blutsqi niet alleen aan meer zichtbaarheid als werkgever, maar ook aan nieuwe collega’s die perfect in hun cultuur passen.",
+          "Blutsqi, een gerenommeerd carrosseriebedrijf, klopte bij ons aan met een duidelijke uitdaging: nieuwe collega’s aantrekken in een arbeidsmarkt waar goed talent niet zomaar voor het oprapen ligt. We zetten hun employer brand in een hogere versnelling!",
+      },
+      {
+        text:
+          "De opdracht? Foto- en videocontent maken die toont hoe het écht is om bij Blutsqi te werken. De werkvloer mocht gewoon zichzelf zijn: echte collega’s, oprechte momenten en vakmanschap met een flinke dosis karakter.",
+      },
+      {
+        text:
+          "We trokken naar de werkvloer en brachten de sfeer, het team en de trots van het vak naar voren. Via korte vacaturevideo’s en een overkoepelende employer branding video lieten we zien wat Blutsqi als werkgever typeert: betrokken collega’s, vakmanschap en een werkcontext waar je meteen voelt dat er met goesting gewerkt wordt.",
+      },
+      {
+        text:
+          "Ook visueel mocht het karakter van het carrosserievak gezien worden. De ruwe schoonheid van de werkplaats, de precisie van het herstellen en de dynamiek tussen collega’s kregen allemaal hun moment.",
+      },
+      {
+        text:
+          "Naast de langere video’s maakten we ook korte, snackable content voor social media. Ideaal om snel de aandacht te trekken van potentiële kandidaten en hen meteen een gevoel te geven bij de sfeer op de werkvloer.",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], [], [], []],
     deliverables: ["Employer branding", "Vacaturevideo's", "Social snippets", "Fotografie"],
     hero: {
       sourceMediaUrl:
@@ -1400,19 +1574,22 @@ export const cases = [
       { label: "Type", value: "employer branding" },
     ],
     question: {
-      title: "Hoe trek je nieuwe collega's aan met content die echt voelt?",
+      label: "Probleem",
+      title: "",
       text:
-        "Blutsqi wilde vacatures zichtbaarder maken met een eerlijk beeld van hun mensen, jobs en cultuur.",
+        "Blutsqi trok te weinig sollicitanten aan die écht bij hun cultuur passen.",
     },
     approach: {
-      title: "Echte mensen, echte werkvloer, snackable output.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We filmden op locatie en combineerden vacaturevideo's met social snippets. De focus lag op vakmanschap, sfeer en authentieke verhalen.",
+        "We maakten een authentieke employer branding campagne met foto’s, korte vacaturevideo’s, een overkoepelende employer branding video en social content. Alles gefilmd op locatie, met echte medewerkers en een visuele stijl die het vakmanschap én de sfeer van Blutsqi laat spreken.",
     },
     result: {
-      title: "Een employer branding-campagne die Blutsqi menselijker maakt.",
+      label: "Resultaat",
+      title: "",
       text:
-        "Blutsqi kreeg content die hen sterker positioneert als werkgever en tegelijk breed inzetbaar is.",
+        "Meer zichtbaarheid als werkgever, sterke content voor verschillende kanalen en vooral: nieuwe collega’s die perfect binnen het team passen. Missie geslaagd 🚗✨",
       stats: [
         { value: "3", label: "video’s" },
         { value: "vacature", label: "video’s" },
@@ -1420,7 +1597,8 @@ export const cases = [
         { value: "foto", label: "content" },
       ],
     },
-    outro: "Blutsqi kreeg content die hen sterker positioneert als werkgever en tegelijk breed inzetbaar is.",
+    outro:
+      "Meer zichtbaarheid als werkgever, sterke content voor verschillende kanalen en vooral: nieuwe collega’s die perfect binnen het team passen. Missie geslaagd 🚗✨",
     externalVideoUrl: "https://f.io/_G4a7McI",
   },
   {
@@ -1594,8 +1772,10 @@ export const cases = [
       { label: "Stijl", value: "The Office" },
     ],
     question: {
-      title: "PLACEHOLDER: vraag-titel toevoegen",
-      text: "“Kunnen jullie een video maken voor ons in de stijl van The Office  🏢💼?”",
+      label: "Probleem",
+      title: "",
+      text:
+        "Frankie Villager wilde helder tonen waar hun merk voor staat, zonder er een saaie bedrijfsvideo van te maken… Misschien in de stijl van The Office🏢💼?",
     },
     approach: {
       title: "PLACEHOLDER: aanpak-titel toevoegen",
@@ -1777,6 +1957,338 @@ export const cases = [
     externalVideoUrl: "https://f.io/l92Q995M",
   },
   {
+    slug: "weplanet",
+    template: "x-oats-social",
+    client: "WePlanet",
+    heroTitle: "WEPLANET",
+    title: "WePlanet",
+    subtitle: "Een campagnevideo rond sandboxes in biotech-regulatie.",
+    oneLiner:
+      "Een krachtige campagnevideo voor WePlanet, een opvallende actie richting Europese ministers en nieuwe post-skills bij Ami Amis.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Marketingstrategie"],
+    year: "2026",
+    sourceUrl: "https://vimeo.com/1215731384?share=copy&fl=sv&fe=ci",
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "mixed-media",
+    seo: {
+      title: "WePlanet | Ami Amis",
+      description:
+        "Voor WePlanet maakten we een campagnevideo die een complex biotech-regulatiedossier helder, menselijk en voelbaar maakt.",
+    },
+    introQuote:
+      "Hoe kunnen we een complex onderwerp als biotech-regulatie vertalen naar een simpele, overtuigende en emotionele campagnevideo?",
+    intro:
+      "WePlanet kwam bij ons aankloppen met een missie die even belangrijk als ingewikkeld was: de legalisering van sandboxes versnellen.",
+    summary:
+      "Een krachtige campagnevideo voor WePlanet, een opvallende actie richting Europese ministers én nieuwe post-skills bij Ami Amis 📬",
+    storyBlocks: [
+      {
+        text:
+          "WePlanet kwam bij ons aankloppen met een missie die even belangrijk als ingewikkeld was: de legalisering van sandboxes versnellen. En nee, niet de zandbakken waar je vroeger zandtaartjes in maakte 🏖️, maar veilige testomgevingen binnen biotech-regulatie. Best technisch dus. Net daarom moest de boodschap helder, menselijk en vooral voelbaar worden.",
+      },
+      {
+        text:
+          "Hun idee? Een echte doos zand opsturen naar alle ministers van landbouw binnen de EU. Een symbolische actie om te tonen dat innovatie ruimte nodig heeft om te groeien. Alleen ontbrak nog één ding: een video die dat verhaal krachtig kon vertellen. Eentje die de actie niet alleen uitlegt, maar ook de urgentie laat binnenkomen.",
+      },
+      {
+        text:
+          "We kregen een script en voice-overtekst aangeleverd en doken erin. In enkele weken tijd bouwden we de hele productie op: van casting en planning tot sfeer, beelden en ja, zelfs de dozen zand die in beeld moesten komen 📦. Alles om van een complex beleidsdossier een warme, overtuigende en inspirerende video te maken.",
+      },
+      {
+        text:
+          "En toen kwam de bonusvraag: of we die dozen misschien ook écht wilden versturen naar alle ministers. Natuurlijk! Dus veranderde ons kantoor voor een paar dagen in een mini-postkantoor. Dozen klaarzetten, labels plakken, verzenden maar. Ami Amis: tijdelijk ook gespecialiseerd in Europese zanddistributie ✉️",
+      },
+      {
+        text:
+          "Nu is het hopen dat deze actie ook echt iets in beweging zet. Aan de video — en onze zandbaklogistiek — zal het alvast niet liggen 😉",
+      },
+    ],
+    storyHighlights: [[], [], [], [], []],
+    deliverables: ["Campagnevideo", "Productie", "Casting", "Planning", "Verzending"],
+    hero: {},
+    gallery: [],
+    media: {
+      hero: vimeoCaseMedia("1215731384", "WePlanet campagnevideo"),
+      verticalVideos: [vimeoCaseMedia("1215731384", "WePlanet campagnevideo")],
+    },
+    vimeoEmbeds: [vimeo("1215731384", "WePlanet campagnevideo")],
+    facts: [
+      { label: "Output", value: "campagnevideo" },
+      { label: "Thema", value: "biotech-regulatie" },
+      { label: "Doelgroep", value: "Europese ministers" },
+      { label: "Resultaat", value: "PLACEHOLDER" },
+    ],
+    question: {
+      label: "Probleem",
+      title: "",
+      text:
+        "Hoe kunnen we een complex onderwerp als biotech-regulatie vertalen naar een simpele, overtuigende en emotionele campagnevideo?",
+    },
+    approach: {
+      label: "Oplossing",
+      title: "",
+      text:
+        "Wij brachten een door WePlanet aangeleverde voice-over tot leven brengen met beelden die helder uitleggen, menselijk aanvoelen en de urgentie versterken.",
+    },
+    result: {
+      label: "Resultaat",
+      title: "",
+      text:
+        "Een krachtige campagnevideo voor WePlanet, een opvallende actie richting Europese ministers én nieuwe post-skills bij Ami Amis 📬",
+      stats: [
+        { value: "1", label: "campagnevideo" },
+        { value: "EU", label: "ministers" },
+        { value: "PLACEHOLDER", label: "dozen zand" },
+        { value: "PLACEHOLDER", label: "impact" },
+      ],
+    },
+    outro:
+      "Aan de video — en onze zandbaklogistiek — zal het alvast niet liggen 😉",
+    externalVideoUrl: "https://vimeo.com/1215731384?share=copy&fl=sv&fe=ci",
+  },
+  {
+    slug: "kdg",
+    aliases: ["karel-de-grote-hogeschool"],
+    template: "x-oats-social",
+    client: "KdG",
+    heroTitle: "KDG",
+    title: "KdG",
+    subtitle: "School = Cool. 🎓",
+    oneLiner:
+      "Een langdurige samenwerking waarin we studiekeuze, employer branding, interne communicatie en events tot leven brengen.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Animatie & montage", "Social content"],
+    year: "2026",
+    sourceUrl: "https://vimeo.com/1215735592?share=copy&fl=sv&fe=ci",
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "mixed-media",
+    seo: {
+      title: "KdG | Ami Amis",
+      description:
+        "Voor KdG werkt Ami Amis als vaste videopartner aan videofolders, graduations, strategievideo's en eindejaarscontent.",
+    },
+    introQuote: "School = Cool. 🎓",
+    intro: "School = Cool. 🎓",
+    summary:
+      "Een langdurige samenwerking waarin we de meest uiteenlopende verhalen tot leven brengen.",
+    storyBlocks: [
+      {
+        text:
+          "School = Cool. 🎓",
+      },
+      {
+        text:
+          "Bij Ami Amis mogen we ons met trots de vaste videopartner van KdG noemen. En geloof ons: dat levert allesbehalve saaie opdrachten op. 😉",
+      },
+      {
+        text:
+          "Van videofolders voor verschillende studierichtingen tot aftermovies van graduations en strategievideo's. Elke productie heeft hetzelfde doel: complexe informatie helder, aantrekkelijk en vooral menselijk maken.",
+      },
+      {
+        text:
+          "Voor de videofolders doken we diep in motion design. Samen met KdG ontwikkelden we een animatiestijl die perfect aansluit bij hun huisstijl. Zo hoeven toekomstige studenten zich niet door eindeloze pdf's te worstelen, maar krijgen ze in een paar minuten een duidelijk beeld van wat elke opleiding te bieden heeft. Veel leuker, toch? 📚✨",
+      },
+      {
+        text:
+          "Daarnaast brachten we de mooiste momenten van de graduation in beeld én vertaalden we de aankondiging van hun nieuwe strategie naar een heldere video die KdG-ers aanzet mee te denken over hun toekomst.",
+      },
+      {
+        text:
+          "En de kers op de taart? 🍒 De eindejaarsvideo.",
+      },
+      {
+        text:
+          "40 studenten, een hittegolf, hout, hamers en een ambitieuze planning. Geen zorgen, wij houden wel van een uitdaging. 😎 Het resultaat is een video waarin studenten met een glimlach terugblikken op hun tijd bij KdG.",
+      },
+      {
+        text:
+          "Na al die video's krijgen wij eerlijk gezegd zelf weer zin om achter de schoolbanken te kruipen. 😉",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], [], [], []],
+    deliverables: ["Videofolders", "Motion design", "Aftermovies", "Strategievideo", "Eindejaarsvideo"],
+    hero: {},
+    gallery: [],
+    media: {
+      hero: vimeoCaseMedia("1215735592", "KdG videofolder"),
+      verticalVideos: [
+        vimeoCaseMedia("1215735592", "KdG videofolder"),
+        vimeoCaseMedia("1215735591", "KdG graduation"),
+        vimeoCaseMedia("1215735589", "KdG strategie"),
+        vimeoCaseMedia("1215735590", "KdG eindejaarsvideo"),
+      ],
+    },
+    vimeoEmbeds: [
+      vimeo("1215735592", "KdG videofolder"),
+      vimeo("1215735591", "KdG graduation"),
+      vimeo("1215735589", "KdG strategie"),
+      vimeo("1215735590", "KdG eindejaarsvideo"),
+    ],
+    facts: [
+      { label: "Output", value: "videofolders, graduations, strategie en eindejaarsvideo" },
+      { label: "Samenwerking", value: "vaste videopartner" },
+      { label: "Studenten", value: "40 in eindejaarsvideo" },
+      { label: "Resultaat", value: "PLACEHOLDER" },
+    ],
+    question: {
+      label: "Probleem",
+      title: "",
+      text:
+        "KdG zocht een videopartner die hun doelgroep écht begrijpt. Iemand die studenten aanspreekt op hun manier, zonder in clichés of droge communicatie te vervallen 😴.",
+    },
+    approach: {
+      label: "Oplossing",
+      title: "",
+      text:
+        "We ontwikkelden video's die informatief én entertainend zijn. Met sterke storytelling, herkenbare beelden, motion graphics die perfect aansluiten bij de huisstijl en producties die telkens afgestemd zijn op het juiste doelpubliek.",
+    },
+    result: {
+      label: "Resultaat",
+      title: "",
+      text:
+        "Een langdurige samenwerking waarin we de meest uiteenlopende verhalen tot leven brengen: van studiekeuze en employer branding tot interne communicatie en events. Zo heeft KdG één vaste videopartner die het merk kent, proactief meedenkt en van elke boodschap iets maakt dat mensen niet alleen begrijpen, maar ook écht willen bekijken.",
+      stats: [
+        { value: "4", label: "casevideo’s" },
+        { value: "40", label: "studenten" },
+        { value: "vast", label: "videopartner" },
+        { value: "PLACEHOLDER", label: "extra cijfer" },
+      ],
+    },
+    outro:
+      "Na al die video's krijgen wij eerlijk gezegd zelf weer zin om achter de schoolbanken te kruipen. 😉",
+    externalVideoUrls: [
+      "https://vimeo.com/1215735592?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215735591?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215735589?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215735590?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
+    slug: "bazwil",
+    template: "x-oats-social",
+    client: "Bazwil",
+    heroTitle: "BAZWIL",
+    title: "Bazwil",
+    subtitle: "Strike a pose. 📸",
+    oneLiner:
+      "Een stijlvolle brandvideo die de identiteit van Bazwil voelbaar maakt en hun collectie natuurlijk in beeld brengt.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
+    year: "2026",
+    sourceUrl: "https://vimeo.com/1215742155?share=copy&fl=sv&fe=ci",
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "mixed-media",
+    seo: {
+      title: "Bazwil | Ami Amis",
+      description:
+        "Voor Bazwil maakte Ami Amis een stijlvolle brandvideo en korte looks voor de zomercollectie van 2026.",
+    },
+    introQuote: "Strike a pose. 📸",
+    intro: "Strike a pose. 📸",
+    summary:
+      "Een stijlvolle brandvideo die de identiteit van Bazwil voelbaar maakt en hun collectie op een natuurlijke manier in beeld brengt. 👗",
+    storyBlocks: [
+      {
+        text: "Strike a pose. 📸",
+      },
+      {
+        text:
+          "Voor het Belgische kledingmerk Bazwil maakten we een brandvideo die helemaal paste bij hun slogan.",
+      },
+      {
+        text:
+          "“Clothes that feel like black coffee, fresh air and good ideas.” ☕🌿",
+      },
+      {
+        text: "Daar konden we wel iets mee.",
+      },
+      {
+        text:
+          "We zagen meteen een gezellige koffieshop, een zachte zomerdag en de creatieve energie die zo’n rustige dag opwekt. Die sfeer vertaalden we naar een brandvideo die de schoonheid van een ogenschijnlijk gewone dag vangt.",
+      },
+      {
+        text:
+          "Prachtig in zijn eenvoud. Precies zoals quiet luxury hoort te voelen. ✨",
+      },
+      {
+        text:
+          "Daarnaast maakten we ook enkele korte looks om de zomercollectie van 2026 extra in de kijker te zetten. Want één sterke video is goed. Meerdere content uit dezelfde shooting day halen? Nog beter. 🎬",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], [], []],
+    deliverables: ["Brandvideo", "Short looks", "Storytelling", "Social content"],
+    hero: {},
+    gallery: [],
+    media: {
+      hero: vimeoCaseMedia("1215742155", "Bazwil brandvideo"),
+      heroPlacement: "before-stats",
+      verticalVideos: [
+        vimeoCaseMedia("1215742159", "Bazwil short look 1"),
+        vimeoCaseMedia("1215742156", "Bazwil short look 2"),
+        vimeoCaseMedia("1215742157", "Bazwil short look 3"),
+      ],
+    },
+    vimeoEmbeds: [
+      vimeo("1215742155", "Bazwil brandvideo"),
+      vimeo("1215742159", "Bazwil short look 1"),
+      vimeo("1215742156", "Bazwil short look 2"),
+      vimeo("1215742157", "Bazwil short look 3"),
+    ],
+    facts: [
+      { label: "Output", value: "brandvideo en korte looks" },
+      { label: "Collectie", value: "zomer 2026" },
+      { label: "Stijl", value: "quiet luxury" },
+      { label: "Resultaat", value: "PLACEHOLDER" },
+    ],
+    question: {
+      label: "Probleem",
+      title: "",
+      text: "Hoe kunnen we het gevoel van een brand omzetten naar een visuele wereld 🌍?",
+    },
+    approach: {
+      label: "Oplossing",
+      title: "",
+      text:
+        "We bouwden een kort verhaal rond een zomerse dag, met genoeg storytelling om de kijker mee te nemen en genoeg ruimte om de sfeer voor zich te laten spreken. De kleding bleef centraal staan, zonder dat het ooit als een klassieke fashionshoot aanvoelde.",
+    },
+    result: {
+      label: "Resultaat",
+      title: "",
+      text:
+        "Een stijlvolle brandvideo die de identiteit van Bazwil voelbaar maakt en hun collectie op een natuurlijke manier in beeld brengt. 👗",
+      stats: [
+        { value: "1", label: "brandvideo" },
+        { value: "3", label: "extra video’s" },
+        { value: "2026", label: "zomercollectie" },
+        { value: "PLACEHOLDER", label: "extra cijfer" },
+      ],
+    },
+    outro:
+      "Een stijlvolle brandvideo die de identiteit van Bazwil voelbaar maakt en hun collectie op een natuurlijke manier in beeld brengt. 👗",
+    externalVideoUrls: [
+      "https://vimeo.com/1215742155?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215742159?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215742156?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1215742157?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
     slug: "x-oats",
     template: "x-oats-social",
     client: "X-Oats",
@@ -1828,9 +2340,10 @@ export const cases = [
       poster: "/work/x-oats-thumb.webp",
     },
     question: {
-      label: "Vraag",
+      label: "Probleem",
       title: "",
-      text: "Kunnen jullie op drie dagen tijd twee spots schrijven, draaien en opleveren?",
+      text:
+        "X-Oats tikte hun miljoenste verkoop aan en wilde dat vieren met een spot. Klein detail: die moest er binnen een week zijn, dus vroegen ze ons om op drie dagen tijd twee spots te schrijven, draaien en op te leveren.",
     },
     approach: {
       label: "Aanpak",
@@ -1872,6 +2385,47 @@ export const cases = [
     },
   },
 ];
+
+function normalizeVerticalCaseVideo(video) {
+  return {
+    ...video,
+    aspectRatio: "9 / 16",
+    orientation: "portrait",
+    wide: false,
+  };
+}
+
+function isSameCaseMedia(a, b) {
+  if (!a || !b) {
+    return false;
+  }
+
+  if (a.id && b.id && String(a.id) === String(b.id)) {
+    return true;
+  }
+
+  return Boolean(a.src && b.src && a.src === b.src);
+}
+
+function normalizeCaseMedia(caseItem) {
+  if (!caseItem.media?.verticalVideos?.length) {
+    return caseItem;
+  }
+
+  const verticalVideos = caseItem.media.verticalVideos.map(normalizeVerticalCaseVideo);
+  const heroMatchesVerticalVideo = verticalVideos.some((video) => isSameCaseMedia(caseItem.media.hero, video));
+
+  return {
+    ...caseItem,
+    media: {
+      ...caseItem.media,
+      hero: heroMatchesVerticalVideo ? normalizeVerticalCaseVideo(caseItem.media.hero) : caseItem.media.hero,
+      verticalVideos,
+    },
+  };
+}
+
+export const cases = rawCases.map(normalizeCaseMedia);
 
 export function getAllCaseSlugs() {
   return cases.flatMap((item) => [item.slug, ...(item.aliases || [])]);

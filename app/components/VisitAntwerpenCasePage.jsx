@@ -10,7 +10,7 @@ const summaryItems = [
   {
     key: "question",
     number: "1.",
-    label: "VRAAG",
+    label: "PROBLEEM",
     icon: "/images/cases/visit-antwerpen/visit-antwerpen-questionmarks-exact.png",
   },
   {
@@ -462,7 +462,7 @@ function QuoteCard({ data, onOpen }) {
   );
 }
 
-function Hero({ data, onOpen }) {
+function Hero({ data, onOpen, showVideo = true }) {
   const heroCollage = data.heroCollage?.src
     ? data.heroCollage
     : data.slug === "visitantwerp"
@@ -471,11 +471,12 @@ function Hero({ data, onOpen }) {
           className: "va-pdf-hero__cathedral-collage",
         }
       : null;
-  const heroVideo = data.media?.hero ? { ...data.media.hero, title: data.media?.verticalVideos?.[0]?.title || data.media.hero.title || data.title } : null;
+  const heroVideo = data.media?.hero ? { ...data.media.hero, title: data.media.hero.title || data.media?.verticalVideos?.[0]?.title || data.title } : null;
   const heroSticker = data.heroSticker?.src ? data.heroSticker : null;
+  const hasHeroMedia = Boolean(heroCollage || heroSticker || (showVideo && heroVideo));
 
   return (
-    <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}${heroSticker ? " va-pdf-hero--has-sticker" : ""}`} aria-labelledby="va-pdf-title">
+    <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}${heroSticker ? " va-pdf-hero--has-sticker" : ""}${hasHeroMedia ? "" : " va-pdf-hero--no-media"}`} aria-labelledby="va-pdf-title">
       <a className="hero__logo va-pdf-logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="va-pdf-hero__inner">
         <div className="va-pdf-hero__copy">
@@ -484,11 +485,13 @@ function Hero({ data, onOpen }) {
           </h1>
           <QuoteCard data={data} onOpen={onOpen} />
         </div>
-        <div className="va-pdf-hero__media va-pdf-reveal">
-          {heroCollage ? <img alt="" aria-hidden="true" className={heroCollage.className || "va-pdf-hero__cathedral-collage"} src={assetPath(heroCollage.src)} /> : null}
-          {heroSticker ? <img alt="" aria-hidden="true" className="va-pdf-hero__sticker" src={assetPath(heroSticker.src)} /> : null}
-          <VideoFrame featured priority video={heroVideo} />
-        </div>
+        {hasHeroMedia ? (
+          <div className="va-pdf-hero__media va-pdf-reveal">
+            {heroCollage ? <img alt="" aria-hidden="true" className={heroCollage.className || "va-pdf-hero__cathedral-collage"} src={assetPath(heroCollage.src)} /> : null}
+            {heroSticker ? <img alt="" aria-hidden="true" className="va-pdf-hero__sticker" src={assetPath(heroSticker.src)} /> : null}
+            {showVideo ? <VideoFrame featured priority video={heroVideo} /> : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -537,16 +540,33 @@ function VideoGrid({ videos }) {
     return null;
   }
 
-  const hasWideVideos = videos.some((video) => video?.wide);
+  const normalizedVideos = videos.map((video) => ({
+    ...video,
+    aspectRatio: "9 / 16",
+    orientation: "portrait",
+    wide: false,
+  }));
 
   return (
     <section
-      className={`va-pdf-video-grid va-pdf-video-grid--count-${videos.length}${hasWideVideos ? " va-pdf-video-grid--wide" : ""} va-pdf-reveal`}
+      className={`va-pdf-video-grid va-pdf-video-grid--count-${normalizedVideos.length} va-pdf-reveal`}
       aria-label="Video's"
     >
-      {videos.map((video, index) => (
-        <VideoFrame key={video.title || video.src} priority={index === 0} video={video} />
+      {normalizedVideos.map((video, index) => (
+        <VideoFrame key={`${video.id || video.src || video.title}-${index}`} priority={index === 0} video={video} />
       ))}
+    </section>
+  );
+}
+
+function FeaturedVideo({ video }) {
+  if (!video) {
+    return null;
+  }
+
+  return (
+    <section className="va-pdf-featured-video va-pdf-reveal" aria-label={video.title || "Video"}>
+      <VideoFrame priority video={video} />
     </section>
   );
 }
@@ -567,30 +587,6 @@ function Outro({ text }) {
   );
 }
 
-function ThreeColumnSummary({ data }) {
-  return (
-    <section className="va-pdf-summary va-pdf-reveal" aria-label="Vraag aanpak resultaat">
-      {summaryItems.map((item) => {
-        const block = data[item.key];
-
-        if (!block?.text) {
-          return null;
-        }
-
-        return (
-          <article key={item.key}>
-            <img alt="" aria-hidden="true" src={assetPath(item.icon)} />
-            <h2>
-              <span>{item.number}</span> {item.label}
-            </h2>
-            <p>{block.text}</p>
-          </article>
-        );
-      })}
-    </section>
-  );
-}
-
 function getSummaryBlocks(data) {
   return summaryItems
     .map((item, index) => {
@@ -602,8 +598,9 @@ function getSummaryBlocks(data) {
 
       return {
         ...item,
-        icon: data.slug === "x-oats" ? xOatsSummaryIcons[item.key] || item.icon : item.icon,
+        icon: xOatsSummaryIcons[item.key] || item.icon,
         index,
+        label: item.label,
         title: block.title || item.label,
         text: block.text,
       };
@@ -628,7 +625,7 @@ function SummaryVariantCard({ block, compact = false }) {
   );
 }
 
-function XOatsFinalSummary({ data }) {
+function CaseSummaryCards({ data }) {
   const blocks = getSummaryBlocks(data);
 
   if (blocks.length < 3) {
@@ -640,11 +637,6 @@ function XOatsFinalSummary({ data }) {
       <div className="x-oats-final-summary__grid">
         {blocks.map((block) => (
           <SummaryVariantCard block={block} compact key={`x-oats-final-${block.key}`} />
-        ))}
-      </div>
-      <div className="x-oats-final-summary__grid x-oats-final-summary__grid--open">
-        {blocks.map((block) => (
-          <SummaryVariantCard block={block} compact key={`x-oats-final-open-${block.key}`} />
         ))}
       </div>
     </section>
@@ -673,6 +665,8 @@ function CaseCTA() {
 export default function VisitAntwerpenCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const showHeroBeforeStats = caseData.media?.heroPlacement === "before-stats";
+  const showVideoGridBeforeStats = caseData.media?.videoGridPlacement === "before-stats";
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -706,10 +700,12 @@ export default function VisitAntwerpenCasePage({ caseData }) {
         <main className="va-pdf-page">
           <Hero data={caseData} onOpen={() => setModalOpen(true)} />
           <Story data={caseData} />
+          {showHeroBeforeStats ? <FeaturedVideo video={caseData.media?.hero} /> : null}
+          {showVideoGridBeforeStats ? <VideoGrid videos={caseData.media?.verticalVideos} /> : null}
           <StatsRow stats={caseData.result?.stats} />
-          <VideoGrid videos={caseData.media?.verticalVideos} />
+          {showVideoGridBeforeStats ? null : <VideoGrid videos={caseData.media?.verticalVideos} />}
           <Outro text={caseData.outro} />
-          {caseData.slug === "x-oats" ? <XOatsFinalSummary data={caseData} /> : <ThreeColumnSummary data={caseData} />}
+          <CaseSummaryCards data={caseData} />
           <CaseCTA />
         </main>
         <Footer />

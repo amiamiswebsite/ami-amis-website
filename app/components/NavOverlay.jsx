@@ -9,10 +9,6 @@ function homeHash(hash, activePage) {
 }
 
 function pageFromPathname(pathname, fallbackPage) {
-  if (pathname?.includes("/scroll-video-header-test")) {
-    return "landing-test";
-  }
-
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -33,10 +29,6 @@ function pageFromPathname(pathname, fallbackPage) {
 }
 
 function activeKeyFromLocation(pathname, hash, fallbackPage) {
-  if (pathname?.includes("/scroll-video-header-test")) {
-    return "landing-test";
-  }
-
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -80,11 +72,6 @@ function getItems(activePage, activeKey) {
       label: "Ons werk",
       href: assetPath("/work/"),
       active: activeKey === "work",
-    },
-    {
-      label: "landing-test",
-      href: assetPath("/scroll-video-header-test/"),
-      active: activeKey === "landing-test",
     },
     {
       label: "Diensten",
