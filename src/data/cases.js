@@ -9,8 +9,19 @@ const vimeoCaseMedia = (id, title, hash) => ({
   id,
   title,
   ...(hash ? { hash } : {}),
+  orientation: "landscape",
   wide: true,
   aspectRatio: "16 / 9",
+});
+
+const portraitVimeoCaseMedia = (id, title, hash) => ({
+  type: "vimeo",
+  id,
+  title,
+  ...(hash ? { hash } : {}),
+  orientation: "portrait",
+  wide: false,
+  aspectRatio: "9 / 16",
 });
 
 const imageCaseMedia = (src, title, alt = title) => ({
@@ -18,6 +29,7 @@ const imageCaseMedia = (src, title, alt = title) => ({
   src,
   title,
   alt,
+  orientation: "landscape",
   wide: true,
   aspectRatio: "16 / 9",
 });
@@ -27,6 +39,7 @@ const youtubeCaseMedia = (id, title, url) => ({
   id,
   title,
   url,
+  orientation: "landscape",
   wide: true,
   aspectRatio: "16 / 9",
 });
@@ -129,6 +142,7 @@ const rawCases = [
       type: "vimeo",
       id: "1202756768",
       title: "Tarzan & Jane videoclip",
+      orientation: "landscape",
       wide: true,
       aspectRatio: "16 / 9",
     },
@@ -136,45 +150,103 @@ const rawCases = [
       image: "/work/tarzan-en-jane-thumb.webp",
     },
     gallery: [{ src: "/work/tarzan-en-jane-thumb.webp", alt: "Tarzan & Jane projectbeeld" }],
+    imageGalleryTitle: "Fotogalerij",
+    imageGalleryEyebrow: "Beelden",
+    imageGallery: [
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-01.jpg",
+        alt: "Kind op pandabeeld bij Tarzan & Jane",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-02.jpg",
+        alt: "Kinderen buiten bij Tarzan & Jane",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-03.jpg",
+        alt: "Kinderen met Tarzan & Jane figuren in de speeltuin",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-04.jpg",
+        alt: "Kinderen op indoor attractie bij Tarzan & Jane",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-05.jpg",
+        alt: "Kind in botsauto bij Tarzan & Jane",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-06.jpg",
+        alt: "Kind op draaimolen bij Tarzan & Jane",
+        orientation: "portrait",
+      },
+    ],
     media: {
       hero: {
         type: "vimeo",
         id: "1202756768",
         title: "Tarzan & Jane videoclip",
+        orientation: "landscape",
         wide: true,
         aspectRatio: "16 / 9",
       },
       verticalVideos: [
         {
           type: "vimeo",
-          id: "1202756768",
-          title: "Tarzan & Jane videoclip",
-          wide: true,
-          aspectRatio: "16 / 9",
+          id: "1217314957",
+          title: "Video 1",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+        },
+        {
+          type: "vimeo",
+          id: "1217314956",
+          title: "Video 2",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+        },
+        {
+          type: "vimeo",
+          id: "1217314958",
+          title: "Video 3",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
         },
       ],
     },
-    vimeoEmbeds: [vimeo("1202756768", "Tarzan & Jane videoclip")],
+    vimeoEmbeds: [
+      vimeo("1202756768", "Tarzan & Jane videoclip"),
+      vimeo("1217314957", "Video 1"),
+      vimeo("1217314956", "Video 2"),
+      vimeo("1217314958", "Video 3"),
+    ],
     facts: [
       { label: "Output", value: "videoclip, social video’s, foto’s en grafische designs" },
       { label: "Format", value: "maandelijkse content" },
     ],
     question: {
-      label: "Vraag",
+      label: "Probleem",
       title: "",
-      text: "PLACEHOLDER: concrete vraag van Tarzan & Jane aanvullen.",
+      text:
+        "Tarzan & Jane wilde hun indoor speeltuin ook tijdens de rustigere zomermaanden sterker in de kijker zetten. Tegelijk kon er op social media nog wat extra leven in de jungle komen: er was te weinig bereik en te weinig trafiek 🙁.",
     },
     approach: {
       label: "Aanpak",
       title: "",
       text:
-        "Met snelle cuts, ritme, speelse beelden en een flinke dosis kinderlijke energie brachten we hun wereld tot leven op beeld.",
+        "Wij zochten naar een idee dat niet voelde als de zoveelste reclamevideo. Het resultaat? Een eigen nummer en een energieke videoclip die de sfeer van Tarzan & Jane meteen voelbaar maakte. Speels, herkenbaar en een deuntje dat je niet uit je hoofd krijgt!",
     },
     result: {
       label: "Resultaat",
       title: "",
       text:
-        "Een videoclip die blijft plakken. Letterlijk. Het liedje wordt intussen regelmatig afgespeeld bij Tarzan & Jane en het dansje wordt vaak uitgevoerd in de speeltuin. Missie geslaagd dus: content die niet alleen bekeken wordt, maar ook echt begint te leven op de plek zelf.",
+        "De videoclip gaf Tarzan & Jane een opvallende campagne om hun speeltuin te promoten. Van het nummer maakten we ook een radiospot voor TOPradio, waardoor de campagne verder ging dan social media alleen.\n\nWat begon als één zomeractie, groeide uit tot een warme maandelijkse samenwerking. Vandaag maken we elke maand acht video’s en vier foto’s of grafische designs om Tarzan & Jane zichtbaar, speels en top-of-mind te houden.",
       stats: [
         { value: "1", label: "videoclip" },
         { value: "8", label: "video’s/maand" },
@@ -359,17 +431,17 @@ const rawCases = [
     ],
     storyHighlights: [[], [], [], [], [], [], [], []],
     deliverables: ["Social strategie", "Contentplanning", "Shooting", "Montage", "Publicatie"],
-    heroMedia: vimeoCaseMedia("1215737500", "Humgy member spotlight"),
+    heroMedia: portraitVimeoCaseMedia("1215737500", "Humgy member spotlight"),
     hero: {
       image: "/work/humgy-thumb.png",
       poster: "/work/humgy-thumb.png",
     },
     gallery: [{ src: "/work/humgy-thumb.png", alt: "Humgy projectbeeld" }],
     media: {
-      hero: vimeoCaseMedia("1215737500", "Humgy member spotlight"),
+      hero: portraitVimeoCaseMedia("1215737500", "Humgy member spotlight"),
       verticalVideos: [
-        vimeoCaseMedia("1215737500", "Humgy member spotlight"),
-        vimeoCaseMedia("1215737499", "Humgy member spotlight"),
+        portraitVimeoCaseMedia("1215737500", "Humgy member spotlight"),
+        portraitVimeoCaseMedia("1215737499", "Humgy member spotlight"),
       ],
     },
     vimeoEmbeds: [
@@ -618,7 +690,6 @@ const rawCases = [
       hero: vimeoCaseMedia("1071848624", "Hypotheekwereld billboard-video"),
       verticalVideos: [
         vimeoCaseMedia("1071848624", "Hypotheekwereld billboard-video"),
-        imageCaseMedia("/work/hypotheekwereld.webp", "Hypotheekwereld projectbeeld"),
       ],
     },
     vimeoEmbeds: [vimeo("1071848624", "Hypotheekwereld billboard-video")],
@@ -1288,13 +1359,24 @@ const rawCases = [
         alt: "Billy Bonkers campagnebeeld",
       },
     ],
+    campaignImages: [
+      {
+        src: "/images/cases/billy-bonkers/stad-gent-energiecentrale-campagnebeeld-01.jpg",
+        alt: "Campagnebeeld Stad Gent Energiecentrale met vrouw en haardrogers",
+      },
+      {
+        src: "/images/cases/billy-bonkers/stad-gent-energiecentrale-campagnebeeld-02.jpg",
+        alt: "Campagnebeeld Stad Gent Energiecentrale met man op hometrainer",
+      },
+      {
+        src: "/images/cases/billy-bonkers/stad-gent-energiecentrale-campagnebeeld-03.jpg",
+        alt: "Campagnebeeld Stad Gent Energiecentrale met warmwaterkruiken",
+      },
+    ],
     vimeoEmbeds: [vimeo("1169918332", "Billy Bonkers - Stad Gent")],
     media: {
       hero: vimeoCaseMedia("1169918332", "Billy Bonkers - Stad Gent"),
-      verticalVideos: [
-        vimeoCaseMedia("1169918332", "Billy Bonkers - Stad Gent"),
-        imageCaseMedia("/work/billy-bonkers-thumb.webp", "Billy Bonkers campagnebeeld"),
-      ],
+      verticalVideos: [vimeoCaseMedia("1169918332", "Billy Bonkers - Stad Gent")],
     },
     needsEditorialSplit: false,
     facts: [
@@ -2239,9 +2321,9 @@ const rawCases = [
       hero: vimeoCaseMedia("1215742155", "Bazwil brandvideo"),
       heroPlacement: "before-stats",
       verticalVideos: [
-        vimeoCaseMedia("1215742159", "Bazwil short look 1"),
-        vimeoCaseMedia("1215742156", "Bazwil short look 2"),
-        vimeoCaseMedia("1215742157", "Bazwil short look 3"),
+        portraitVimeoCaseMedia("1215742159", "Bazwil short look 1"),
+        portraitVimeoCaseMedia("1215742156", "Bazwil short look 2"),
+        portraitVimeoCaseMedia("1215742157", "Bazwil short look 3"),
       ],
     },
     vimeoEmbeds: [
@@ -2386,25 +2468,25 @@ const rawCases = [
   },
 ];
 
-function normalizeVerticalCaseVideo(video) {
-  return {
-    ...video,
-    aspectRatio: "9 / 16",
-    orientation: "portrait",
-    wide: false,
-  };
+function isPortraitAspect(aspectRatio = "") {
+  const normalizedRatio = String(aspectRatio).replace(/\s/g, "");
+  return normalizedRatio === "9/16" || normalizedRatio === "4/5";
 }
 
-function isSameCaseMedia(a, b) {
-  if (!a || !b) {
-    return false;
+function normalizeCaseMediaItem(video) {
+  if (!video) {
+    return video;
   }
 
-  if (a.id && b.id && String(a.id) === String(b.id)) {
-    return true;
-  }
+  const orientation = video.orientation || (isPortraitAspect(video.aspectRatio) ? "portrait" : video.wide ? "landscape" : "portrait");
+  const isPortrait = orientation === "portrait";
 
-  return Boolean(a.src && b.src && a.src === b.src);
+  return {
+    ...video,
+    aspectRatio: video.aspectRatio || (isPortrait ? "9 / 16" : "16 / 9"),
+    orientation,
+    wide: typeof video.wide === "boolean" ? video.wide : !isPortrait,
+  };
 }
 
 function normalizeCaseMedia(caseItem) {
@@ -2412,14 +2494,14 @@ function normalizeCaseMedia(caseItem) {
     return caseItem;
   }
 
-  const verticalVideos = caseItem.media.verticalVideos.map(normalizeVerticalCaseVideo);
-  const heroMatchesVerticalVideo = verticalVideos.some((video) => isSameCaseMedia(caseItem.media.hero, video));
+  const verticalVideos = caseItem.media.verticalVideos.map(normalizeCaseMediaItem);
+  const hero = normalizeCaseMediaItem(caseItem.media.hero);
 
   return {
     ...caseItem,
     media: {
       ...caseItem.media,
-      hero: heroMatchesVerticalVideo ? normalizeVerticalCaseVideo(caseItem.media.hero) : caseItem.media.hero,
+      hero,
       verticalVideos,
     },
   };

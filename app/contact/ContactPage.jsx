@@ -5,9 +5,13 @@ import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
+import {
+  readServiceIntentFromSearch,
+  readStoredServiceIntent,
+} from "../../src/lib/serviceIntent";
 
 const mail = "brent@amiamis.be";
-const mailHref = `mailto:${mail}?subject=Contact%20via%20Ami%20Amis`;
+const mailSubject = "Contact via Ami Amis";
 
 const contactItems = [
   {
@@ -79,15 +83,34 @@ function ContactInfoList() {
   );
 }
 
-function ContactForm({ isHighlighted }) {
+function getMailHref(intent) {
+  const subject = intent?.problemTitle
+    ? `${mailSubject} — ${intent.problemTitle}`
+    : mailSubject;
+
+  return `mailto:${mail}?subject=${encodeURIComponent(subject)}`;
+}
+
+function ContactForm({ intent, isHighlighted }) {
   return (
     <form
       className={`contact-minimal__form contact-form-card ${isHighlighted ? "is-highlighted" : ""}`}
       id="contact-form"
-      action={mailHref}
+      action={getMailHref(intent)}
       method="post"
       encType="text/plain"
     >
+      {intent ? (
+        <>
+          <input name="bron" type="hidden" value={intent.source} />
+          <input
+            name="probleem"
+            type="hidden"
+            value={intent.problemTitle || intent.problemId}
+          />
+          <input name="gekozen_cta" type="hidden" value={intent.ctaLabel} />
+        </>
+      ) : null}
       <label htmlFor="contact-name">
         Naam
         <input id="contact-name" name="naam" type="text" autoComplete="name" required />
@@ -114,10 +137,16 @@ function ContactForm({ isHighlighted }) {
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formHighlighted, setFormHighlighted] = useState(false);
+  const [serviceIntent, setServiceIntent] = useState(null);
   const highlightTimer = useRef(null);
   const focusTimer = useRef(null);
 
   useEffect(() => {
+    const intentFromSearch = readServiceIntentFromSearch(window.location.search);
+    const intentFromStorage = intentFromSearch ? null : readStoredServiceIntent();
+
+    setServiceIntent(intentFromSearch || intentFromStorage);
+
     return () => {
       window.clearTimeout(highlightTimer.current);
       window.clearTimeout(focusTimer.current);
@@ -194,7 +223,7 @@ export default function ContactPage() {
                   <ContactInfoList />
                 </div>
 
-                <ContactForm isHighlighted={formHighlighted} />
+                <ContactForm intent={serviceIntent} isHighlighted={formHighlighted} />
               </div>
             </div>
           </section>

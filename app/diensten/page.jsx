@@ -3,7 +3,7 @@ import ServicesPage from "./ServicesPage";
 export const metadata = {
   title: "Diensten | Ami Amis",
   description:
-    "Ontdek de diensten van Ami Amis: strategie, video, campagnes, social content, fotografie, design, branding, animatie, montage en audio.",
+    "Wij creëren niet gewoon content. Wij creëren oplossingen voor merken, werkgevers, producten, socials en events.",
 };
 
 export default function Page() {

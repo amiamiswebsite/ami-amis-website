@@ -181,6 +181,7 @@ function VideoFrame({ featured = false, priority = false, video }) {
   const vimeoPlayerId = vimeoId ? `va-pdf-vimeo-${vimeoId}-${featured ? "hero" : "card"}-${slugifyId(video?.title)}` : "";
   const vimeoSrc = vimeoId ? getVimeoEmbedSrc({ hash, id: vimeoId, playerId: vimeoPlayerId }) : "";
   const youTubeSrc = youTubeId ? `https://www.youtube.com/embed/${youTubeId}?rel=0&modestbranding=1` : "";
+  const orientation = video.orientation || (video.wide ? "landscape" : "portrait");
 
   useEffect(() => {
     if (!isVimeo || !vimeoPlayerId) {
@@ -287,7 +288,7 @@ function VideoFrame({ featured = false, priority = false, video }) {
 
   return (
     <figure
-      className={`va-pdf-video-card${featured ? " va-pdf-video-card--hero" : ""}${video.wide ? " va-pdf-video-card--wide" : ""}${isEmbed ? " va-pdf-video-card--vimeo" : ""}${isImage ? " va-pdf-video-card--image" : ""}${isLongTitle ? " va-pdf-video-card--long-title" : ""}${isPlaying ? " is-playing" : ""}`}
+      className={`va-pdf-video-card va-pdf-video-card--${orientation}${featured ? " va-pdf-video-card--hero" : ""}${video.wide ? " va-pdf-video-card--wide" : ""}${isEmbed ? " va-pdf-video-card--vimeo" : ""}${isImage ? " va-pdf-video-card--image" : ""}${isLongTitle ? " va-pdf-video-card--long-title" : ""}${isPlaying ? " is-playing" : ""}`}
       style={{ "--va-video-aspect": video.aspectRatio || (video.wide ? "16 / 9" : "9 / 16") }}
     >
       <div
@@ -448,7 +449,7 @@ function QuoteCard({ data, onOpen }) {
   return (
     <blockquote className={`va-pdf-quote${isLongQuote ? " va-pdf-quote--long" : ""} va-pdf-reveal`}>
       <p>
-        {shouldWrapQuote ? "“" : ""}
+        {shouldWrapQuote ? <span className="sr-only">“</span> : null}
         {beforeZuidvideo}
         {hasZuidvideoTrigger ? (
           <button aria-label="Bekijk de Zuidvideo" className="va-pdf-quote__trigger" onClick={onOpen} type="button">
@@ -542,9 +543,9 @@ function VideoGrid({ videos }) {
 
   const normalizedVideos = videos.map((video) => ({
     ...video,
-    aspectRatio: "9 / 16",
-    orientation: "portrait",
-    wide: false,
+    aspectRatio: video.aspectRatio || (video.orientation === "landscape" || video.wide ? "16 / 9" : "9 / 16"),
+    orientation: video.orientation || (video.wide ? "landscape" : "portrait"),
+    wide: typeof video.wide === "boolean" ? video.wide : video.orientation === "landscape",
   }));
 
   return (
@@ -567,6 +568,37 @@ function FeaturedVideo({ video }) {
   return (
     <section className="va-pdf-featured-video va-pdf-reveal" aria-label={video.title || "Video"}>
       <VideoFrame priority video={video} />
+    </section>
+  );
+}
+
+function CampaignImagesGallery({ eyebrow = "Output", images, title = "Campagnebeelden", variant = "campaign" }) {
+  if (!images?.length) {
+    return null;
+  }
+
+  const headingId = `va-pdf-${variant}-gallery-title`;
+
+  return (
+    <section className={`va-pdf-campaign-gallery va-pdf-campaign-gallery--${variant} va-pdf-reveal`} aria-labelledby={headingId}>
+      <div className="va-pdf-campaign-gallery__header">
+        <p className="va-pdf-campaign-gallery__eyebrow">{eyebrow}</p>
+        <h2 id={headingId}>{title}</h2>
+      </div>
+      <div className="va-pdf-campaign-gallery__grid">
+        {images.map((image, index) => {
+          const orientation = image.orientation || "portrait";
+
+          return (
+            <figure
+              className={`va-pdf-campaign-gallery__item va-pdf-campaign-gallery__item--${orientation}`}
+              key={`${image.src}-${index}`}
+            >
+              <img alt={image.alt || title} decoding="async" loading="lazy" src={mediaPath(image.src)} />
+            </figure>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -697,13 +729,20 @@ export default function VisitAntwerpenCasePage({ caseData }) {
   return (
     <>
       <div className={`site-shell va-pdf-shell ${menuOpen ? "menu-open" : ""}`}>
-        <main className="va-pdf-page">
+        <main className={`va-pdf-page va-pdf-page--${caseData.slug}`}>
           <Hero data={caseData} onOpen={() => setModalOpen(true)} />
           <Story data={caseData} />
           {showHeroBeforeStats ? <FeaturedVideo video={caseData.media?.hero} /> : null}
           {showVideoGridBeforeStats ? <VideoGrid videos={caseData.media?.verticalVideos} /> : null}
           <StatsRow stats={caseData.result?.stats} />
           {showVideoGridBeforeStats ? null : <VideoGrid videos={caseData.media?.verticalVideos} />}
+          <CampaignImagesGallery images={caseData.campaignImages} />
+          <CampaignImagesGallery
+            eyebrow={caseData.imageGalleryEyebrow || "Beelden"}
+            images={caseData.imageGallery}
+            title={caseData.imageGalleryTitle || "Fotogalerij"}
+            variant="photos"
+          />
           <Outro text={caseData.outro} />
           <CaseSummaryCards data={caseData} />
           <CaseCTA />
