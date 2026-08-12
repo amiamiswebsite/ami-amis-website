@@ -1,45 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
-import TeamDossierGrid from "../components/TeamDossierGrid";
 import { assetPath } from "../../src/lib/assetPath";
-import { teamMembers } from "../../src/data/teamPageData";
 
 const teamVideoSrc = "/assets/amiamis_teamvideo2026.mp4";
 const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
 
-export default function TeamPage() {
-  const [menuOpen, setMenuOpen] = useState(false);
+function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const teamSectionRef = useRef(null);
   const videoRef = useRef(null);
-
-  useEffect(() => {
-    const section = teamSectionRef.current;
-
-    if (!section || !("IntersectionObserver" in window)) {
-      section?.classList.add("is-visible");
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        section.classList.add("is-visible");
-        observer.disconnect();
-      },
-      { threshold: 0.08 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
 
   const playTeamVideo = () => {
     const video = videoRef.current;
@@ -55,6 +27,52 @@ export default function TeamPage() {
       playPromise.catch(() => setIsVideoPlaying(false));
     }
   };
+
+  const titleId = `${id}-title`;
+
+  return (
+    <section
+      className={`team-static-video team-static-video--${tone}`}
+      id={id}
+      aria-labelledby={titleId}
+    >
+      <div className="team-static-video__inner">
+        <header className="team-static-video__header">
+          <h2 id={titleId}>{title}</h2>
+          {subtitle ? <p>{subtitle}</p> : null}
+        </header>
+
+        <div className={`team-static-video__frame ${isVideoPlaying ? "is-playing" : ""}`}>
+          <video
+            aria-label={`${title} van Ami Amis`}
+            controls={isVideoPlaying}
+            onEnded={() => setIsVideoPlaying(false)}
+            onPause={() => setIsVideoPlaying(false)}
+            onPlay={() => setIsVideoPlaying(true)}
+            playsInline
+            poster={assetPath(teamVideoPoster)}
+            preload="metadata"
+            ref={videoRef}
+            src={assetPath(teamVideoSrc)}
+          />
+          {!isVideoPlaying ? (
+            <button
+              aria-label={`Speel ${title.toLowerCase()}`}
+              className="team-static-video__play"
+              onClick={playTeamVideo}
+              type="button"
+            >
+              <span aria-hidden="true" />
+            </button>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function TeamPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
@@ -81,61 +99,14 @@ export default function TeamPage() {
         </header>
 
         <main className="team-page">
-          <section className="team-static-video" id="team-video" aria-labelledby="team-video-title">
-            <div className="team-static-video__inner">
-              <header className="team-static-video__header">
-                <h2 id="team-video-title">Teamvideo</h2>
-              </header>
+          <TeamVideoSection id="team-video" title="Teamvideo" />
 
-              <div className={`team-static-video__frame ${isVideoPlaying ? "is-playing" : ""}`}>
-                <video
-                  aria-label="Ami Amis teamvideo"
-                  controls={isVideoPlaying}
-                  onEnded={() => setIsVideoPlaying(false)}
-                  onPause={() => setIsVideoPlaying(false)}
-                  onPlay={() => setIsVideoPlaying(true)}
-                  playsInline
-                  poster={assetPath(teamVideoPoster)}
-                  preload="metadata"
-                  ref={videoRef}
-                  src={assetPath(teamVideoSrc)}
-                />
-                {!isVideoPlaying ? (
-                  <button
-                    aria-label="Speel de Ami Amis teamvideo"
-                    className="team-static-video__play"
-                    onClick={playTeamVideo}
-                    type="button"
-                  >
-                    <span aria-hidden="true" />
-                  </button>
-                ) : null}
-              </div>
-            </div>
-          </section>
-
-          <section
-            className="de-amis-section"
+          <TeamVideoSection
             id="team-collage"
-            aria-label="Ami Amis teamleden"
-            ref={teamSectionRef}
-          >
-            <div className="de-amis-pin-stage">
-              <div className="de-amis-title-lockup">
-                <h2>De Amis</h2>
-                <p>
-                  Ami awie? Ami Amis. Ons team van strijders en durvers verzet
-                  bergen. Vanuit ons hoofdkwartier op de drukste winkelstraat
-                  van Antwerpen smeden we de lijpste ideeën en produceren we de
-                  graafste content.
-                </p>
-              </div>
-
-              <div className="team-rail-viewport" aria-label="Ami Amis team dossiers">
-                <TeamDossierGrid profiles={teamMembers} />
-              </div>
-            </div>
-          </section>
+            title="De Amis"
+            subtitle="Ami awie? Ami Amis. Ons team van strijders en durvers verzet bergen. Vanuit ons hoofdkwartier op de drukste winkelstraat van Antwerpen smeden we de lijpste ideeën en produceren we de graafste content."
+            tone="yellow"
+          />
 
           <section className="team-total-care" aria-labelledby="team-total-care-title">
             <div className="team-total-care__inner">
