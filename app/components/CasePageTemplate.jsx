@@ -4,12 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
+import TarzanServicesCasePage from "./TarzanServicesCasePage";
 import VisitAntwerpenCasePage from "./VisitAntwerpenCasePage";
 import { assetPath } from "../../src/lib/assetPath";
 
 const pillarKeys = [
   { key: "question", fallback: "vraag", label: "Vraag" },
-  { key: "approach", fallback: "aanpak", label: "Aanpak" },
+  { key: "approach", fallback: "aanpak", label: "Oplossing" },
   { key: "result", fallback: "resultaat", label: "Resultaat" },
 ];
 
@@ -620,7 +621,7 @@ function CasePillars({ data }) {
   }
 
   return (
-    <section className="case-pillars-compact case-portfolio-reveal" aria-label="Vraag aanpak resultaat">
+    <section className="case-pillars-compact case-portfolio-reveal" aria-label="Vraag oplossing resultaat">
       {pillars.map((item, index) => {
         const block = item.block;
         const stats = typeof block === "string" ? [] : block.stats || [];
@@ -1013,6 +1014,10 @@ function CaseVideoModal({ data, open, onClose }) {
 }
 
 export default function CasePageTemplate({ caseData }) {
+  if (caseData.template === "tarzan-services-case") {
+    return <TarzanServicesCasePage caseData={caseData} />;
+  }
+
   return <VisitAntwerpenCasePage caseData={caseData} />;
 }
 

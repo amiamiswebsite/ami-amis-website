@@ -16,7 +16,7 @@ const summaryItems = [
   {
     key: "approach",
     number: "2.",
-    label: "AANPAK",
+    label: "OPLOSSING",
     icon: "/images/cases/visit-antwerpen/visit-antwerpen-clapper-exact.png",
   },
   {
@@ -582,7 +582,7 @@ function CampaignImagesGallery({ eyebrow = "Output", images, title = "Campagnebe
   return (
     <section className={`va-pdf-campaign-gallery va-pdf-campaign-gallery--${variant} va-pdf-reveal`} aria-labelledby={headingId}>
       <div className="va-pdf-campaign-gallery__header">
-        <p className="va-pdf-campaign-gallery__eyebrow">{eyebrow}</p>
+        {eyebrow ? <p className="va-pdf-campaign-gallery__eyebrow">{eyebrow}</p> : null}
         <h2 id={headingId}>{title}</h2>
       </div>
       <div className="va-pdf-campaign-gallery__grid">
@@ -632,8 +632,8 @@ function getSummaryBlocks(data) {
         ...item,
         icon: xOatsSummaryIcons[item.key] || item.icon,
         index,
-        label: item.label,
-        title: block.title || item.label,
+        label: data.summaryLabels?.[item.key] || item.label,
+        title: block.title || data.summaryLabels?.[item.key] || item.label,
         text: block.text,
       };
     })
@@ -665,10 +665,40 @@ function CaseSummaryCards({ data }) {
   }
 
   return (
-    <section className="x-oats-final-summary va-pdf-reveal" aria-label="Vraag aanpak resultaat">
+    <section className="x-oats-final-summary va-pdf-reveal" aria-label="Vraag oplossing resultaat">
       <div className="x-oats-final-summary__grid">
         {blocks.map((block) => (
           <SummaryVariantCard block={block} compact key={`x-oats-final-${block.key}`} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function PostItCaseSummary({ data }) {
+  const blocks = getSummaryBlocks(data);
+
+  if (blocks.length < 3) {
+    return null;
+  }
+
+  return (
+    <section className="tarzan-postit-summary va-pdf-reveal" aria-label="Probleem oplossing resultaat op post-its">
+      <div className="tarzan-postit-summary__grid">
+        {blocks.map((block) => (
+          <article className={`tarzan-postit tarzan-postit--${block.key}`} key={`tarzan-postit-${block.key}`}>
+            <span className="tarzan-postit__tape" aria-hidden="true" />
+            <div className="tarzan-postit__heading">
+              <span className="tarzan-postit__number">{block.number}</span>
+              <h3>{block.label}</h3>
+            </div>
+            <p>{block.text}</p>
+            <span
+              className="tarzan-postit__icon"
+              style={{ "--tarzan-postit-icon": `url(${assetPath(block.icon)})` }}
+              aria-hidden="true"
+            />
+          </article>
         ))}
       </div>
     </section>
@@ -694,9 +724,18 @@ function CaseCTA() {
   );
 }
 
+function CaseSectionBand({ children, enabled, tone }) {
+  if (!enabled) {
+    return <>{children}</>;
+  }
+
+  return <div className={`va-pdf-case-band va-pdf-case-band--${tone}`}>{children}</div>;
+}
+
 export default function VisitAntwerpenCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const hasTarzanSectionBands = caseData.slug === "tarzan-en-jane";
   const showHeroBeforeStats = caseData.media?.heroPlacement === "before-stats";
   const showVideoGridBeforeStats = caseData.media?.videoGridPlacement === "before-stats";
 
@@ -732,19 +771,31 @@ export default function VisitAntwerpenCasePage({ caseData }) {
         <main className={`va-pdf-page va-pdf-page--${caseData.slug}`}>
           <Hero data={caseData} onOpen={() => setModalOpen(true)} />
           <Story data={caseData} />
-          {showHeroBeforeStats ? <FeaturedVideo video={caseData.media?.hero} /> : null}
-          {showVideoGridBeforeStats ? <VideoGrid videos={caseData.media?.verticalVideos} /> : null}
-          <StatsRow stats={caseData.result?.stats} />
-          {showVideoGridBeforeStats ? null : <VideoGrid videos={caseData.media?.verticalVideos} />}
-          <CampaignImagesGallery images={caseData.campaignImages} />
-          <CampaignImagesGallery
-            eyebrow={caseData.imageGalleryEyebrow || "Beelden"}
-            images={caseData.imageGallery}
-            title={caseData.imageGalleryTitle || "Fotogalerij"}
-            variant="photos"
-          />
-          <Outro text={caseData.outro} />
-          <CaseSummaryCards data={caseData} />
+          <CaseSectionBand enabled={hasTarzanSectionBands} tone="videos">
+            {showHeroBeforeStats ? <FeaturedVideo video={caseData.media?.hero} /> : null}
+            {showVideoGridBeforeStats ? <VideoGrid videos={caseData.media?.verticalVideos} /> : null}
+            <StatsRow stats={caseData.result?.stats} />
+            <VideoGrid videos={caseData.media?.landscapeVideos} />
+            {showVideoGridBeforeStats ? null : <VideoGrid videos={caseData.media?.verticalVideos} />}
+          </CaseSectionBand>
+          <CaseSectionBand enabled={hasTarzanSectionBands} tone="gallery">
+            <CampaignImagesGallery
+              eyebrow={caseData.campaignGalleryEyebrow ?? "Output"}
+              images={caseData.campaignImages}
+              title={caseData.campaignGalleryTitle || "Campagnebeelden"}
+            />
+            <CampaignImagesGallery
+              eyebrow={caseData.imageGalleryEyebrow ?? "Beelden"}
+              images={caseData.imageGallery}
+              title={caseData.imageGalleryTitle || "Fotogalerij"}
+              variant="photos"
+            />
+          </CaseSectionBand>
+          <CaseSectionBand enabled={hasTarzanSectionBands} tone="summary">
+            <Outro text={caseData.outro} />
+            <CaseSummaryCards data={caseData} />
+            {hasTarzanSectionBands ? <PostItCaseSummary data={caseData} /> : null}
+          </CaseSectionBand>
           <CaseCTA />
         </main>
         <Footer />

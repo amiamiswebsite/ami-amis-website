@@ -31,7 +31,7 @@ function normalizeCaseData(data) {
 
   const phases = [
     { ...data.problem, number: "01", label: "Vraag", media: stills[0]?.src },
-    { ...data.approach, number: "02", label: "Aanpak", media: stills[1]?.src },
+    { ...data.approach, number: "02", label: "Oplossing", media: stills[1]?.src },
     { ...data.result, number: "03", label: "Resultaat", media: stills[2]?.src },
   ];
 
@@ -423,7 +423,7 @@ export default function CaseExperimentPage({ caseData }) {
 
           <section className="case-experiments-intro">
             <p>Case layout experiments</p>
-            <h1>Vijf manieren om Vraag, Aanpak en Resultaat high-end te tonen.</h1>
+            <h1>Vijf manieren om Vraag, Oplossing en Resultaat high-end te tonen.</h1>
             <span>Visit Antwerpen / vergelijkingspagina</span>
           </section>
 

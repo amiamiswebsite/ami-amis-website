@@ -132,7 +132,7 @@ function smoothScrollTo(event, targetId, reducedMotion) {
   }
 
   event.preventDefault();
-  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
   window.history.replaceState(null, "", `#${targetId}`);
 }
 
@@ -160,21 +160,15 @@ function ServicesHero() {
         </div>
 
         <div className={styles.heroVisual} aria-hidden="true">
-          <div className={styles.problemStack}>
-            <span className={styles.fileTab} />
-            <span className={styles.fileShadow} />
-            <div className={styles.fileCard}>
-              <span>THE</span>
-              <strong>PROBLEM</strong>
-              <span>FILES</span>
-            </div>
-          </div>
-          {/* TODO: replace with final Brent psychologist cut-out */}
-          <div className={styles.brentPlaceholder}>
-            <span className={styles.brentHead} />
-            <span className={styles.brentBody} />
-            <span className={styles.questionMark}>?</span>
-          </div>
+          <img
+            className={styles.heroPhoto}
+            src={assetPath("/images/services/services-header-brent.jpg")}
+            alt=""
+            width="1122"
+            height="1402"
+            fetchPriority="high"
+            decoding="async"
+          />
         </div>
       </div>
     </section>
@@ -290,7 +284,7 @@ function CasePreview({ workCase }) {
   );
 }
 
-function ProblemFileCard({ problem }) {
+function ProblemFileCard({ problem, state = "" }) {
   const relatedCases = problem.cases.map(getCaseReference).filter(Boolean);
   const intent = {
     source: "diensten",
@@ -302,8 +296,7 @@ function ProblemFileCard({ problem }) {
 
   return (
     <article
-      className={`${styles.problemCard} ${problem.open ? styles.openCard : ""}`}
-      id={problem.id}
+      className={`${styles.problemCard} ${problem.open ? styles.openCard : ""} ${state}`}
     >
       <header className={styles.problemHeader}>
         <span className={styles.problemNumber}>{Number(problem.number)}</span>
@@ -350,7 +343,7 @@ function ProblemFilesSection({ reducedMotion }) {
   const problemIds = useMemo(() => problemFiles.map((problem) => problem.id), []);
   const problemObserverOptions = useMemo(
     () => ({
-      rootMargin: "-22% 0px -54% 0px",
+      rootMargin: "-42% 0px -42% 0px",
     }),
     [],
   );
@@ -367,27 +360,47 @@ function ProblemFilesSection({ reducedMotion }) {
       id="probleemintake"
       aria-labelledby="problem-files-title"
     >
-      <div className={styles.problemGrid}>
-        <aside className={styles.problemSticky}>
-          <span className={styles.sectionNumber}>
-            {activeProblem.number} / {String(problemFiles.length).padStart(2, "0")}
-          </span>
-          <h2 id="problem-files-title">So, what’s the problem?</h2>
-          <div
-            className={styles.problemProgress}
-            aria-hidden="true"
-            style={{
-              "--problem-progress": `${((activeProblemIndex + 1) / problemFiles.length) * 100}%`,
-            }}
-          >
-            <span />
-          </div>
-          <ProblemNav activeProblemId={activeProblemId} reducedMotion={reducedMotion} />
-        </aside>
+      <div
+        className={styles.problemScroller}
+        style={{ minHeight: `${100 + (problemFiles.length - 1) * 72}svh` }}
+      >
+        <div className={styles.problemStage}>
+          <div className={styles.problemGrid}>
+            <aside className={styles.problemSticky}>
+              <span className={styles.sectionNumber}>
+                {activeProblem.number} / {String(problemFiles.length).padStart(2, "0")}
+              </span>
+              <h2 id="problem-files-title">So, what’s the problem?</h2>
+              <div
+                className={styles.problemProgress}
+                aria-hidden="true"
+                style={{
+                  "--problem-progress": `${((activeProblemIndex + 1) / problemFiles.length) * 100}%`,
+                }}
+              >
+                <span />
+              </div>
+              <ProblemNav activeProblemId={activeProblemId} reducedMotion={reducedMotion} />
+            </aside>
 
-        <div className={styles.problemList}>
+            <div className={styles.problemList}>
+              {problemFiles.map((problem, index) => {
+                const cardState =
+                  index === activeProblemIndex
+                    ? styles.isActive
+                    : index < activeProblemIndex
+                      ? styles.isPast
+                      : styles.isNext;
+
+                return <ProblemFileCard key={problem.id} problem={problem} state={cardState} />;
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.problemMarkers} aria-hidden="true">
           {problemFiles.map((problem) => (
-            <ProblemFileCard key={problem.id} problem={problem} />
+            <span id={problem.id} key={problem.id} />
           ))}
         </div>
       </div>

@@ -111,10 +111,6 @@ const rawCases = [
       },
       {
         kicker: "",
-        text: "En die videoclip was nog maar het begin.",
-      },
-      {
-        kicker: "",
         text:
           "Vandaag werken we maandelijks samen met Tarzan & Jane om hun speelse online universum verder uit te bouwen. Elke maand creëren we 8 video’s en 4 foto’s of grafische designs voor hun social media. Zo blijft hun merk fris, zichtbaar en herkenbaar voor nieuwe én terugkerende bezoekers.",
       },
@@ -129,7 +125,6 @@ const rawCases = [
       ["hele speeltuin laten zingen, springen en swingen", "één groot avontuur"],
       ["snelle cuts, ritme, speelse beelden", "wereld tot leven op beeld"],
       ["Een videoclip die blijft plakken", "content die niet alleen bekeken wordt, maar ook echt begint te leven"],
-      [],
       ["8 video’s en 4 foto’s of grafische designs", "fris, zichtbaar en herkenbaar"],
       ["100% Tarzan & Jane"],
     ],
@@ -151,7 +146,7 @@ const rawCases = [
     },
     gallery: [{ src: "/work/tarzan-en-jane-thumb.webp", alt: "Tarzan & Jane projectbeeld" }],
     imageGalleryTitle: "Fotogalerij",
-    imageGalleryEyebrow: "Beelden",
+    imageGalleryEyebrow: "",
     imageGallery: [
       {
         src: "/images/cases/tarzan-en-jane/tarzan-jane-gallery-01.jpg",
@@ -237,7 +232,7 @@ const rawCases = [
         "Tarzan & Jane wilde hun indoor speeltuin ook tijdens de rustigere zomermaanden sterker in de kijker zetten. Tegelijk kon er op social media nog wat extra leven in de jungle komen: er was te weinig bereik en te weinig trafiek 🙁.",
     },
     approach: {
-      label: "Aanpak",
+      label: "Oplossing",
       title: "",
       text:
         "Wij zochten naar een idee dat niet voelde als de zoveelste reclamevideo. Het resultaat? Een eigen nummer en een energieke videoclip die de sfeer van Tarzan & Jane meteen voelbaar maakte. Speels, herkenbaar en een deuntje dat je niet uit je hoofd krijgt!",
@@ -247,12 +242,6 @@ const rawCases = [
       title: "",
       text:
         "De videoclip gaf Tarzan & Jane een opvallende campagne om hun speeltuin te promoten. Van het nummer maakten we ook een radiospot voor TOPradio, waardoor de campagne verder ging dan social media alleen.\n\nWat begon als één zomeractie, groeide uit tot een warme maandelijkse samenwerking. Vandaag maken we elke maand acht video’s en vier foto’s of grafische designs om Tarzan & Jane zichtbaar, speels en top-of-mind te houden.",
-      stats: [
-        { value: "1", label: "videoclip" },
-        { value: "8", label: "video’s/maand" },
-        { value: "4", label: "foto’s/designs" },
-        { value: "100%", label: "Tarzan & Jane" },
-      ],
     },
     externalVideoUrl: "https://f.io/xlJWANUu",
   },
@@ -307,10 +296,10 @@ const rawCases = [
       label: "Vraag",
       title: "",
       text:
-        "Maak 10 social media video’s die Antwerpen in 4 maanden tijd nóg aantrekkelijker maken voor bezoekers.",
+        "Visit Antwerpen had 10 leuke content ideetjes klaarstaan, maar niet genoeg handen om ze uit te werken.",
     },
     approach: {
-      label: "Aanpak",
+      label: "Oplossing",
       title: "",
       text:
         "Visit Antwerp kwam met de ideeën, wij brachten ze tot leven. Met een duidelijke planning, een flexibele crew en veel goesting trokken we door de stad om elke video van concept tot montage uit te werken. Geen droge toeristische promo, maar snelle, energieke content die voelt alsof je er zelf bij wil zijn.",
@@ -359,6 +348,13 @@ const rawCases = [
           title: "fashion local",
           src: "/videos/cases/visit-antwerpen/fashion-local.mp4",
           poster: "/images/cases/visit-antwerpen/fashion-local-poster.jpg",
+        },
+        {
+          title: "tattoo tour",
+          type: "vimeo",
+          id: "1217569321",
+          url: "https://vimeo.com/1217569321",
+          orientation: "portrait",
         },
       ],
     },
@@ -442,11 +438,81 @@ const rawCases = [
       verticalVideos: [
         portraitVimeoCaseMedia("1215737500", "Humgy member spotlight"),
         portraitVimeoCaseMedia("1215737499", "Humgy member spotlight"),
+        {
+          type: "video",
+          src: "/videos/cases/humgy/DXHhKvGEXw8.mp4",
+          poster: "/images/cases/humgy/DXHhKvGEXw8-feed.jpg",
+          title: "Aftermovie",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+        },
+        {
+          type: "video",
+          src: "/videos/cases/humgy/DMx-wVHhOTA.mp4",
+          poster: "/images/cases/humgy/DMx-wVHhOTA-feed.jpg",
+          title: "Grappig format",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+        },
+        {
+          type: "video",
+          src: "/videos/cases/humgy/DNWAzo4x8g0.mp4",
+          poster: "/images/cases/humgy/DNWAzo4x8g0-feed.jpg",
+          title: "Snackable",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+        },
       ],
     },
     vimeoEmbeds: [
       vimeo("1215737500", "Humgy member spotlight"),
       vimeo("1215737499", "Humgy member spotlight"),
+    ],
+    campaignGalleryEyebrow: "Social media",
+    campaignGalleryTitle: "Humgy op Instagram",
+    campaignImages: [
+      {
+        src: "/images/cases/humgy/humgy-instagram-feed.png",
+        alt: "De socialmediafeed van Humgy Cowork op Instagram",
+        orientation: "landscape",
+      },
+    ],
+    imageGalleryEyebrow: "Fotografie",
+    imageGalleryTitle: "Humgy in beeld",
+    imageGallery: [
+      {
+        src: "/images/cases/humgy/humgy-community.jpg",
+        alt: "Humgy-members in de coworkingruimte",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/humgy/humgy-member-laptop.jpg",
+        alt: "Humgy-member aan het werk met een laptop",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/humgy/humgy-meeting.jpg",
+        alt: "Overleg in een vergaderruimte van Humgy",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/humgy/humgy-reading.jpg",
+        alt: "Humgy-member leest in de coworkingruimte",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/humgy/humgy-member-board.jpg",
+        alt: "Memberportretten bij Humgy",
+        orientation: "portrait",
+      },
+      {
+        src: "/images/cases/humgy/humgy-stairs.jpg",
+        alt: "Humgy-member op de trap van de coworkinglocatie",
+        orientation: "portrait",
+      },
     ],
     facts: [
       { label: "Output", value: "maandelijkse social content" },
@@ -614,12 +680,56 @@ const rawCases = [
           hash: "90107e79ed",
           title: "Imore video 3",
         },
+        portraitVimeoCaseMedia("1217615155", "Imore drone reel"),
+        portraitVimeoCaseMedia("1217615156", "Imore kantoorbeelden"),
+        portraitVimeoCaseMedia("1217615157", "Imore Koetshuis reel"),
+      ],
+      landscapeVideos: [
+        vimeoCaseMedia("1217615158", "Imore Koetshuis testimonial"),
       ],
     },
     vimeoEmbeds: [
       vimeo("1055562671", "Imore video 1", "688a1873bb"),
       vimeo("1055562589", "Imore video 2", "d817a8a495"),
       vimeo("1055562711", "Imore video 3", "90107e79ed"),
+      vimeo("1217615155", "Imore drone reel"),
+      vimeo("1217615156", "Imore kantoorbeelden"),
+      vimeo("1217615158", "Imore Koetshuis testimonial"),
+      vimeo("1217615157", "Imore Koetshuis reel"),
+    ],
+    imageGalleryTitle: "Fotogalerij",
+    imageGalleryEyebrow: "Fotografie",
+    imageGallery: [
+      {
+        src: "/images/cases/imore/imore-team.webp",
+        alt: "Het team van Imore in hun kantoor",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/imore/imore-office-5.webp",
+        alt: "De receptie van het Imore-kantoor",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/imore/imore-office-2.webp",
+        alt: "Imore-teamleden tijdens een overleg",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/imore/imore-office-3.webp",
+        alt: "Imore-teamleden aan het werk",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/imore/imore-office-structuur.webp",
+        alt: "Materialen en interieurplannen van Imore",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/imore/imore-office-1.webp",
+        alt: "Interieurplannen op de werktafel van Imore",
+        orientation: "landscape",
+      },
     ],
     facts: [
       { label: "Output", value: "social reels, testimonials en fotografie" },
@@ -631,7 +741,7 @@ const rawCases = [
       text: "Imore zocht een manier om hun designs tot leven te brengen op een manier die écht bij hen past.",
     },
     approach: {
-      label: "Aanpak",
+      label: "Oplossing",
       title: "",
       text:
         "We verdiepten ons in hun cases, hun stijl en hun merkidentiteit, en vertaalden dat naar high-quality video en fotografie.",
@@ -1201,7 +1311,7 @@ const rawCases = [
         "De Salus Medicair-bedden 🛏️ kregen nog niet de aandacht die ze verdienden. De verkoop bleef achter, dus zocht Salus naar een opvallende manier om het product bekender én aantrekkelijker te maken.",
     },
     approach: {
-      label: "Aanpak",
+      label: "Oplossing",
       title: "",
       text:
         "We schreven een reeks reclamespots die de doelgroep niet bestookten met technische verkooppraat, maar aanspraken met humor, herkenbaarheid en een sterk verhaal.",
@@ -1640,9 +1750,13 @@ const rawCases = [
       vimeo("1174402980", "Blutsqi employer branding"),
       vimeo("1174402742", "Blutsqi vacaturevideo"),
       vimeo("1174402589", "Blutsqi social snippet"),
+      vimeo("1217619293", "Blutsqi customer journey"),
     ],
     media: {
       hero: vimeoCaseMedia("1174402980", "Blutsqi employer branding"),
+      landscapeVideos: [
+        vimeoCaseMedia("1217619293", "Blutsqi customer journey"),
+      ],
       verticalVideos: [
         vimeoCaseMedia("1174402980", "Blutsqi employer branding"),
         vimeoCaseMedia("1174402742", "Blutsqi vacaturevideo"),
@@ -1652,7 +1766,7 @@ const rawCases = [
     },
     needsEditorialSplit: false,
     facts: [
-      { label: "Output", value: "3 video's" },
+      { label: "Output", value: "4 video's" },
       { label: "Type", value: "employer branding" },
     ],
     question: {
@@ -1673,7 +1787,7 @@ const rawCases = [
       text:
         "Meer zichtbaarheid als werkgever, sterke content voor verschillende kanalen en vooral: nieuwe collega’s die perfect binnen het team passen. Missie geslaagd 🚗✨",
       stats: [
-        { value: "3", label: "video’s" },
+        { value: "4", label: "video’s" },
         { value: "vacature", label: "video’s" },
         { value: "social", label: "snippets" },
         { value: "foto", label: "content" },
@@ -1860,7 +1974,7 @@ const rawCases = [
         "Frankie Villager wilde helder tonen waar hun merk voor staat, zonder er een saaie bedrijfsvideo van te maken… Misschien in de stijl van The Office🏢💼?",
     },
     approach: {
-      title: "PLACEHOLDER: aanpak-titel toevoegen",
+      title: "PLACEHOLDER: oplossing-titel toevoegen",
       text:
         "We namen hun script als basis, onderzochten de typische mockumentary-stijl van het programma en brachten die samen met onze eigen visie op de draaidag.",
     },
@@ -2428,7 +2542,7 @@ const rawCases = [
         "X-Oats tikte hun miljoenste verkoop aan en wilde dat vieren met een spot. Klein detail: die moest er binnen een week zijn, dus vroegen ze ons om op drie dagen tijd twee spots te schrijven, draaien en op te leveren.",
     },
     approach: {
-      label: "Aanpak",
+      label: "Oplossing",
       title: "",
       text:
         "X-Oats CEO Kevin had enkele ideeën die wij meteen hebben uitgewerkt. Onze producers schakelden snel en gingen gelijktijdig aan de slag. Twee dagen later stonden we al op shoot! Terwijl de tweede spot werd opgenomen, zat de eerste al in montage. Daarna nog een nachtje doortrekken en tijdig opleveren. Da’s durven. 😏",
@@ -2507,7 +2621,20 @@ function normalizeCaseMedia(caseItem) {
   };
 }
 
-export const cases = rawCases.map(normalizeCaseMedia);
+const normalizedCases = rawCases.map(normalizeCaseMedia);
+const tarzanServicesSource = normalizedCases.find((item) => item.slug === "tarzan-en-jane");
+const tarzanServicesCopy = tarzanServicesSource
+  ? {
+      ...tarzanServicesSource,
+      slug: "tarzan-en-jane-diensten-stijl",
+      aliases: [],
+      template: "tarzan-services-case",
+    }
+  : null;
+
+export const cases = tarzanServicesCopy
+  ? [...normalizedCases, tarzanServicesCopy]
+  : normalizedCases;
 
 export function getAllCaseSlugs() {
   return cases.flatMap((item) => [item.slug, ...(item.aliases || [])]);

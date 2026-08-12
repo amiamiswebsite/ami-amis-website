@@ -2099,6 +2099,8 @@ a {
   display: grid;
   align-content: start;
   justify-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .approach-card img,
@@ -2316,6 +2318,8 @@ a {
 .approach-card h3 {
   display: grid;
   gap: 4px;
+  width: 100%;
+  min-width: 0;
   margin: clamp(8px, 1.1vw, 14px) 0 12px;
   color: var(--yellow);
   font-family: var(--font-serif);
@@ -2334,12 +2338,22 @@ a {
 }
 
 .approach-card p {
+  width: 100%;
+  min-width: 0;
   max-width: 24ch;
   margin: 0;
   font-family: var(--font-sans);
   font-size: clamp(0.92rem, 1.02vw, 1.06rem);
   font-weight: 800;
   line-height: 1.18;
+}
+
+/* Six fixed columns need card-based type, not viewport-based growth. */
+@media (min-width: 1241px) {
+  .approach-card h3 {
+    font-size: clamp(2rem, 1.8vw, 2.18rem);
+    text-wrap: balance;
+  }
 }
 
 @media (max-width: 1240px) and (min-width: 769px) {
@@ -11013,7 +11027,7 @@ body.collage-ready .filmroll-highlights__cta {
   margin: 0;
   color: var(--red);
   font-family: var(--font-serif);
-  font-size: clamp(6rem, 13vw, 14.5rem);
+  font-size: clamp(4rem, 7.2vw, 7.5rem);
   font-style: italic;
   font-weight: 800;
   line-height: 0.82;
@@ -11237,7 +11251,7 @@ body.collage-ready .filmroll-highlights__cta {
   }
 
   .de-amis-title-lockup h2 {
-    font-size: clamp(4.8rem, 21vw, 7.6rem);
+    font-size: clamp(3.25rem, 13.5vw, 4.5rem);
     line-height: 0.82;
     text-shadow: none;
   }
@@ -11448,23 +11462,6 @@ body.collage-ready .filmroll-highlights__cta {
   letter-spacing: 0.01em;
 }
 
-@media (hover: hover) {
-  .team-dossier-card:hover {
-    box-shadow:
-      0 25px 48px rgba(28, 28, 28, 0.22),
-      inset 0 0 0 1px rgba(255, 250, 229, 0.4),
-      inset 0 -18px 38px rgba(92, 66, 31, 0.1);
-    transform: translate3d(0, calc(var(--de-amis-cards-y) - 6px), 0) scale(var(--de-amis-cards-scale));
-  }
-
-  .team-dossier-card:hover .team-dossier-card__photo-wrap {
-    box-shadow:
-      0 15px 24px rgba(28, 28, 28, 0.2),
-      inset 0 0 0 1px rgba(28, 28, 28, 0.08);
-    transform: rotate(0deg) translate3d(0, -2px, 0);
-  }
-}
-
 .team-dossier-card:focus-within {
   outline: 4px solid var(--blue);
   outline-offset: 8px;
@@ -11607,12 +11604,6 @@ body.collage-ready .filmroll-highlights__cta {
   z-index: 1;
 }
 
-.team-dossier-card__photo--hover {
-  z-index: 2;
-  object-position: var(--dossier-hover-photo-position);
-  opacity: 0;
-}
-
 .team-dossier-card__body {
   position: relative;
   display: grid;
@@ -11657,51 +11648,6 @@ body.collage-ready .filmroll-highlights__cta {
   display: none;
 }
 
-.team-dossier-card__favorite {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  margin: clamp(5px, 0.65vw, 10px) 0 0;
-  padding-top: clamp(8px, 0.8vw, 12px);
-  border-top: 1px solid rgba(28, 28, 28, 0.24);
-  color: rgba(28, 28, 28, 0.86);
-  font-family: var(--font-sans);
-  font-size: clamp(0.86rem, 0.9vw, 1rem);
-  font-weight: 750;
-  line-height: 1.18;
-  text-transform: none;
-}
-
-.team-dossier-card__favorite span {
-  display: inline;
-  margin-right: 0.32em;
-  color: var(--red);
-  font-family: var(--font-black);
-  font-size: 0.82em;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-@media (hover: hover) {
-  .team-dossier-card:hover {
-    box-shadow: 9px 9px 0 var(--blue);
-    transform: translate3d(0, calc(var(--de-amis-cards-y) - 5px), 0) scale(var(--de-amis-cards-scale, 1));
-  }
-
-  .team-dossier-card:hover .team-dossier-card__photo-wrap {
-    transform: translate3d(0, -2px, 0);
-  }
-
-  .team-dossier-card:hover .team-dossier-card__photo {
-    filter: saturate(1.02) contrast(1.05);
-    transform: scale(1.025);
-  }
-
-  .team-dossier-card:hover .team-dossier-card__photo--hover {
-    opacity: 1;
-  }
-}
-
 @media (max-width: 1180px) and (min-width: 769px) {
   .team-dossier-grid.team-rail-track {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -11733,9 +11679,6 @@ body.collage-ready .filmroll-highlights__cta {
     font-size: clamp(0.98rem, 4.2vw, 1.16rem);
   }
 
-  .team-dossier-card__favorite {
-    font-size: clamp(0.86rem, 3.55vw, 1rem);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -21403,6 +21346,31 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   aspect-ratio: 16 / 10;
 }
 
+.va-pdf-page--imore .va-pdf-campaign-gallery--photos .va-pdf-campaign-gallery__item {
+  grid-column: span 6;
+  transform: none;
+}
+
+.va-pdf-page--imore .va-pdf-campaign-gallery--photos .va-pdf-campaign-gallery__item img {
+  aspect-ratio: 3 / 2;
+}
+
+.va-pdf-page--humgy .va-pdf-campaign-gallery--campaign .va-pdf-campaign-gallery__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.va-pdf-page--humgy .va-pdf-campaign-gallery--campaign .va-pdf-campaign-gallery__item {
+  width: min(100%, 960px);
+  justify-self: center;
+  transform: none;
+}
+
+.va-pdf-page--humgy .va-pdf-campaign-gallery--campaign .va-pdf-campaign-gallery__item img {
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
 .va-pdf-outro {
   display: grid;
   place-items: center;
@@ -22898,6 +22866,93 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   overflow: clip;
 }
 
+.va-pdf-page--tarzan-en-jane .va-pdf-story {
+  background-color: var(--va-paper);
+  background-image: var(--paper-bg-image);
+  background-size: 760px auto;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band {
+  position: relative;
+  width: 100%;
+  overflow: clip;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--videos {
+  padding: clamp(3.25rem, 6vw, 5.75rem) 0;
+  border-block: 2px solid var(--va-black);
+  background-color: var(--va-blue);
+  background-image:
+    linear-gradient(rgba(255, 250, 229, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 250, 229, 0.1) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--videos .va-pdf-video-grid,
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--videos .va-pdf-featured-video {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery {
+  padding: clamp(3.5rem, 6.5vw, 6.25rem) 0 clamp(4rem, 7vw, 6.75rem);
+  border-bottom: 2px solid var(--va-black);
+  background-color: var(--va-yellow);
+  background-image:
+    linear-gradient(rgba(255, 250, 229, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 250, 229, 0.22) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery .va-pdf-campaign-gallery {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery .va-pdf-campaign-gallery__grid {
+  align-items: end;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery .va-pdf-campaign-gallery h2 {
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.48em 0.9em 0.52em;
+  border: 2px solid var(--va-black);
+  border-radius: 999px;
+  background: var(--va-paper);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery .va-pdf-campaign-gallery__item {
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: clamp(0.8rem, 1.3vw, 1.2rem);
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0.4rem 0.55rem 0 rgba(28, 28, 28, 0.18));
+  transform: none;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--gallery .va-pdf-campaign-gallery__item img {
+  border-radius: inherit;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--summary {
+  padding-top: clamp(3.25rem, 5.5vw, 5.25rem);
+  background-color: var(--va-paper);
+  background-image: var(--paper-bg-image);
+  background-size: 760px auto;
+}
+
+.va-pdf-page--tarzan-en-jane .va-pdf-case-band--summary .va-pdf-outro {
+  padding-top: 0;
+}
+
 .va-pdf-page--tarzan-en-jane .va-pdf-hero h1,
 .va-pdf-page--tarzan-en-jane .va-pdf-quote,
 .va-pdf-page--tarzan-en-jane .va-pdf-story,
@@ -22906,6 +22961,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 .va-pdf-page--tarzan-en-jane .va-pdf-campaign-gallery,
 .va-pdf-page--tarzan-en-jane .va-pdf-outro,
 .va-pdf-page--tarzan-en-jane .x-oats-final-summary,
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary,
 .va-pdf-page--tarzan-en-jane .va-pdf-cta {
   box-sizing: border-box;
 }
@@ -22920,15 +22976,18 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 }
 
 .va-pdf-page--tarzan-en-jane .va-pdf-story p {
+  width: 100%;
   max-width: 58ch;
+  margin-right: 0;
+  margin-left: 0;
   font-size: clamp(0.98rem, 0.82rem + 0.34vw, 1.08rem);
   font-weight: 720;
   line-height: 1.42;
 }
 
 .va-pdf-page--tarzan-en-jane .va-pdf-highlight {
-  color: var(--va-red);
-  font-weight: 900;
+  color: inherit;
+  font-weight: inherit;
 }
 
 .va-pdf-page--tarzan-en-jane .va-pdf-stats {
@@ -23011,6 +23070,146 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   height: clamp(2rem, 2.65vw, 2.85rem);
 }
 
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary {
+  width: min(1080px, calc(100% - 2rem));
+  margin: clamp(-1rem, -1.2vw, -0.3rem) auto clamp(4rem, 6.5vw, 6rem);
+  padding: clamp(1.35rem, 2.8vw, 2.3rem) clamp(0.2rem, 1vw, 0.8rem);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(1.4rem, 2.8vw, 2.4rem);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit {
+  position: relative;
+  display: grid;
+  grid-column: span 4;
+  align-content: start;
+  gap: clamp(0.85rem, 1.3vw, 1.15rem);
+  min-width: 0;
+  padding: clamp(2.15rem, 3vw, 2.8rem) clamp(1.2rem, 1.8vw, 1.65rem) clamp(1.45rem, 2.2vw, 2rem);
+  border: 1px solid rgba(28, 28, 28, 0.18);
+  border-radius: 0.22rem;
+  color: var(--va-black);
+  background: var(--tarzan-postit-color);
+  box-shadow:
+    0.48rem 0.62rem 0 rgba(28, 28, 28, 0.16),
+    0 1rem 1.8rem rgba(28, 28, 28, 0.09);
+  transform: rotate(var(--tarzan-postit-rotate)) translateY(var(--tarzan-postit-offset));
+  transform-origin: 50% 0;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit--question {
+  --tarzan-postit-color: #ffd7cc;
+  --tarzan-postit-rotate: -1.4deg;
+  --tarzan-postit-offset: 0.55rem;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit--approach {
+  --tarzan-postit-color: #ffe37d;
+  --tarzan-postit-rotate: 1deg;
+  --tarzan-postit-offset: -0.25rem;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit--result {
+  --tarzan-postit-color: #a9d2ff;
+  --tarzan-postit-rotate: -0.65deg;
+  --tarzan-postit-offset: 0.7rem;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit__tape {
+  position: absolute;
+  z-index: 2;
+  top: -0.6rem;
+  left: 50%;
+  width: clamp(4.6rem, 7vw, 6.25rem);
+  height: clamp(1.2rem, 1.8vw, 1.55rem);
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  background: rgba(255, 250, 229, 0.76);
+  box-shadow: 0 0.18rem 0.35rem rgba(28, 28, 28, 0.08);
+  transform: translateX(-50%) rotate(-1.5deg);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit--approach .tarzan-postit__tape {
+  transform: translateX(-50%) rotate(2deg);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit__heading {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.55rem, 1vw, 0.85rem);
+  padding-right: clamp(2.2rem, 3.2vw, 3.2rem);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit__number {
+  flex: 0 0 auto;
+  color: var(--va-red);
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.75;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit h3 {
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-black);
+  font-size: clamp(1.12rem, 1.65vw, 1.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
+  font-weight: 740;
+  line-height: 1.36;
+  white-space: pre-line;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit__icon {
+  position: absolute;
+  top: clamp(1.55rem, 2.2vw, 2rem);
+  right: clamp(0.9rem, 1.4vw, 1.25rem);
+  width: clamp(2rem, 2.8vw, 2.7rem);
+  height: clamp(1.9rem, 2.7vw, 2.6rem);
+  background: var(--va-blue);
+  -webkit-mask: var(--tarzan-postit-icon) center / contain no-repeat;
+  mask: var(--tarzan-postit-icon) center / contain no-repeat;
+  opacity: 0.9;
+  transform: rotate(5deg);
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary.is-visible .tarzan-postit {
+  animation: tarzanPostItIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary.is-visible .tarzan-postit:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.va-pdf-page--tarzan-en-jane .tarzan-postit-summary.is-visible .tarzan-postit:nth-child(3) {
+  animation-delay: 180ms;
+}
+
+@keyframes tarzanPostItIn {
+  from {
+    opacity: 0;
+    transform: rotate(calc(var(--tarzan-postit-rotate) - 2deg)) translateY(calc(var(--tarzan-postit-offset) + 2rem)) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(var(--tarzan-postit-rotate)) translateY(var(--tarzan-postit-offset)) scale(1);
+  }
+}
+
 .va-pdf-page--tarzan-en-jane .va-pdf-cta {
   min-height: clamp(17rem, 23vw, 22rem);
 }
@@ -23036,6 +23235,10 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   .va-pdf-page--tarzan-en-jane .x-oats-final-summary.is-visible .x-oats-var-card {
     animation: none;
   }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary.is-visible .tarzan-postit {
+    animation: none;
+  }
 }
 
 @media (min-width: 981px) {
@@ -23044,72 +23247,23 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .va-pdf-page--tarzan-en-jane .va-pdf-story__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-    column-gap: clamp(3.5rem, 7vw, 7.75rem);
-    row-gap: clamp(0.78rem, 1.1vw, 1rem);
-    align-items: start;
+    display: block;
     width: var(--tarzan-desktop-measure);
+    column-count: 2;
+    column-gap: clamp(3.5rem, 7vw, 7.75rem);
+    column-fill: balance;
   }
 
   .va-pdf-page--tarzan-en-jane .va-pdf-story p {
+    break-inside: avoid-column;
     max-width: none;
-    margin: 0;
+    margin: 0 0 clamp(0.78rem, 1.1vw, 1rem);
     font-size: clamp(1rem, 0.6rem + 0.52vw, 1.14rem);
     line-height: 1.36;
   }
 
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(-n + 4) {
-    grid-column: 1;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(n + 5) {
-    grid-column: 2;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(1) {
-    grid-row: 1;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(2) {
-    grid-row: 2;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(3) {
-    grid-row: 3;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(4) {
-    grid-row: 4;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(5) {
-    grid-row: 1;
-    justify-self: start;
-    width: fit-content;
-    max-width: min(100%, 27rem);
-    margin-bottom: clamp(0.25rem, 0.7vw, 0.6rem);
-    padding: 0.12em 0.36em 0.2em;
-    color: var(--va-paper);
-    background: var(--va-red);
-    font-family: var(--font-serif);
-    font-size: clamp(1.18rem, 1.35vw, 1.55rem);
-    font-weight: 700;
-    line-height: 1.12;
-    text-align: center;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(6) {
-    grid-row: 2 / span 2;
-    padding-top: clamp(0.2rem, 0.6vw, 0.55rem);
-  }
-
-  .va-pdf-page--tarzan-en-jane .va-pdf-story p:nth-child(7) {
-    grid-row: 4;
-    margin-top: clamp(0.25rem, 0.7vw, 0.6rem);
-    padding-left: clamp(1rem, 1.6vw, 1.35rem);
-    border-left: 0.32rem solid var(--va-blue);
+  .va-pdf-page--tarzan-en-jane .va-pdf-story p:last-child {
+    margin-bottom: 0;
   }
 
   .va-pdf-page--tarzan-en-jane .va-pdf-stats {
@@ -23148,6 +23302,10 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     width: var(--tarzan-desktop-measure);
   }
 
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary {
+    width: var(--tarzan-desktop-measure);
+  }
+
   .va-pdf-page--tarzan-en-jane .x-oats-final-summary__grid {
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr) minmax(0, 1.08fr);
     gap: clamp(1rem, 1.7vw, 1.55rem);
@@ -23176,6 +23334,14 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     line-height: 1.16;
   }
 
+  .va-pdf-page--tarzan-en-jane .va-pdf-story__inner {
+    width: min(42rem, calc(100% - 2rem));
+  }
+
+  .va-pdf-page--tarzan-en-jane .va-pdf-story p {
+    max-width: none;
+  }
+
   .va-pdf-page--tarzan-en-jane .x-oats-final-summary {
     width: min(40rem, calc(100% - 1.75rem));
   }
@@ -23190,6 +23356,21 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     max-width: none;
     margin-inline: 0;
     padding: clamp(0.95rem, 2.8vw, 1.2rem);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary {
+    width: min(42rem, calc(100% - 1.75rem));
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary__grid {
+    grid-template-columns: 1fr;
+    gap: clamp(1.65rem, 4vw, 2.25rem);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit {
+    grid-column: auto;
+    width: min(100%, 37rem);
+    margin-inline: auto;
   }
 
 }
@@ -23408,6 +23589,63 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     opacity: 0.82;
   }
 
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary {
+    width: var(--tarzan-mobile-measure);
+    margin-top: clamp(-0.5rem, -2vw, -0.1rem);
+    margin-bottom: clamp(3.2rem, 11vw, 4.5rem);
+    padding: clamp(1.2rem, 5vw, 1.7rem) 0;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit-summary__grid {
+    gap: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit {
+    --tarzan-postit-offset: 0;
+    gap: 0.72rem;
+    padding: 2rem 1.05rem 1.3rem;
+    box-shadow:
+      0.32rem 0.42rem 0 rgba(28, 28, 28, 0.15),
+      0 0.75rem 1.25rem rgba(28, 28, 28, 0.08);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit--question {
+    --tarzan-postit-rotate: -0.6deg;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit--approach {
+    --tarzan-postit-rotate: 0.55deg;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit--result {
+    --tarzan-postit-rotate: -0.35deg;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit__heading {
+    gap: 0.48rem;
+    padding-right: 2rem;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit__number {
+    font-size: clamp(1.72rem, 8vw, 2.05rem);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit h3 {
+    font-size: clamp(1rem, 4.7vw, 1.14rem);
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit p {
+    font-size: clamp(0.83rem, 3.7vw, 0.91rem);
+    line-height: 1.4;
+  }
+
+  .va-pdf-page--tarzan-en-jane .tarzan-postit__icon {
+    top: 1.35rem;
+    right: 0.8rem;
+    width: 1.8rem;
+    height: 1.72rem;
+  }
+
   .va-pdf-page--tarzan-en-jane .va-pdf-cta {
     min-height: 17.5rem;
     padding-inline: 1rem;
@@ -23430,6 +23668,304 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 }
 /* End Visit Antwerpen PDF case */
+
+/* Start static Amis team intro and video */
+.team-intro-static {
+  position: relative;
+  display: grid;
+  min-height: min(100svh, 920px);
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(132px, 11vw, 178px) var(--page-pad) clamp(78px, 8vw, 126px);
+  background-color: #bfeef4;
+  background-image: var(--paper-bg-image);
+  background-position: center;
+  background-size: 760px auto;
+}
+
+.team-intro-static__logo {
+  z-index: 3;
+}
+
+.team-intro-static__copy {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1320px);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.team-intro-static__copy h1 {
+  max-width: 1320px;
+  margin: 0 auto;
+  font-family: var(--font-serif);
+  font-size: clamp(2.15rem, 3.85vw, 4.95rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+
+.team-intro-static__copy .team-mark {
+  transform: rotate(var(--team-mark-tilt, 0deg)) !important;
+}
+
+.team-intro-static__copy .team-script {
+  font-style: italic;
+}
+
+.team-static-video {
+  position: relative;
+  z-index: 2;
+  padding: clamp(54px, 5.6vw, 84px) var(--page-pad) clamp(70px, 7vw, 108px);
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 250, 229, 0.12) 1px, transparent 1px),
+    var(--blue);
+  background-size: 48px 48px, 48px 48px, auto;
+}
+
+.team-static-video__inner {
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+  width: min(100%, 1180px);
+  margin-inline: auto;
+}
+
+.team-static-video__header {
+  display: grid;
+  justify-items: start;
+}
+
+.team-static-video__header h2 {
+  justify-self: start;
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(3rem, 6vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.team-static-video__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  background: var(--ink);
+  box-shadow:
+    0.62rem 0.72rem 0 var(--yellow),
+    0 1.2rem 2rem rgba(28, 28, 28, 0.12);
+}
+
+.team-static-video__frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--ink);
+  object-fit: cover;
+}
+
+.team-static-video__play {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: clamp(64px, 7vw, 94px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 5px 5px 0 var(--ink);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.team-static-video__play span {
+  width: 0;
+  height: 0;
+  margin-left: 0.14em;
+  border-top: 0.78rem solid transparent;
+  border-bottom: 0.78rem solid transparent;
+  border-left: 1.15rem solid var(--paper);
+}
+
+.team-static-video__play:hover,
+.team-static-video__play:focus-visible {
+  box-shadow: 7px 7px 0 var(--ink);
+  outline: none;
+  transform: translate(calc(-50% - 2px), calc(-50% - 2px));
+}
+
+.team-static-video__play:focus-visible {
+  outline: 4px solid var(--yellow);
+  outline-offset: 5px;
+}
+
+.de-amis-section {
+  margin-top: 0;
+}
+
+.de-amis-section.is-visible {
+  --de-amis-title-opacity: 1;
+  --de-amis-title-y: 0px;
+  --de-amis-title-scale: 1;
+  --de-amis-subtitle-opacity: 1;
+  --de-amis-cards-opacity: 1;
+  --de-amis-cards-y: 0px;
+  --de-amis-cards-scale: 1;
+}
+
+.team-total-care {
+  position: relative;
+  display: grid;
+  min-height: clamp(360px, 38vw, 500px);
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(68px, 8vw, 104px) var(--page-pad);
+  color: var(--paper);
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 250, 229, 0.1) 1px, transparent 1px),
+    var(--red);
+  background-size: 48px 48px, 48px 48px, auto;
+}
+
+.team-total-care__inner {
+  display: grid;
+  justify-items: center;
+  gap: clamp(14px, 2vw, 24px);
+  width: min(100%, 980px);
+  text-align: center;
+}
+
+.team-total-care__eyebrow {
+  margin: 0;
+  color: var(--yellow);
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.4vw, 2.35rem);
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.95;
+}
+
+.team-total-care h2 {
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(3rem, 7vw, 7.2rem);
+  font-weight: 900;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.team-total-care__body {
+  max-width: 760px;
+  margin: clamp(2px, 0.6vw, 8px) 0 0;
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.35vw, 1.22rem);
+  font-weight: 750;
+  line-height: 1.42;
+  text-wrap: balance;
+}
+
+.team-total-care .button {
+  margin-top: clamp(4px, 0.8vw, 10px);
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .team-intro-static {
+    min-height: 100svh;
+    padding: clamp(104px, 25vw, 126px) var(--page-pad) clamp(62px, 15vw, 82px);
+  }
+
+  .team-intro-static__logo {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .team-intro-static__copy {
+    max-width: 25.5rem;
+  }
+
+  .team-intro-static__copy h1 {
+    font-size: clamp(1.42rem, 6.45vw, 2.04rem);
+    line-height: 1.11;
+  }
+
+  .team-static-video {
+    padding: clamp(42px, 11vw, 58px) var(--page-pad) clamp(62px, 16vw, 86px);
+  }
+
+  .team-static-video__inner {
+    gap: 18px;
+  }
+
+  .team-static-video__header {
+    padding-right: clamp(68px, 20vw, 82px);
+  }
+
+  .team-static-video__header h2 {
+    justify-self: start;
+    font-size: clamp(1.95rem, 10.5vw, 3.15rem);
+  }
+
+  .team-static-video__frame {
+    border-width: 2px;
+    box-shadow:
+      0.4rem 0.48rem 0 var(--yellow),
+      0 0.9rem 1.4rem rgba(28, 28, 28, 0.1);
+  }
+
+  .team-static-video__play {
+    width: clamp(58px, 18vw, 72px);
+    border-width: 2px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .team-static-video__play span {
+    border-top-width: 0.62rem;
+    border-bottom-width: 0.62rem;
+    border-left-width: 0.92rem;
+  }
+
+  .team-total-care {
+    min-height: 390px;
+    padding: clamp(62px, 16vw, 82px) var(--page-pad);
+  }
+
+  .team-total-care__inner {
+    gap: 13px;
+  }
+
+  .team-total-care h2 {
+    font-size: clamp(2.8rem, 15vw, 4.4rem);
+  }
+
+  .team-total-care__body {
+    font-size: clamp(0.98rem, 4vw, 1.08rem);
+    line-height: 1.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-static-video__play,
+  .de-amis-title-lockup,
+  .team-dossier-card {
+    transition: none;
+  }
+}
+/* End static Amis team intro and video */
 
 /* Start targeted feedback updates 2026-06-16 */
 .hero__logo {
@@ -23980,7 +24516,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .de-amis-title-lockup h2 {
-    font-size: clamp(4.35rem, 17.6vw, 5.75rem);
+    font-size: clamp(3.25rem, 13.5vw, 4.5rem);
   }
 
   .de-amis-title-lockup p {
@@ -24021,23 +24557,6 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   .team-dossier-card__role {
     font-size: clamp(0.68rem, 3.1vw, 0.84rem);
     line-height: 1.08;
-  }
-
-  .team-dossier-card__favorite {
-    display: -webkit-box;
-    margin-top: 4px;
-    padding-top: 7px;
-    overflow: hidden;
-    font-size: clamp(0.68rem, 3vw, 0.8rem);
-    line-height: 1.18;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  .team-dossier-card__favorite span {
-    display: block;
-    margin-right: 0;
-    margin-bottom: 1px;
   }
 
   .de-amis-cta {
