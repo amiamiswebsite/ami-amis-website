@@ -40,6 +40,11 @@ jobs:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_BASE_PATH: /ami-amis-website
 
+      - name: Verify exported checkpoint
+        run: |
+          test -f out/home-2/index.html
+          grep -q "team-shout-title" out/team/index.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
