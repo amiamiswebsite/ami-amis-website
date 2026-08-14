@@ -141,9 +141,22 @@ function ServicesHero() {
     <section className={styles.hero} aria-labelledby="services-title">
       <div className={styles.heroInner}>
         <div className={styles.heroCopy}>
-          <h1 id="services-title">
-            Wij creëren niet gewoon content. Wij creëren{" "}
-            <span className={styles.heroAccent}>oplossingen.</span>
+          <h1
+            id="services-title"
+            aria-label="Wij creëren niet gewoon content. Wij creëren oplossingen."
+          >
+            <span className={styles.heroPrefix} aria-hidden="true">
+              Wij creëren
+            </span>
+            <span className={styles.heroRotator} aria-hidden="true">
+              <span className={styles.heroRotatorSizer}>niet gewoon content.</span>
+              <span className={`${styles.heroTerm} ${styles.heroTermContent}`}>
+                niet gewoon content.
+              </span>
+              <span className={`${styles.heroTerm} ${styles.heroTermSolution}`}>
+                oplossingen.
+              </span>
+            </span>
           </h1>
           <p>
             Je hoeft nog niet te weten of je een campagne, een video of een volledige contentflow nodig hebt. Vertel ons waar het wringt. Wij zoeken samen uit wat werkt — en maken het dan ook ;).

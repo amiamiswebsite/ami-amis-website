@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 
-export default function Hero() {
+export default function Hero({ variant = "default" }) {
+  const isHomeTwo = variant === "home2";
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -223,7 +224,7 @@ export default function Hero() {
 
   return (
     <>
-      <section className="hero" aria-label="Ami Amis hero" ref={heroRef}>
+      <section className={`hero ${isHomeTwo ? "hero--home-two" : ""}`} aria-label="Ami Amis hero" ref={heroRef}>
         <div className="hero__clouds" aria-hidden="true">
           <img src={`${assetPath("/assets/hero-clouds.png")}?v=20260608`} alt="" />
         </div>
@@ -254,6 +255,9 @@ export default function Hero() {
               <span className="hero__mobile-line hero__mobile-line--bottom">SPRINGEN</span>
             </span>
           </h1>
+          {isHomeTwo ? (
+            <p className="hero__agency-label">Video-first content marketing agency in Antwerpen</p>
+          ) : null}
           <div className="hero__skydiver" aria-hidden="true">
             <div className="hero__skydiver-drop">
               <img src={assetPath("/assets/brentskydive.png")} alt="" />

@@ -8,6 +8,26 @@ import { assetPath } from "../../src/lib/assetPath";
 
 const teamVideoSrc = "/assets/amiamis_teamvideo2026.mp4";
 const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
+const teamGroupPhoto = "/assets/ami-amis-team-group.webp";
+
+const shoutTitle = "Ami Awieee?";
+const shoutLetterSizes = [0.48, 0.55, 0.62, 0.3, 0.7, 0.8, 0.92, 1.05, 1.18, 1.32, 1.5];
+
+const teamIntroLines = [
+  ["Ami Amis, een team", "team-intro-static__line--opening"],
+  ["enthousiaste creatievelingen", "team-intro-static__line--hero"],
+  ["met een passie voor content.", "team-intro-static__line--statement"],
+  ["Amicaliteit zit in ons DNA.", "team-intro-static__line--compact"],
+  ["Wanneer jij belt, nemen we op.", "team-intro-static__line--callout"],
+  [
+    "Zelfs al zitten we in bad, staan we op een trouw of zitten we op ‘t WC.",
+    "team-intro-static__line--long",
+  ],
+  [
+    "Omdat het beste werk ontstaat wanneer mensen elkaar vertrouwen.",
+    "team-intro-static__line--closing",
+  ],
+];
 
 function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -71,6 +91,37 @@ function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
   );
 }
 
+function TeamPhotoSection({ id, subtitle }) {
+  const titleId = `${id}-title`;
+
+  return (
+    <section
+      className="team-static-video team-static-video--yellow team-static-photo"
+      id={id}
+      aria-labelledby={titleId}
+    >
+      <div className="team-static-video__inner">
+        <header className="team-static-video__header team-static-photo__header">
+          <h2 id={titleId}>
+            <span>Meet your</span>
+            <span>new friends!</span>
+          </h2>
+          <p>{subtitle}</p>
+        </header>
+
+        <div className="team-static-photo__frame">
+          <img
+            alt="Het team van Ami Amis samen voor een fontein"
+            decoding="async"
+            loading="lazy"
+            src={assetPath(teamGroupPhoto)}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function TeamPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -85,27 +136,51 @@ export default function TeamPage() {
           />
 
           <div className="team-hero__copy team-intro-static__copy">
-            <h1>
-              Wij zijn Ami Amis, een team{" "}
-              <span className="team-mark team-mark--blue">enthousiaste creatievelingen</span>{" "}
-              met een passie voor <span className="team-mark team-mark--red">content</span>.{" "}
-              <span className="team-script">Amicaliteit</span> zit in ons DNA. Wanneer jij
-              belt, nemen we op. Of het nu is voor een{" "}
-              <span className="team-mark team-mark--blue">coole campagne</span>, een{" "}
-              <span className="team-mark team-mark--red">fancy video</span> of om samen een
-              bank te overvallen - wij staan voor je klaar.
+            <h1 aria-label={shoutTitle} className="team-shout-title">
+              <span aria-hidden="true" className="team-shout-title__letters">
+                {[...shoutTitle].map((letter, index) => (
+                  <span
+                    className={`team-shout-title__letter ${letter === " " ? "is-space" : ""}`}
+                    key={`${letter}-${index}`}
+                    style={{
+                      "--shout-delay": `${index * 62}ms`,
+                      "--shout-size": `${shoutLetterSizes[index]}em`,
+                    }}
+                  >
+                    {letter === " " ? "\u00a0" : letter}
+                  </span>
+                ))}
+              </span>
             </h1>
+            <p className="team-intro-static__lead">
+              {teamIntroLines.map(([line, className]) => (
+                <span className={`team-intro-static__line ${className}`} key={line}>
+                  {line}
+                </span>
+              ))}
+            </p>
+            <div className="team-intro-static__columns">
+              <p>
+                Of het nu is voor een coole campagne, een fancy video of om samen een bank
+                te overvallen - wij staan voor je klaar. Omdat het beste werk ontstaat
+                wanneer mensen elkaar vertrouwen.
+              </p>
+              <p>
+                Op zoek naar totale ontzorging? We got you! Bij ons kan je terecht voor een
+                totaal (content)marketingpakket: van video, fotografie en animatie tot
+                grafisch design en websitecreatie -en optimalisatie… Kom snel eens langs om
+                te sparren over je marketingstrategie!
+              </p>
+            </div>
           </div>
         </header>
 
         <main className="team-page">
           <TeamVideoSection id="team-video" title="Teamvideo" />
 
-          <TeamVideoSection
+          <TeamPhotoSection
             id="team-collage"
-            title="De Amis"
-            subtitle="Ami awie? Ami Amis. Ons team van strijders en durvers verzet bergen. Vanuit ons hoofdkwartier op de drukste winkelstraat van Antwerpen smeden we de lijpste ideeën en produceren we de graafste content."
-            tone="yellow"
+            subtitle="Ons team van strijders en durvers verzet bergen. Vanuit ons hoofdkwartier op dé Meir in Antwerpen smeden we de lijpste ideeën en produceren we de graafste content. Dikkenekken? Never. Allez, misschien soms 😎..."
           />
 
           <section className="team-total-care" aria-labelledby="team-total-care-title">
@@ -117,7 +192,7 @@ export default function TeamPage() {
                 fotografie en animatie tot grafisch design en websitecreatie -en
                 optimalisatie... Kom eens langs om te sparren over je marketingstrategie!
               </p>
-              <a className="button button--yellow" href={assetPath("/contact/")}>Kom sparren</a>
+              <a className="button team-total-care__button" href={assetPath("/contact/")}>Kom sparren</a>
             </div>
           </section>
         </main>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
@@ -43,6 +44,39 @@ function cleanVimeoSource(video, playerId) {
   return `https://player.vimeo.com/video/${video.id}?${params.toString()}`;
 }
 
+function lightboxVimeoSource(video) {
+  if (!video?.id) {
+    return "";
+  }
+
+  const params = new URLSearchParams({
+    airplay: "0",
+    autoplay: "1",
+    autopause: "0",
+    badge: "0",
+    byline: "0",
+    cc: "0",
+    chapters: "0",
+    controls: "1",
+    dnt: "1",
+    muted: "0",
+    pip: "0",
+    playsinline: "1",
+    portrait: "0",
+    quality_selector: "0",
+    speed: "0",
+    title: "0",
+    transcript: "0",
+    vimeo_logo: "0",
+  });
+
+  if (video.hash || video.h) {
+    params.set("h", video.hash || video.h);
+  }
+
+  return `https://player.vimeo.com/video/${video.id}?${params.toString()}`;
+}
+
 function sendVimeoCommand(iframe, method, value) {
   if (!iframe?.contentWindow) {
     return;
@@ -58,7 +92,7 @@ function sendVimeoCommand(iframe, method, value) {
   }
 }
 
-function ChromelessVideo({ className = "", itemLabel, video, ...figureProps }) {
+function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figureProps }) {
   const iframeRef = useRef(null);
   const isPlayingRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -137,13 +171,22 @@ function ChromelessVideo({ className = "", itemLabel, video, ...figureProps }) {
     }, 160);
   };
 
+  const activateVideo = () => {
+    if (onOpen) {
+      onOpen();
+      return;
+    }
+
+    togglePlayback();
+  };
+
   const handleScreenKeyDown = (event) => {
     if (event.key !== "Enter" && event.key !== " ") {
       return;
     }
 
     event.preventDefault();
-    togglePlayback();
+    activateVideo();
   };
 
   if (!src) {
@@ -158,9 +201,9 @@ function ChromelessVideo({ className = "", itemLabel, video, ...figureProps }) {
       role="group"
     >
       <div
-        aria-label={`${isPlaying ? "Pauzeer" : "Speel"} ${video.title} met geluid`}
+        aria-label={onOpen ? `Open ${video.title}` : `${isPlaying ? "Pauzeer" : "Speel"} ${video.title} met geluid`}
         className={styles.chromelessVideoScreen}
-        onClick={togglePlayback}
+        onClick={activateVideo}
         onKeyDown={handleScreenKeyDown}
         role="button"
         tabIndex={0}
@@ -177,9 +220,9 @@ function ChromelessVideo({ className = "", itemLabel, video, ...figureProps }) {
       </div>
       <figcaption>
         <button
-          aria-label={`Speel ${video.title} met geluid`}
+          aria-label={onOpen ? `Open ${video.title}` : `Speel ${video.title} met geluid`}
           className={styles.chromelessTrigger}
-          onClick={togglePlayback}
+          onClick={activateVideo}
           type="button"
         >
           <span className={styles.chromelessTitle}>{video.title}</span>
@@ -192,17 +235,162 @@ function ChromelessVideo({ className = "", itemLabel, video, ...figureProps }) {
   );
 }
 
+function LightboxVideo({ video }) {
+  return (
+    <iframe
+      allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+      allowFullScreen
+      className={styles.mediaLightboxPlayer}
+      src={lightboxVimeoSource(video)}
+      title={video.title}
+    />
+  );
+}
+
+function MediaLightbox({ activeIndex, items, onChange, onClose }) {
+  const dialogRef = useRef(null);
+  const item = items[activeIndex];
+  const previousIndex = (activeIndex - 1 + items.length) % items.length;
+  const nextIndex = (activeIndex + 1) % items.length;
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previouslyFocusedElement = document.activeElement;
+    document.body.style.overflow = "hidden";
+    dialogRef.current?.focus();
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+
+      if (event.key === "ArrowLeft") {
+        onChange(previousIndex);
+      }
+
+      if (event.key === "ArrowRight") {
+        onChange(nextIndex);
+      }
+
+      if (event.key === "Tab") {
+        const focusableElements = Array.from(
+          dialogRef.current?.querySelectorAll(
+            "button, iframe, [href], [tabindex]:not([tabindex='-1'])",
+          ) || [],
+        ).filter((element) => !element.disabled);
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements.at(-1);
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedElement?.focus?.();
+    };
+  }, [nextIndex, onChange, onClose, previousIndex]);
+
+  const orientationClass =
+    item.orientation === "portrait"
+      ? styles.mediaLightboxPortrait
+      : styles.mediaLightboxLandscape;
+
+  return createPortal(
+    <div
+      className={styles.mediaLightbox}
+      onMouseDown={(event) => {
+        const target = event.target;
+
+        if (
+          target === event.currentTarget ||
+          (target instanceof Element && !target.closest("[data-media-lightbox-content], button"))
+        ) {
+          onClose();
+        }
+      }}
+      role="presentation"
+    >
+      <div
+        aria-labelledby="tarzan-media-lightbox-title"
+        aria-modal="true"
+        className={styles.mediaLightboxDialog}
+        ref={dialogRef}
+        role="dialog"
+        tabIndex={-1}
+      >
+        <button
+          aria-label="Sluit media-overzicht"
+          className={styles.mediaLightboxClose}
+          onClick={onClose}
+          type="button"
+        >
+          <span aria-hidden="true" className={styles.mediaLightboxCloseIcon} />
+        </button>
+
+        <div className={styles.mediaLightboxStage}>
+          <button
+            aria-label={`Vorige media: ${items[previousIndex].label}`}
+            className={`${styles.mediaLightboxArrow} ${styles.mediaLightboxArrowPrevious}`}
+            onClick={() => onChange(previousIndex)}
+            type="button"
+          >
+            <span aria-hidden="true" className={styles.mediaLightboxChevron} />
+          </button>
+
+          <div
+            className={`${styles.mediaLightboxContent} ${orientationClass}`}
+            data-media-lightbox-content
+          >
+            <div className={styles.mediaLightboxVisual}>
+              {item.type === "video" ? (
+                <LightboxVideo key={item.key} video={item.video} />
+              ) : (
+                <img
+                  alt={item.image.alt}
+                  className={styles.mediaLightboxImage}
+                  src={assetPath(item.image.src)}
+                />
+              )}
+            </div>
+
+            <div className={styles.mediaLightboxMeta}>
+              <strong id="tarzan-media-lightbox-title">{item.label}</strong>
+              <span aria-label={`${activeIndex + 1} van ${items.length}`}>
+                {String(activeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+              </span>
+            </div>
+          </div>
+
+          <button
+            aria-label={`Volgende media: ${items[nextIndex].label}`}
+            className={`${styles.mediaLightboxArrow} ${styles.mediaLightboxArrowNext}`}
+            onClick={() => onChange(nextIndex)}
+            type="button"
+          >
+            <span aria-hidden="true" className={styles.mediaLightboxChevron} />
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function StorySection({ caseData }) {
   return (
     <section className={styles.story} aria-label="Case verhaal">
       <div className={styles.storyGrid}>
         <header className={`${styles.sectionIntro} ${styles.reveal}`}>
           <h2>{caseData.subtitle}</h2>
-          <div className={styles.deliverables} aria-label="Deliverables">
-            {caseData.deliverables.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
         </header>
 
         <div className={`${styles.storyCopy} ${styles.reveal}`}>
@@ -288,9 +476,8 @@ function GallerySection({ caseData }) {
   );
 }
 
-function MixedMediaRailSection({ caseData }) {
-  const railRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+function MixedMediaGridSection({ caseData }) {
+  const [activeIndex, setActiveIndex] = useState(null);
   const mediaItems = useMemo(
     () => [
       {
@@ -300,159 +487,24 @@ function MixedMediaRailSection({ caseData }) {
         label: "Videoclip",
         video: caseData.media.hero,
       },
-      ...caseData.media.verticalVideos.map((video, index) => ({
+      ...caseData.media.verticalVideos.map((video) => ({
         key: `video-${video.id}`,
         type: "video",
         orientation: "portrait",
-        label: `Social video ${index + 1}`,
+        label: "Social video",
         video,
       })),
-      ...caseData.imageGallery.map((image, index) => ({
+      ...caseData.imageGallery.map((image) => ({
         key: `photo-${image.src}`,
         type: "photo",
         orientation: image.orientation,
-        label: `Foto ${index + 1}`,
+        label: "Fotografie",
         image,
       })),
     ],
     [caseData],
   );
-  const totalItems = mediaItems.length;
-  const activeItem = mediaItems[activeIndex] || mediaItems[0];
-  const activeOrientationClass =
-    activeItem?.orientation === "landscape"
-      ? styles.hasLandscapeActive
-      : styles.hasPortraitActive;
 
-  const updateActiveItem = () => {
-    const rail = railRef.current;
-
-    if (!rail) {
-      return;
-    }
-
-    const items = Array.from(rail.querySelectorAll("[data-media-rail-item]"));
-    const visibleStart = rail.scrollLeft;
-    const visibleEnd = visibleStart + rail.clientWidth;
-    let closestIndex = 0;
-    let largestVisibleRatio = -1;
-
-    items.forEach((item, index) => {
-      const itemStart = item.offsetLeft;
-      const itemEnd = itemStart + item.offsetWidth;
-      const visibleWidth = Math.max(0, Math.min(itemEnd, visibleEnd) - Math.max(itemStart, visibleStart));
-      const visibleRatio = visibleWidth / item.offsetWidth;
-
-      if (visibleRatio > largestVisibleRatio) {
-        closestIndex = index;
-        largestVisibleRatio = visibleRatio;
-      }
-    });
-
-    setActiveIndex(closestIndex);
-  };
-
-  const moveToItem = (direction) => {
-    const rail = railRef.current;
-
-    if (!rail) {
-      return;
-    }
-
-    const items = Array.from(rail.querySelectorAll("[data-media-rail-item]"));
-    const nextIndex = Math.min(Math.max(activeIndex + direction, 0), items.length - 1);
-    const nextItem = items[nextIndex];
-
-    if (!nextItem) {
-      return;
-    }
-
-    const left = nextItem.offsetLeft - (rail.clientWidth - nextItem.offsetWidth) / 2;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    rail.scrollTo({ left, behavior: reduceMotion ? "auto" : "smooth" });
-    setActiveIndex(nextIndex);
-  };
-
-  const handleRailKeyDown = (event) => {
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      moveToItem(-1);
-    }
-
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      moveToItem(1);
-    }
-  };
-
-  return (
-    <section
-      className={styles.mediaRailSection}
-      id="media-overzicht-test"
-      aria-labelledby="tarzan-media-rail-title"
-    >
-      <div className={styles.mediaRailHeader}>
-        <div className={styles.mediaRailHeading}>
-          <span className={styles.mediaTestLabel}>Test</span>
-          <h2 id="tarzan-media-rail-title">Media-overzicht</h2>
-        </div>
-      </div>
-
-      <div
-        aria-label="Tarzan & Jane media"
-        className={`${styles.mediaRailViewport} ${activeOrientationClass}`}
-        onKeyDown={handleRailKeyDown}
-        onScroll={updateActiveItem}
-        ref={railRef}
-        role="region"
-        tabIndex={0}
-      >
-        <div className={styles.mediaRailTrack}>
-          {mediaItems.map((item, index) => {
-            const orientationClass =
-              item.orientation === "landscape"
-                ? styles.mediaRailLandscape
-                : item.type === "video"
-                  ? styles.mediaRailPortraitVideo
-                  : styles.mediaRailPortraitPhoto;
-            const itemLabel = `${item.label}, ${index + 1} van ${totalItems}`;
-
-            if (item.type === "video") {
-              return (
-                <ChromelessVideo
-                  className={`${styles.mediaRailItem} ${orientationClass}`}
-                  data-media-rail-item
-                  itemLabel={itemLabel}
-                  key={item.key}
-                  video={item.video}
-                />
-              );
-            }
-
-            return (
-              <figure
-                aria-label={itemLabel}
-                className={`${styles.mediaRailItem} ${styles.mediaRailPhoto} ${orientationClass}`}
-                data-media-rail-item
-                key={item.key}
-                role="group"
-              >
-                <img alt={item.image.alt} loading="lazy" src={assetPath(item.image.src)} />
-              </figure>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className={styles.mediaRailProgress} aria-hidden="true">
-        <span style={{ width: `${((activeIndex + 1) / totalItems) * 100}%` }} />
-      </div>
-    </section>
-  );
-}
-
-function MixedMediaGridSection({ caseData }) {
   return (
     <section
       className={styles.mediaGridSection}
@@ -461,7 +513,6 @@ function MixedMediaGridSection({ caseData }) {
     >
       <div className={styles.mediaGridInner}>
         <header className={styles.mediaGridHeading}>
-          <span className={styles.mediaTestLabel}>Test 2</span>
           <h2 id="tarzan-media-grid-title">Media-overzicht</h2>
         </header>
 
@@ -469,6 +520,7 @@ function MixedMediaGridSection({ caseData }) {
           <ChromelessVideo
             className={`${styles.mediaGridItem} ${styles.mediaGridFeature}`}
             itemLabel="Videoclip"
+            onOpen={() => setActiveIndex(0)}
             video={caseData.media.hero}
           />
 
@@ -477,45 +529,50 @@ function MixedMediaGridSection({ caseData }) {
               className={`${styles.mediaGridItem} ${styles.mediaGridPortraitVideo}`}
               itemLabel={`Social video ${index + 1}`}
               key={video.id}
+              onOpen={() => setActiveIndex(index + 1)}
               video={video}
             />
           ))}
 
           {caseData.imageGallery.map((image, index) => (
-            <figure
+            <button
               aria-label={`Foto ${index + 1}`}
               className={`${styles.mediaGridItem} ${styles.mediaGridPhoto}`}
               key={image.src}
-              role="group"
+              onClick={() => setActiveIndex(1 + caseData.media.verticalVideos.length + index)}
+              type="button"
             >
               <img alt={image.alt} loading="lazy" src={assetPath(image.src)} />
-            </figure>
+            </button>
           ))}
         </div>
       </div>
+
+      {activeIndex !== null ? (
+        <MediaLightbox
+          activeIndex={activeIndex}
+          items={mediaItems}
+          onChange={setActiveIndex}
+          onClose={() => setActiveIndex(null)}
+        />
+      ) : null}
     </section>
   );
 }
 
-function ClosingSection({ caseData }) {
+function ClosingSection() {
   return (
-    <>
-      <section className={styles.closing} aria-label="Conclusie">
-        <p className={styles.reveal}>{caseData.outro}</p>
-      </section>
-
-      <section className={styles.cta} aria-label="Contact">
-        <img
-          alt=""
-          aria-hidden="true"
-          src={assetPath("/images/cases/visit-antwerpen/visit-antwerpen-megaphone-exact.png")}
-        />
-        <div>
-          <h2>Durf jij een samenwerking aan te gaan?</h2>
-          <a className="button button--yellow" href={assetPath("/contact/")}>Eens afspreken?</a>
-        </div>
-      </section>
-    </>
+    <section className={styles.cta} aria-label="Contact">
+      <img
+        alt=""
+        aria-hidden="true"
+        src={assetPath("/images/cases/visit-antwerpen/visit-antwerpen-megaphone-exact.png")}
+      />
+      <div>
+        <h2>Durf jij een samenwerking aan te gaan?</h2>
+        <a className="button button--yellow" href={assetPath("/contact/")}>Eens afspreken?</a>
+      </div>
+    </section>
   );
 }
 
@@ -578,11 +635,10 @@ export default function TarzanServicesCasePage({ caseData }) {
           <StaticProcessSection caseData={caseData} />
           <VideoSection caseData={caseData} />
           <GallerySection caseData={caseData} />
-          <MixedMediaRailSection caseData={caseData} />
           <MixedMediaGridSection caseData={caseData} />
-          <ClosingSection caseData={caseData} />
+          <ClosingSection />
         </main>
-        <Footer variant="paper" />
+        <Footer variant="paper-flat" />
       </div>
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />

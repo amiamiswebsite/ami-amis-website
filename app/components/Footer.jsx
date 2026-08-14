@@ -70,7 +70,12 @@ function SocialIcon({ type }) {
 
 export default function Footer({ variant = "dark" }) {
   const currentYear = new Date().getFullYear();
-  const footerClassName = variant === "paper" ? "site-footer site-footer--paper" : "site-footer";
+  const footerClassName =
+    variant === "paper-flat"
+      ? "site-footer site-footer--paper site-footer--paper-flat"
+      : variant === "paper"
+        ? "site-footer site-footer--paper"
+        : "site-footer";
 
   return (
     <footer className={footerClassName} id="contact">

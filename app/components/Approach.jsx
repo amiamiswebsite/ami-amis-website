@@ -48,9 +48,40 @@ const steps = [
   },
 ];
 
+const homeTwoSteps = [
+  {
+    ...steps[0],
+    text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Hij gaat na welk probleem jullie ondervinden, en geeft aan waarmee wij jullie kunnen helpen!",
+  },
+  {
+    ...steps[1],
+    title: "Sparren met onze creative(s)",
+    text: "Daarna zet Brent een meeting op met de juiste creatieve compadre(s) voor jullie merk. Nu begint de fun. Samen denken we na over marketingstrategie. Wil je daarin volledig ontzorgd worden? No worries. We got you!",
+  },
+  {
+    ...steps[2],
+    title: "Een geniaal masterplan",
+    text: "Tijd om al die goeie ideeën concreet te maken. Onze creatieve compadres zetten de puntjes op de i, onze producers nemen over en leiden de voorbereiding in goede banen.",
+  },
+  {
+    ...steps[3],
+    title: "Lights. Camera. Action!",
+    text: "Eèèn action. Ons in-house team brengt het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne.",
+  },
+  {
+    ...steps[4],
+    text: "Opleveren die handel! Pak de popcorn want het eindproduct is klaar. En wij verzekeren jullie: da’s fire 🔥",
+  },
+  {
+    ...steps[5],
+    text: "Na afloop koppelt ons kapoentje Brent nog eens terug. Samen kijken we naar de resultaten van de samenwerking en evalueren wat de volgende keer NOG beter kan. Dat is wat Amis doen, toch?",
+  },
+];
+
 const personalWord = "persoonlijke".split("");
 
-export default function Approach() {
+export default function Approach({ variant = "default" }) {
+  const displayedSteps = variant === "home2" ? homeTwoSteps : steps;
   const trackRef = useRef(null);
   const scrollFrameRef = useRef(0);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -108,7 +139,7 @@ export default function Approach() {
   };
 
   const canGoBack = activeStepIndex > 0;
-  const canGoForward = activeStepIndex < steps.length - 1;
+  const canGoForward = activeStepIndex < displayedSteps.length - 1;
 
   useEffect(() => {
     const resetCarousel = () => {
@@ -151,7 +182,7 @@ export default function Approach() {
         </div>
         <div className="approach__carousel-shell">
           <div className="approach__grid" onScroll={handleCarouselScroll} ref={trackRef}>
-            {steps.map((step, index) => (
+            {displayedSteps.map((step, index) => (
               <article
                 className={`approach-card ${step.className}${activeStepIndex === index ? " is-active" : ""}`}
                 key={step.title}
@@ -183,7 +214,7 @@ export default function Approach() {
               <span aria-hidden="true">‹</span>
             </button>
             <div className="approach__mobile-dots">
-              {steps.map((step, index) => (
+              {displayedSteps.map((step, index) => (
                 <button
                   aria-label={`Ga naar stap ${index + 1}: ${step.title}`}
                   className={activeStepIndex === index ? "is-active" : ""}

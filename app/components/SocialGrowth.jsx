@@ -32,6 +32,28 @@ const socialBadges = [
   },
 ];
 
+const homeTwoTags = [
+  ["Marketing", "red"],
+  ["video", "yellow"],
+  ["videografie", "blue"],
+  ["montage", "orange"],
+  ["copywriting", "sky"],
+  ["campagnes", "cream"],
+  ["social media content", "red"],
+  ["grafisch design", "yellow"],
+  ["webdesign", "blue"],
+  ["fotografie", "orange"],
+  ["animatie", "sky"],
+  ["short form content", "cream"],
+  ["audio design", "red"],
+  ["grading", "blue"],
+  ["productie", "orange"],
+  ["VFX", "sky"],
+  ["reclamespot", "cream"],
+  ["screenwriting", "red"],
+  ["….", "yellow"],
+];
+
 function formatStatValue(stat, value) {
   const decimals = stat.decimals || 0;
   const fixed = decimals ? value.toFixed(decimals) : String(Math.round(value));
@@ -72,7 +94,8 @@ function BadgeIcon({ icon }) {
   );
 }
 
-export default function SocialGrowth() {
+export default function SocialGrowth({ variant = "default" }) {
+  const isHomeTwo = variant === "home2";
   const sectionRef = useRef(null);
   const textRef = useRef(null);
   const statsRef = useRef(null);
@@ -283,11 +306,9 @@ export default function SocialGrowth() {
           <span>door strategie en actie.</span>
         </h2>
         <p ref={textRef}>
-          Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet
-          alleen met sterke content, maar ook met de strategie erachter. We
-          denken mee over wat past bij jouw merk, jouw verhaal en jouw doelgroep.
-          Wij bekijken het grote plaatje en vertalen dat naar een campagne met
-          sterke content die juist wordt ingezet.
+          {isHomeTwo
+            ? "Hoe pakken we dat aan? Simpel: we gaan in gesprek, denken na over je strategie en leggen uit wat er wél en vooral niet werkt op social media. We jagen niet alleen blind achter elke trend of virale hit aan. (ook al sluiten we dat zeker niet uit ;)) Maar daar bouw je geen sterk merk op. Wij focussen op wat blijft: een herkenbare stijl, een helder verhaal en consistente content."
+            : "Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet alleen met sterke content, maar ook met de strategie erachter. We denken mee over wat past bij jouw merk, jouw verhaal en jouw doelgroep. Wij bekijken het grote plaatje en vertalen dat naar een campagne met sterke content die juist wordt ingezet."}
         </p>
       </div>
       <div className="phone-scene">
@@ -350,6 +371,13 @@ export default function SocialGrowth() {
           );
         })}
       </div>
+      {isHomeTwo ? (
+        <div className="social-growth__tags tag-cloud" aria-label="Diensten">
+          {homeTwoTags.map(([tag, color]) => (
+            <span className={`tag tag--${color}`} key={tag}>{tag}</span>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

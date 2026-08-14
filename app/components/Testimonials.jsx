@@ -23,9 +23,21 @@ const testimonials = [
   },
 ];
 
+const visitAntwerpenTestimonial = {
+  client: "Visit Antwerpen",
+  href: "/ons-werk/visit-antwerpen/",
+  image: "/work/visit-antwerpen-thumb-portrait.jpg",
+  imageAlt: "Visit Antwerpen projectbeeld",
+  quote: "Ami Amis levert hoogwaardige video’s met mooie, kwaliteitsvolle beelden. De samenwerking verloopt steeds proactief en elke productie wordt benaderd met een aanstekelijk enthousiasme en veel inzet.",
+  tone: "visit-antwerpen",
+};
+
 const friendsWord = "vrienden".split("");
 
-export default function Testimonials() {
+export default function Testimonials({ variant = "default" }) {
+  const displayedTestimonials = variant === "home2"
+    ? [...testimonials, visitAntwerpenTestimonial]
+    : testimonials;
   const railRef = useRef(null);
   const animationFrameRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -76,11 +88,11 @@ export default function Testimonials() {
   };
 
   const showPrevious = () => {
-    scrollToSlide((activeIndex - 1 + testimonials.length) % testimonials.length);
+    scrollToSlide((activeIndex - 1 + displayedTestimonials.length) % displayedTestimonials.length);
   };
 
   const showNext = () => {
-    scrollToSlide((activeIndex + 1) % testimonials.length);
+    scrollToSlide((activeIndex + 1) % displayedTestimonials.length);
   };
 
   useEffect(() => {
@@ -99,7 +111,7 @@ export default function Testimonials() {
         return;
       }
 
-      scrollToSlide((activeIndex + 1) % testimonials.length);
+      scrollToSlide((activeIndex + 1) % displayedTestimonials.length);
     }, 6500);
 
     return () => window.clearInterval(autoplay);
@@ -134,7 +146,7 @@ export default function Testimonials() {
 
         <div className="friends-testimonials__viewport">
           <div className="friends-testimonials__rail" onScroll={handleScroll} ref={railRef} role="list">
-            {testimonials.map((item, index) => (
+            {displayedTestimonials.map((item, index) => (
               <article
                 className={`friend-testimonial friend-testimonial--${item.tone}`}
                 data-testimonial-slide={index}
@@ -179,7 +191,7 @@ export default function Testimonials() {
         </div>
 
         <div className="friends-testimonials__dots" aria-label="Testimonials kiezen">
-          {testimonials.map((item, index) => (
+          {displayedTestimonials.map((item, index) => (
             <button
               aria-current={activeIndex === index ? "true" : undefined}
               aria-label={`Toon testimonial van ${item.client}`}

@@ -80,8 +80,45 @@
   text-shadow: 0.055em 0.055em 0 rgba(0, 97, 252, 0.2);
 }
 
-.heroAccent {
-  display: inline;
+.heroPrefix {
+  display: block;
+}
+
+.heroRotator {
+  position: relative;
+  display: grid;
+  width: 100%;
+  margin-top: 0.26em;
+  overflow: hidden;
+  clip-path: inset(0);
+  isolation: isolate;
+  font-size: 0.5em;
+  line-height: 0.92;
+  white-space: nowrap;
+}
+
+.heroRotatorSizer,
+.heroTerm {
+  grid-area: 1 / 1;
+  display: block;
+  max-width: 100%;
+}
+
+.heroRotatorSizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.heroTerm {
+  will-change: transform, opacity;
+}
+
+.heroTermContent {
+  animation: heroTermContent 6.4s infinite;
+}
+
+.heroTermSolution {
+  color: var(--red);
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 700;
@@ -89,6 +126,57 @@
   text-decoration-color: var(--yellow);
   text-decoration-thickness: 0.12em;
   text-underline-offset: 0.08em;
+  animation: heroTermSolution 6.4s infinite;
+}
+
+@keyframes heroTermContent {
+  0%,
+  37% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  45%,
+  87% {
+    opacity: 0;
+    transform: translateY(-112%);
+  }
+
+  87.01% {
+    opacity: 0;
+    transform: translateY(112%);
+  }
+
+  95%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroTermSolution {
+  0%,
+  37% {
+    opacity: 0;
+    transform: translateY(112%);
+  }
+
+  45%,
+  87% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateY(-112%);
+  }
+}
+
+.heroTermContent,
+.heroTermSolution {
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .heroCopy p {
@@ -1824,6 +1912,21 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .heroTermContent,
+  .heroTermSolution {
+    animation: none;
+  }
+
+  .heroTermContent {
+    opacity: 0;
+    transform: none;
+  }
+
+  .heroTermSolution {
+    opacity: 1;
+    transform: none;
+  }
+
   .problemStack,
   .brentPlaceholder,
   .expectationCard,

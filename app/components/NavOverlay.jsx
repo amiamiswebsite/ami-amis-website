@@ -4,10 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { assetPath } from "../../src/lib/assetPath";
 
-function homeHash(hash, activePage) {
-  return activePage === "home" ? hash : `${assetPath("/")}${hash}`;
-}
-
 function pageFromPathname(pathname, fallbackPage) {
   if (pathname?.includes("/diensten")) {
     return "services";
@@ -23,6 +19,10 @@ function pageFromPathname(pathname, fallbackPage) {
 
   if (pathname?.includes("/work")) {
     return "work";
+  }
+
+  if (pathname?.includes("/home-2")) {
+    return "home2";
   }
 
   return fallbackPage;
@@ -45,6 +45,10 @@ function activeKeyFromLocation(pathname, hash, fallbackPage) {
     return "work";
   }
 
+  if (pathname?.includes("/home-2")) {
+    return "home2";
+  }
+
   if (hash === "#werk") {
     return "work";
   }
@@ -53,18 +57,27 @@ function activeKeyFromLocation(pathname, hash, fallbackPage) {
     return "services";
   }
 
-  return fallbackPage === "team" ? "team" : "home";
+  if (fallbackPage === "team") {
+    return "team";
+  }
+
+  return fallbackPage === "home2" ? "home2" : "home";
 }
 
 function getItems(activePage, activeKey) {
   return [
     {
       label: "Welkom",
-      href: homeHash("#intro", activePage),
+      href: activePage === "home" ? "#intro" : `${assetPath("/")}#intro`,
       active: activeKey === "home",
     },
     {
-      label: "Ami-team",
+      label: "Home 2",
+      href: activePage === "home2" ? "#intro" : `${assetPath("/home-2/")}#intro`,
+      active: activeKey === "home2",
+    },
+    {
+      label: "over Ami Amis",
       href: activePage === "team" ? "#team-intro" : assetPath("/team/"),
       active: activeKey === "team",
     },

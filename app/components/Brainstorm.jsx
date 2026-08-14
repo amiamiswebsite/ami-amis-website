@@ -4,7 +4,7 @@ import { assetPath } from "../../src/lib/assetPath";
 const windLines = Array.from({ length: 7 }, (_, index) => index + 1);
 const paperFlakes = Array.from({ length: 6 }, (_, index) => index + 1);
 
-export default function Brainstorm() {
+export default function Brainstorm({ ctaLabel = "Klik dan hier" }) {
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -352,7 +352,7 @@ export default function Brainstorm() {
         </div>
       </div>
       <a className="button button--red brainstorm__button" href={assetPath("/contact/")}>
-        Klik dan hier
+        {ctaLabel}
       </a>
     </section>
   );

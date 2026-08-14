@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
@@ -91,10 +91,10 @@ function getMailHref(intent) {
   return `mailto:${mail}?subject=${encodeURIComponent(subject)}`;
 }
 
-function ContactForm({ intent, isHighlighted }) {
+function ContactForm({ intent }) {
   return (
     <form
-      className={`contact-minimal__form contact-form-card ${isHighlighted ? "is-highlighted" : ""}`}
+      className="contact-minimal__form contact-form-card"
       id="contact-form"
       action={getMailHref(intent)}
       method="post"
@@ -136,56 +136,14 @@ function ContactForm({ intent, isHighlighted }) {
 
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [formHighlighted, setFormHighlighted] = useState(false);
   const [serviceIntent, setServiceIntent] = useState(null);
-  const highlightTimer = useRef(null);
-  const focusTimer = useRef(null);
 
   useEffect(() => {
     const intentFromSearch = readServiceIntentFromSearch(window.location.search);
     const intentFromStorage = intentFromSearch ? null : readStoredServiceIntent();
 
     setServiceIntent(intentFromSearch || intentFromStorage);
-
-    return () => {
-      window.clearTimeout(highlightTimer.current);
-      window.clearTimeout(focusTimer.current);
-    };
   }, []);
-
-  const guideToForm = () => {
-    const form = document.getElementById("contact-form");
-    const firstField = document.getElementById("contact-name");
-
-    if (!form || !firstField) {
-      return;
-    }
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const formRect = form.getBoundingClientRect();
-    const formIsVisible = formRect.top >= 0 && formRect.bottom <= window.innerHeight;
-
-    if (!formIsVisible) {
-      form.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: window.innerWidth < 768 ? "start" : "center",
-      });
-    }
-
-    setFormHighlighted(true);
-    window.clearTimeout(highlightTimer.current);
-    highlightTimer.current = window.setTimeout(() => {
-      setFormHighlighted(false);
-    }, 1500);
-
-    window.clearTimeout(focusTimer.current);
-    focusTimer.current = window.setTimeout(
-      () => {
-        firstField.focus({ preventScroll: true });
-      },
-      formIsVisible || prefersReducedMotion ? 0 : 450
-    );
-  };
 
   return (
     <>
@@ -201,29 +159,27 @@ export default function ContactPage() {
                     <span>Goesting in een</span>
                     <span>samenwerking?</span>
                   </h1>
-                  <div className="contact-choice" aria-label="Samenwerking kiezen">
-                    <button
-                      className="button button--red contact-choice__button"
-                      type="button"
-                      aria-label="Ga naar het contactformulier"
-                      onClick={guideToForm}
+                  <div className="contact-booking">
+                    <p>
+                      Heb je een vraag? Ben je benieuwd naar onze producties of andere diensten?
+                      Of wil je gewoon kennismaken? Boek snel een date in Brent zijn agenda!
+                    </p>
+                    <a
+                      className="button contact-booking__button"
+                      href="https://calendly.com/brent-amiamis/30min"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      Ja
-                    </button>
-                    <button
-                      className="button contact-choice__button contact-choice__button--no"
-                      type="button"
-                      aria-label="Toch naar het contactformulier"
-                      onClick={guideToForm}
-                    >
-                      <span className="contact-choice__default">Nee</span>
-                      <span className="contact-choice__hover" aria-hidden="true">Ja</span>
-                    </button>
+                      <span>Agenda Brent</span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm5.5 9h6m-3-3 3 3-3 3" />
+                      </svg>
+                    </a>
                   </div>
                   <ContactInfoList />
                 </div>
 
-                <ContactForm intent={serviceIntent} isHighlighted={formHighlighted} />
+                <ContactForm intent={serviceIntent} />
               </div>
             </div>
           </section>
