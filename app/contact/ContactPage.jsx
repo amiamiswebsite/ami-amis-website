@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
+import { useEffect, useRef, useState } from "react";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import BrandIcon from "../components/ui/BrandIcon";
+import Icon from "../components/ui/Icon";
 import { assetPath } from "../../src/lib/assetPath";
 import {
   readServiceIntentFromSearch,
@@ -12,6 +13,7 @@ import {
 
 const mail = "brent@amiamis.be";
 const mailSubject = "Contact via Ami Amis";
+const contactEndpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || "";
 
 const contactItems = [
   {
@@ -26,37 +28,32 @@ const contactItems = [
     href: "tel:+32472657595",
     icon: "phone",
   },
-  {
-    label: "Adres",
-    value: "Meir 78 - Stadsfeestzaal, 2000 Antwerpen",
-    href: "https://www.google.com/maps/search/?api=1&query=Meir+78+Stadsfeestzaal+2000+Antwerpen",
-    icon: "location",
-  },
 ];
 
-function ContactIcon({ type }) {
-  if (type === "phone") {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M6.3 2.2c.7-.3 1.5-.1 2 .5l2.1 3c.5.7.4 1.6-.2 2.2l-1.1 1c.8 1.7 1.9 3.1 3.2 4.4 1.3 1.3 2.8 2.4 4.5 3.1l1-1.1c.6-.6 1.5-.7 2.2-.2l3 2.1c.6.4.8 1.2.5 1.9l-.8 2c-.3.8-1.1 1.3-2 1.2-4.8-.5-9.2-2.7-12.7-6.2C4.5 12.6 2.3 8.2 1.8 3.4c-.1-.9.4-1.7 1.2-2l2.3-.9Z" />
-      </svg>
-    );
-  }
+const practicalItems = [
+  { label: "Kantooruren", value: "ma - vr 9u-18u" },
+  { label: "BTW", value: "BE0786.290.512" },
+];
 
-  if (type === "location") {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24">
-        <path d="M12 1.8A7.2 7.2 0 0 0 4.8 9c0 5.4 7.2 12.4 7.2 12.4S19.2 14.4 19.2 9A7.2 7.2 0 0 0 12 1.8Zm0 9.7A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
-      </svg>
-    );
-  }
+const locations = [
+  "Hoofdzetel: IJzerenpoortkaai 3, 2000 Antwerpen",
+  "Kantoor: Meir 78 - Stadsfeestzaal, 2000 Antwerpen",
+];
 
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M3.5 5h17A2.5 2.5 0 0 1 23 7.5v9A2.5 2.5 0 0 1 20.5 19h-17A2.5 2.5 0 0 1 1 16.5v-9A2.5 2.5 0 0 1 3.5 5Zm.2 3 8.3 5.4L20.3 8v-.3H3.7V8Zm16.6 2.4-7.5 4.9a1.5 1.5 0 0 1-1.6 0l-7.5-4.9v6.1h16.6v-6.1Z" />
-    </svg>
-  );
-}
+const socialLinks = [
+  { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/amiamismedia/" },
+  {
+    label: "LinkedIn",
+    icon: "linkedin",
+    href: "https://www.linkedin.com/company/ami-amis-malle/",
+  },
+  { label: "Facebook", icon: "facebook", href: "https://www.facebook.com/AmiAmisMedia" },
+];
+
+const legalLinks = [
+  { label: "Privacy policy", href: "https://www.amiamis.com/privacy-policy" },
+  { label: "Algemene voorwaarden", href: "https://www.amiamis.com/algemene-voorwaarden" },
+];
 
 function ContactInfoList() {
   return (
@@ -64,7 +61,7 @@ function ContactInfoList() {
       {contactItems.map((item) => (
         <li className="contact-info-item" key={item.label}>
           <span className="contact-info-item__icon">
-            <ContactIcon type={item.icon} />
+            <Icon name={item.icon} />
           </span>
           <span className="contact-info-item__text">
             <span>{item.label}</span>
@@ -83,15 +80,57 @@ function ContactInfoList() {
   );
 }
 
-function getMailHref(intent) {
+function getMailHref(intent, fields) {
   const subject = intent?.problemTitle
     ? `${mailSubject} — ${intent.problemTitle}`
     : mailSubject;
+  const body = fields
+    ? [
+        `Naam: ${fields.naam}`,
+        `E-mail: ${fields.email}`,
+        `Telefoon: ${fields.telefoon || "Niet opgegeven"}`,
+        "",
+        fields.bericht,
+      ].join("\n")
+    : "";
 
-  return `mailto:${mail}?subject=${encodeURIComponent(subject)}`;
+  return `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 function ContactForm({ intent }) {
+  const formRef = useRef(null);
+  const [state, setState] = useState("idle");
+  const [fallbackHref, setFallbackHref] = useState(getMailHref(intent));
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const fields = Object.fromEntries(new FormData(form).entries());
+    const mailtoHref = getMailHref(intent, fields);
+
+    setFallbackHref(mailtoHref);
+
+    if (!contactEndpoint) {
+      setState("fallback");
+      window.location.assign(mailtoHref);
+      return;
+    }
+
+    setState("submitting");
+    try {
+      const response = await fetch(contactEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+      if (!response.ok) throw new Error(`Contact endpoint returned ${response.status}`);
+      formRef.current?.reset();
+      setState("success");
+    } catch {
+      setState("error");
+    }
+  };
+
   return (
     <form
       className="contact-minimal__form contact-form-card"
@@ -99,6 +138,8 @@ function ContactForm({ intent }) {
       action={getMailHref(intent)}
       method="post"
       encType="text/plain"
+      onSubmit={handleSubmit}
+      ref={formRef}
     >
       {intent ? (
         <>
@@ -127,9 +168,26 @@ function ContactForm({ intent }) {
         Bericht
         <textarea id="contact-message" name="bericht" rows={5} required />
       </label>
-      <button className="contact-minimal__submit button button--red" type="submit">
+      <button
+        className="contact-minimal__submit button button--red"
+        disabled={state === "submitting"}
+        type="submit"
+      >
         Verstuur
       </button>
+      <div aria-live="polite" className="contact-form-card__status aa-visually-hidden">
+        {state === "success" ? "Bedankt. Je bericht is verstuurd." : null}
+        {state === "fallback" ? (
+          <span>
+            Je e-mailapp wordt geopend. Werkt dat niet? <a href={fallbackHref}>Open de mail opnieuw.</a>
+          </span>
+        ) : null}
+      </div>
+      {state === "error" ? (
+        <p className="contact-form-card__error aa-visually-hidden" role="alert">
+          Versturen lukte niet. <a href={fallbackHref}>Stuur je bericht via e-mail.</a>
+        </p>
+      ) : null}
     </form>
   );
 }
@@ -137,54 +195,268 @@ function ContactForm({ intent }) {
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [serviceIntent, setServiceIntent] = useState(null);
+  const [contactChoice, setContactChoice] = useState(null);
+  const [noConverted, setNoConverted] = useState(false);
+  const bookingButtonRef = useRef(null);
+  const contactFormFocusRef = useRef(null);
+  const contactPhotoRef = useRef(null);
 
   useEffect(() => {
     const intentFromSearch = readServiceIntentFromSearch(window.location.search);
     const intentFromStorage = intentFromSearch ? null : readStoredServiceIntent();
+    const frame = window.requestAnimationFrame(() => {
+      setServiceIntent(intentFromSearch || intentFromStorage);
+    });
 
-    setServiceIntent(intentFromSearch || intentFromStorage);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const highlightContactActions = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    [bookingButtonRef.current, contactFormFocusRef.current].forEach((element, index) => {
+      if (!element || typeof element.animate !== "function") return;
+
+      element.animate(
+        [
+          {
+            boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)",
+            transform: "translate3d(0, 0, 0)",
+          },
+          {
+            boxShadow: "0 0 0 6px rgba(242, 69, 34, 0.14)",
+            transform: "translate3d(0, -2px, 0)",
+            offset: 0.42,
+          },
+          {
+            boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)",
+            transform: "translate3d(0, 0, 0)",
+          },
+        ],
+        {
+          delay: index * 90,
+          duration: 820,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        },
+      );
+    });
+  };
+
+  const handleContactChoice = (choice) => {
+    if (choice === "no") setNoConverted(true);
+    setContactChoice(choice);
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(highlightContactActions);
+    });
+  };
+
+  useEffect(() => {
+    const stage = contactPhotoRef.current;
+    const finePointer = window.matchMedia("(pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!stage || !finePointer.matches || reducedMotion.matches) return undefined;
+
+    const target = { x: 0, y: 0 };
+    const current = { x: 0, y: 0 };
+    let frame = 0;
+    let running = false;
+
+    const render = () => {
+      current.x += (target.x - current.x) * 0.1;
+      current.y += (target.y - current.y) * 0.1;
+
+      stage.style.setProperty("--contact-pointer-x", current.x.toFixed(4));
+      stage.style.setProperty("--contact-pointer-y", current.y.toFixed(4));
+
+      if (Math.abs(target.x - current.x) > 0.002 || Math.abs(target.y - current.y) > 0.002) {
+        frame = window.requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
+    };
+
+    const requestRender = () => {
+      if (running) return;
+      running = true;
+      frame = window.requestAnimationFrame(render);
+    };
+
+    const handlePointerMove = (event) => {
+      const bounds = stage.getBoundingClientRect();
+      target.x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1));
+      target.y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1));
+      requestRender();
+    };
+
+    const handlePointerLeave = () => {
+      target.x = 0;
+      target.y = 0;
+      requestRender();
+    };
+
+    stage.addEventListener("pointermove", handlePointerMove, { passive: true });
+    stage.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      stage.removeEventListener("pointermove", handlePointerMove);
+      stage.removeEventListener("pointerleave", handlePointerLeave);
+      stage.style.removeProperty("--contact-pointer-x");
+      stage.style.removeProperty("--contact-pointer-y");
+    };
   }, []);
 
   return (
     <>
       <div className={`site-shell contact-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className="contact-page" id="contact-main">
-          <section className="contact-minimal contact-redesign" aria-labelledby="contact-title">
+          <section
+            className="contact-minimal contact-redesign contact-editorial"
+            aria-labelledby="contact-title"
+          >
             <a className="hero__logo contact-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
 
             <div className="contact-minimal__inner">
-              <div className="contact-minimal__content">
-                <div className="contact-minimal__composition contact-intro">
-                  <h1 className="contact-intro__title" id="contact-title">
-                    <span>Goesting in een</span>
-                    <span>samenwerking?</span>
-                  </h1>
-                  <div className="contact-booking">
-                    <p>
-                      Heb je een vraag? Ben je benieuwd naar onze producties of andere diensten?
-                      Of wil je gewoon kennismaken? Boek snel een date in Brent zijn agenda!
+              <div className="contact-minimal__content contact-editorial__frame contact-overview">
+                <div className="contact-overview__intro-column">
+                  <div className="contact-minimal__composition contact-intro contact-editorial__lead contact-overview__lead">
+                    <h1 className="contact-intro__title" id="contact-title">
+                      <span>Goesting in een</span>
+                      <span>samenwerking?</span>
+                    </h1>
+                    <div className="contact-choice" aria-label="Goesting in een samenwerking?">
+                      <button
+                        aria-pressed={contactChoice === "yes"}
+                        className="contact-choice__button"
+                        onClick={() => handleContactChoice("yes")}
+                        type="button"
+                      >
+                        Ja
+                      </button>
+                      <button
+                        aria-pressed={contactChoice === "no"}
+                        className="contact-choice__button"
+                        onClick={() => handleContactChoice("no")}
+                        type="button"
+                      >
+                        {noConverted ? "Ja" : "Nee"}
+                      </button>
+                    </div>
+                    <p className="aa-visually-hidden" aria-live="polite">
+                      {contactChoice ? "Top. Kies Agenda Brent of vul het formulier in." : null}
                     </p>
-                    <a
-                      className="button contact-booking__button"
-                      href="https://calendly.com/brent-amiamis/30min"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <span>Agenda Brent</span>
-                      <svg aria-hidden="true" viewBox="0 0 24 24">
-                        <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4h13a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm5.5 9h6m-3-3 3 3-3 3" />
-                      </svg>
-                    </a>
+                    <div className="contact-booking">
+                      <p>
+                        Heb je een vraag? Ben je benieuwd naar onze producties of andere diensten?
+                        Of wil je gewoon kennismaken? Boek snel een date in Brent zijn agenda!
+                      </p>
+                      <a
+                        className="button contact-booking__button"
+                        href="https://calendly.com/brent-amiamis/30min"
+                        rel="noopener noreferrer"
+                        ref={bookingButtonRef}
+                        target="_blank"
+                      >
+                        <span>Agenda Brent</span>
+                        <Icon name="calendar" />
+                      </a>
+                    </div>
                   </div>
-                  <ContactInfoList />
+
+                  <section className="contact-overview__card contact-overview__contact" aria-labelledby="contact-details-title">
+                    <h2 id="contact-details-title">Contact</h2>
+                    <ContactInfoList />
+                    <dl className="contact-overview__practical">
+                      {practicalItems.map((item) => (
+                        <div key={item.label}>
+                          <dt>{item.label}</dt>
+                          <dd>{item.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </section>
                 </div>
 
-                <ContactForm intent={serviceIntent} />
+                <figure
+                  className={`contact-intro__photo contact-editorial__photo contact-overview__photo ${
+                    contactChoice ? "is-affirmed" : ""
+                  }`}
+                  ref={contactPhotoRef}
+                >
+                  <img
+                    aria-hidden={Boolean(contactChoice)}
+                    className="contact-overview__photo-image contact-overview__photo-image--default"
+                    src={assetPath("/assets/contact-phones-portrait.jpg")}
+                    alt="Contactpersoon omringd door oude en nieuwe telefoons"
+                    width="1024"
+                    height="1536"
+                    decoding="async"
+                    fetchPriority="high"
+                  />
+                  <img
+                    aria-hidden={!contactChoice}
+                    className="contact-overview__photo-image contact-overview__photo-image--answer"
+                    src={assetPath("/assets/contact-phones-answer.jpg")}
+                    alt="Brent met verschillende telefoons in zijn armen"
+                    width="1024"
+                    height="1536"
+                    decoding="async"
+                  />
+                </figure>
+
+                <div className="contact-overview__form-column">
+                  <div className="contact-overview__form-focus" ref={contactFormFocusRef}>
+                    <ContactForm intent={serviceIntent} />
+                  </div>
+
+                  <div className="contact-overview__secondary">
+                    <section className="contact-overview__card contact-overview__social" aria-labelledby="contact-social-title">
+                      <h2 id="contact-social-title">Volg ons</h2>
+                      <div className="contact-overview__socials">
+                        {socialLinks.map((link) => (
+                          <a
+                            aria-label={link.label}
+                            className="contact-overview__social-link"
+                            href={link.href}
+                            key={link.label}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            <BrandIcon className={`brand-icon brand-icon--${link.icon}`} name={link.icon} />
+                            <span>{link.label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </section>
+
+                    <section className="contact-overview__card contact-overview__locations" aria-labelledby="contact-locations-title">
+                      <h2 id="contact-locations-title">Locaties</h2>
+                      <div className="contact-overview__location-list">
+                        {locations.map((location) => (
+                          <p key={location}>
+                            <Icon name="location" />
+                            <span>{location}</span>
+                          </p>
+                        ))}
+                      </div>
+                      <div className="contact-overview__legal" aria-label="Juridische informatie">
+                        <div className="contact-overview__legal-links">
+                          {legalLinks.map((link) => (
+                            <a href={link.href} key={link.label} rel="noreferrer" target="_blank">
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                        <p>&copy; 2026 Ami Amis</p>
+                      </div>
+                    </section>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
         </main>
-        <Footer variant="paper" />
       </div>
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />

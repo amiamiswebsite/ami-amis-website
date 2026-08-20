@@ -13,7 +13,6 @@ const projectLabels = {
 const highlightedProjects = highlightedProjectSlugs
   .map((slug) => workCases.find((item) => item.slug === slug))
   .filter(Boolean);
-const titleWaveLetters = "In de kijker".split("");
 const centerProjectIndex = 1;
 const loopGroupCount = 7;
 const centerLoopGroup = Math.floor(loopGroupCount / 2);
@@ -34,6 +33,7 @@ export default function Projects() {
   const initialProjectIndex = highlightedProjects[centerProjectIndex] ? centerProjectIndex : 0;
   const initialLoopIndex = centerLoopGroup * highlightedProjects.length + initialProjectIndex;
   const carouselRef = useRef(null);
+  const sectionRef = useRef(null);
   const [activeProjectIndex, setActiveProjectIndex] = useState(initialProjectIndex);
   const [activeLoopIndex, setActiveLoopIndex] = useState(initialLoopIndex);
 
@@ -186,6 +186,130 @@ export default function Projects() {
     };
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) {
+      return undefined;
+    }
+
+    const finePointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!finePointerQuery.matches || reduceMotionQuery.matches) {
+      return undefined;
+    }
+
+    const cards = Array.from(
+      section.querySelectorAll('.projects__carousel-card:not([data-clone="true"])')
+    );
+    const depth = [
+      { x: 7, y: 4, rotateX: 0.55, rotateY: 0.8 },
+      { x: 12, y: 6.5, rotateX: 0.85, rotateY: 1.2 },
+      { x: 8.5, y: 4.8, rotateX: 0.65, rotateY: 0.95 },
+    ];
+    const pointer = {
+      active: false,
+      currentX: 0,
+      currentY: 0,
+      targetX: 0,
+      targetY: 0,
+    };
+    let animationFrame = 0;
+
+    const renderPointer = () => {
+      pointer.currentX += (pointer.targetX - pointer.currentX) * 0.13;
+      pointer.currentY += (pointer.targetY - pointer.currentY) * 0.13;
+
+      cards.forEach((card, index) => {
+        const strength = depth[index] ?? depth[1];
+        card.style.setProperty("--project-parallax-x", `${(pointer.currentX * strength.x).toFixed(3)}px`);
+        card.style.setProperty("--project-parallax-y", `${(pointer.currentY * strength.y).toFixed(3)}px`);
+        card.style.setProperty(
+          "--project-parallax-rotate-x",
+          `${(-pointer.currentY * strength.rotateX).toFixed(3)}deg`
+        );
+        card.style.setProperty(
+          "--project-parallax-rotate-y",
+          `${(pointer.currentX * strength.rotateY).toFixed(3)}deg`
+        );
+        card.style.setProperty(
+          "--project-image-x",
+          `${(-pointer.currentX * strength.x * 0.38).toFixed(3)}px`
+        );
+        card.style.setProperty(
+          "--project-image-y",
+          `${(-pointer.currentY * strength.y * 0.38).toFixed(3)}px`
+        );
+        card.style.setProperty(
+          "--project-print-x",
+          `${(pointer.currentX * 2.2).toFixed(3)}px`
+        );
+        card.style.setProperty(
+          "--project-print-y",
+          `${(pointer.currentY * 1.7).toFixed(3)}px`
+        );
+      });
+
+      const settled =
+        Math.abs(pointer.targetX - pointer.currentX) < 0.002 &&
+        Math.abs(pointer.targetY - pointer.currentY) < 0.002;
+
+      if (settled) {
+        pointer.currentX = pointer.targetX;
+        pointer.currentY = pointer.targetY;
+        animationFrame = 0;
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(renderPointer);
+    };
+
+    const queueRender = () => {
+      if (!animationFrame) {
+        animationFrame = window.requestAnimationFrame(renderPointer);
+      }
+    };
+
+    const handlePointerMove = (event) => {
+      if (event.pointerType !== "mouse") {
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      pointer.active = true;
+      pointer.targetX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
+      pointer.targetY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
+      queueRender();
+    };
+
+    const handlePointerLeave = () => {
+      pointer.active = false;
+      pointer.targetX = 0;
+      pointer.targetY = 0;
+      queueRender();
+    };
+
+    section.addEventListener("pointermove", handlePointerMove, { passive: true });
+    section.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      section.removeEventListener("pointermove", handlePointerMove);
+      section.removeEventListener("pointerleave", handlePointerLeave);
+      cards.forEach((card) => {
+        card.style.removeProperty("--project-parallax-x");
+        card.style.removeProperty("--project-parallax-y");
+        card.style.removeProperty("--project-parallax-rotate-x");
+        card.style.removeProperty("--project-parallax-rotate-y");
+        card.style.removeProperty("--project-image-x");
+        card.style.removeProperty("--project-image-y");
+        card.style.removeProperty("--project-print-x");
+        card.style.removeProperty("--project-print-y");
+      });
+    };
+  }, []);
+
   const scrollToProject = (projectIndex) => {
     const carousel = carouselRef.current;
     const target = carousel?.querySelector(
@@ -204,14 +328,11 @@ export default function Projects() {
   };
 
   return (
-    <section className="projects projects--carousel" id="werk">
-      <h2 aria-label="In de kijker">
-        <span className="approach-wave" aria-hidden="true">
-          {titleWaveLetters.map((letter, index) => (
-            <span className="approach-wave__char" key={`${letter}-${index}`}>
-              {letter === " " ? "\u00a0" : letter}
-            </span>
-          ))}
+    <section className="projects projects--carousel" id="werk" ref={sectionRef}>
+      <h2 className="projects__title-lockup" aria-label="In de kijker">
+        <span className="projects__title-line" aria-hidden="true">
+          <span className="projects__title-riso" aria-hidden="true" />
+          <span className="projects__title-text">In de kijker</span>
         </span>
       </h2>
 
@@ -230,16 +351,36 @@ export default function Projects() {
                 key={`project-${loopIndex}-${item.slug}`}
                 onDragStart={(event) => event.preventDefault()}
                 style={{ "--tilt": `${projectIndex % 2 === 0 ? "-1.2deg" : "1.2deg"}` }}
-                aria-label={`Bekijk case ${projectLabels[item.slug] ?? item.client}`}
+                aria-hidden={isClone ? "true" : undefined}
+                aria-label={isClone ? undefined : `Bekijk case ${projectLabels[item.slug] ?? item.client}`}
+                tabIndex={isClone ? -1 : undefined}
               >
-                <img
-                  src={assetPath(item.image)}
-                  alt={`${projectLabels[item.slug] ?? item.client} projectbeeld`}
-                  loading="lazy"
-                  decoding="async"
-                  draggable={false}
-                />
-                <span className="projects__card-title">{projectLabels[item.slug] ?? item.client}</span>
+                <span className="projects__print-mat">
+                  <span className="projects__print-media">
+                    <img
+                      src={assetPath(item.image)}
+                      alt={`${projectLabels[item.slug] ?? item.client} projectbeeld`}
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                    <span className="projects__print-ink" aria-hidden="true" />
+                    <span className="projects__print-halftone" aria-hidden="true" />
+                    <span className="projects__print-registration" aria-hidden="true" />
+                  </span>
+                </span>
+                <span className="projects__card-caption">
+                  <img
+                    className="projects__card-starburst"
+                    src={assetPath("/assets/project-card-starburst.svg")}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                  />
+                  <span className="projects__card-title">
+                    {projectLabels[item.slug] ?? item.client}
+                  </span>
+                </span>
               </a>
             ))}
           </div>

@@ -55,7 +55,20 @@ export default function HomeExperience({ variant = "default" }) {
   return (
     <>
       <div className={`site-shell ${isHomeTwo ? "home-two" : ""} ${menuOpen ? "menu-open" : ""}`}>
-        <Hero variant={variant} />
+        {isHomeTwo ? (
+          <>
+            <div className="home-two__backup-hero" hidden>
+              <Hero
+                variant={variant}
+                scrollTargetId="home-two-proposal-header"
+                semanticHeading={false}
+              />
+            </div>
+            <Hero id="home-two-proposal-header" proposal="new" />
+          </>
+        ) : (
+          <Hero id="hero-new-proposal" proposal="new" />
+        )}
         <main className="collage-flow">
           <Intro variant={variant} />
           <Projects />
@@ -69,7 +82,7 @@ export default function HomeExperience({ variant = "default" }) {
       </div>
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
       <NavOverlay
-        activePage={isHomeTwo ? "home2" : "home"}
+        activePage="home"
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
       />

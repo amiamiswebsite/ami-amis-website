@@ -8,42 +8,42 @@ const steps = [
     number: "1",
     title: "Hallo, met Brent?",
     text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Geen stijve intake, gewoon een vlot constructief gesprek.",
-    src: assetPath("/assets/approach-01-call.png"),
+    src: assetPath("/assets/approach-01-call.webp"),
     className: "approach-card--coffee",
   },
   {
     number: "2",
     title: "Sparren met Creative",
     text: "Daarna zet Brent een meeting op met de juiste creatieve compadre voor jullie merk. Dan begint de fun. In een brainstorm leggen we onze ideeën op tafel en luisteren we naar die van jullie.",
-    src: assetPath("/assets/approach-02-spar.png"),
+    src: assetPath("/assets/approach-02-spar.webp"),
     className: "approach-card--spar",
   },
   {
     number: "3",
     title: "Ons masterplan",
     text: "Tijd om het concreet te maken. Onze creatieve compadres zetten de puntjes op de i, onze producers nemen over en leiden de voorbereiding in goede banen.",
-    src: assetPath("/assets/approach-03-plan.png"),
+    src: assetPath("/assets/approach-03-plan.webp"),
     className: "approach-card--plan",
   },
   {
     number: "4",
     title: "Lights. Camera. Action",
     text: "Time for action. Ons in-house team brengt het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne.",
-    src: assetPath("/assets/approach-03-camera.png"),
+    src: assetPath("/assets/approach-03-camera.webp"),
     className: "approach-card--action",
   },
   {
     number: "5",
     title: "Watch Party",
     text: "Na afloop kijken we wat werkte, wat beter kan en hoe we jullie verder kunnen helpen groeien.",
-    src: assetPath("/assets/approach-04-watch.png"),
+    src: assetPath("/assets/approach-04-watch.webp"),
     className: "approach-card--watch",
   },
   {
     number: "6",
     title: "Hallo, Brent nog eens!",
     text: "Na afloop koppelt uw kapoentje Brent nog eens terug. Dat is wat Amis doen, toch?",
-    src: assetPath("/assets/approach-05-callback.png"),
+    src: assetPath("/assets/approach-05-callback.webp"),
     className: "approach-card--callback",
   },
 ];
@@ -181,7 +181,13 @@ export default function Approach({ variant = "default" }) {
           </h2>
         </div>
         <div className="approach__carousel-shell">
-          <div className="approach__grid" onScroll={handleCarouselScroll} ref={trackRef}>
+          <div
+            aria-label="Aanpakstappen, horizontaal scrollbaar"
+            className="approach__grid"
+            onScroll={handleCarouselScroll}
+            ref={trackRef}
+            tabIndex={0}
+          >
             {displayedSteps.map((step, index) => (
               <article
                 className={`approach-card ${step.className}${activeStepIndex === index ? " is-active" : ""}`}
@@ -189,7 +195,14 @@ export default function Approach({ variant = "default" }) {
                 aria-current={activeStepIndex === index ? "step" : undefined}
               >
                 {step.src ? (
-                  <img src={step.src} alt="" />
+                  <img
+                    src={step.src}
+                    alt=""
+                    width="640"
+                    height="640"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : step.visual ? (
                   <span className={`approach-placeholder approach-placeholder--${step.visual}`} aria-hidden="true" />
                 ) : (

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ami Amis — Release Qa"
+  short_description: "Repo-skill voor release qa op de Ami Amis-website."
+  brand_color: "#FF3500"
+policy:
+  allow_implicit_invocation: true

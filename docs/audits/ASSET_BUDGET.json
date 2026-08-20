@@ -1,0 +1,196 @@
+{
+  "source": "public/",
+  "totalFiles": 242,
+  "maxTotalBytes": 520889885,
+  "maxSingleFileBytes": 71244906,
+  "extensions": {
+    ".jpg": {
+      "count": 60,
+      "bytes": 21290454
+    },
+    ".json": {
+      "count": 1,
+      "bytes": 11766
+    },
+    ".mp4": {
+      "count": 16,
+      "bytes": 408881595
+    },
+    ".otf": {
+      "count": 3,
+      "bytes": 220740
+    },
+    ".png": {
+      "count": 108,
+      "bytes": 74018342
+    },
+    ".svg": {
+      "count": 10,
+      "bytes": 92668
+    },
+    ".ttf": {
+      "count": 3,
+      "bytes": 139760
+    },
+    ".webm": {
+      "count": 2,
+      "bytes": 1337042
+    },
+    ".webp": {
+      "count": 39,
+      "bytes": 14897518
+    }
+  },
+  "largest": [
+    {
+      "path": "videos/cases/visit-antwerpen/zuidvideo.mp4",
+      "bytes": 71244906,
+      "extension": ".mp4"
+    },
+    {
+      "path": "assets/amiamis_teamvideo2026.mp4",
+      "bytes": 59926296,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/visit-antwerpen/frituurtour.mp4",
+      "bytes": 41267537,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/x-oats/x-oats-yinne-gymness.mp4",
+      "bytes": 38127092,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/visit-antwerpen/fashion-local.mp4",
+      "bytes": 35511846,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/visit-antwerpen/cultuurtour.mp4",
+      "bytes": 34855668,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/x-oats/x-oats-politie-ondervraging.mp4",
+      "bytes": 32564224,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/visit-antwerpen/koffietour.mp4",
+      "bytes": 32058315,
+      "extension": ".mp4"
+    },
+    {
+      "path": "assets/visit-antwerpen-fashionlocal-loop.mp4",
+      "bytes": 25307483,
+      "extension": ".mp4"
+    },
+    {
+      "path": "assets/creative-growth-reel.mp4",
+      "bytes": 20312422,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/humgy/DMx-wVHhOTA.mp4",
+      "bytes": 4859474,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/brent-skydive-scroll.mp4",
+      "bytes": 3849718,
+      "extension": ".mp4"
+    },
+    {
+      "path": "assets/dianavisitthumb-loop.mp4",
+      "bytes": 3832531,
+      "extension": ".mp4"
+    },
+    {
+      "path": "team/movieshots/luca.png",
+      "bytes": 3641273,
+      "extension": ".png"
+    },
+    {
+      "path": "assets/concrete-texture.png",
+      "bytes": 3227334,
+      "extension": ".png"
+    },
+    {
+      "path": "assets/social-phone-luca.png",
+      "bytes": 2669372,
+      "extension": ".png"
+    },
+    {
+      "path": "assets/ami-amis-team-group.webp",
+      "bytes": 2510258,
+      "extension": ".webp"
+    },
+    {
+      "path": "team/movieshots/mathieu.png",
+      "bytes": 2501348,
+      "extension": ".png"
+    },
+    {
+      "path": "videos/cases/humgy/DXHhKvGEXw8.mp4",
+      "bytes": 2379393,
+      "extension": ".mp4"
+    },
+    {
+      "path": "team/movieshots/tim.png",
+      "bytes": 2332733,
+      "extension": ".png"
+    },
+    {
+      "path": "team/movieshots/stig.png",
+      "bytes": 2251678,
+      "extension": ".png"
+    },
+    {
+      "path": "assets/creative-compadre-sunglasses.png",
+      "bytes": 2053665,
+      "extension": ".png"
+    },
+    {
+      "path": "assets/creative-compadre-duo.png",
+      "bytes": 2031543,
+      "extension": ".png"
+    },
+    {
+      "path": "team/movieshots/brent.png",
+      "bytes": 2007518,
+      "extension": ".png"
+    },
+    {
+      "path": "team/mugshot-03.png",
+      "bytes": 2004603,
+      "extension": ".png"
+    },
+    {
+      "path": "team/movieshots/diana.png",
+      "bytes": 1981956,
+      "extension": ".png"
+    },
+    {
+      "path": "team/mugshot-01.png",
+      "bytes": 1961955,
+      "extension": ".png"
+    },
+    {
+      "path": "team/mugshot-11.png",
+      "bytes": 1924513,
+      "extension": ".png"
+    },
+    {
+      "path": "images/cases/visit-antwerpen/visit-antwerpen-clapper-exact.png",
+      "bytes": 1920418,
+      "extension": ".png"
+    },
+    {
+      "path": "team/mugshot-09.png",
+      "bytes": 1890896,
+      "extension": ".png"
+    }
+  ]
+}

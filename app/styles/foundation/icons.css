@@ -1,0 +1,25 @@
+@layer aa-foundation {
+  .aa-icon {
+    display: block;
+    inline-size: var(--aa-icon-inline-size, var(--aa-icon-size-md));
+    block-size: var(--aa-icon-inline-size, var(--aa-icon-size-md));
+    flex: 0 0 auto;
+    stroke: currentcolor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .aa-icon-button {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--aa-control-min-target);
+    block-size: var(--aa-control-min-target);
+    padding: 0;
+    border: var(--aa-control-border-width) solid currentcolor;
+    border-radius: var(--aa-radius-pill);
+    color: var(--aa-color-text-primary);
+    background: transparent;
+    cursor: pointer;
+  }
+}

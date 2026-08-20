@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { assetPath } from "../../src/lib/assetPath";
 
 function pageFromPathname(pathname, fallbackPage) {
+  if (pathname?.includes("/assets")) {
+    return "assets";
+  }
+
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -19,16 +23,16 @@ function pageFromPathname(pathname, fallbackPage) {
 
   if (pathname?.includes("/work")) {
     return "work";
-  }
-
-  if (pathname?.includes("/home-2")) {
-    return "home2";
   }
 
   return fallbackPage;
 }
 
 function activeKeyFromLocation(pathname, hash, fallbackPage) {
+  if (pathname?.includes("/assets")) {
+    return "assets";
+  }
+
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -43,10 +47,6 @@ function activeKeyFromLocation(pathname, hash, fallbackPage) {
 
   if (pathname?.includes("/work")) {
     return "work";
-  }
-
-  if (pathname?.includes("/home-2")) {
-    return "home2";
   }
 
   if (hash === "#werk") {
@@ -61,23 +61,18 @@ function activeKeyFromLocation(pathname, hash, fallbackPage) {
     return "team";
   }
 
-  return fallbackPage === "home2" ? "home2" : "home";
+  return "home";
 }
 
 function getItems(activePage, activeKey) {
   return [
     {
       label: "Welkom",
-      href: activePage === "home" ? "#intro" : `${assetPath("/")}#intro`,
+      href: assetPath("/"),
       active: activeKey === "home",
     },
     {
-      label: "Home 2",
-      href: activePage === "home2" ? "#intro" : `${assetPath("/home-2/")}#intro`,
-      active: activeKey === "home2",
-    },
-    {
-      label: "over Ami Amis",
+      label: "Over Ami Amis",
       href: activePage === "team" ? "#team-intro" : assetPath("/team/"),
       active: activeKey === "team",
     },
@@ -92,6 +87,11 @@ function getItems(activePage, activeKey) {
       active: activeKey === "services",
     },
     {
+      label: "Assets",
+      href: assetPath("/assets/"),
+      active: activeKey === "assets",
+    },
+    {
       label: "Contact",
       href: assetPath("/contact/"),
       active: activeKey === "contact",
@@ -102,6 +102,8 @@ function getItems(activePage, activeKey) {
 
 export default function NavOverlay({ open, onClose, activePage = "home" }) {
   const pathname = usePathname();
+  const overlayRef = useRef(null);
+  const restoreFocusRef = useRef(null);
   const [hash, setHash] = useState("");
   const currentPage = useMemo(
     () => pageFromPathname(pathname, activePage),
@@ -133,19 +135,73 @@ export default function NavOverlay({ open, onClose, activePage = "home" }) {
       return undefined;
     }
 
-    const closeOnEscape = (event) => {
+    const overlay = overlayRef.current;
+    const siteShell = document.querySelector(".site-shell");
+    const focusableSelector = [
+      "a[href]",
+      "button:not([disabled])",
+      "input:not([disabled])",
+      "select:not([disabled])",
+      "textarea:not([disabled])",
+      "[tabindex]:not([tabindex='-1'])",
+    ].join(",");
+
+    restoreFocusRef.current = document.activeElement;
+    if (siteShell) siteShell.inert = true;
+    window.requestAnimationFrame(() => overlay?.querySelector(focusableSelector)?.focus());
+
+    const handleKeydown = (event) => {
       if (event.key === "Escape") {
+        event.preventDefault();
         onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !overlay) return;
+      const focusable = [...overlay.querySelectorAll(focusableSelector)].filter(
+        (element) => !element.hasAttribute("hidden") && element.getClientRects().length > 0,
+      );
+      if (!focusable.length) {
+        event.preventDefault();
+        overlay.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
-    window.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("keydown", handleKeydown);
 
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      if (siteShell) siteShell.inert = false;
+      restoreFocusRef.current?.focus?.();
+    };
   }, [onClose, open]);
 
   return (
-    <div className={`nav-overlay ${open ? "is-open mobile-menu-overlay" : ""}`} aria-hidden={!open}>
+    <div
+      aria-hidden={!open}
+      aria-label="Hoofdnavigatie"
+      aria-modal={open ? "true" : undefined}
+      className={`nav-overlay ${open ? "is-open mobile-menu-overlay" : ""}`}
+      id="site-navigation"
+      inert={!open ? true : undefined}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      ref={overlayRef}
+      role={open ? "dialog" : undefined}
+      tabIndex={-1}
+    >
       <nav className="nav-overlay__menu" aria-label="Hoofdnavigatie">
         {items.map((item) => (
           <a

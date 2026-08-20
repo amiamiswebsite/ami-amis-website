@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import ServicePhysicsTags from "./ServicePhysicsTags";
 
 const VISIT_ANTWERPEN_CASE_URL = "/ons-werk/visit-antwerpen/";
 
@@ -30,28 +31,6 @@ const socialBadges = [
     className: "social-icon--follow",
     type: "follow",
   },
-];
-
-const homeTwoTags = [
-  ["Marketing", "red"],
-  ["video", "yellow"],
-  ["videografie", "blue"],
-  ["montage", "orange"],
-  ["copywriting", "sky"],
-  ["campagnes", "cream"],
-  ["social media content", "red"],
-  ["grafisch design", "yellow"],
-  ["webdesign", "blue"],
-  ["fotografie", "orange"],
-  ["animatie", "sky"],
-  ["short form content", "cream"],
-  ["audio design", "red"],
-  ["grading", "blue"],
-  ["productie", "orange"],
-  ["VFX", "sky"],
-  ["reclamespot", "cream"],
-  ["screenwriting", "red"],
-  ["….", "yellow"],
 ];
 
 function formatStatValue(stat, value) {
@@ -100,8 +79,9 @@ export default function SocialGrowth({ variant = "default" }) {
   const textRef = useRef(null);
   const statsRef = useRef(null);
   const videoRef = useRef(null);
+  const visualRef = useRef(null);
   const hasAnimated = useRef(false);
-  const [counts, setCounts] = useState(strategyStats.map(() => 0));
+  const [counts, setCounts] = useState(strategyStats.map((stat) => stat.target));
   const [isCounting, setIsCounting] = useState(false);
 
   useEffect(() => {
@@ -185,6 +165,7 @@ export default function SocialGrowth({ variant = "default" }) {
       }
 
       hasAnimated.current = true;
+      setCounts(strategyStats.map(() => 0));
       setIsCounting(true);
       const start = performance.now();
 
@@ -250,51 +231,105 @@ export default function SocialGrowth({ variant = "default" }) {
       return undefined;
     }
 
-    let stopped = false;
-    let retryTimer = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let isNearViewport = false;
 
-    const playVideo = () => {
-      if (stopped || !videoNode.paused) {
+    const syncPlayback = () => {
+      if (reduceMotion.matches || document.hidden || !isNearViewport) {
+        videoNode.pause();
         return;
       }
 
       videoNode.muted = true;
       videoNode.playsInline = true;
 
-      const playPromise = videoNode.play();
-
-      if (playPromise?.catch) {
-        playPromise.catch(() => {
-          if (!stopped) {
-            retryTimer = window.setTimeout(playVideo, 650);
-          }
-        });
-      }
+      videoNode.play()?.catch(() => undefined);
     };
 
-    const handleVisibility = () => {
-      if (!document.hidden) {
-        playVideo();
-      }
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isNearViewport = entry.isIntersecting;
+        syncPlayback();
+      },
+      { rootMargin: "240px 0px", threshold: 0.05 }
+    );
 
-    videoNode.load();
-    playVideo();
-
-    window.addEventListener("pageshow", playVideo);
-    document.addEventListener("visibilitychange", handleVisibility);
-    window.addEventListener("scroll", playVideo, { passive: true });
-    window.addEventListener("touchstart", playVideo, { passive: true });
-    window.addEventListener("pointerdown", playVideo, { passive: true });
+    observer.observe(videoNode);
+    document.addEventListener("visibilitychange", syncPlayback);
+    reduceMotion.addEventListener("change", syncPlayback);
 
     return () => {
-      stopped = true;
-      window.clearTimeout(retryTimer);
-      window.removeEventListener("pageshow", playVideo);
-      document.removeEventListener("visibilitychange", handleVisibility);
-      window.removeEventListener("scroll", playVideo);
-      window.removeEventListener("touchstart", playVideo);
-      window.removeEventListener("pointerdown", playVideo);
+      observer.disconnect();
+      videoNode.pause();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      reduceMotion.removeEventListener("change", syncPlayback);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sectionNode = sectionRef.current;
+    const visualNode = visualRef.current;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(pointer: fine)");
+
+    if (!sectionNode || !visualNode || reduceMotion.matches || !finePointer.matches) {
+      return undefined;
+    }
+
+    let frame = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.105;
+      currentY += (targetY - currentY) * 0.105;
+
+      visualNode.style.setProperty("--social-visual-x", `${(currentX * 11).toFixed(2)}px`);
+      visualNode.style.setProperty("--social-visual-y", `${(currentY * 8).toFixed(2)}px`);
+      visualNode.style.setProperty("--social-visual-rx", `${(currentY * -2.1).toFixed(2)}deg`);
+      visualNode.style.setProperty("--social-visual-ry", `${(currentX * 3.2).toFixed(2)}deg`);
+
+      if (Math.abs(targetX - currentX) > 0.002 || Math.abs(targetY - currentY) > 0.002) {
+        frame = window.requestAnimationFrame(render);
+      } else {
+        frame = 0;
+      }
+    };
+
+    const requestRender = () => {
+      if (!frame) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const handlePointerMove = (event) => {
+      const rect = sectionNode.getBoundingClientRect();
+      targetX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
+      targetY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
+      requestRender();
+    };
+
+    const resetPointer = () => {
+      targetX = 0;
+      targetY = 0;
+      requestRender();
+    };
+
+    sectionNode.addEventListener("pointermove", handlePointerMove, { passive: true });
+    sectionNode.addEventListener("pointerleave", resetPointer);
+
+    return () => {
+      sectionNode.removeEventListener("pointermove", handlePointerMove);
+      sectionNode.removeEventListener("pointerleave", resetPointer);
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+      visualNode.style.removeProperty("--social-visual-x");
+      visualNode.style.removeProperty("--social-visual-y");
+      visualNode.style.removeProperty("--social-visual-rx");
+      visualNode.style.removeProperty("--social-visual-ry");
     };
   }, []);
 
@@ -311,7 +346,7 @@ export default function SocialGrowth({ variant = "default" }) {
             : "Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet alleen met sterke content, maar ook met de strategie erachter. We denken mee over wat past bij jouw merk, jouw verhaal en jouw doelgroep. Wij bekijken het grote plaatje en vertalen dat naar een campagne met sterke content die juist wordt ingezet."}
         </p>
       </div>
-      <div className="phone-scene">
+      <div className="phone-scene" ref={visualRef}>
         <a
           aria-label="Bekijk de case van Visit Antwerpen"
           className="phone-frame"
@@ -319,11 +354,11 @@ export default function SocialGrowth({ variant = "default" }) {
         >
           <video
             aria-hidden="true"
-            autoPlay
             loop
             muted
             playsInline
-            preload="auto"
+            poster={assetPath("/work/visit-antwerpen-thumb-portrait.jpg")}
+            preload="none"
             ref={videoRef}
           >
             <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
@@ -363,21 +398,18 @@ export default function SocialGrowth({ variant = "default" }) {
             className="stat"
             key={stat.label}
           >
-            <strong>
+            <strong aria-hidden="true">
               {formatStatValue(stat, counts[index])}
             </strong>
+            <span className="aa-visually-hidden">
+              {formatStatValue(stat, stat.target)}
+            </span>
             <span>{stat.label}</span>
           </div>
           );
         })}
       </div>
-      {isHomeTwo ? (
-        <div className="social-growth__tags tag-cloud" aria-label="Diensten">
-          {homeTwoTags.map(([tag, color]) => (
-            <span className={`tag tag--${color}`} key={tag}>{tag}</span>
-          ))}
-        </div>
-      ) : null}
+      {isHomeTwo ? <ServicePhysicsTags /> : null}
     </section>
   );
 }

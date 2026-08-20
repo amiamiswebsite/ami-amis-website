@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import TarzanServicesCasePage from "./TarzanServicesCasePage";
-import VisitAntwerpenCasePage from "./VisitAntwerpenCasePage";
 import { assetPath } from "../../src/lib/assetPath";
 
 const pillarKeys = [
@@ -799,17 +798,14 @@ function CaseMediaHub({ data }) {
   const [activeKey, setActiveKey] = useState(sections[0]?.key || sections[0]?.title || "");
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  useEffect(() => {
-    if (sections.length && !sections.some((section) => (section.key || section.title) === activeKey)) {
-      setActiveKey(sections[0].key || sections[0].title);
-    }
-  }, [activeKey, sections]);
-
   if (!sections.length) {
     return null;
   }
 
-  const activeSection = sections.find((section) => (section.key || section.title) === activeKey) || sections[0];
+  const resolvedActiveKey = sections.some((section) => (section.key || section.title) === activeKey)
+    ? activeKey
+    : sections[0].key || sections[0].title;
+  const activeSection = sections.find((section) => (section.key || section.title) === resolvedActiveKey) || sections[0];
   const imageItems = activeSection.items.filter((item) => (item.type || (item.id ? "vimeo" : "image")) === "image" && (item.src || item.poster));
   const layoutClass =
     activeSection.items.length === 1
@@ -842,7 +838,7 @@ function CaseMediaHub({ data }) {
         <div className="case-media-hub__tabs" aria-label="Media filters">
           {sections.map((section) => {
             const key = section.key || section.title;
-            const active = key === activeKey;
+            const active = key === resolvedActiveKey;
 
             return (
               <button aria-pressed={active} key={key} onClick={() => setActiveKey(key)} type="button">
@@ -1014,11 +1010,7 @@ function CaseVideoModal({ data, open, onClose }) {
 }
 
 export default function CasePageTemplate({ caseData }) {
-  if (caseData.template === "tarzan-services-case") {
-    return <TarzanServicesCasePage caseData={caseData} />;
-  }
-
-  return <VisitAntwerpenCasePage caseData={caseData} />;
+  return <TarzanServicesCasePage caseData={caseData} />;
 }
 
 function GenericCasePage({ caseData }) {

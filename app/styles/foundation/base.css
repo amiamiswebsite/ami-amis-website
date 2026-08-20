@@ -1,0 +1,74 @@
+@layer aa-foundation {
+  .aa-visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .aa-skip-link {
+    position: fixed;
+    z-index: 10000;
+    inset-block-start: var(--aa-space-3);
+    inset-inline-start: var(--aa-space-3);
+    min-block-size: var(--aa-control-min-target);
+    padding: var(--aa-space-3) var(--aa-space-4);
+    border: var(--aa-control-border-width) solid var(--aa-color-border-strong);
+    border-radius: var(--aa-radius-sm);
+    color: var(--aa-color-text-primary);
+    background: var(--aa-color-background-canvas);
+    font-family: var(--aa-font-family-sans);
+    font-weight: var(--aa-font-weight-bold);
+    transform: translateY(calc(-100% - var(--aa-space-5)));
+    transition: transform var(--aa-motion-feedback-duration) ease;
+  }
+
+  .aa-skip-link:focus-visible {
+    outline: var(--aa-focus-ring-width) solid var(--aa-focus-ring-color);
+    outline-offset: var(--aa-focus-ring-offset);
+    transform: translateY(0);
+  }
+
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: var(--aa-focus-ring-width) solid var(--aa-focus-ring-color);
+    outline-offset: var(--aa-focus-ring-offset);
+  }
+
+  [tabindex="0"]:focus-visible {
+    outline: var(--aa-focus-ring-width) solid var(--aa-focus-ring-color);
+    outline-offset: var(--aa-focus-ring-offset);
+  }
+
+  .contact-form-card__status,
+  .contact-form-card__error {
+    margin-block: var(--aa-space-3) 0;
+    font-family: var(--aa-font-family-sans);
+    font-weight: var(--aa-font-weight-bold);
+  }
+
+  .contact-form-card__status:empty {
+    display: none;
+  }
+
+  .contact-form-card__error {
+    color: var(--aa-color-text-primary);
+    border-inline-start: var(--aa-border-strong) solid var(--aa-color-background-brand);
+    padding-inline-start: var(--aa-space-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html,
+    html:focus-within {
+      scroll-behavior: auto !important;
+    }
+
+    .aa-skip-link {
+      transition: none;
+    }
+  }
+}

@@ -15,7 +15,7 @@ const testimonials = [
   },
   {
     client: "Tarzan & Jane",
-    href: "/ons-werk/tarzan-en-jane/",
+    href: "/work/tarzan-en-jane/",
     image: "/work/tarzan-en-jane-thumb.webp",
     imageAlt: "Tarzan & Jane projectbeeld",
     quote: "Ami Amis vertaalde onze energie naar content die meteen juist voelde. Speels, helder en helemaal on-brand.",
@@ -41,7 +41,8 @@ export default function Testimonials({ variant = "default" }) {
   const railRef = useRef(null);
   const animationFrameRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isUserPaused, setIsUserPaused] = useState(false);
+  const [isInteractionPaused, setIsInteractionPaused] = useState(false);
 
   const updateActiveSlide = () => {
     const rail = railRef.current;
@@ -96,7 +97,7 @@ export default function Testimonials({ variant = "default" }) {
   };
 
   useEffect(() => {
-    if (isPaused || typeof window === "undefined") {
+    if (isUserPaused || isInteractionPaused || typeof window === "undefined") {
       return undefined;
     }
 
@@ -115,7 +116,7 @@ export default function Testimonials({ variant = "default" }) {
     }, 6500);
 
     return () => window.clearInterval(autoplay);
-  }, [activeIndex, isPaused]);
+  }, [activeIndex, displayedTestimonials.length, isInteractionPaused, isUserPaused]);
 
   return (
     <section
@@ -124,12 +125,12 @@ export default function Testimonials({ variant = "default" }) {
       aria-labelledby="friends-testimonials-title"
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
-          setIsPaused(false);
+          setIsInteractionPaused(false);
         }
       }}
-      onFocus={() => setIsPaused(true)}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsInteractionPaused(true)}
+      onMouseEnter={() => setIsInteractionPaused(true)}
+      onMouseLeave={() => setIsInteractionPaused(false)}
     >
       <div className="friends-testimonials__inner">
         <h2 id="friends-testimonials-title" aria-label="Wat vrienden zeggen.">
@@ -145,14 +146,13 @@ export default function Testimonials({ variant = "default" }) {
         </h2>
 
         <div className="friends-testimonials__viewport">
-          <div className="friends-testimonials__rail" onScroll={handleScroll} ref={railRef} role="list">
+          <div className="friends-testimonials__rail" onScroll={handleScroll} ref={railRef}>
             {displayedTestimonials.map((item, index) => (
               <article
                 className={`friend-testimonial friend-testimonial--${item.tone}`}
                 data-testimonial-slide={index}
                 id={`testimonial-${item.tone}`}
                 key={item.client}
-                role="listitem"
               >
                 <a aria-label={`Bekijk de case van ${item.client}`} className="friend-testimonial__link" href={assetPath(item.href)}>
                   <figure className="friend-testimonial__photo" aria-hidden="true">
@@ -202,6 +202,17 @@ export default function Testimonials({ variant = "default" }) {
             />
           ))}
         </div>
+
+        <button
+          aria-label={isUserPaused ? "Start automatisch wisselen" : "Pauzeer automatisch wisselen"}
+          aria-pressed={isUserPaused}
+          className="friends-testimonials__autoplay"
+          onClick={() => setIsUserPaused((paused) => !paused)}
+          title={isUserPaused ? "Automatisch wisselen starten" : "Automatisch wisselen pauzeren"}
+          type="button"
+        >
+          <span aria-hidden="true" className="friends-testimonials__autoplay-icon" />
+        </button>
 
         <a className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")}>
           VRIENDEN WORDEN?

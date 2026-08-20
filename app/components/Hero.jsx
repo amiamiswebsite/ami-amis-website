@@ -1,9 +1,44 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 
-export default function Hero({ variant = "default" }) {
+function CtaArrowIcon() {
+  return (
+    <svg className="hero__cta-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M7 17 17 7" />
+      <path d="M9 7h8v8" />
+    </svg>
+  );
+}
+
+const welcomeStickerWords = [
+  { text: "DURVEN", start: 0, mobileWidth: "min(70vw, 16.8rem)", svgWidth: 500 },
+  { text: "SPRINGEN", start: 6, mobileWidth: "min(83.5vw, 20.2rem)", svgWidth: 610 },
+];
+
+export default function Hero({
+  variant = "default",
+  proposal = "single",
+  id,
+  scrollTargetId = "intro",
+  semanticHeading = true,
+}) {
   const isHomeTwo = variant === "home2";
   const heroRef = useRef(null);
+  const [reduceHeroMotion, setReduceHeroMotion] = useState(false);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncQueries = () => {
+      setReduceHeroMotion(motionQuery.matches);
+    };
+
+    syncQueries();
+    motionQuery.addEventListener("change", syncQueries);
+
+    return () => {
+      motionQuery.removeEventListener("change", syncQueries);
+    };
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -55,6 +90,35 @@ export default function Hero({ variant = "default" }) {
       }
 
       return { x: 92, y: 64, roll: 3.6, lerp: pointer.active ? 0.18 : 0.1 };
+    };
+    const getWelcomePointerStrength = () => {
+      const width = window.innerWidth;
+
+      if (width <= 480) {
+        return { x: 10, y: 7, roll: 0.35 };
+      }
+
+      if (width <= 767) {
+        return { x: 15, y: 10, roll: 0.55 };
+      }
+
+      if (width <= 900) {
+        return { x: 22, y: 14, roll: 0.9 };
+      }
+
+      if (width <= 1000) {
+        return { x: 30, y: 18, roll: 1.1 };
+      }
+
+      if (width <= 1279) {
+        return { x: 38, y: 22, roll: 1.35 };
+      }
+
+      if (width <= 1680) {
+        return { x: 42, y: 24, roll: 1.45 };
+      }
+
+      return { x: 50, y: 28, roll: 1.6 };
     };
 
     const updateScroll = () => {
@@ -129,6 +193,10 @@ export default function Hero({ variant = "default" }) {
       hero.style.setProperty("--hero-pointer-x", `${pointer.currentX * strength.x}px`);
       hero.style.setProperty("--hero-pointer-y", `${pointer.currentY * strength.y}px`);
       hero.style.setProperty("--hero-pointer-roll", `${pointer.currentX * strength.roll}deg`);
+      const welcomeStrength = getWelcomePointerStrength();
+      hero.style.setProperty("--welcome-person-pointer-x", `${pointer.currentX * welcomeStrength.x}px`);
+      hero.style.setProperty("--welcome-person-pointer-y", `${pointer.currentY * welcomeStrength.y}px`);
+      hero.style.setProperty("--welcome-person-pointer-roll", `${pointer.currentX * welcomeStrength.roll}deg`);
       hero.style.setProperty("--hero-glow-x", `${pointer.currentX * strength.x * -0.32}px`);
       hero.style.setProperty("--mouse-x", pointer.currentX.toFixed(4));
       hero.style.setProperty("--mouse-y", pointer.currentY.toFixed(4));
@@ -213,7 +281,7 @@ export default function Hero({ variant = "default" }) {
   }, []);
 
   const scrollToIntro = () => {
-    const target = document.getElementById("intro");
+    const target = document.getElementById(scrollTargetId);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     target?.scrollIntoView({
@@ -222,47 +290,243 @@ export default function Hero({ variant = "default" }) {
     });
   };
 
+  const proposalClass = !isHomeTwo && proposal !== "single" ? `hero--proposal-${proposal}` : "";
+
   return (
     <>
-      <section className={`hero ${isHomeTwo ? "hero--home-two" : ""}`} aria-label="Ami Amis hero" ref={heroRef}>
+      <section
+        className={`hero ${isHomeTwo ? "hero--home-two" : ""} ${proposalClass}`}
+        aria-label="Ami Amis hero"
+        id={id}
+        ref={heroRef}
+      >
         <div className="hero__clouds" aria-hidden="true">
-          <img src={`${assetPath("/assets/hero-clouds.png")}?v=20260608`} alt="" />
+          <img
+            src={assetPath("/assets/hero-clouds.webp")}
+            alt=""
+            width="1920"
+            height="710"
+            fetchPriority="high"
+          />
         </div>
         <div className="hero__inner">
           <div className="hero__logo" aria-label="AMI AMIS" role="img" />
-          <h1 className="hero__title" aria-label="Voor merken die durven springen">
-            <span className="hero__line hero__line--top">
-              <span className="hero__word" data-text="Voor">
-                Voor
-              </span>{" "}
-              <span className="hero__word hero__word--merken" data-text="Merken">
-                Merken
-              </span>
-            </span>
-            <span className="hero__line hero__line--script" data-text="die">
-              die
-            </span>{" "}
-            <span className="hero__line hero__line--bottom" data-text="Durven springen">
-              <span>Durven</span>
-              <span>Springen</span>
-            </span>
-            <span className="hero__mobile-lockup" aria-hidden="true">
-              <span className="hero__mobile-line hero__mobile-line--top">VOOR MERKEN</span>
-              <span className="hero__mobile-line hero__mobile-line--middle">
-                <span>DIE</span>
-                <em>durven</em>
-              </span>
-              <span className="hero__mobile-line hero__mobile-line--bottom">SPRINGEN</span>
-            </span>
-          </h1>
-          {isHomeTwo ? (
-            <p className="hero__agency-label">Video-first content marketing agency in Antwerpen</p>
-          ) : null}
-          <div className="hero__skydiver" aria-hidden="true">
-            <div className="hero__skydiver-drop">
-              <img src={assetPath("/assets/brentskydive.png")} alt="" />
+          {!isHomeTwo ? (
+            <div className="hero__layout">
+              <div className="hero__copy">
+                <p className="hero__agency-label hero__agency-label--paper">
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    className="hero__agency-label-paper"
+                    src={assetPath("/assets/hero-paper-label.webp")}
+                    width="2140"
+                    height="624"
+                  />
+                  <span>Video-first content marketing agency in Antwerpen</span>
+                </p>
+
+                {semanticHeading ? (
+                  <h1 className="sr-only">Voor merken die durven springen</h1>
+                ) : null}
+
+                <p className="welcome-hero__title-fragment welcome-hero__title-fragment--top" aria-hidden="true">
+                  <span>VOOR</span>
+                  <span className="welcome-hero__merken-word">
+                    <span className="welcome-hero__merken-riso" aria-hidden="true" />
+                    <span className="welcome-hero__merken-text">MERKEN</span>
+                  </span>
+                  <span>DIE</span>
+                </p>
+
+                <div className="welcome-hero__media-stage" aria-hidden="true">
+                  <div className="welcome-hero__video-window">
+                    {reduceHeroMotion ? (
+                      <img
+                        className="welcome-hero__video-poster"
+                        src={assetPath("/assets/welcome-hero-clouds-tablet-poster.jpg")}
+                        alt=""
+                        width="1440"
+                        height="810"
+                      />
+                    ) : (
+                      <video
+                        className="welcome-hero__video"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        poster={assetPath("/assets/welcome-hero-clouds-tablet-poster.jpg")}
+                        tabIndex={-1}
+                        disablePictureInPicture
+                        controlsList="nodownload noplaybackrate noremoteplayback"
+                      >
+                        <source src={assetPath("/assets/welcome-hero-clouds-tablet.webm")} type="video/webm" />
+                        <source src={assetPath("/assets/welcome-hero-clouds-tablet.mp4")} type="video/mp4" />
+                      </video>
+                    )}
+                  </div>
+                  <div className="welcome-hero__person-anchor">
+                    <div className="welcome-hero__person-motion">
+                      <img
+                        className="welcome-hero__person"
+                        src={assetPath("/assets/brentskydive.webp")}
+                        alt=""
+                        width="1308"
+                        height="760"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <p className="welcome-hero__title-fragment welcome-hero__title-fragment--bottom" aria-hidden="true">
+                  {welcomeStickerWords.map(({ text, start, mobileWidth, svgWidth }) => (
+                    <span
+                      className="welcome-hero__sticker-word"
+                      data-text={text}
+                      key={text}
+                      style={{ "--welcome-sticker-mobile-width": mobileWidth }}
+                    >
+                      <svg
+                        className="welcome-hero__sticker-svg"
+                        viewBox={`0 0 ${svgWidth} 150`}
+                        aria-hidden="true"
+                        focusable="false"
+                        style={{ "--welcome-wave-delay": `${620 + start * 34}ms` }}
+                        >
+                        <text
+                          className="welcome-hero__sticker-svg-text"
+                          x={svgWidth / 2}
+                          y="119"
+                          textAnchor="middle"
+                          stroke="#fabb00"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="34"
+                          fill="#fffae5"
+                          paintOrder="stroke fill"
+                        >
+                          {text}
+                        </text>
+                      </svg>
+                      <span className="welcome-hero__sticker-letters" aria-hidden="true">
+                        {[...text].map((letter, index) => (
+                          <span
+                            className="welcome-hero__sticker-char"
+                            key={`${text}-${letter}-${index}`}
+                            style={{ "--welcome-wave-delay": `${620 + (start + index) * 34}ms` }}
+                          >
+                            {letter}
+                          </span>
+                        ))}
+                      </span>
+                    </span>
+                  ))}
+                </p>
+
+                <p className="welcome-hero__descriptor">
+                  <span className="welcome-hero__descriptor-riso" aria-hidden="true" />
+                  <span className="welcome-hero__descriptor-text">
+                    Video-first content marketing agency in Antwerpen
+                  </span>
+                </p>
+
+                <div className="hero__actions" aria-label="Hero acties">
+                  <a className="hero__cta hero__cta--primary" href={assetPath("/contact/")}>
+                    <span>Eens afspreken</span>
+                    <span className="hero__cta-icon" aria-hidden="true">
+                      <CtaArrowIcon />
+                    </span>
+                  </a>
+                  <button
+                    className="welcome-hero__scroll-cue"
+                    type="button"
+                    onClick={scrollToIntro}
+                    aria-label="Scroll naar de volgende sectie"
+                  >
+                    <span className="hero__scroll-cue-animation" aria-hidden="true" />
+                  </button>
+                  <a className="hero__cta hero__cta--secondary" href={assetPath("/work/")}>
+                    <span>Bekijk ons werk</span>
+                    <span className="hero__cta-icon" aria-hidden="true">
+                      <CtaArrowIcon />
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="hero__visual" aria-hidden="true">
+                <div className="hero__skydiver">
+                  <div className="hero__skydiver-drop">
+                    <img src={assetPath("/assets/brentskydive.webp")} alt="" width="1308" height="760" />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              {semanticHeading ? (
+                <h1 className="hero__title" aria-label="Voor merken die durven springen">
+                  <span className="hero__line hero__line--top">
+                    <span className="hero__word" data-text="Voor">
+                      Voor
+                    </span>{" "}
+                    <span className="hero__word hero__word--merken" data-text="Merken">
+                      Merken
+                    </span>
+                  </span>
+                  <span className="hero__line hero__line--script" data-text="die">
+                    die
+                  </span>{" "}
+                  <span className="hero__line hero__line--bottom" data-text="Durven springen">
+                    <span>Durven</span>
+                    <span>Springen</span>
+                  </span>
+                  <span className="hero__mobile-lockup" aria-hidden="true">
+                    <span className="hero__mobile-line hero__mobile-line--top">VOOR MERKEN</span>
+                    <span className="hero__mobile-line hero__mobile-line--middle">
+                      <span>DIE</span>
+                      <em>durven</em>
+                    </span>
+                    <span className="hero__mobile-line hero__mobile-line--bottom">SPRINGEN</span>
+                  </span>
+                </h1>
+              ) : (
+                <div className="hero__title" aria-hidden="true">
+                  <span className="hero__line hero__line--top">
+                    <span className="hero__word" data-text="Voor">
+                      Voor
+                    </span>{" "}
+                    <span className="hero__word hero__word--merken" data-text="Merken">
+                      Merken
+                    </span>
+                  </span>
+                  <span className="hero__line hero__line--script" data-text="die">
+                    die
+                  </span>{" "}
+                  <span className="hero__line hero__line--bottom" data-text="Durven springen">
+                    <span>Durven</span>
+                    <span>Springen</span>
+                  </span>
+                  <span className="hero__mobile-lockup" aria-hidden="true">
+                    <span className="hero__mobile-line hero__mobile-line--top">VOOR MERKEN</span>
+                    <span className="hero__mobile-line hero__mobile-line--middle">
+                      <span>DIE</span>
+                      <em>durven</em>
+                    </span>
+                    <span className="hero__mobile-line hero__mobile-line--bottom">SPRINGEN</span>
+                  </span>
+                </div>
+              )}
+              <p className="hero__agency-label">Video-first content marketing agency in Antwerpen</p>
+              <div className="hero__skydiver" aria-hidden="true">
+                <div className="hero__skydiver-drop">
+                  <img src={assetPath("/assets/brentskydive.webp")} alt="" width="1308" height="760" />
+                </div>
+              </div>
+            </>
+          )}
           <button className="hero__scroll-cue" type="button" onClick={scrollToIntro} aria-label="Scroll verder">
             <span className="hero__scroll-cue-animation" aria-hidden="true" />
           </button>

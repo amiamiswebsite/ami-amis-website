@@ -1,0 +1,21 @@
+.next/
+out/
+node_modules/
+public/
+test-results/
+playwright-report/
+lighthouse-report/
+.lighthouseci/
+
+# Existing UI code is migrated family by family; avoid a noisy wholesale rewrite.
+app/**/*.jsx
+app/**/*.js
+app/**/*.module.css
+app/globals.css
+src/**/*.js
+docs/case-migration-report.md
+docs/portfolio-placeholder-fill-report.md
+pnpm-lock.yaml
+
+# Generated from tokens/*.json.
+app/styles/generated/

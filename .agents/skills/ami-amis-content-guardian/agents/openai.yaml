@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ami Amis — Content Guardian"
+  short_description: "Repo-skill voor content guardian op de Ami Amis-website."
+  brand_color: "#FF3500"
+policy:
+  allow_implicit_invocation: true

@@ -189,73 +189,27 @@ function ServicesHero() {
 }
 
 function ExpectationSection() {
-  const ids = useMemo(
-    () => serviceExpectations.map((_, index) => `verwachting-${index + 1}`),
-    [],
-  );
-  const activeId = useActiveSection(ids);
-  const activeIndex = Math.max(0, ids.indexOf(activeId));
-
   return (
     <section className={styles.expectations} aria-labelledby="expectations-title">
-      <div
-        className={styles.expectationScroller}
-        style={{ minHeight: `${100 + (serviceExpectations.length - 1) * 72}svh` }}
-      >
-        <div className={styles.expectationStage}>
-          <div className={styles.expectationStageInner}>
-            <header className={styles.expectationHeading}>
-              <span className={styles.sectionNumber}>
-                {String(activeIndex + 1).padStart(2, "0")} / {String(serviceExpectations.length).padStart(2, "0")}
+      <div className={styles.expectationsInner}>
+        <header className={styles.expectationHeading}>
+          <span className={styles.sectionNumber}>01</span>
+          <h2 id="expectations-title">Wat kun je verwachten?</h2>
+        </header>
+
+        <ol className={styles.expectationList}>
+          {serviceExpectations.map((item, index) => (
+            <li className={styles.expectationCard} key={item.title}>
+              <span className={styles.expectationNumber}>
+                {String(index + 1).padStart(2, "0")}
               </span>
-              <h2 id="expectations-title">Wat kun je verwachten?</h2>
-            </header>
-
-            <div className={styles.expectationFocus}>
-              <ol className={styles.expectationList}>
-                {serviceExpectations.map((item, index) => {
-                  const cardState =
-                    index === activeIndex
-                      ? styles.isActive
-                      : index < activeIndex
-                        ? styles.isPast
-                        : styles.isNext;
-
-                  return (
-                    <li
-                      aria-current={index === activeIndex ? "step" : undefined}
-                      className={`${styles.expectationCard} ${cardState}`}
-                      key={item.title}
-                    >
-                      <span className={styles.expectationNumber}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <div className={styles.expectationBody}>
-                        <h3>{item.title}</h3>
-                        <p>{item.text}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-
-              <div className={styles.expectationProgress} aria-hidden="true">
-                {serviceExpectations.map((item, index) => (
-                  <span
-                    className={index === activeIndex ? styles.isActive : ""}
-                    key={item.title}
-                  />
-                ))}
+              <div className={styles.expectationBody}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.expectationMarkers} aria-hidden="true">
-          {ids.map((id) => (
-            <span id={id} key={id} />
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
@@ -552,6 +506,7 @@ function FaqSection() {
                 aria-hidden={!isOpen}
                 className={`${styles.faqPanel} ${isOpen ? styles.isOpen : ""}`}
                 id={`faq-panel-${index}`}
+                inert={isOpen ? undefined : true}
               >
                 <div className={styles.faqPanelInner}>
                   {faq.answer.map((paragraph, paragraphIndex) => (
@@ -650,14 +605,18 @@ export default function ServicesPage() {
     <>
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className={styles.servicesPage} ref={pageRef}>
-          <a
-            className={`hero__logo ${styles.logo}`}
-            href={assetPath("/")}
-            aria-label="Ami Amis home"
-          />
-          <ServicesHero />
+          <div className={styles.servicesTop}>
+            <div className={styles.servicesTopPaper}>
+              <a
+                className={`hero__logo ${styles.logo}`}
+                href={assetPath("/")}
+                aria-label="Ami Amis home"
+              />
+              <ServicesHero />
+              <ExpectationSection />
+            </div>
+          </div>
           <div data-services-parallax>
-            <ExpectationSection />
             <ProblemFilesSection reducedMotion={reducedMotion} />
             <Interstitial />
             <ToolsSection />

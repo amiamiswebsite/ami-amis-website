@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
@@ -367,7 +368,10 @@ function ZuidvideoModal({ data, onClose, open }) {
     const previousActiveElement = document.activeElement;
     const dialog = dialogRef.current;
     const video = videoRef.current;
+    const appRoot = document.getElementById("main-content");
+    const previousInert = appRoot?.inert ?? false;
 
+    if (appRoot) appRoot.inert = true;
     closeRef.current?.focus();
     document.body.classList.add("case-modal-open");
 
@@ -406,6 +410,7 @@ function ZuidvideoModal({ data, onClose, open }) {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       document.body.classList.remove("case-modal-open");
+      if (appRoot) appRoot.inert = previousInert;
       video?.pause();
       previousActiveElement?.focus?.();
     };
@@ -415,7 +420,7 @@ function ZuidvideoModal({ data, onClose, open }) {
     return null;
   }
 
-  return (
+  return createPortal(
     <div className="va-pdf-modal" onMouseDown={onClose} role="presentation">
       <section
         aria-label="Zuidvideo"
@@ -435,7 +440,8 @@ function ZuidvideoModal({ data, onClose, open }) {
           <source src={mediaPath(data.src)} type="video/mp4" />
         </video>
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -550,6 +556,7 @@ function VideoGrid({ videos }) {
 
   return (
     <section
+      tabIndex={0}
       className={`va-pdf-video-grid va-pdf-video-grid--count-${normalizedVideos.length} va-pdf-reveal`}
       aria-label="Video's"
     >
@@ -585,7 +592,7 @@ function CampaignImagesGallery({ eyebrow = "Output", images, title = "Campagnebe
         {eyebrow ? <p className="va-pdf-campaign-gallery__eyebrow">{eyebrow}</p> : null}
         <h2 id={headingId}>{title}</h2>
       </div>
-      <div className="va-pdf-campaign-gallery__grid">
+      <div aria-label={`${title}, horizontaal scrollbaar`} className="va-pdf-campaign-gallery__grid" tabIndex={0}>
         {images.map((image, index) => {
           const orientation = image.orientation || "portrait";
 
@@ -650,7 +657,7 @@ function SummaryVariantCard({ block, compact = false }) {
       />
       <div className="x-oats-var-card__heading">
         <span>{block.number}</span>
-        <h3>{block.label}</h3>
+        <h2>{block.label}</h2>
       </div>
       <p>{block.text}</p>
     </article>
@@ -738,32 +745,6 @@ export default function VisitAntwerpenCasePage({ caseData }) {
   const hasTarzanSectionBands = caseData.slug === "tarzan-en-jane";
   const showHeroBeforeStats = caseData.media?.heroPlacement === "before-stats";
   const showVideoGridBeforeStats = caseData.media?.videoGridPlacement === "before-stats";
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const items = Array.from(document.querySelectorAll(".va-pdf-reveal"));
-
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
-    );
-
-    items.forEach((item) => observer.observe(item));
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <>

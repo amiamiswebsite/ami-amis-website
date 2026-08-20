@@ -1,0 +1,122 @@
+{
+  "$description": "Ami Amis semantic tokens. Aliassen naar reference tokens op basis van UI-rol.",
+  "color": {
+    "background": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{palette.paper.500}"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{palette.red.500}"
+      },
+      "accentYellow": {
+        "$type": "color",
+        "$value": "{palette.yellow.500}"
+      },
+      "accentBlue": {
+        "$type": "color",
+        "$value": "{palette.blue.500}"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{palette.paper.500}"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{palette.blue.500}"
+      },
+      "brandStrong": {
+        "$type": "color",
+        "$value": "{palette.red.700}"
+      }
+    },
+    "border": {
+      "strong": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$type": "color",
+        "$value": "{palette.blue.500}"
+      }
+    }
+  },
+  "layout": {
+    "contentMax": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1280,
+        "unit": "px"
+      }
+    },
+    "visualMax": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1440,
+        "unit": "px"
+      }
+    },
+    "pagePaddingMobile": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      }
+    },
+    "pagePaddingTablet": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "pagePaddingDesktop": {
+      "$type": "dimension",
+      "$value": "{space.7}"
+    }
+  },
+  "control": {
+    "minTarget": {
+      "$type": "dimension",
+      "$value": {
+        "value": 44,
+        "unit": "px"
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.lg}"
+    },
+    "borderWidth": {
+      "$type": "dimension",
+      "$value": "{border.strong}"
+    }
+  },
+  "motion": {
+    "feedbackDuration": {
+      "$type": "duration",
+      "$value": "{duration.feedback}"
+    },
+    "transitionDuration": {
+      "$type": "duration",
+      "$value": "{duration.transition}"
+    },
+    "expressiveDuration": {
+      "$type": "duration",
+      "$value": "{duration.expressive}"
+    }
+  }
+}

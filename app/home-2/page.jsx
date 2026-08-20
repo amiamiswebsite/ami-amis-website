@@ -1,10 +1,10 @@
-import HomeExperience from "../components/HomeExperience";
+import { redirect } from "next/navigation";
+import { canonicalUrl } from "../../src/lib/site";
 
 export const metadata = {
-  title: "Home 2 | Ami Amis",
-  description: "Ami Amis als creatieve groeipartner voor merken met ambitie.",
+  alternates: { canonical: canonicalUrl("/") },
 };
 
 export default function HomeTwoPage() {
-  return <HomeExperience variant="home2" />;
+  redirect("/");
 }

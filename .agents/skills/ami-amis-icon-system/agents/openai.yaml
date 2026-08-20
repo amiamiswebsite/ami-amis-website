@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ami Amis — Icon System"
+  short_description: "Repo-skill voor icon system op de Ami Amis-website."
+  brand_color: "#FF3500"
+policy:
+  allow_implicit_invocation: true

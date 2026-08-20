@@ -9,10 +9,285 @@ import { assetPath } from "../../src/lib/assetPath";
 import styles from "./TarzanServicesCasePage.module.css";
 
 const stepConfig = [
-  { key: "question", number: "01", icon: "/images/cases/x-oats/icon-question.png" },
-  { key: "approach", number: "02", icon: "/images/cases/x-oats/icon-approach.png" },
-  { key: "result", number: "03", icon: "/images/cases/x-oats/icon-result.png" },
+  { key: "question", fallback: "vraag", number: "01", icon: "/images/cases/x-oats/icon-question.png", label: "Vraag" },
+  { key: "approach", fallback: "aanpak", number: "02", icon: "/images/cases/x-oats/icon-approach.png", label: "Oplossing" },
+  { key: "result", fallback: "resultaat", number: "03", icon: "/images/cases/x-oats/icon-result.png", label: "Resultaat" },
 ];
+
+function mediaPath(src) {
+  if (!src) {
+    return "";
+  }
+
+  const source = String(src);
+
+  if (source.startsWith("http")) {
+    return source;
+  }
+
+  return assetPath(source);
+}
+
+function textFrom(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return value.text || "";
+}
+
+function mediaKey(item) {
+  if (!item) {
+    return "";
+  }
+
+  const youtubeId = getYouTubeId(item);
+
+  if (youtubeId) {
+    return `youtube:${youtubeId}`;
+  }
+
+  if (item.id) {
+    return `vimeo:${item.id}`;
+  }
+
+  const source = String(item.src || item.url || item.poster || "")
+    .trim()
+    .replace(/[?#].*$/, "");
+
+  if (source) {
+    return `source:${source}`;
+  }
+
+  return [item.type, item.title, item.label].filter(Boolean).join(":");
+}
+
+function uniqueMediaItems(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const key = mediaKey(item);
+
+    if (!key || seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function isPortraitMedia(item = {}) {
+  const ratio = String(item.aspectRatio || "").replace(/\s/g, "");
+  return item.orientation === "portrait" || ratio === "9/16" || ratio === "4/5";
+}
+
+function getYouTubeId(video) {
+  if (!video) {
+    return "";
+  }
+
+  if (video.type === "youtube" && video.id) {
+    return String(video.id);
+  }
+
+  const url = String(video.url || video.src || "");
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]+)/);
+  return match?.[1] || "";
+}
+
+function youtubeSource(video) {
+  const id = getYouTubeId(video);
+  return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1` : "";
+}
+
+function isVimeoMedia(item = {}) {
+  return item.type === "vimeo" || Boolean(item.id && !item.type && !getYouTubeId(item));
+}
+
+function isLocalVideoMedia(item = {}) {
+  const src = String(item.src || "");
+  return item.type === "video" || Boolean(src.match(/\.(mp4|webm|mov)(\?.*)?$/i));
+}
+
+function isImageMedia(item = {}) {
+  const src = item.src || item.poster || "";
+  return item.type === "image" || Boolean(
+    src &&
+    !isLocalVideoMedia(item) &&
+    !isVimeoMedia(item) &&
+    !getYouTubeId(item) &&
+    item.type !== "external" &&
+    item.type !== "instagram"
+  );
+}
+
+function getHeroMedia(caseData) {
+  if (caseData.heroMedia) {
+    const structuredHero = caseData.media?.hero;
+
+    if (structuredHero && mediaKey(structuredHero) === mediaKey(caseData.heroMedia)) {
+      return { ...structuredHero, ...caseData.heroMedia };
+    }
+
+    return caseData.heroMedia;
+  }
+
+  if (caseData.media?.hero) {
+    return caseData.media.hero;
+  }
+
+  if (caseData.hero) {
+    const src = caseData.hero.video || caseData.hero.heroVideo || caseData.hero.image || caseData.hero.sourceMediaUrl || caseData.hero.poster;
+
+    if (src) {
+      return {
+        type: String(src).match(/\.(mp4|webm|mov)(\?.*)?$/i) ? "video" : "image",
+        src,
+        poster: caseData.hero.poster || caseData.hero.image,
+        title: caseData.title,
+        alt: `${caseData.client} projectbeeld`,
+        orientation: caseData.hero.orientation || "landscape",
+        aspectRatio: caseData.hero.aspectRatio || "16 / 9",
+      };
+    }
+  }
+
+  return null;
+}
+
+function getVideoItems(caseData) {
+  const heroKey = mediaKey(getHeroMedia(caseData));
+  const sectionVideos = (caseData.mediaSections || [])
+    .flatMap((section) => section.items || [])
+    .filter((item) => ["external", "instagram", "video", "vimeo", "youtube"].includes(item?.type) || item?.id);
+
+  return uniqueMediaItems([
+    ...(caseData.media?.landscapeVideos || []),
+    ...(caseData.media?.verticalVideos || []),
+    ...(caseData.vimeoEmbeds || []),
+    ...(caseData.media?.vimeoEmbeds || []),
+    ...sectionVideos,
+  ]).filter(
+    (item) =>
+      item &&
+      (item.id || item.src || item.url) &&
+      (!heroKey || mediaKey(item) !== heroKey),
+  );
+}
+
+function getGalleryGroups(caseData) {
+  const groups = [];
+  const seenMedia = new Set([mediaKey(getHeroMedia(caseData))].filter(Boolean));
+
+  if (caseData.campaignImages?.length) {
+    groups.push({
+      eyebrow: caseData.campaignGalleryEyebrow,
+      title: caseData.campaignGalleryTitle || "Campagnebeelden",
+      images: caseData.campaignImages,
+    });
+  }
+
+  if (caseData.imageGallery?.length) {
+    groups.push({
+      eyebrow: caseData.imageGalleryEyebrow,
+      title: caseData.imageGalleryTitle || "Fotogalerij",
+      images: caseData.imageGallery,
+    });
+  }
+
+  (caseData.mediaSections || []).forEach((section) => {
+    const images = (section.items || []).filter((item) => item?.type === "image" && item.src);
+
+    if (images.length) {
+      groups.push({
+        eyebrow: section.title,
+        title: section.title,
+        images,
+      });
+    }
+  });
+
+  return groups
+    .map((group) => ({
+      ...group,
+      images: uniqueMediaItems(group.images || []).filter((image) => {
+        const key = mediaKey(image);
+
+        if (!key || seenMedia.has(key)) {
+          return false;
+        }
+
+        seenMedia.add(key);
+        return true;
+      }),
+    }))
+    .filter((group) => group.images.length);
+}
+
+function usePointerDepth() {
+  const frameRef = useRef(0);
+
+  useEffect(
+    () => () => {
+      window.cancelAnimationFrame(frameRef.current);
+    },
+    [],
+  );
+
+  const onPointerMove = (event) => {
+    if (
+      event.pointerType === "touch" ||
+      !window.matchMedia("(hover: hover) and (pointer: fine)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const element = event.currentTarget;
+    const bounds = element.getBoundingClientRect();
+    const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    window.cancelAnimationFrame(frameRef.current);
+    frameRef.current = window.requestAnimationFrame(() => {
+      element.style.setProperty("--case-depth-x", `${(-vertical * 3.2).toFixed(2)}deg`);
+      element.style.setProperty("--case-depth-y", `${(horizontal * 3.2).toFixed(2)}deg`);
+      element.style.setProperty("--case-depth-lift", "-3px");
+    });
+  };
+
+  const onPointerLeave = (event) => {
+    const element = event.currentTarget;
+
+    window.cancelAnimationFrame(frameRef.current);
+    frameRef.current = window.requestAnimationFrame(() => {
+      element.style.setProperty("--case-depth-x", "0deg");
+      element.style.setProperty("--case-depth-y", "0deg");
+      element.style.setProperty("--case-depth-lift", "0px");
+    });
+  };
+
+  return { onPointerLeave, onPointerMove };
+}
+
+function InteractiveFigure({ children, className = "", ...figureProps }) {
+  const pointerDepthProps = usePointerDepth();
+
+  return (
+    <figure
+      {...figureProps}
+      {...pointerDepthProps}
+      className={`${styles.pointerDepth} ${className}`}
+    >
+      {children}
+    </figure>
+  );
+}
 
 function cleanVimeoSource(video, playerId) {
   if (!video?.id) {
@@ -194,11 +469,10 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
   }
 
   return (
-    <figure
+    <InteractiveFigure
       {...figureProps}
       aria-label={itemLabel || video.title}
       className={`${styles.chromelessVideo} ${isPlaying ? styles.isPlaying : ""} ${className}`}
-      role="group"
     >
       <div
         aria-label={onOpen ? `Open ${video.title}` : `${isPlaying ? "Pauzeer" : "Speel"} ${video.title} met geluid`}
@@ -231,8 +505,112 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
           </span>
         </button>
       </figcaption>
-    </figure>
+    </InteractiveFigure>
   );
+}
+
+function CaseMediaVisual({ className = "", client, item, priority = false }) {
+  if (!item) {
+    return null;
+  }
+
+  const title = item.title || item.caption || item.label || item.fallbackLabel || `${client} video`;
+  const caption = item.hideCaption ? "" : title;
+
+  if (isVimeoMedia(item) && item.id) {
+    return (
+      <ChromelessVideo
+        className={className}
+        itemLabel={title}
+        video={{ ...item, title }}
+      />
+    );
+  }
+
+  if (getYouTubeId(item)) {
+    return (
+      <InteractiveFigure className={`${styles.chromelessVideo} ${className}`}>
+        <div className={`${styles.chromelessVideoScreen} ${styles.chromelessVideoScreenNoAction}`}>
+          <iframe
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading={priority ? "eager" : "lazy"}
+            src={youtubeSource(item)}
+            title={title}
+          />
+        </div>
+        {caption ? (
+          <figcaption>
+            <span className={styles.chromelessTrigger}>{caption}</span>
+          </figcaption>
+        ) : null}
+      </InteractiveFigure>
+    );
+  }
+
+  if (item.type === "external" || item.type === "instagram") {
+    return (
+      <InteractiveFigure className={`${styles.chromelessVideo} ${styles.externalMedia} ${className}`}>
+        <a
+          aria-label={`Open ${title}`}
+          className={styles.externalMediaLink}
+          href={item.url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span className={styles.externalMediaLabel}>{item.fallbackLabel || title}</span>
+          <span aria-hidden="true" className={styles.chromelessPlayButton}>
+            <span />
+          </span>
+        </a>
+      </InteractiveFigure>
+    );
+  }
+
+  if (isLocalVideoMedia(item) && item.src) {
+    return (
+      <InteractiveFigure className={`${styles.chromelessVideo} ${className}`}>
+        <div className={`${styles.chromelessVideoScreen} ${styles.chromelessVideoScreenNoAction}`}>
+          <video
+            aria-label={item.alt || title}
+            controls
+            playsInline
+            poster={item.poster ? mediaPath(item.poster) : undefined}
+            preload={priority || !item.poster ? "metadata" : "none"}
+          >
+            <source src={mediaPath(item.src)} type="video/mp4" />
+          </video>
+        </div>
+        {caption ? (
+          <figcaption>
+            <span className={styles.chromelessTrigger}>{caption}</span>
+          </figcaption>
+        ) : null}
+      </InteractiveFigure>
+    );
+  }
+
+  if (isImageMedia(item)) {
+    return (
+      <InteractiveFigure className={`${styles.chromelessVideo} ${styles.imageFrame} ${className}`}>
+        <div className={`${styles.chromelessVideoScreen} ${styles.chromelessVideoScreenNoAction}`}>
+          <img
+            alt={item.alt || title || `${client} projectbeeld`}
+            decoding="async"
+            loading={priority ? "eager" : "lazy"}
+            src={mediaPath(item.src || item.poster)}
+          />
+        </div>
+        {caption ? (
+          <figcaption>
+            <span className={styles.chromelessTrigger}>{caption}</span>
+          </figcaption>
+        ) : null}
+      </InteractiveFigure>
+    );
+  }
+
+  return null;
 }
 
 function LightboxVideo({ video }) {
@@ -256,7 +634,10 @@ function MediaLightbox({ activeIndex, items, onChange, onClose }) {
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     const previouslyFocusedElement = document.activeElement;
+    const appRoot = document.getElementById("main-content");
+    const previousInert = appRoot?.inert ?? false;
     document.body.style.overflow = "hidden";
+    if (appRoot) appRoot.inert = true;
     dialogRef.current?.focus();
 
     const handleKeyDown = (event) => {
@@ -294,6 +675,7 @@ function MediaLightbox({ activeIndex, items, onChange, onClose }) {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
+      if (appRoot) appRoot.inert = previousInert;
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocusedElement?.focus?.();
     };
@@ -386,16 +768,27 @@ function MediaLightbox({ activeIndex, items, onChange, onClose }) {
 }
 
 function StorySection({ caseData }) {
+  const blocks = (caseData.storyBlocks || caseData.introTextBlocks || [])
+    .map((block) => (typeof block === "string" ? { text: block } : block))
+    .filter((block) => textFrom(block));
+  const heading = caseData.subtitle || caseData.oneLiner || caseData.intro || caseData.summary || caseData.introQuote;
+
+  if (!blocks.length) {
+    return null;
+  }
+
   return (
     <section className={styles.story} aria-label="Case verhaal">
       <div className={styles.storyGrid}>
-        <header className={`${styles.sectionIntro} ${styles.reveal}`}>
-          <h2>{caseData.subtitle}</h2>
-        </header>
+        {heading ? (
+          <header className={`${styles.sectionIntro} ${styles.reveal}`}>
+            <h2>{heading}</h2>
+          </header>
+        ) : null}
 
         <div className={`${styles.storyCopy} ${styles.reveal}`}>
-          {caseData.storyBlocks.map((block, index) => (
-            <p key={`${block.text.slice(0, 24)}-${index}`}>{block.text}</p>
+          {blocks.map((block, index) => (
+            <p key={`${textFrom(block).slice(0, 24)}-${index}`}>{textFrom(block)}</p>
           ))}
         </div>
       </div>
@@ -405,9 +798,30 @@ function StorySection({ caseData }) {
 
 function StaticProcessSection({ caseData }) {
   const steps = useMemo(
-    () => stepConfig.map((item) => ({ ...item, ...caseData[item.key] })),
+    () => stepConfig
+      .map((item) => {
+        const block = caseData[item.key] || caseData[item.fallback];
+        const stats = typeof block === "string" ? [] : block?.stats || [];
+
+        if (!block && !stats.length) {
+          return null;
+        }
+
+        return {
+          ...item,
+          label: typeof block === "string" ? item.label : block?.label || block?.title || item.label,
+          text: textFrom(block),
+          stats,
+        };
+      })
+      .filter(Boolean)
+      .filter((step) => step.text || step.stats.length),
     [caseData],
   );
+
+  if (!steps.length) {
+    return null;
+  }
 
   return (
     <section
@@ -427,7 +841,17 @@ function StaticProcessSection({ caseData }) {
               />
             </div>
             <h3>{step.label}</h3>
-            <p>{step.text}</p>
+            {step.text ? <p>{step.text}</p> : null}
+            {step.stats.length ? (
+              <dl className={styles.staticProcessStats}>
+                {step.stats.map((stat) => (
+                  <div key={`${stat.value}-${stat.label}`}>
+                    <dt>{stat.label}</dt>
+                    <dd>{stat.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
           </article>
         ))}
       </div>
@@ -436,6 +860,18 @@ function StaticProcessSection({ caseData }) {
 }
 
 function VideoSection({ caseData }) {
+  const videos = getVideoItems(caseData);
+
+  if (!videos.length) {
+    return null;
+  }
+
+  const rowClassName = [
+    styles.phoneRow,
+    styles.phoneRowMixed,
+    videos.length === 1 ? styles.phoneRowSingle : "",
+  ].filter(Boolean).join(" ");
+
   return (
     <section className={styles.videos} aria-labelledby="tarzan-videos-title">
       <div className={styles.videosInner}>
@@ -443,9 +879,14 @@ function VideoSection({ caseData }) {
           <h2 id="tarzan-videos-title">Videogalerij</h2>
         </header>
 
-        <div className={`${styles.phoneRow} ${styles.reveal}`}>
-          {caseData.media.verticalVideos.map((video) => (
-            <ChromelessVideo className={styles.phoneVideo} key={video.id} video={video} />
+        <div className={`${rowClassName} ${styles.reveal}`}>
+          {videos.map((video, index) => (
+            <CaseMediaVisual
+              className={isPortraitMedia(video) ? styles.phoneVideo : styles.landscapeVideo}
+              client={caseData.client}
+              item={video}
+              key={`${mediaKey(video)}-${index}`}
+            />
           ))}
         </div>
       </div>
@@ -453,25 +894,41 @@ function VideoSection({ caseData }) {
   );
 }
 
-function GallerySection({ caseData }) {
+function GallerySection({ group }) {
+  if (!group?.images?.length) {
+    return null;
+  }
+
   return (
-    <section className={styles.gallery} aria-labelledby="tarzan-gallery-title">
+    <section className={styles.gallery} aria-labelledby={`tarzan-${group.id}-title`}>
       <div className={styles.galleryInner}>
         <header className={`${styles.galleryHeading} ${styles.reveal}`}>
-          <h2 id="tarzan-gallery-title">{caseData.imageGalleryTitle}</h2>
+          <h2 id={`tarzan-${group.id}-title`}>{group.title}</h2>
         </header>
 
         <div className={`${styles.galleryGrid} ${styles.reveal}`}>
-          {caseData.imageGallery.map((image) => (
-            <figure
+          {group.images.map((image, index) => (
+            <InteractiveFigure
               className={image.orientation === "landscape" ? styles.galleryLandscape : ""}
-              key={image.src}
+              key={`${image.src}-${index}`}
             >
-              <img alt={image.alt} loading="lazy" src={assetPath(image.src)} />
-            </figure>
+              <img alt={image.alt || group.title} loading="lazy" src={mediaPath(image.src || image.poster)} />
+            </InteractiveFigure>
           ))}
         </div>
       </div>
+    </section>
+  );
+}
+
+function OutroSection({ caseData }) {
+  if (!caseData.outro) {
+    return null;
+  }
+
+  return (
+    <section className={styles.closing} aria-label="Case afsluiting">
+      <p>{caseData.outro}</p>
     </section>
   );
 }
@@ -578,6 +1035,14 @@ function ClosingSection() {
 
 export default function TarzanServicesCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const heroMedia = getHeroMedia(caseData);
+  const galleryGroups = getGalleryGroups(caseData).map((group, index) => ({
+    ...group,
+    id: `gallery-${index + 1}`,
+    key: `${group.title || "gallery"}-${index}`,
+  }));
+  const introText = caseData.introQuote || caseData.oneLiner || caseData.summary || caseData.intro;
+  const heroIsPortrait = isPortraitMedia(heroMedia);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -611,22 +1076,27 @@ export default function TarzanServicesCasePage({ caseData }) {
           <a className={`hero__logo ${styles.logo}`} href={assetPath("/")} aria-label="Ami Amis home" />
 
           <section className={styles.hero} aria-labelledby="tarzan-services-title">
-            <div className={styles.heroGrid}>
+            <div
+              className={`${styles.heroGrid} ${heroMedia ? "" : styles.heroGridTextOnly} ${heroIsPortrait ? styles.heroGridPortrait : ""}`}
+            >
               <div className={styles.heroCopy}>
-                <span className={styles.sectionNumber}>{caseData.year}</span>
+                {caseData.year ? <span className={styles.sectionNumber}>{caseData.year}</span> : null}
                 <h1 id="tarzan-services-title">{caseData.title}</h1>
-                <p>{caseData.introQuote}</p>
-                <div className={styles.heroTags}>
-                  {caseData.categories.map((category) => (
-                    <span key={category}>{category}</span>
-                  ))}
-                </div>
+                {introText ? <p>{introText}</p> : null}
+                {caseData.categories?.length ? (
+                  <div className={styles.heroTags}>
+                    {caseData.categories.map((category) => (
+                      <span key={category}>{category}</span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
 
-              <ChromelessVideo
-                className={styles.heroVideo}
-                itemLabel="Tarzan & Jane videoclip"
-                video={caseData.media.hero}
+              <CaseMediaVisual
+                className={`${styles.heroVideo} ${heroIsPortrait ? styles.heroVideoPortrait : styles.heroVideoLandscape}`}
+                client={caseData.client}
+                item={heroMedia}
+                priority
               />
             </div>
           </section>
@@ -634,8 +1104,10 @@ export default function TarzanServicesCasePage({ caseData }) {
           <StorySection caseData={caseData} />
           <StaticProcessSection caseData={caseData} />
           <VideoSection caseData={caseData} />
-          <GallerySection caseData={caseData} />
-          <MixedMediaGridSection caseData={caseData} />
+          {galleryGroups.map((group) => (
+            <GallerySection group={group} key={group.key} />
+          ))}
+          <OutroSection caseData={caseData} />
           <ClosingSection />
         </main>
         <Footer variant="paper-flat" />

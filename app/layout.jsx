@@ -1,12 +1,67 @@
+import "./styles/generated/tokens.css";
+import "./styles/foundation/base.css";
+import "./styles/foundation/icons.css";
+import "./styles/foundation/primitives.css";
 import "./globals.css";
+import PixelCursor from "./components/PixelCursor";
 import { assetPath } from "../src/lib/assetPath";
+import { canonicalUrl, siteUrl } from "../src/lib/site";
 
 export const metadata = {
-  title: "Ami Amis | Creative marketing & video agency",
-  description: "Video first marketing, van A tot Z.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Ami Amis | Creatieve groeipartner",
+    template: "%s | Ami Amis",
+  },
+  description:
+    "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+  openGraph: {
+    type: "website",
+    locale: "nl_BE",
+    siteName: "Ami Amis",
+    title: "Ami Amis | Creatieve groeipartner",
+    description:
+      "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+    images: [
+      {
+        url: canonicalUrl("/assets/hero-composite.png"),
+        width: 1613,
+        height: 899,
+        alt: "Ami Amis, creatieve groeipartner in Antwerpen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ami Amis | Creatieve groeipartner",
+    description:
+      "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+    images: [canonicalUrl("/assets/hero-composite.png")],
+  },
 };
 
 export default function RootLayout({ children }) {
+  const organizationData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Ami Amis",
+    url: canonicalUrl("/"),
+    logo: canonicalUrl("/assets/logo-black.png"),
+    email: "brent@amiamis.be",
+    telephone: "+32472657595",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Meir 78 - Stadsfeestzaal",
+      postalCode: "2000",
+      addressLocality: "Antwerpen",
+      addressCountry: "BE",
+    },
+    sameAs: [
+      "https://www.instagram.com/amiamismedia/",
+      "https://www.linkedin.com/company/ami-amis-malle/",
+      "https://www.facebook.com/AmiAmisMedia",
+    ],
+  };
   const fontFaces = `
     @font-face {
       font-family: "Neue Haas Black";
@@ -47,15 +102,25 @@ export default function RootLayout({ children }) {
 
   const assetVariables = {
     "--logo-mask-image": `url("${assetPath("/assets/logo-black.png")}")`,
-    "--paper-bg-image": `url("${assetPath("/assets/paper-bg.jpg")}")`,
+    "--paper-bg-image": `url("${assetPath("/assets/paper-bg.webp")}")`,
+    "--pixel-cursor-arrow": `url("${assetPath("/assets/cursor-pixel-arrow.svg")}") 1 1, auto`,
   };
 
   return (
     <html lang="nl">
       <head>
         <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
+        <script
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
+          type="application/ld+json"
+        />
       </head>
-      <body style={assetVariables}>{children}</body>
+      <body style={assetVariables}>
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
+        <PixelCursor />
+      </body>
     </html>
   );
 }

@@ -12,47 +12,84 @@
   color: var(--ink);
 }
 
+.servicesTop {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(30px, 4.5vw, 72px) 0 clamp(52px, 7vw, 108px);
+  overflow: hidden;
+  background: var(--blue);
+}
+
+.servicesTop::before {
+  position: absolute;
+  inset: -8%;
+  z-index: -1;
+  background-image: url("/assets/services-doodle-pattern.svg");
+  background-position: center top;
+  background-repeat: repeat;
+  background-size: clamp(620px, 72vw, 1080px) auto;
+  content: "";
+  opacity: 0.68;
+  pointer-events: none;
+  transform: rotate(-2deg) scale(1.05);
+}
+
+.servicesTopPaper {
+  position: relative;
+  width: min(1120px, calc(100% - clamp(48px, 18vw, 320px)));
+  margin-inline: auto;
+  overflow: visible;
+  border-radius: 4px;
+  background:
+    linear-gradient(rgba(255, 250, 229, 0.94), rgba(255, 250, 229, 0.94)),
+    var(--paper-bg-image),
+    var(--paper);
+  box-shadow: clamp(18px, 2.6vw, 42px) clamp(18px, 2.6vw, 42px) 0 rgba(28, 28, 28, 0.17);
+}
+
 .servicesPage [data-services-parallax] {
   --parallax-y: 0px;
   --parallax-rotate: 0deg;
 }
 
 .logo {
-  background: var(--paper);
+  top: clamp(26px, 3.2vw, 44px);
+  left: clamp(32px, 5vw, 72px);
+  width: clamp(112px, 11vw, 154px);
+  background: var(--ink);
+  transform: none;
+}
+
+.servicesTopPaper .logo {
+  animation: none;
+  transform: none;
 }
 
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 100svh;
+  min-height: clamp(700px, 84svh, 860px);
   display: flex;
   align-items: center;
-  background:
-    linear-gradient(rgba(255, 250, 229, 0.82), rgba(255, 250, 229, 0.82)),
-    var(--paper-bg-image),
-    var(--paper);
+  background: transparent;
   color: var(--ink);
   isolation: isolate;
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  inset: auto -8vw -2px -8vw;
-  height: 8vw;
-  min-height: 68px;
-  background: var(--paper);
-  clip-path: polygon(0 48%, 9% 60%, 22% 44%, 36% 58%, 51% 42%, 67% 56%, 84% 40%, 100% 52%, 100% 100%, 0 100%);
-  z-index: 1;
+  content: none;
 }
 
 .heroInner {
-  width: min(var(--services-max), calc(100% - (var(--services-pad) * 2)));
+  width: 100%;
   margin: 0 auto;
-  padding: clamp(92px, 12svh, 122px) 0 clamp(72px, 10svh, 106px);
+  padding:
+    clamp(126px, 15svh, 162px)
+    clamp(34px, 6.4vw, 78px)
+    clamp(72px, 9svh, 96px);
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.72fr);
-  gap: clamp(32px, 5vw, 84px);
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 0.72fr);
+  gap: clamp(34px, 5vw, 64px);
   align-items: center;
   position: relative;
   z-index: 2;
@@ -74,10 +111,10 @@
 }
 
 .heroCopy h1 {
-  max-width: 980px;
-  font-size: clamp(4.8rem, 6.2vw, 6.15rem);
-  line-height: 0.82;
-  text-shadow: 0.055em 0.055em 0 rgba(0, 97, 252, 0.2);
+  max-width: 8.8ch;
+  font-size: clamp(4.15rem, 6.1vw, 5.7rem);
+  line-height: 0.84;
+  text-shadow: 0.05em 0.05em 0 rgba(68, 154, 255, 0.24);
 }
 
 .heroPrefix {
@@ -180,10 +217,10 @@
 }
 
 .heroCopy p {
-  max-width: 720px;
-  margin: 34px 0 0;
-  font-size: 1.35rem;
-  line-height: 1.28;
+  max-width: 610px;
+  margin: 28px 0 0;
+  font-size: clamp(1rem, 1.45vw, 1.2rem);
+  line-height: 1.34;
   font-family: var(--font-sans);
   color: var(--ink);
 }
@@ -191,9 +228,11 @@
 .primaryButton,
 .problemButton {
   width: fit-content;
-  margin-top: 34px;
+  margin-top: 28px;
   font-size: 1rem;
+  font-weight: 900;
   line-height: 1.12;
+  color: var(--ink);
   text-transform: none;
   word-spacing: 0.12em;
   white-space: normal;
@@ -202,18 +241,19 @@
 
 .heroVisual {
   position: relative;
-  min-height: 560px;
+  min-height: 500px;
   display: grid;
   place-items: center;
 }
 
 .heroPhoto {
   display: block;
-  width: auto;
-  height: min(68svh, 680px);
+  width: 100%;
+  height: min(62svh, 570px);
   max-width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
+  border-radius: 4px;
   mix-blend-mode: multiply;
 }
 
@@ -341,7 +381,14 @@
 
 .expectations {
   position: relative;
-  padding: 0 var(--services-pad);
+  padding: clamp(78px, 9vw, 116px) clamp(34px, 6.4vw, 78px) clamp(92px, 11vw, 142px);
+  border-top: 1px solid rgba(28, 28, 28, 0.16);
+  background: rgba(234, 229, 255, 0.58);
+}
+
+.expectationsInner {
+  width: 100%;
+  margin-inline: auto;
 }
 
 .problemGrid,
@@ -387,38 +434,11 @@
   line-height: 0.84;
 }
 
-.expectationScroller {
-  position: relative;
-}
-
-.expectationStage {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  min-height: 100svh;
-  display: grid;
-  align-items: center;
-}
-
-.expectationStageInner {
-  width: min(var(--services-max), 100%);
-  min-height: min(760px, 100svh);
-  margin: 0;
-  margin-inline: auto;
-  padding: clamp(92px, 11svh, 132px) 0 clamp(42px, 7svh, 72px);
-  display: grid;
-  grid-template-columns: minmax(280px, 0.38fr) minmax(0, 0.62fr);
-  gap: clamp(48px, 7vw, 96px);
-  align-items: center;
-  min-width: 0;
-}
-
 .expectationHeading {
-  position: relative;
-  z-index: 3;
   display: grid;
-  justify-items: start;
-  text-align: left;
+  justify-items: center;
+  margin-bottom: clamp(36px, 5vw, 58px);
+  text-align: center;
 }
 
 .expectationHeading .sectionNumber {
@@ -426,136 +446,79 @@
 }
 
 .expectationHeading h2 {
-  max-width: 420px;
-}
-
-.expectationFocus {
-  position: relative;
-  min-height: 440px;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 28px;
-  align-items: center;
+  max-width: 12ch;
 }
 
 .expectationList {
-  position: relative;
-  width: calc(100% - 12px);
-  height: 100%;
-  min-height: 280px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+  width: 100%;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .expectationCard {
-  position: absolute;
-  inset: 50% 0 auto;
-  z-index: 1;
-  min-height: 310px;
-  padding: clamp(34px, 4vw, 52px);
+  position: relative;
+  min-height: clamp(238px, 24vw, 286px);
+  padding: clamp(24px, 3vw, 38px);
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 42px);
-  align-items: center;
-  border: 4px solid var(--ink);
-  border-radius: 24px;
-  background:
-    linear-gradient(rgba(255, 250, 229, 0.94), rgba(255, 250, 229, 0.94)),
-    var(--paper-bg-image),
-    var(--paper);
-  box-shadow: var(--services-shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(calc(-50% + 64px)) scale(0.94) rotate(1.5deg);
-  transform-origin: 50% 50%;
-  will-change: transform, opacity;
-  transition:
-    opacity 320ms ease,
-    transform 560ms cubic-bezier(0.2, 0.82, 0.24, 1),
-    visibility 0s linear 560ms;
+  grid-template-rows: auto 1fr;
+  gap: clamp(28px, 4vw, 46px);
+  border: 1px solid rgba(28, 28, 28, 0.2);
+  border-radius: 8px;
+  background: var(--paper);
 }
 
-.expectationCard.isActive {
-  z-index: 3;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) scale(1) rotate(0deg);
-  transition-delay: 80ms, 0ms, 0s;
+.expectationCard:nth-child(1) {
+  background: var(--yellow);
 }
 
-.expectationCard.isPast {
-  transform: translateY(calc(-50% - 64px)) scale(0.96) rotate(-1deg);
+.expectationCard:nth-child(2) {
+  background: var(--sky);
+}
+
+.expectationCard:nth-child(3) {
+  background: var(--paper);
+}
+
+.expectationCard:nth-child(4) {
+  background: var(--red);
+  color: var(--ink);
 }
 
 .expectationNumber {
-  width: clamp(64px, 7vw, 82px);
+  width: 48px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border: 4px solid var(--ink);
+  border: 2px solid currentColor;
   border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
+  background: transparent;
+  color: inherit;
   font-family: var(--font-black);
-  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
-  box-shadow: var(--services-shadow-sm);
+  font-size: 0.86rem;
 }
 
 .expectationBody {
+  align-self: end;
   min-width: 0;
 }
 
 .expectationCard h3 {
   margin: 0;
   font-family: var(--font-black);
-  font-size: clamp(1.85rem, 3.4vw, 3rem);
-  line-height: 0.96;
+  font-size: clamp(1.45rem, 2.15vw, 2.05rem);
+  line-height: 0.94;
+  text-wrap: balance;
 }
 
 .expectationCard p {
-  margin: 18px 0 0;
-  max-width: 60ch;
-  font-size: clamp(1rem, 1.45vw, 1.2rem);
-  line-height: 1.4;
-}
-
-.expectationProgress {
-  position: relative;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.expectationProgress span {
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  background: rgba(28, 28, 28, 0.16);
-  transition:
-    width 360ms cubic-bezier(0.2, 0.82, 0.24, 1),
-    background-color 240ms ease;
-}
-
-.expectationProgress span.isActive {
-  width: 48px;
-  background: var(--ink);
-}
-
-.expectationMarkers {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  pointer-events: none;
-}
-
-.expectationMarkers span {
-  min-height: 1px;
-  scroll-margin-top: 20vh;
+  max-width: 38ch;
+  margin: 16px 0 0;
+  font-size: clamp(0.94rem, 1.15vw, 1.06rem);
+  line-height: 1.34;
 }
 
 .problemFiles {
@@ -896,7 +859,7 @@
 }
 
 .interstitial p em {
-  color: var(--yellow);
+  color: var(--paper);
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 700;
@@ -1283,7 +1246,7 @@
   align-items: center;
   min-height: 44px;
   margin-top: 8px;
-  color: var(--red);
+  color: var(--ink);
   font-family: var(--font-black);
   font-size: 1.1rem;
   text-decoration: underline;
@@ -1408,6 +1371,10 @@
     margin: 0 auto;
   }
 
+  .heroCopy h1 {
+    margin-inline: auto;
+  }
+
   .heroCopy p,
   .primaryButton {
     margin-left: auto;
@@ -1527,8 +1494,24 @@
     --services-pad: 18px;
   }
 
+  .servicesTop {
+    padding: 0;
+    background: var(--paper);
+  }
+
+  .servicesTop::before {
+    display: none;
+  }
+
+  .servicesTopPaper {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
   .logo {
     top: 26px;
+    left: 18px;
     width: 124px;
   }
 
@@ -1627,50 +1610,30 @@
   }
 
   .expectations {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .expectationStageInner {
-    min-height: 100svh;
-    padding-top: clamp(86px, 12svh, 108px);
-    padding-bottom: clamp(30px, 5svh, 48px);
-    gap: clamp(20px, 3.5svh, 34px);
+    padding: 68px 18px 82px;
   }
 
   .expectationHeading .sectionNumber {
     margin-bottom: 14px;
   }
 
-  .expectationFocus {
-    min-height: 310px;
-    gap: 20px;
-  }
-
   .expectationList {
-    width: calc(100% - 14px);
-    min-height: 250px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
   }
 
   .expectationCard {
-    min-height: 240px;
-    padding: 28px 20px;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    text-align: center;
-    border-radius: 20px;
-    box-shadow: var(--services-shadow-lg);
-  }
-
-  .expectationCard.isActive {
-    transform: translateY(-50%) scale(1) rotate(0deg);
+    min-height: 214px;
+    padding: 24px 22px;
+    gap: 28px;
+    text-align: left;
   }
 
   .expectationNumber {
-    width: 54px;
-    justify-self: center;
-    font-size: 1rem;
-    box-shadow: var(--services-shadow-sm);
+    width: 44px;
+    justify-self: start;
+    font-size: 0.82rem;
   }
 
   .expectationCard h3 {
@@ -1681,10 +1644,6 @@
     margin-top: 12px;
     font-size: 1rem;
     line-height: 1.35;
-  }
-
-  .expectationProgress span.isActive {
-    width: 38px;
   }
 
   .problemNav {
@@ -1949,51 +1908,6 @@
 
   .problemScroller {
     min-height: auto !important;
-  }
-
-  .expectations {
-    padding-top: 96px;
-    padding-bottom: 96px;
-  }
-
-  .expectationScroller {
-    min-height: auto !important;
-  }
-
-  .expectationStage {
-    position: relative;
-    min-height: auto;
-  }
-
-  .expectationStageInner {
-    min-height: auto;
-    padding: 0;
-  }
-
-  .expectationFocus {
-    min-height: auto;
-  }
-
-  .expectationList {
-    width: min(860px, 100%);
-    height: auto;
-    display: grid;
-    gap: 24px;
-  }
-
-  .expectationCard,
-  .expectationCard.isActive,
-  .expectationCard.isPast {
-    position: relative;
-    inset: auto;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
-
-  .expectationProgress,
-  .expectationMarkers {
-    display: none;
   }
 
   .faqPanel {

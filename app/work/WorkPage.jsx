@@ -25,7 +25,7 @@ function WorkFilters({ activeFilter, count, onFilterChange }) {
       <div className="work-filters__topline" aria-live="polite">
         {count} {count === 1 ? "case" : "cases"}
       </div>
-      <div className="work-filters__rail" role="list">
+      <div aria-label="Kies een casefilter" className="work-filters__rail" role="group">
         {workFilters.map((filter) => {
           const isActive = activeFilter === filter;
 

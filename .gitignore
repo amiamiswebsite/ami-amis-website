@@ -6,6 +6,37 @@ dist/
 build/
 refs/
 
+# Next static-export output belongs in out/ only. These root paths are stale
+# publication artifacts from the old Pages workflow and must never be tracked.
+/_next/
+/_not-found/
+/404/
+/404.html
+/.nojekyll
+/__next*
+/index.html
+/index.txt
+/assets/
+/contact/
+/diensten/
+/fonts/
+/home-2/
+/images/
+/ons-werk/
+/scroll-video-header-test/
+/team/
+/videos/
+/work/
+
+# pnpm is the canonical package manager for this repository.
+!/pnpm-lock.yaml
+/package-lock.json
+/playwright-report/
+/test-results/
+/artifacts/
+/lighthouse-report/
+/.lighthouseci/
+
 .env
 .env.*
 !.env.example

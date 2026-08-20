@@ -1,0 +1,125 @@
+{
+  "$description": "Ami Amis component tokens. Valideer tegen Storybook en computed styles.",
+  "button": {
+    "minHeight": {
+      "$type": "dimension",
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      }
+    },
+    "paddingInline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{control.radius}"
+    },
+    "borderWidth": {
+      "$type": "dimension",
+      "$value": "{control.borderWidth}"
+    },
+    "shadowOffsetDefault": {
+      "$type": "dimension",
+      "$value": {
+        "value": 5,
+        "unit": "px"
+      }
+    },
+    "shadowOffsetHover": {
+      "$type": "dimension",
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "primary": {
+      "background": {
+        "$type": "color",
+        "$value": "{palette.red.500}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{palette.paper.500}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      }
+    },
+    "secondary": {
+      "background": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{palette.paper.500}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.ink.500}"
+      }
+    }
+  },
+  "icon": {
+    "size": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "value": 20,
+          "unit": "px"
+        }
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        }
+      }
+    },
+    "labelGap": {
+      "$type": "dimension",
+      "$value": "{space.2}"
+    }
+  },
+  "focusRing": {
+    "width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3,
+        "unit": "px"
+      }
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3,
+        "unit": "px"
+      }
+    },
+    "color": {
+      "$type": "color",
+      "$value": "{color.focus.ring}"
+    }
+  }
+}

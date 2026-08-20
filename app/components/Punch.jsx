@@ -26,7 +26,15 @@ export default function Punch() {
     <section className={`punch${wordAnimationReady ? " punch--word-animation-ready" : ""}`} id="diensten">
       <div className="punch__inner">
         <img className="punch__crack" src={assetPath("/assets/crack.png")} alt="" />
-        <img className="punch__man" src={assetPath("/assets/punch-elena.png")} alt="" />
+        <img
+          className="punch__man"
+          src={assetPath("/assets/punch-elena.webp")}
+          alt=""
+          width="1023"
+          height="1537"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="punch__copy">
           <h2>Content met punch</h2>
           <p className="punch__line punch__line--animated" aria-hidden="true">

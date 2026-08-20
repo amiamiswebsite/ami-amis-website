@@ -1,6 +1,0 @@
-1:"$Sreact.fragment"
-2:I[56946,["/ami-amis-website/_next/static/chunks/1b7_wgb0tfe3t.js","/ami-amis-website/_next/static/chunks/155e6-c0730js.js"],"default"]
-3:I[35073,["/ami-amis-website/_next/static/chunks/1b7_wgb0tfe3t.js"],"OutletBoundary"]
-4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/ami-amis-website/_next/static/chunks/155e6-c0730js.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"00bd8RY6klDN0TOc_EHMN"}
-5:null

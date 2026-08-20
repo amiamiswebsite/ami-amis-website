@@ -1,6 +1,7 @@
 export default function MenuToggle({ open, onToggle }) {
   return (
     <button
+      aria-controls="site-navigation"
       aria-expanded={open}
       aria-label={open ? "Sluit navigatie" : "Open navigatie"}
       className={`menu-toggle ${open ? "is-open" : ""}`}

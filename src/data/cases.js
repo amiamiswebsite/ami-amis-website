@@ -2622,19 +2622,7 @@ function normalizeCaseMedia(caseItem) {
 }
 
 const normalizedCases = rawCases.map(normalizeCaseMedia);
-const tarzanServicesSource = normalizedCases.find((item) => item.slug === "tarzan-en-jane");
-const tarzanServicesCopy = tarzanServicesSource
-  ? {
-      ...tarzanServicesSource,
-      slug: "tarzan-en-jane-diensten-stijl",
-      aliases: [],
-      template: "tarzan-services-case",
-    }
-  : null;
-
-export const cases = tarzanServicesCopy
-  ? [...normalizedCases, tarzanServicesCopy]
-  : normalizedCases;
+export const cases = normalizedCases;
 
 export function getAllCaseSlugs() {
   return cases.flatMap((item) => [item.slug, ...(item.aliases || [])]);

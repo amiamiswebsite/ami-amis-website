@@ -1,0 +1,275 @@
+{
+  "$description": "Ami Amis reference tokens. Ruwe merkwaarden; niet rechtstreeks in componenten gebruiken.",
+  "palette": {
+    "$type": "color",
+    "red": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 0.207843, 0],
+          "alpha": 1
+        },
+        "$description": "Primair Ami Amis-rood #FF3500"
+      },
+      "700": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.65098, 0.12549, 0],
+          "alpha": 1
+        },
+        "$description": "Donker Ami Amis-rood #A62000 voor kleine tekst op lichte merkvlakken"
+      }
+    },
+    "yellow": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.980392, 0.733333, 0],
+          "alpha": 1
+        },
+        "$description": "Ami Amis-geel #FABB00"
+      }
+    },
+    "blue": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0, 0.380392, 0.988235],
+          "alpha": 1
+        },
+        "$description": "Ami Amis-blauw #0061FC"
+      }
+    },
+    "orange": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.94902, 0.603922, 0.172549],
+          "alpha": 1
+        },
+        "$description": "Ami Amis-oranje #F29A2C"
+      }
+    },
+    "sky": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.266667, 0.603922, 1],
+          "alpha": 1
+        },
+        "$description": "Ami Amis-sky #449AFF"
+      }
+    },
+    "paper": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 0.980392, 0.898039],
+          "alpha": 1
+        },
+        "$description": "Paper #FFFAE5"
+      }
+    },
+    "ink": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.109804, 0.109804, 0.109804],
+          "alpha": 1
+        },
+        "$description": "Ink #1C1C1C"
+      }
+    },
+    "white": {
+      "500": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 1, 1],
+          "alpha": 1
+        }
+      }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "0": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      }
+    },
+    "1": {
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      }
+    },
+    "2": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "3": {
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      }
+    },
+    "4": {
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      }
+    },
+    "5": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      }
+    },
+    "6": {
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "7": {
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      }
+    },
+    "8": {
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      }
+    },
+    "9": {
+      "$value": {
+        "value": 96,
+        "unit": "px"
+      }
+    },
+    "10": {
+      "$value": {
+        "value": 128,
+        "unit": "px"
+      }
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "sm": {
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 18,
+        "unit": "px"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      }
+    },
+    "pill": {
+      "$value": {
+        "value": 999,
+        "unit": "px"
+      }
+    }
+  },
+  "border": {
+    "$type": "dimension",
+    "thin": {
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      }
+    },
+    "medium": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      }
+    },
+    "strong": {
+      "$value": {
+        "value": 3,
+        "unit": "px"
+      }
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "instant": {
+      "$value": {
+        "value": 0,
+        "unit": "ms"
+      }
+    },
+    "quick": {
+      "$value": {
+        "value": 120,
+        "unit": "ms"
+      }
+    },
+    "feedback": {
+      "$value": {
+        "value": 200,
+        "unit": "ms"
+      }
+    },
+    "transition": {
+      "$value": {
+        "value": 320,
+        "unit": "ms"
+      }
+    },
+    "expressive": {
+      "$value": {
+        "value": 600,
+        "unit": "ms"
+      }
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": ["Neue Haas", "Arial", "sans-serif"]
+      },
+      "display": {
+        "$value": ["Neue Haas Black", "Arial Black", "sans-serif"]
+      },
+      "serif": {
+        "$value": ["Apple Garamond", "Georgia", "serif"]
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": {
+        "$value": 400
+      },
+      "bold": {
+        "$value": 800
+      },
+      "black": {
+        "$value": 900
+      }
+    }
+  }
+}

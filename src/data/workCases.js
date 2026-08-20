@@ -24,18 +24,6 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "Tarzan & Jane V2",
-    slug: "tarzan-en-jane-diensten-stijl",
-    title: "Een videoclip vol energie, kleur en plezier",
-    description:
-      "Samen maken we content die even levendig is als hun speeltuin: vrolijk, kleurrijk en 100% Tarzan & Jane.",
-    categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding"],
-    image: "/work/tarzan-en-jane-thumb.webp",
-    href: "/work/tarzan-en-jane-diensten-stijl/",
-    featured: false,
-    status: "ready",
-  },
-  {
     client: "Visit Antwerpen",
     slug: "visit-antwerpen",
     title: "Cultuur in Antwerpen. In 12 uur.",
