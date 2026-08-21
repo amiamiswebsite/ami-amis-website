@@ -380,79 +380,83 @@ export default function Hero({
                   </div>
                 </div>
 
-                <p className="welcome-hero__title-fragment welcome-hero__title-fragment--bottom" aria-hidden="true">
-                  {welcomeStickerWords.map(({ text, start, mobileWidth, svgWidth }) => (
-                    <span
-                      className="welcome-hero__sticker-word"
-                      data-text={text}
-                      key={text}
-                      style={{ "--welcome-sticker-mobile-width": mobileWidth }}
-                    >
-                      <svg
-                        className="welcome-hero__sticker-svg"
-                        viewBox={`0 0 ${svgWidth} 150`}
-                        aria-hidden="true"
-                        focusable="false"
-                        style={{ "--welcome-wave-delay": `${620 + start * 34}ms` }}
-                        >
-                        <text
-                          className="welcome-hero__sticker-svg-text"
-                          x={svgWidth / 2}
-                          y="119"
-                          textAnchor="middle"
-                          stroke="#fabb00"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="34"
-                          fill="#fffae5"
-                          paintOrder="stroke fill"
-                        >
-                          {text}
-                        </text>
-                      </svg>
-                      <span className="welcome-hero__sticker-letters" aria-hidden="true">
-                        {[...text].map((letter, index) => (
-                          <span
-                            className="welcome-hero__sticker-char"
-                            key={`${text}-${letter}-${index}`}
-                            style={{ "--welcome-wave-delay": `${620 + (start + index) * 34}ms` }}
+                <div className="welcome-hero__message-stack">
+                  <p className="welcome-hero__title-fragment welcome-hero__title-fragment--bottom" aria-hidden="true">
+                    {welcomeStickerWords.map(({ text, start, mobileWidth, svgWidth }) => (
+                      <span
+                        className="welcome-hero__sticker-word"
+                        data-text={text}
+                        key={text}
+                        style={{ "--welcome-sticker-mobile-width": mobileWidth }}
+                      >
+                        <svg
+                          className="welcome-hero__sticker-svg"
+                          viewBox={`0 0 ${svgWidth} 150`}
+                          aria-hidden="true"
+                          focusable="false"
+                          style={{ "--welcome-wave-delay": `${620 + start * 34}ms` }}
                           >
-                            {letter}
-                          </span>
-                        ))}
+                          <text
+                            className="welcome-hero__sticker-svg-text"
+                            x={svgWidth / 2}
+                            y="119"
+                            textAnchor="middle"
+                            stroke="#fabb00"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="34"
+                            fill="#fffae5"
+                            paintOrder="stroke fill"
+                          >
+                            {text}
+                          </text>
+                        </svg>
+                        <span className="welcome-hero__sticker-letters" aria-hidden="true">
+                          {[...text].map((letter, index) => (
+                            <span
+                              className="welcome-hero__sticker-char"
+                              key={`${text}-${letter}-${index}`}
+                              style={{ "--welcome-wave-delay": `${620 + (start + index) * 34}ms` }}
+                            >
+                              {letter}
+                            </span>
+                          ))}
+                        </span>
                       </span>
-                    </span>
-                  ))}
-                </p>
+                    ))}
+                  </p>
 
-                <p className="welcome-hero__descriptor">
-                  <span className="welcome-hero__descriptor-riso" aria-hidden="true" />
-                  <span className="welcome-hero__descriptor-text">
-                    Video-first content marketing agency in Antwerpen
-                  </span>
-                </p>
+                  <div className="welcome-hero__conversion-stack">
+                    <p className="welcome-hero__descriptor">
+                      <span className="welcome-hero__descriptor-riso" aria-hidden="true" />
+                      <span className="welcome-hero__descriptor-text">
+                        Video-first content marketing agency in Antwerpen
+                      </span>
+                    </p>
 
-                <div className="hero__actions" aria-label="Hero acties">
-                  <a className="hero__cta hero__cta--primary" href={assetPath("/contact/")}>
-                    <span>Eens afspreken</span>
-                    <span className="hero__cta-icon" aria-hidden="true">
-                      <CtaArrowIcon />
-                    </span>
-                  </a>
-                  <button
-                    className="welcome-hero__scroll-cue"
-                    type="button"
-                    onClick={scrollToIntro}
-                    aria-label="Scroll naar de volgende sectie"
-                  >
-                    <span className="hero__scroll-cue-animation" aria-hidden="true" />
-                  </button>
-                  <a className="hero__cta hero__cta--secondary" href={assetPath("/work/")}>
-                    <span>Bekijk ons werk</span>
-                    <span className="hero__cta-icon" aria-hidden="true">
-                      <CtaArrowIcon />
-                    </span>
-                  </a>
+                    <div className="hero__actions" aria-label="Hero acties">
+                      <a className="hero__cta hero__cta--primary" href={assetPath("/contact/")}>
+                        <span>Eens afspreken</span>
+                        <span className="hero__cta-icon" aria-hidden="true">
+                          <CtaArrowIcon />
+                        </span>
+                      </a>
+                      <button
+                        className="welcome-hero__scroll-cue"
+                        type="button"
+                        onClick={scrollToIntro}
+                        aria-label="Scroll naar de volgende sectie"
+                      >
+                        <span className="hero__scroll-cue-animation" aria-hidden="true" />
+                      </button>
+                      <a className="hero__cta hero__cta--secondary" href={assetPath("/work/")}>
+                        <span>Bekijk ons werk</span>
+                        <span className="hero__cta-icon" aria-hidden="true">
+                          <CtaArrowIcon />
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
 

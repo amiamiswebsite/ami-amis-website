@@ -17,6 +17,39 @@ export const serviceTwoExpectations = [
   },
 ];
 
+export const serviceTwoApproachCards = [
+  {
+    title: "Hallo, met Brent?",
+    text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Hij gaat na welk probleem jullie ondervinden, en geeft aan waarmee wij jullie kunnen helpen!",
+    image: "/assets/approach-01-call.webp",
+  },
+  {
+    title: "Sparren met onze creative(s)",
+    text: "Daarna zet Brent een meeting op met de juiste creatieve compadre(s) voor jullie merk. Nu begint de fun. Samen denken we na over marketingstrategie. Wil je daarin volledig ontzorgd worden? No worries. We got you!",
+    image: "/assets/approach-02-spar.webp",
+  },
+  {
+    title: "Een geniaal masterplan",
+    text: "Tijd om al die goeie ideeën concreet te maken. Onze creatieve compadres zetten de puntjes op de i, onze producers nemen over en leiden de voorbereiding in goede banen.",
+    image: "/assets/approach-03-plan.webp",
+  },
+  {
+    title: "Lights. Camera. Action!",
+    text: "Eèèn action. Ons in-house team brengt het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne.",
+    image: "/assets/approach-03-camera.webp",
+  },
+  {
+    title: "Watch Party",
+    text: "Opleveren die handel! Pak de popcorn want het eindproduct is klaar. En wij verzekeren jullie: da’s fire 🔥",
+    image: "/assets/approach-04-watch.webp",
+  },
+  {
+    title: "Hallo, Brent nog eens!",
+    text: "Na afloop koppelt ons kapoentje Brent nog eens terug. Samen kijken we naar de resultaten van de samenwerking en evalueren wat de volgende keer NOG beter kan. Dat is wat Amis doen, toch?",
+    image: "/assets/approach-05-callback.webp",
+  },
+];
+
 export const serviceTwoProblems = [
   {
     id: "merkbekendheid",

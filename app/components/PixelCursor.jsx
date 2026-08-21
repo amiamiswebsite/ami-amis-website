@@ -15,8 +15,8 @@ export default function PixelCursor() {
 
     let animationFrame = 0;
     let clickTimer = 0;
-    let targetX = -80;
-    let targetY = -80;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
 
     const render = () => {
       cursor.style.transform = `translate3d(${Math.round(targetX)}px, ${Math.round(targetY)}px, 0)`;
@@ -63,14 +63,12 @@ export default function PixelCursor() {
       }, 220);
     };
 
-    document.documentElement.classList.add("pixel-cursor-ready");
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     document.addEventListener("mouseenter", showCursor);
     document.addEventListener("mouseleave", hideCursor);
 
     return () => {
-      document.documentElement.classList.remove("pixel-cursor-ready");
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("mouseenter", showCursor);
@@ -92,21 +90,6 @@ export default function PixelCursor() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M14 1V6M5 5L9 9M1 14H6M5 23L9 19M23 5L19 9" />
-      </svg>
-      <svg
-        className="pixel-cursor__arrow"
-        focusable="false"
-        viewBox="0 0 24 30"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          className="pixel-cursor__outline"
-          d="M1 1H3V3H5V5H7V7H9V9H11V11H13V13H15V15H17V17H23V21H14L19 28H13L8 21L3 26H1V1Z"
-        />
-        <path
-          className="pixel-cursor__fill"
-          d="M4 6H6V8H8V10H10V12H12V14H14V16H20V18H11L16 26H14L9 18L4 23V6Z"
-        />
       </svg>
     </div>
   );

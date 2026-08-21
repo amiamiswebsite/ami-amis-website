@@ -33,6 +33,9 @@ export async function revealLazyContent(page) {
       scrollTo(0, y);
       await new Promise((resolve) => setTimeout(resolve, 40));
     }
+    document.querySelectorAll(".collage-flow > section, .site-footer").forEach((element) => {
+      element.classList.add("is-visible");
+    });
     scrollTo(0, 0);
   });
   await page.waitForTimeout(250);

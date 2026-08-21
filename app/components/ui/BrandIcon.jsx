@@ -2,9 +2,7 @@ export default function BrandIcon({ className = "", name }) {
   if (name === "instagram") {
     return (
       <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <rect x="4" y="4" width="16" height="16" rx="5" />
-        <circle cx="12" cy="12" r="3.4" />
-        <circle cx="17" cy="7" r="1.1" />
+        <path d="M7.6 3.5h8.8c2.28 0 4.1 1.82 4.1 4.1v8.8c0 2.28-1.82 4.1-4.1 4.1H7.6c-2.28 0-4.1-1.82-4.1-4.1V7.6c0-2.28 1.82-4.1 4.1-4.1z" />
       </svg>
     );
   }

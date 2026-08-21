@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Approach from "./Approach";
 import Brainstorm from "./Brainstorm";
 import Footer from "./Footer";
 import Hero from "./Hero";
@@ -73,9 +72,8 @@ export default function HomeExperience({ variant = "default" }) {
           <Intro variant={variant} />
           <Projects />
           <SocialGrowth variant={variant} />
-          <Approach variant={variant} />
           <Testimonials variant={variant} />
-          <Brainstorm ctaLabel={isHomeTwo ? "gucci" : undefined} />
+          <Brainstorm />
           <Punch />
         </main>
         <Footer />

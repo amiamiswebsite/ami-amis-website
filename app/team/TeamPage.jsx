@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
@@ -9,31 +9,9 @@ import { assetPath } from "../../src/lib/assetPath";
 const teamVideoSrc = "/assets/amiamis_teamvideo2026.mp4";
 const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
 const teamGroupPhoto = "/assets/ami-amis-team-group.webp";
-const teamIntroPlaceholder = "/assets/contact-phones-portrait.jpg";
-const teamPhonePrint = "/assets/team-phone-print.png";
-
-const shoutTitle = "Ami Awieee?";
-const shoutWords = ["Ami", "Awieee?"];
-const shoutLetterSizes = [
-  [0.48, 0.55, 0.62],
-  [0.7, 0.8, 0.92, 1.05, 1.18, 1.32, 1.5],
-];
-
-const teamIntroLines = [
-  ["Ami Amis, een team", "team-intro-static__line--opening"],
-  ["enthousiaste creatievelingen", "team-intro-static__line--hero"],
-  ["met een passie voor content.", "team-intro-static__line--statement"],
-  ["Amicaliteit zit in ons DNA.", "team-intro-static__line--compact"],
-  ["Wanneer jij belt, nemen we op.", "team-intro-static__line--callout"],
-  [
-    "Zelfs al zitten we in bad, staan we op een trouw of zitten we op ‘t WC.",
-    "team-intro-static__line--long",
-  ],
-  [
-    "Omdat het beste werk ontstaat wanneer mensen elkaar vertrouwen.",
-    "team-intro-static__line--closing",
-  ],
-];
+const teamIntroPhoto = "/assets/contact-phones-portrait.jpg";
+const teamIntroTitle = "Ami Awieee?";
+const teamIntroTitleWords = teamIntroTitle.split(" ");
 
 function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -130,9 +108,7 @@ function TeamPhotoSection({ id, subtitle }) {
 
 export default function TeamPage() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const introVisualRef = useRef(null);
-
-  const moveIntroVisual = (event) => {
+  const handleIntroPhotoPointerMove = useCallback((event) => {
     if (
       event.pointerType === "touch" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -140,27 +116,70 @@ export default function TeamPage() {
       return;
     }
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    const frame = event.currentTarget;
+    const rect = frame.getBoundingClientRect();
+    const x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
+    const y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
 
-    introVisualRef.current?.style.setProperty("--intro-tilt-x", `${-y * 3.5}deg`);
-    introVisualRef.current?.style.setProperty("--intro-tilt-y", `${x * 4.5}deg`);
-    introVisualRef.current?.style.setProperty("--intro-image-x", `${x * 8}px`);
-    introVisualRef.current?.style.setProperty("--intro-image-y", `${y * 8}px`);
-  };
+    frame.classList.add("is-tracking");
+    frame.style.setProperty("--team-intro-photo-x", `${(x * 9).toFixed(2)}px`);
+    frame.style.setProperty("--team-intro-photo-y", `${(y * 7).toFixed(2)}px`);
+    frame.style.setProperty("--team-intro-photo-rx", `${(y * -1.45).toFixed(2)}deg`);
+    frame.style.setProperty("--team-intro-photo-ry", `${(x * 1.9).toFixed(2)}deg`);
+  }, []);
 
-  const resetIntroVisual = () => {
-    introVisualRef.current?.style.setProperty("--intro-tilt-x", "0deg");
-    introVisualRef.current?.style.setProperty("--intro-tilt-y", "0deg");
-    introVisualRef.current?.style.setProperty("--intro-image-x", "0px");
-    introVisualRef.current?.style.setProperty("--intro-image-y", "0px");
-  };
+  const handleIntroPhotoPointerLeave = useCallback((event) => {
+    const frame = event.currentTarget;
+
+    frame.classList.remove("is-tracking");
+    frame.style.setProperty("--team-intro-photo-x", "0px");
+    frame.style.setProperty("--team-intro-photo-y", "0px");
+    frame.style.setProperty("--team-intro-photo-rx", "0deg");
+    frame.style.setProperty("--team-intro-photo-ry", "0deg");
+  }, []);
+
+  useEffect(() => {
+    const section = document.querySelector(".team-intro-static--story");
+
+    document.body.classList.add("collage-ready");
+
+    if (!section) {
+      return () => {
+        document.body.classList.remove("collage-ready");
+      };
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      section.classList.add("is-visible");
+      return () => {
+        document.body.classList.remove("collage-ready");
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add("is-visible");
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.14 },
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      document.body.classList.remove("collage-ready");
+    };
+  }, []);
 
   return (
     <>
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
-        <header className="team-intro-static" id="team-intro">
+        <header className="team-intro-static team-intro-static--story" id="team-intro">
           <a
             className="hero__logo team-hero__logo team-intro-static__logo"
             href={assetPath("/")}
@@ -168,89 +187,61 @@ export default function TeamPage() {
           />
 
           <div className="team-hero__copy team-intro-static__copy">
-            <div className="team-intro-static__bento">
-              <section className="team-bento-card team-bento-card--identity">
-                <h1 aria-label={shoutTitle} className="team-shout-title">
-                  <span aria-hidden="true" className="team-shout-title__words">
-                    {shoutWords.map((word, wordIndex) => (
-                      <span className="team-shout-title__word" key={word}>
-                        {[...word].map((letter, index) => (
+            <div className="team-intro-static__hero-grid team-story-hero">
+              <section className="team-story-hero__copy" aria-labelledby="team-intro-title">
+                <h1 aria-label={teamIntroTitle} id="team-intro-title">
+                  {teamIntroTitleWords.map((word, wordIndex) => {
+                    const charOffset = teamIntroTitleWords
+                      .slice(0, wordIndex)
+                      .reduce((sum, currentWord) => sum + currentWord.length + 1, 0);
+
+                    return (
+                      <span
+                        aria-hidden="true"
+                        className="team-story-hero__title-word"
+                        key={word}
+                      >
+                        {Array.from(word).map((char, index) => (
                           <span
-                            className="team-shout-title__letter"
-                            key={`${word}-${letter}-${index}`}
-                            style={{
-                              "--shout-delay": `${(wordIndex * 4 + index) * 62}ms`,
-                              "--shout-size": `${shoutLetterSizes[wordIndex][index]}em`,
-                            }}
+                            className="team-story-hero__title-char"
+                            key={`${char}-${index}`}
+                            style={{ "--team-title-delay": `${60 + (charOffset + index) * 36}ms` }}
                           >
-                            {letter}
+                            {char}
                           </span>
                         ))}
                       </span>
-                    ))}
-                  </span>
+                    );
+                  })}
                 </h1>
-
-                <p className="team-intro-static__lead team-intro-static__lead--identity">
-                  {teamIntroLines.slice(0, 3).map(([line, className]) => (
-                    <span className={`team-intro-static__line ${className}`} key={line}>
-                      {line}
-                    </span>
-                  ))}
-                </p>
-              </section>
-
-              <section className="team-bento-card team-bento-card--promise">
-                <p className="team-intro-static__lead team-intro-static__lead--promise">
-                  {teamIntroLines.slice(3, 6).map(([line, className]) => (
-                    <span className={`team-intro-static__line ${className}`} key={line}>
-                      {line}
-                    </span>
-                  ))}
-                </p>
-                <span aria-hidden="true" className="team-bento-card__phone">
-                  <img alt="" decoding="async" src={assetPath(teamPhonePrint)} />
-                </span>
-              </section>
-
-              <section className="team-bento-card team-bento-card--trust">
-                <p className="team-intro-static__lead">
-                  <span className="team-intro-static__line team-intro-static__line--closing">
-                    {teamIntroLines[6][0]}
-                  </span>
-                </p>
+                <div className="team-story-hero__body">
+                  <p>
+                    Ami Amis, een team enthousiaste creatievelingen met een passie voor
+                    content. Amicaliteit zit in ons DNA. Wanneer jij belt, nemen we op. Zelfs
+                    al zitten we in bad, staan we op een trouw of zitten we op ‘t WC. Omdat
+                    het beste werk ontstaat wanneer mensen elkaar vertrouwen.
+                  </p>
+                  <p>
+                    Op zoek naar totale ontzorging? We got you! Bij ons kan je terecht voor
+                    een totaal (content)marketingpakket: van video, fotografie en animatie tot
+                    grafisch design en websitecreatie -en optimalisatie… Kom snel eens langs
+                    om te sparren over je marketingstrategie!
+                  </p>
+                </div>
               </section>
 
               <figure
-                className="team-bento-card team-bento-card--media team-intro-static__visual"
-                onPointerLeave={resetIntroVisual}
-                onPointerMove={moveIntroVisual}
-                ref={introVisualRef}
+                className="team-intro-static__visual team-story-hero__photo"
+                onPointerLeave={handleIntroPhotoPointerLeave}
+                onPointerMove={handleIntroPhotoPointerMove}
               >
                 <img
-                  alt=""
+                  alt="Ami Amis teamfoto"
                   decoding="async"
                   fetchPriority="high"
-                  src={assetPath(teamIntroPlaceholder)}
+                  src={assetPath(teamIntroPhoto)}
                 />
               </figure>
-
-              <div className="team-bento-card team-bento-card--story">
-                <p>
-                  Of het nu is voor een coole campagne, een fancy video of om samen een bank
-                  te overvallen - wij staan voor je klaar. Omdat het beste werk ontstaat
-                  wanneer mensen elkaar vertrouwen.
-                </p>
-              </div>
-
-              <div className="team-bento-card team-bento-card--services">
-                <p>
-                  Op zoek naar totale ontzorging? We got you! Bij ons kan je terecht voor een
-                  totaal (content)marketingpakket: van video, fotografie en animatie tot
-                  grafisch design en websitecreatie -en optimalisatie… Kom snel eens langs om
-                  te sparren over je marketingstrategie!
-                </p>
-              </div>
             </div>
           </div>
         </header>

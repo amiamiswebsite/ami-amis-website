@@ -70,7 +70,7 @@ export default function Punch() {
             ))}
           </div>
           <a className="button button--red punch__button" href={assetPath("/contact/")}>
-            Eens afspreken?
+            Eens sparren?
           </a>
         </div>
       </div>

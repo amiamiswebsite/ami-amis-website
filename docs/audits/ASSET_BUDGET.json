@@ -1,7 +1,7 @@
 {
   "source": "public/",
-  "totalFiles": 242,
-  "maxTotalBytes": 520889885,
+  "totalFiles": 243,
+  "maxTotalBytes": 521036867,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
@@ -37,8 +37,8 @@
       "bytes": 1337042
     },
     ".webp": {
-      "count": 39,
-      "bytes": 14897518
+      "count": 40,
+      "bytes": 15044500
     }
   },
   "largest": [

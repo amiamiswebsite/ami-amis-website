@@ -1,15 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Approach from "../components/Approach";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import Icon from "../components/ui/Icon";
 import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
 import { buildServiceIntentHref, trackServiceIntent } from "../../src/lib/serviceIntent";
 import styles from "./ServicesPageTwo.module.css";
 import {
-  serviceTwoExpectations,
+  serviceTwoApproachCards,
   serviceTwoFaqs,
   serviceTwoProblems,
   serviceTwoTools,
@@ -40,6 +42,10 @@ const OTHER_PROBLEM_INTENT = {
   problemNumber: "07",
   problemTitle: "Een ander probleem?",
 };
+const SERVICES_HERO_VIMEO_ID = "1220145767";
+const SERVICES_HERO_VIMEO_PLAYER_ID = `services-hero-vimeo-${SERVICES_HERO_VIMEO_ID}`;
+const SERVICES_HERO_VIMEO_SRC = `https://player.vimeo.com/video/${SERVICES_HERO_VIMEO_ID}?autoplay=1&loop=1&muted=1&controls=0&autopause=0&playsinline=1&title=0&byline=0&portrait=0&dnt=1&player_id=${SERVICES_HERO_VIMEO_PLAYER_ID}`;
+const SHOW_APPROACH_BACKUP = false;
 
 function useReducedMotion() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -55,36 +61,6 @@ function useReducedMotion() {
   }, []);
 
   return reducedMotion;
-}
-
-function useActiveProblem(ids) {
-  const [activeId, setActiveId] = useState(ids[0] || "");
-
-  useEffect(() => {
-    const nodes = ids.map((id) => document.getElementById(id)).filter(Boolean);
-
-    if (!nodes.length) {
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible) {
-          setActiveId(visible.target.id);
-        }
-      },
-      { rootMargin: "-24% 0px -58% 0px", threshold: [0.08, 0.2, 0.4, 0.65] },
-    );
-
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, [ids]);
-
-  return activeId;
 }
 
 function usePointerDepth(disabled = false, intensity = 4.5) {
@@ -149,6 +125,32 @@ function getCaseReference(reference) {
   };
 }
 
+function postVimeoCommand(iframe, method, value) {
+  if (!iframe?.contentWindow) {
+    return;
+  }
+
+  const message = value === undefined ? { method } : { method, value };
+  const payload = JSON.stringify(message);
+
+  try {
+    iframe.contentWindow.postMessage(payload, "https://player.vimeo.com");
+  } catch {
+    iframe.contentWindow.postMessage(payload, "*");
+  }
+}
+
+function ButtonArrow({ className = "" }) {
+  return (
+    <span className={`${styles.buttonArrow} ${className}`.trim()} aria-hidden="true">
+      <svg className={styles.buttonArrowIcon} viewBox="0 0 24 24" focusable="false">
+        <path d="M7 17 17 7" />
+        <path d="M9 7h8v8" />
+      </svg>
+    </span>
+  );
+}
+
 function ServiceIntentLink({ children, className = "", intent }) {
   const normalizedIntent = { source: "diensten-2", ...intent };
 
@@ -163,7 +165,7 @@ function ServiceIntentLink({ children, className = "", intent }) {
       onClick={() => trackServiceIntent(normalizedIntent)}
     >
       {children}
-      <span aria-hidden="true">↗</span>
+      <ButtonArrow />
     </a>
   );
 }
@@ -188,9 +190,9 @@ function DepthFrame({ children, className = "", href, reducedMotion, label }) {
   return <div {...sharedProps}>{children}</div>;
 }
 
-function RisoHeading({ id, lines }) {
+function RisoHeading({ ariaLabel, className = "", id, lines }) {
   return (
-    <h2 className={styles.risoHeading} id={id}>
+    <h2 aria-label={ariaLabel} className={`${styles.risoHeading} ${className}`.trim()} id={id}>
       {lines.map((line) => (
         <span className={styles.risoLine} key={line}>
           <span className={styles.risoInk} aria-hidden="true" />
@@ -198,6 +200,107 @@ function RisoHeading({ id, lines }) {
         </span>
       ))}
     </h2>
+  );
+}
+
+function TypingRotator({ reducedMotion }) {
+  const phrases = useMemo(() => ["niet gewoon content.", "oplossingen."], []);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [text, setText] = useState(phrases[0]);
+  const [phase, setPhase] = useState("hold");
+
+  useEffect(() => {
+    if (reducedMotion) return undefined;
+
+    const target = phrases[phraseIndex];
+    let timer;
+
+    if (phase === "hold") {
+      timer = window.setTimeout(() => setPhase("select"), 1250);
+    } else if (phase === "select") {
+      timer = window.setTimeout(() => setPhase("delete"), 320);
+    } else if (phase === "delete") {
+      if (text.length > 0) {
+        timer = window.setTimeout(
+          () => setText((value) => value.slice(0, -1)),
+          28,
+        );
+      } else {
+        timer = window.setTimeout(() => {
+          setPhraseIndex((value) => (value + 1) % phrases.length);
+          setPhase("type");
+        }, 90);
+      }
+    } else if (phase === "type") {
+      if (text.length < target.length) {
+        timer = window.setTimeout(
+          () => setText(target.slice(0, text.length + 1)),
+          46,
+        );
+      } else {
+        timer = window.setTimeout(() => setPhase("hold"), 180);
+      }
+    }
+
+    return () => window.clearTimeout(timer);
+  }, [phase, phraseIndex, phrases, reducedMotion, text]);
+
+  return (
+    <span className={styles.heroRotator} aria-hidden="true">
+      <span className={styles.heroRotatorSizer}>niet gewoon content.</span>
+      <span
+        className={`${styles.heroTypedTerm} ${
+          phase === "select" ? styles.heroTypedTermSelected : ""
+        }`}
+      >
+        {reducedMotion ? "oplossingen." : text}
+      </span>
+    </span>
+  );
+}
+
+function ServicesHeroVideo({ reducedMotion }) {
+  const iframeRef = useRef(null);
+  const [soundOn, setSoundOn] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      postVimeoCommand(iframeRef.current, "setMuted", true);
+      postVimeoCommand(iframeRef.current, "setVolume", 0);
+      postVimeoCommand(iframeRef.current, "play");
+    }, 320);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const toggleSound = () => {
+    const nextSoundOn = !soundOn;
+
+    setSoundOn(nextSoundOn);
+    postVimeoCommand(iframeRef.current, "setMuted", !nextSoundOn);
+    postVimeoCommand(iframeRef.current, "setVolume", nextSoundOn ? 1 : 0);
+    postVimeoCommand(iframeRef.current, "play");
+  };
+
+  return (
+    <DepthFrame className={`${styles.heroVisual} ${styles.heroVideoFrame}`} reducedMotion={reducedMotion}>
+      <iframe
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        data-case-vimeo-player={SERVICES_HERO_VIMEO_PLAYER_ID}
+        ref={iframeRef}
+        src={SERVICES_HERO_VIMEO_SRC}
+        title="Ami Amis dienstenvideo"
+      />
+      <button
+        aria-label={soundOn ? "Zet geluid uit" : "Zet geluid aan"}
+        aria-pressed={soundOn}
+        className={styles.heroSoundButton}
+        onClick={toggleSound}
+        type="button"
+      >
+        <Icon name={soundOn ? "volume" : "volumeOff"} />
+      </button>
+    </DepthFrame>
   );
 }
 
@@ -219,15 +322,7 @@ function ServicesHero({ reducedMotion }) {
             aria-label="Wij creëren niet gewoon content. Wij creëren oplossingen."
           >
             <span>Wij creëren</span>
-            <span className={styles.heroRotator} aria-hidden="true">
-              <span className={styles.heroRotatorSizer}>niet gewoon content.</span>
-              <span className={`${styles.heroTerm} ${styles.heroTermContent}`}>
-                niet gewoon content.
-              </span>
-              <span className={`${styles.heroTerm} ${styles.heroTermSolution}`}>
-                oplossingen.
-              </span>
-            </span>
+            <TypingRotator reducedMotion={reducedMotion} />
           </h1>
           <p>
             Je hoeft nog niet te weten of je een campagne, een video of een volledige contentflow nodig hebt. Vertel ons waar het wringt. Wij zoeken samen uit wat werkt — en maken het dan ook ;).
@@ -240,32 +335,50 @@ function ServicesHero({ reducedMotion }) {
           </ServiceIntentLink>
         </div>
 
-        <DepthFrame className={styles.heroVisual} reducedMotion={reducedMotion}>
-          <img
-            src={assetPath("/images/services/services-header-brent.jpg")}
-            alt=""
-            width="1122"
-            height="1402"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </DepthFrame>
+        <ServicesHeroVideo reducedMotion={reducedMotion} />
       </div>
     </section>
   );
 }
 
-function Expectations() {
+function ServicesApproach() {
   return (
-    <section className={styles.expectations} aria-labelledby="services-two-expectations">
+    <div className={styles.servicesApproach}>
+      <Approach variant="home2" />
+    </div>
+  );
+}
+
+function ApproachCardsPreview() {
+  return (
+    <section
+      className={`${styles.expectations} ${styles.approachCardsPreview}`}
+      id="aanpak"
+      aria-labelledby="services-two-approach-cards"
+    >
       <header className={`${styles.sectionHeading} ${styles.expectationsHeading}`}>
-        <RisoHeading id="services-two-expectations" lines={["Wat kun je verwachten?"]} />
+        <RisoHeading
+          id="services-two-approach-cards"
+          lines={["Onze", "persoonlijke", "aanpak"]}
+        />
       </header>
 
-      <ol className={styles.expectationList}>
-        {serviceTwoExpectations.map((item, index) => (
+      <ol className={`${styles.expectationList} ${styles.approachCardList}`}>
+        {serviceTwoApproachCards.map((item, index) => (
           <li key={item.title}>
             <span>{String(index + 1).padStart(2, "0")}</span>
+            {item.image ? (
+              <img
+                alt=""
+                aria-hidden="true"
+                className={styles.approachCardImage}
+                decoding="async"
+                height="640"
+                loading="lazy"
+                src={assetPath(item.image)}
+                width="640"
+              />
+            ) : null}
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </li>
@@ -348,45 +461,16 @@ function ProblemArticle({ problem, reducedMotion }) {
 }
 
 function Problems({ reducedMotion }) {
-  const ids = useMemo(() => serviceTwoProblems.map((problem) => problem.id), []);
-  const activeId = useActiveProblem(ids);
-
-  const jumpTo = (event, id) => {
-    if (reducedMotion) {
-      return;
-    }
-
-    const target = document.getElementById(id);
-    if (!target) {
-      return;
-    }
-
-    event.preventDefault();
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `#${id}`);
-  };
-
   return (
     <section className={styles.problems} aria-labelledby="services-two-problems">
       <div className={styles.problemLayout}>
         <aside className={styles.problemAside}>
-          <div>
-            <RisoHeading id="services-two-problems" lines={["Wa is uw", "probleem?!"]} />
-          </div>
-          <nav aria-label="Probleemdossiers">
-            {serviceTwoProblems.map((problem) => (
-              <a
-                aria-current={activeId === problem.id ? "location" : undefined}
-                className={activeId === problem.id ? styles.activeProblem : ""}
-                href={`#${problem.id}`}
-                key={problem.id}
-                onClick={(event) => jumpTo(event, problem.id)}
-              >
-                <span>{problem.number}</span>
-                {problem.title}
-              </a>
-            ))}
-          </nav>
+          <RisoHeading
+            ariaLabel="Wa is uw probleem?!"
+            className={styles.problemTitle}
+            id="services-two-problems"
+            lines={["Wa is uw", "probleem?!"]}
+          />
         </aside>
 
         <div className={styles.problemList}>
@@ -401,10 +485,19 @@ function Problems({ reducedMotion }) {
 
 function Interstitial() {
   return (
-    <section className={styles.interstitial} aria-label="Contentpartner">
-      <p>
-        “I got 99 problems but a <em>goeie contentpartner</em> ain’t one”
-      </p>
+    <section className={styles.interstitial} aria-labelledby="services-two-partner">
+      <div className={styles.partnerStatement}>
+        <span className={styles.partnerStatementRule} aria-hidden="true" />
+        <h2
+          id="services-two-partner"
+          aria-label="I got 99 problems but a goeie contentpartner ain’t one"
+        >
+          <span aria-hidden="true">I got 99 problems</span>
+          <span aria-hidden="true">but a goeie</span>
+          <em aria-hidden="true">contentpartner</em>
+          <span aria-hidden="true">ain’t one</span>
+        </h2>
+      </div>
     </section>
   );
 }
@@ -436,7 +529,7 @@ function Tools({ reducedMotion }) {
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 {tool.label}
-                <span aria-hidden="true">↗</span>
+                <ButtonArrow />
               </a>
             );
           })}
@@ -496,6 +589,7 @@ function Faq() {
               <div
                 className={`${styles.faqPanel} ${isOpen ? styles.openFaq : ""}`}
                 id={`services-two-faq-panel-${index}`}
+                inert={!isOpen}
               >
                 <div>
                   {faq.answer.map((paragraph) => (
@@ -545,7 +639,8 @@ export default function ServicesPageTwo() {
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className={styles.page}>
           <ServicesHero reducedMotion={reducedMotion} />
-          <Expectations />
+          <ApproachCardsPreview />
+          {SHOW_APPROACH_BACKUP ? <ServicesApproach /> : null}
           <Problems reducedMotion={reducedMotion} />
           <Interstitial />
           <Tools reducedMotion={reducedMotion} />

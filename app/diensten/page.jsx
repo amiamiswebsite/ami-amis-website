@@ -1,4 +1,4 @@
-import ServicesPage from "./ServicesPage";
+import ServicesPageTwo from "../diensten-2/ServicesPageTwo";
 import { canonicalUrl } from "../../src/lib/site";
 
 export const metadata = {
@@ -9,5 +9,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <ServicesPage />;
+  return <ServicesPageTwo />;
 }

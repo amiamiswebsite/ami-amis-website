@@ -103,7 +103,6 @@ export default function RootLayout({ children }) {
   const assetVariables = {
     "--logo-mask-image": `url("${assetPath("/assets/logo-black.png")}")`,
     "--paper-bg-image": `url("${assetPath("/assets/paper-bg.webp")}")`,
-    "--pixel-cursor-arrow": `url("${assetPath("/assets/cursor-pixel-arrow.svg")}") 1 1, auto`,
   };
 
   return (

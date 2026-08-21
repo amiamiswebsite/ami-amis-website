@@ -17,6 +17,16 @@ const iconDefinitions = {
     fill: true,
   },
   play: { paths: ["M8 5.8v12.4l10-6.2z"], fill: true },
+  volume: {
+    paths: [
+      "M11 5 6.4 9H3v6h3.4l4.6 4V5Z",
+      "M15.4 8.6a4.8 4.8 0 0 1 0 6.8",
+      "M18.8 5.2a9.6 9.6 0 0 1 0 13.6",
+    ],
+  },
+  volumeOff: {
+    paths: ["M11 5 6.4 9H3v6h3.4l4.6 4V5Z", "M18 9l5 5M23 9l-5 5"],
+  },
 };
 
 const sizeMap = {

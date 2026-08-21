@@ -41,7 +41,6 @@ export default function Testimonials({ variant = "default" }) {
   const railRef = useRef(null);
   const animationFrameRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isUserPaused, setIsUserPaused] = useState(false);
   const [isInteractionPaused, setIsInteractionPaused] = useState(false);
 
   const updateActiveSlide = () => {
@@ -97,7 +96,7 @@ export default function Testimonials({ variant = "default" }) {
   };
 
   useEffect(() => {
-    if (isUserPaused || isInteractionPaused || typeof window === "undefined") {
+    if (isInteractionPaused || typeof window === "undefined") {
       return undefined;
     }
 
@@ -116,7 +115,7 @@ export default function Testimonials({ variant = "default" }) {
     }, 6500);
 
     return () => window.clearInterval(autoplay);
-  }, [activeIndex, displayedTestimonials.length, isInteractionPaused, isUserPaused]);
+  }, [activeIndex, displayedTestimonials.length, isInteractionPaused]);
 
   return (
     <section
@@ -202,17 +201,6 @@ export default function Testimonials({ variant = "default" }) {
             />
           ))}
         </div>
-
-        <button
-          aria-label={isUserPaused ? "Start automatisch wisselen" : "Pauzeer automatisch wisselen"}
-          aria-pressed={isUserPaused}
-          className="friends-testimonials__autoplay"
-          onClick={() => setIsUserPaused((paused) => !paused)}
-          title={isUserPaused ? "Automatisch wisselen starten" : "Automatisch wisselen pauzeren"}
-          type="button"
-        >
-          <span aria-hidden="true" className="friends-testimonials__autoplay-icon" />
-        </button>
 
         <a className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")}>
           VRIENDEN WORDEN?

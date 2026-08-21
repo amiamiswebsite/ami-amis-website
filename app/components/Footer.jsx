@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
 import BrandIcon from "./ui/BrandIcon";
 
 const contactLinks = [
@@ -44,15 +45,52 @@ function FooterLink({ href, children, className = "", ...props }) {
 
 export default function Footer({ variant = "dark" }) {
   const currentYear = new Date().getFullYear();
+  const footerRef = useRef(null);
+  const frameRef = useRef(0);
   const footerClassName =
     variant === "paper-flat"
       ? "site-footer site-footer--paper site-footer--paper-flat"
       : variant === "paper"
         ? "site-footer site-footer--paper"
         : "site-footer";
+  const updateFooterGradient = useCallback((event) => {
+    if (event.pointerType === "touch") {
+      return;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    window.cancelAnimationFrame(frameRef.current);
+    frameRef.current = window.requestAnimationFrame(() => {
+      footerRef.current?.style.setProperty("--footer-gradient-x", `${x.toFixed(1)}%`);
+      footerRef.current?.style.setProperty("--footer-gradient-y", `${y.toFixed(1)}%`);
+    });
+  }, []);
+  const resetFooterGradient = useCallback(() => {
+    window.cancelAnimationFrame(frameRef.current);
+    frameRef.current = window.requestAnimationFrame(() => {
+      footerRef.current?.style.setProperty("--footer-gradient-x", "86%");
+      footerRef.current?.style.setProperty("--footer-gradient-y", "16%");
+    });
+  }, []);
+
+  useEffect(
+    () => () => {
+      window.cancelAnimationFrame(frameRef.current);
+    },
+    [],
+  );
 
   return (
-    <footer className={footerClassName} id="contact">
+    <footer
+      className={footerClassName}
+      id="contact"
+      onPointerLeave={resetFooterGradient}
+      onPointerMove={updateFooterGradient}
+      ref={footerRef}
+    >
       <div className="site-footer__inner">
         <div className="site-footer__grid" aria-label="Footer contact en socials">
           <section className="site-footer__panel">

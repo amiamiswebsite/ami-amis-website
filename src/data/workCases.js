@@ -19,6 +19,7 @@ export const workCases = [
       "Samen maken we content die even levendig is als hun speeltuin: vrolijk, kleurrijk en 100% Tarzan & Jane.",
     categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding"],
     image: "/work/tarzan-en-jane-thumb.webp",
+    homeImage: "/work/tarzan-en-jane-home-thumb.webp",
     href: "/work/tarzan-en-jane/",
     featured: false,
     status: "ready",

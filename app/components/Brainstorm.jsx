@@ -4,7 +4,7 @@ import { assetPath } from "../../src/lib/assetPath";
 const windLines = Array.from({ length: 7 }, (_, index) => index + 1);
 const paperFlakes = Array.from({ length: 6 }, (_, index) => index + 1);
 
-export default function Brainstorm({ ctaLabel = "Klik dan hier" }) {
+export default function Brainstorm({ ctaLabel = "All Gucci, baby" }) {
   const sectionRef = useRef(null);
 
   useEffect(() => {

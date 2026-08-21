@@ -5,10 +5,6 @@ import { usePathname } from "next/navigation";
 import { assetPath } from "../../src/lib/assetPath";
 
 function pageFromPathname(pathname, fallbackPage) {
-  if (pathname?.includes("/assets")) {
-    return "assets";
-  }
-
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -29,10 +25,6 @@ function pageFromPathname(pathname, fallbackPage) {
 }
 
 function activeKeyFromLocation(pathname, hash, fallbackPage) {
-  if (pathname?.includes("/assets")) {
-    return "assets";
-  }
-
   if (pathname?.includes("/diensten")) {
     return "services";
   }
@@ -85,11 +77,6 @@ function getItems(activePage, activeKey) {
       label: "Diensten",
       href: assetPath("/diensten/"),
       active: activeKey === "services",
-    },
-    {
-      label: "Assets",
-      href: assetPath("/assets/"),
-      active: activeKey === "assets",
     },
     {
       label: "Contact",

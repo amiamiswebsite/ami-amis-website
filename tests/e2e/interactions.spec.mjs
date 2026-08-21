@@ -40,16 +40,12 @@ test("FAQ keeps closed content inert and exposes opened content", async ({ page 
   await expect(panel).toHaveJSProperty("inert", false);
 });
 
-test("testimonial autoplay has a persistent user-controlled pause", async ({ page }) => {
+test("testimonial autoplay has no visible pause control", async ({ page }) => {
   await page.goto(routeUrl("/"), { waitUntil: "domcontentloaded" });
 
-  const pause = page.getByRole("button", { name: "Pauzeer automatisch wisselen" });
-  await expect(pause).toHaveAttribute("aria-pressed", "false");
-  await pause.click();
-  await expect(page.getByRole("button", { name: "Start automatisch wisselen" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
+  await expect(
+    page.getByRole("button", { name: /Pauzeer automatisch wisselen|Start automatisch wisselen/ }),
+  ).toHaveCount(0);
 });
 
 test("contact form preserves its visible submit label and mail fallback", async ({ page }) => {

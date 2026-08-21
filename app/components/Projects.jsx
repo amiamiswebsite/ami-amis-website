@@ -358,7 +358,7 @@ export default function Projects() {
                 <span className="projects__print-mat">
                   <span className="projects__print-media">
                     <img
-                      src={assetPath(item.image)}
+                      src={assetPath(item.homeImage ?? item.image)}
                       alt={`${projectLabels[item.slug] ?? item.client} projectbeeld`}
                       loading="lazy"
                       decoding="async"
