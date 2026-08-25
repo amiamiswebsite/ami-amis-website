@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const highlightedProjectSlugs = ["visit-antwerpen", "x-oats", "tarzan-en-jane"];
 const projectLabels = {
@@ -400,10 +401,9 @@ export default function Projects() {
         </div>
       </div>
 
-      <a className="button projects__button projects__button--yellow" href={assetPath("/work/")}>
-        <span>Zie alle</span>
-        <span>projecten</span>
-      </a>
+      <HomeCtaLink className="button projects__button projects__button--yellow" href={assetPath("/work/")}>
+        Zie alle projecten
+      </HomeCtaLink>
     </section>
   );
 }

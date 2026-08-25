@@ -33,6 +33,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@vimeo/player": "^2.30.4",
     "matter-js": "^0.20.0",
     "next": "16.2.9",
     "react": "19.2.7",

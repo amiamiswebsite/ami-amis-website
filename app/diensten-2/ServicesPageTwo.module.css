@@ -730,8 +730,35 @@
   background: #3a3936;
 }
 
-.caseGridDouble .casePreview {
+.caseGridDouble .casePreview,
+.caseGridDouble .casePlaceholder {
   aspect-ratio: 3 / 4;
+}
+
+.casePlaceholder {
+  aspect-ratio: 4 / 3;
+  padding: clamp(18px, 2.2vw, 30px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(28, 28, 28, 0.2);
+  border-radius: 6px;
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.casePlaceholder > span {
+  max-width: 12ch;
+  font-family: var(--font-black);
+  font-size: clamp(1.5rem, 2.8vw, 3.2rem);
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.casePlaceholder > small {
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
 }
 
 .casePreview > span,
@@ -869,6 +896,14 @@
   font-family: var(--font-black);
   font-size: clamp(5rem, 12vw, 10rem);
   text-decoration: none;
+}
+
+.toolPlaceholder {
+  padding: clamp(28px, 5vw, 70px);
+  font-size: clamp(2.2rem, 6vw, 5.5rem);
+  line-height: 0.92;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .faq {
@@ -1334,7 +1369,7 @@
   min-height: 1.1em;
   margin-top: 0.12em;
   padding: 0;
-  overflow: visible;
+  overflow: clip;
   background: transparent;
   clip-path: none;
   color: var(--ink);
@@ -1483,6 +1518,16 @@
   text-wrap: balance;
   text-transform: uppercase;
   white-space: normal;
+}
+
+.problemSubtitle {
+  max-width: 42ch;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  color: rgba(28, 28, 28, 0.74);
+  font-size: clamp(1.05rem, 1.3vw, 1.22rem);
+  font-weight: 720;
+  line-height: 1.42;
+  text-wrap: pretty;
 }
 
 .tools .sectionHeading h2,
@@ -1918,108 +1963,415 @@
   }
 }
 
-.expectations + .approachCardsPreview {
-  margin-top: calc(-1 * clamp(36px, 4.5vw, 70px));
-  padding-top: calc(clamp(76px, 9vw, 132px) + clamp(36px, 4.5vw, 70px));
-}
-
-.approachCardsPreview::before {
-  top: 54%;
-  left: 42%;
-  width: clamp(820px, 94vw, 1540px);
-  opacity: 0.34;
-  transform: translate(-50%, -50%) rotate(10deg);
-}
-
-.approachCardsPreview .expectationsHeading h2 {
-  width: min(100%, 800px);
-}
-
-@media (min-width: 1024px) {
-  .approachCardsPreview .expectationsHeading h2 {
-    display: flex;
-    width: min(var(--page-max), 100%);
-    max-width: 100%;
-    align-items: flex-start;
-    gap: clamp(8px, 0.75vw, 14px);
-    font-size: clamp(3.4rem, 4.15vw, 4.25rem);
-    white-space: nowrap;
-  }
-
-  .approachCardsPreview .expectationsHeading .risoLine,
-  .approachCardsPreview .expectationsHeading .risoLine:nth-child(even) {
-    flex: 0 0 auto;
-    width: max-content;
-    max-width: none;
-    margin-top: 0;
-    margin-left: 0;
-  }
-}
-
-.approachCardList {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.approachCardList li {
-  --approach-card-image-size: clamp(66px, 5.8vw, 88px);
-  --approach-divider-top: clamp(188px, 14.4vw, 224px);
-  grid-template-rows: var(--approach-divider-top) minmax(0, 1fr);
-  min-height: clamp(350px, 26.5vw, 408px);
-}
-
-.approachCardImage {
-  position: absolute;
+/* Alternate process direction: an open horizontal timeline without cards. */
+.approachTimeline {
+  position: relative;
   z-index: 2;
-  top: var(--expectation-badge-inset);
-  right: var(--expectation-badge-inset);
-  width: var(--approach-card-image-size);
-  height: var(--approach-card-image-size);
+  isolation: isolate;
+  padding: clamp(88px, 10vw, 152px)
+    max(var(--page-pad), calc((100% - var(--page-max)) / 2));
+  overflow: hidden;
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.approachTimeline::before {
+  position: absolute;
+  z-index: -1;
+  top: 58%;
+  left: 50%;
+  width: clamp(760px, 92vw, 1480px);
+  aspect-ratio: 1;
+  background: var(--orange);
+  clip-path: polygon(
+    50% 0%,
+    60% 31%,
+    84% 14%,
+    69% 40%,
+    100% 50%,
+    69% 60%,
+    84% 86%,
+    60% 69%,
+    50% 100%,
+    40% 69%,
+    16% 86%,
+    31% 60%,
+    0% 50%,
+    31% 40%,
+    16% 14%,
+    40% 31%
+  );
+  content: "";
+  opacity: 0.42;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(7deg);
+}
+
+.approachTimelineInner {
+  width: min(var(--page-max), 100%);
+  margin-inline: auto;
+}
+
+.approachTimelineHeader {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(28px, 4vw, 64px);
+  padding-bottom: 0;
+}
+
+.approachTimelineHeader::before,
+.approachTimelineHeader::after {
+  content: none;
+}
+
+.approachTimelineHeader h2 {
+  display: grid;
+  justify-items: start;
+  max-width: 13ch;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(3.8rem, 5.4vw, 6rem);
+  font-weight: 900;
+  line-height: 0.82;
+  text-wrap: balance;
+}
+
+.approachTimelineHeader h2 > span {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  padding: 0.06em 0.14em 0.12em;
+  overflow: hidden;
+  background: var(--red);
+  clip-path: polygon(0.6% 5%, 99.2% 0, 100% 92%, 1.3% 100%);
+}
+
+.approachTimelineHeader h2 > span:first-child {
+  transform: rotate(-0.65deg);
+}
+
+.approachTimelineHeader h2 > span + span {
+  margin-top: -0.05em;
+  margin-left: 0.18em;
+  transform: rotate(0.45deg);
+}
+
+.approachTimelineStatus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(66px, 5vw, 74px);
+  height: clamp(40px, 3.4vw, 46px);
+  padding: 0 13px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: var(--ink);
+  font-family: var(--font-black);
+  font-size: clamp(1.02rem, 1.25vw, 1.2rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  line-height: 1;
+  animation: approachTimelineCounterBump 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.approachTimelineStatus strong,
+.approachTimelineStatus span {
+  display: block;
+  line-height: 1;
+  transform: translateY(1px);
+}
+
+.approachTimelineStatus strong {
+  color: var(--red);
+  font: inherit;
+}
+
+.approachTimelineList {
+  --timeline-card-width: clamp(280px, 31vw, 390px);
+  --timeline-edge-space: max(0px, calc((100% - var(--timeline-card-width)) / 2));
+  position: relative;
+  display: grid;
+  grid-auto-columns: var(--timeline-card-width);
+  grid-auto-flow: column;
+  grid-auto-rows: 1fr;
+  margin: clamp(48px, 5.5vw, 76px) 0 0;
+  padding: clamp(36px, 3.2vw, 42px) var(--timeline-edge-space) 16px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-behavior: smooth;
+  scroll-padding-inline: var(--timeline-edge-space);
+  scroll-snap-type: inline mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.approachTimelineList::-webkit-scrollbar {
+  display: none;
+}
+
+.approachTimelineStep {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: clamp(58px, 5.2vw, 70px) clamp(20px, 2vw, 28px) 8px 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  opacity: 1;
+}
+
+.approachTimelineStep::before {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 2px;
+  z-index: 0;
+  background: var(--red);
+  content: "";
+  transition: background-color 360ms ease;
+}
+
+.approachTimelineStep:first-child::before {
+  display: none;
+}
+
+.approachTimelineStep::after {
+  position: absolute;
+  z-index: 3;
+  top: 1px;
+  left: 0;
+  display: grid;
+  width: clamp(42px, 3.8vw, 48px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 3px solid var(--yellow);
+  border-radius: 50%;
+  background-color: var(--red);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--red) 64%, transparent);
+  color: var(--paper);
+  content: attr(data-step-number);
+  font-family: var(--font-black);
+  font-size: clamp(1rem, 1.2vw, 1.16rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  line-height: 1;
+  transform: translateY(-50%) scale(0.88);
+  transition:
+    background-color 240ms ease,
+    box-shadow 360ms ease,
+    transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.approachTimelineStepActive {
+  opacity: 1;
+}
+
+.approachTimelineStepActive::before {
+  background: var(--red);
+}
+
+.approachTimelineStepActive::after {
+  background: var(--red);
+  box-shadow:
+    0 0 0 1px var(--red),
+    0 0 0 8px color-mix(in srgb, var(--red) 18%, transparent);
+  transform: translateY(-50%) scale(1);
+}
+
+.approachTimelineCard {
+  --timeline-image-size: clamp(88px, 8.25vw, 120px);
+  --timeline-image-gap: clamp(16px, 1.6vw, 24px);
+  --timeline-image-reserve: calc(var(--timeline-image-size) + var(--timeline-image-gap));
+  position: relative;
+  display: grid;
+  min-height: clamp(360px, 30vw, 410px);
+  padding: clamp(26px, 2.5vw, 34px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ink) 13%, transparent);
+  border-radius: clamp(24px, 2.4vw, 32px);
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  opacity: 0.68;
+  transition:
+    border-color 240ms ease,
+    opacity 360ms ease,
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.approachTimelineStepActive .approachTimelineCard {
+  opacity: 1;
+}
+
+.approachTimelineStep[aria-current="step"] .approachTimelineCard {
+  border-color: color-mix(in srgb, var(--red) 34%, transparent);
+  transform: translateY(-4px);
+}
+
+.approachTimelineCopy {
+  display: flex;
+  min-height: 100%;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.approachTimelineCopy h3 {
+  width: calc(100% - var(--timeline-image-reserve));
+  max-width: 12ch;
+  min-height: 3.76em;
+  color: var(--ink);
+  font-family: var(--font-black);
+  font-size: clamp(2rem, 2.65vw, 3rem);
+  font-weight: 900;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.approachTimelineCopy p {
+  max-width: 34ch;
+  margin-top: auto;
+  padding-top: clamp(20px, 2vw, 26px);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
+  font-size: clamp(0.98rem, 1.08vw, 1.1rem);
+  font-weight: 650;
+  line-height: 1.46;
+  text-wrap: pretty;
+}
+
+.approachTimelineImage {
+  position: absolute;
+  top: clamp(24px, 2.3vw, 31px);
+  right: clamp(24px, 2.3vw, 31px);
+  width: var(--timeline-image-size);
+  aspect-ratio: 1;
+  margin: 0;
   border: 0;
-  border-radius: 0;
+  background: transparent;
+  transform: rotate(4deg) scale(0.9);
+  transition:
+    filter 420ms ease,
+    transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  filter: saturate(0.72) contrast(0.96);
+}
+
+.approachTimelineStep:nth-child(even) .approachTimelineImage {
+  transform: rotate(-4deg) scale(0.9);
+}
+
+.approachTimelineImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  box-shadow: none;
-  transform: rotate(1.5deg);
 }
 
-.approachCardList h3 {
-  max-width: 15ch;
-  margin-top: calc(var(--approach-card-image-size) + clamp(14px, 1.1vw, 20px));
+.approachTimelineStepActive .approachTimelineImage,
+.approachTimelineStepActive:nth-child(even) .approachTimelineImage {
+  filter: none;
+  transform: rotate(0) scale(0.97);
 }
 
-.approachCardList p {
-  align-self: start;
-  max-width: 35ch;
-  margin-top: 0;
+.approachTimelineStep[aria-current="step"] .approachTimelineImage,
+.approachTimelineStep[aria-current="step"]:nth-child(even) .approachTimelineImage {
+  transform: rotate(0) scale(1);
 }
 
-.approachCardList p::before {
-  margin-bottom: clamp(18px, 1.6vw, 24px);
-}
-
-@media (max-width: 1180px) {
-  .approachCardList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 720px) {
-  .expectations + .approachCardsPreview {
-    margin-top: calc(-1 * clamp(30px, 9vw, 44px));
-    padding-top: calc(clamp(68px, 16vw, 88px) + clamp(30px, 9vw, 44px));
-  }
-
-  .approachCardsPreview .expectationsHeading h2 {
-    width: min(100%, 350px);
-  }
-
-  .approachCardList {
+@media (max-width: 900px) {
+  .approachTimelineHeader {
     grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(24px, 4vw, 34px);
   }
 
-  .approachCardList li {
-    --approach-card-image-size: clamp(58px, 16vw, 68px);
-    --approach-divider-top: clamp(164px, 45vw, 190px);
-    min-height: 346px;
+  .approachTimelineHeader h2 {
+    max-width: 12ch;
+    font-size: clamp(3.5rem, 9vw, 5rem);
+  }
+
+  .approachTimelineStatus {
+    width: fit-content;
+    justify-self: start;
+  }
+
+  .approachTimelineList {
+    --timeline-card-width: min(74vw, 350px);
+  }
+}
+
+@media (max-width: 600px) {
+  .approachTimeline {
+    padding: clamp(72px, 18vw, 96px) var(--page-pad);
+  }
+
+  .approachTimeline::before {
+    top: 62%;
+    width: 760px;
+  }
+
+  .approachTimelineHeader h2 {
+    max-width: 9ch;
+    font-size: clamp(3.05rem, 14vw, 4.1rem);
+  }
+
+  .approachTimelineStatus {
+    justify-self: start;
+  }
+
+  .approachTimelineList {
+    --timeline-card-width: min(82vw, 320px);
+    margin-top: clamp(42px, 12vw, 58px);
+  }
+
+  .approachTimelineStep {
+    padding: 58px 20px 8px 0;
+  }
+
+  .approachTimelineCard {
+    --timeline-image-size: clamp(80px, 22vw, 92px);
+    --timeline-image-gap: 14px;
+    min-height: 370px;
+  }
+
+  .approachTimelineCopy h3 {
+    width: calc(100% - var(--timeline-image-reserve));
+    max-width: 11ch;
+    font-size: clamp(1.9rem, 8.5vw, 2.4rem);
+  }
+
+  .approachTimelineCopy p {
+    max-width: none;
+    font-size: 1rem;
+  }
+
+}
+
+@keyframes approachTimelineCounterBump {
+  0% {
+    transform: scale(0.92);
+  }
+
+  58% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .approachTimelineList,
+  .approachTimelineStep,
+  .approachTimelineStep::before,
+  .approachTimelineStep::after,
+  .approachTimelineCard,
+  .approachTimelineStatus,
+  .approachTimelineImage {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
   }
 }
 
@@ -2038,12 +2390,14 @@
   isolation: isolate;
   display: grid;
   align-content: center;
-  min-height: clamp(420px, 51vw, 720px);
+  justify-items: center;
+  min-height: clamp(320px, 35vw, 460px);
   overflow: hidden;
-  padding: clamp(34px, 5.6vw, 86px);
-  border-radius: clamp(34px, 4.6vw, 72px);
+  padding: clamp(32px, 4.5vw, 64px);
+  border-radius: clamp(28px, 3.4vw, 48px);
   background: var(--red);
   color: var(--paper);
+  text-align: center;
 }
 
 .partnerStatement::before {
@@ -2084,23 +2438,16 @@
   transform: rotate(3deg);
 }
 
-.partnerStatementRule {
-  display: block;
-  width: min(100%, 790px);
-  height: 4px;
-  margin-bottom: clamp(34px, 4.5vw, 72px);
-  background: rgba(255, 250, 229, 0.78);
-}
-
 .partnerStatement h2 {
   display: grid;
+  justify-items: center;
   max-width: 13.6ch;
-  margin: 0 0 0 auto;
+  margin: 0 auto;
   font-family: var(--font-black);
-  font-size: 7rem;
-  line-height: 0.84;
+  font-size: clamp(3.5rem, 5.4vw, 5.6rem);
+  line-height: 0.86;
   letter-spacing: 0;
-  text-align: left;
+  text-align: center;
   text-wrap: balance;
   text-shadow: 0.055em 0.055em 0 rgba(28, 28, 28, 0.18);
 }
@@ -2117,38 +2464,27 @@
   font-weight: 800;
 }
 
-@media (max-width: 1100px) {
-  .partnerStatement h2 {
-    font-size: 5.6rem;
-  }
-}
-
 @media (max-width: 760px) {
   .interstitial {
     padding-block: 58px;
   }
 
   .partnerStatement {
-    min-height: 390px;
+    min-height: 330px;
     padding: clamp(28px, 8vw, 44px);
     border-radius: 32px;
   }
 
-  .partnerStatementRule {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-
   .partnerStatement h2 {
     max-width: 10.5ch;
-    margin-left: 0;
-    font-size: 4.2rem;
+    margin-inline: auto;
+    font-size: clamp(3rem, 12vw, 4rem);
   }
 }
 
 @media (max-width: 480px) {
   .partnerStatement h2 {
-    font-size: 3.2rem;
+    font-size: clamp(2.55rem, 12.4vw, 3.15rem);
   }
 }
 
@@ -2215,28 +2551,30 @@
 
 /* Problem cards: turn the text links into compact brand pills. */
 .problemCopy .textLink {
+  --problem-cta-red: var(--red);
+
   width: fit-content;
-  max-width: min(100%, 29rem);
-  min-height: clamp(54px, 4.2vw, 64px);
+  max-width: min(100%, 25rem);
+  min-height: 48px;
   padding:
-    clamp(7px, 0.65vw, 9px)
-    clamp(7px, 0.65vw, 9px)
-    clamp(7px, 0.65vw, 9px)
-    clamp(22px, 2.1vw, 32px);
+    6px
+    7px
+    6px
+    clamp(18px, 1.5vw, 24px);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(18px, 2vw, 28px);
+  gap: clamp(14px, 1.4vw, 20px);
   border: 0;
   border-radius: 999px;
-  background: var(--red);
+  background: var(--problem-cta-red);
   color: var(--paper);
-  font-size: clamp(1.2rem, 1.26vw, 1.3rem);
+  font-size: clamp(0.94rem, 1.05vw, 1.05rem);
   font-weight: 900;
   line-height: 1;
   text-decoration: none;
   text-transform: none;
-  box-shadow: 0 12px 24px rgba(28, 28, 28, 0.11);
+  box-shadow: none;
   transition:
     background-color 180ms ease,
     box-shadow 180ms ease,
@@ -2244,17 +2582,23 @@
 }
 
 .problemCopy .textLink .buttonArrow {
-  width: clamp(40px, 3.5vw, 50px);
+  width: clamp(34px, 2.8vw, 38px);
   background: var(--paper);
-  color: var(--red);
+  color: var(--problem-cta-red);
 }
 
 .problemCopy .textLink:hover,
 .problemCopy .textLink:focus-visible {
-  color: var(--paper);
-  background: #ef2f08;
-  box-shadow: 0 16px 30px rgba(28, 28, 28, 0.15);
+  background: var(--paper);
+  color: var(--problem-cta-red);
+  box-shadow: inset 0 0 0 2px var(--problem-cta-red);
   transform: translateY(-2px);
+}
+
+.problemCopy .textLink:hover .buttonArrow,
+.problemCopy .textLink:focus-visible .buttonArrow {
+  background: var(--problem-cta-red);
+  color: var(--paper);
 }
 
 .problemCopy .textLink:focus-visible {
@@ -2263,7 +2607,7 @@
 }
 
 .problemCopy .textLink:active {
-  box-shadow: 0 8px 18px rgba(28, 28, 28, 0.12);
+  box-shadow: 0 8px 18px rgb(28 28 28 / 12%);
   transform: translateY(1px);
 }
 
@@ -2271,13 +2615,13 @@
   .problemCopy .textLink {
     width: fit-content;
     max-width: min(100%, 22rem);
-    min-height: 56px;
-    padding-left: 20px;
-    gap: 14px;
-    font-size: clamp(1.12rem, 5vw, 1.2rem);
+    min-height: 48px;
+    padding-left: 18px;
+    gap: 12px;
+    font-size: clamp(0.92rem, 4.2vw, 1rem);
   }
 
   .problemCopy .textLink .buttonArrow {
-    width: 42px;
+    width: 34px;
   }
 }

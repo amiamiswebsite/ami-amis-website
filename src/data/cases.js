@@ -765,7 +765,7 @@ const rawCases = [
     template: "x-oats-social",
     client: "Hypotheekwereld",
     heroTitle: "HYPOTHEEKWERELD",
-    title: "Gepersonaliseerde billboard-video's",
+    title: "Hoe geef je een stresserend onderwerp op een speelse manier weer? 🏠💸",
     subtitle: "Dynamische animatie per filiaal.",
     category: "Animatie & montage",
     categories: ["Animatie & montage", "Video & campagnes", "Marketingstrategie"],
@@ -778,17 +778,33 @@ const rawCases = [
     needsEditorialSplit: true,
     mediaType: "vimeo-video",
     intro:
-      "Een dynamisch billboard-project waarin we samen met Ads & Data Brand Studio storyboarding en animatie hebben gebruikt om gepersonaliseerde video's per filiaal te maken, inclusief aangepaste eindpancartes, om potentiële klanten te helpen bij het verkrijgen van een hypotheek door eventuele valkuilen te overwinnen.",
+      "Een hypotheek afsluiten is al spannend genoeg. Daar hoeft geen muur van moeilijke termen, kleine lettertjes en financiële valkuilen bovenop te komen. 😵‍💫\n\nVoor Hypotheekwereld, in samenwerking met Ads & Data Brand Studio, kregen we daarom een duidelijke opdracht: een video maken die toont bij welke hordes Hypotheekwereld je kan helpen.\n\nEn ja, dat vraagt iets meer dan gewoon wat tekst laten bewegen. 😉\n\nVan storyboard en stijlvoorstel tot de volledige animatie: we bouwden een eigen visuele wereld die de boodschap ondersteunt én helemaal binnen de herkenbare huisstijl van Hypotheekwereld past.\n\nDe animaties verschenen vervolgens op digitale billboards en werden aangepast per filiaal. Zo kreeg elke locatie haar eigen versie, inclusief gepersonaliseerde eindpancarte. 📍✨",
     summary:
-      "Een dynamisch billboard-project met storyboarding en animatie, opgebouwd rond gepersonaliseerde video's per filiaal.",
-    introQuote: "Hypotheekwereld wilde een campagne die de valkuilen rond hypotheken helder en laagdrempelig maakt.",
+      "Een dynamische billboardcampagne die een eerder zwaar onderwerp een pak luchtiger maakt.",
+    introQuote:
+      "Een hypotheek afsluiten is al spannend genoeg. Daar hoeft geen muur van moeilijke termen bovenop te komen.",
     storyBlocks: [
       {
         text:
-          "Een dynamisch billboard-project waarin we samen met Ads & Data Brand Studio storyboarding en animatie hebben gebruikt om gepersonaliseerde video's per filiaal te maken, inclusief aangepaste eindpancartes, om potentiële klanten te helpen bij het verkrijgen van een hypotheek door eventuele valkuilen te overwinnen.",
+          "Een hypotheek afsluiten is al spannend genoeg. Daar hoeft geen muur van moeilijke termen, kleine lettertjes en financiële valkuilen bovenop te komen. 😵‍💫",
+      },
+      {
+        text:
+          "Voor Hypotheekwereld, in samenwerking met Ads & Data Brand Studio, kregen we daarom een duidelijke opdracht: een video maken die toont bij welke hordes Hypotheekwereld je kan helpen.",
+      },
+      {
+        text: "En ja, dat vraagt iets meer dan gewoon wat tekst laten bewegen. 😉",
+      },
+      {
+        text:
+          "Van storyboard en stijlvoorstel tot de volledige animatie: we bouwden een eigen visuele wereld die de boodschap ondersteunt én helemaal binnen de herkenbare huisstijl van Hypotheekwereld past.",
+      },
+      {
+        text:
+          "De animaties verschenen vervolgens op digitale billboards en werden aangepast per filiaal. Zo kreeg elke locatie haar eigen versie, inclusief gepersonaliseerde eindpancarte. 📍✨",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], [], [], []],
     deliverables: ["Storyboarding", "Animatie", "Billboard-video", "Campagne-aanpak"],
     hero: {
       image: "/work/hypotheekwereld.webp",
@@ -809,19 +825,21 @@ const rawCases = [
       { label: "Type", value: "billboardvideo" },
     ],
     question: {
-      title: "Hoe maak je hypotheekadvies herkenbaar voor verschillende doelgroepen?",
+      label: "Probleem",
+      title: "",
       text:
-        "Hypotheekwereld wilde een campagne die de valkuilen rond hypotheken helder en laagdrempelig maakt.",
+        "Hoe bouw je een animatiewereld die een serieuze boodschap helder overbrengt, speels genoeg is om de aandacht te grijpen én perfect aansluit bij het merk?",
     },
     approach: {
-      title: "Storyboarding, animatie en varianten per filiaal.",
+      label: "Oplossing",
+      title: "",
       text:
-        "Samen met Ads & Data werkten we een online advertentie uit met duidelijke scenario's per doelgroep. We verzorgden script, storyboard, animatie en voice-over.",
+        "We vertaalden het verhaal naar een heldere, kleurrijke en speelse animatiestijl. Van storyboard en stijlvoorstel tot de uiteindelijke animatie namen we het volledige traject voor onze rekening. Daarna maakten we verschillende lokale versies, zodat elk billboard relevant bleef voor het filiaal in kwestie.",
     },
     result: {
-      title: "Een dynamische campagne die snel duidelijk maakt waar Hypotheekwereld helpt.",
-      text:
-        "De spot en afgeleide varianten maken hypotheekvragen concreet, herkenbaar en inzetbaar op verschillende kanalen.",
+      label: "Resultaat",
+      title: "",
+      text: "Een dynamische billboardcampagne die een eerder zwaar onderwerp een pak luchtiger maakt.",
       stats: [
         { value: "1", label: "spot" },
         { value: "18", label: "varianten" },
@@ -829,7 +847,7 @@ const rawCases = [
         { value: "PLACEHOLDER", label: "kanalen" },
       ],
     },
-    outro: "De spot en afgeleide varianten maken hypotheekvragen concreet, herkenbaar en inzetbaar op verschillende kanalen.",
+    outro: "Een dynamische billboardcampagne die een eerder zwaar onderwerp een pak luchtiger maakt.",
     externalVideoUrl: "https://www.amiamis.com/work/hypotheekwereld",
   },
   {
@@ -871,7 +889,7 @@ const rawCases = [
       },
       {
         text:
-          "Van sfeervolle fancontent tot aftermovies en alles daartussen. Op én naast het veld zorgen wij ervoor dat de passie van de club ook online blijft leven.",
+          "Van sfeervolle fancontent tot aftermovies en alles daartussen. Op én naast het veld zorgen wij ervoor dat de passie van de club ook online blijft leven. Zo maken we content die blijft scoren!",
       },
     ],
     storyHighlights: [[], [], []],
@@ -887,7 +905,7 @@ const rawCases = [
       verticalVideos: [
         vimeoCaseMedia("1055593959", "Videopartnership Lierse", "ef72b6897c"),
         vimeoCaseMedia("1055589802", "Stadiumnaam aankondiging", "3b7c6b293a"),
-        imageCaseMedia("/work/lierse.webp", "K. Lierse S.K. projectbeeld"),
+        portraitVimeoCaseMedia("1221130377", "Videopartnership Lierse"),
       ],
     },
     vimeoEmbeds: [vimeo("1055589802", "Stadiumnaam aankondiging", "3b7c6b293a")],
@@ -922,9 +940,13 @@ const rawCases = [
     },
     outro:
       "Een constante stroom herkenbare clubcontent die supporters betrokken houdt, voor meer interactie zorgt en blijft scoren! ⚽",
+    ctaVariant: "blue",
+    ctaTitle: "DURF JIJ SAMEN TE WERKEN?",
+    ctaLinkOnly: true,
     externalVideoUrls: [
       "https://vimeo.com/1055593959/ef72b6897c",
       "https://vimeo.com/1055589802/3b7c6b293a",
+      "https://vimeo.com/1221130377",
     ],
   },
   {
@@ -1186,7 +1208,7 @@ const rawCases = [
     introQuote:
       "“We hebben bijna 8 keer meer Medicair-bedden verkocht sinds de lancering van de nieuwe spot!”",
     intro:
-      "“We hebben bijna 8 keer meer Medicair-bedden verkocht sinds de lancering van de nieuwe spot!”\n\nKijk. Als een beddenfabrikant zegt dat je spot hun verkoop weer wakker heeft geschud, dan weet je: job well done. 😴\n\nSalus, een beddenfabrikant uit Mechelen en ondertussen een van onze langstlopende klanten, klopte bij ons aan met een duidelijke vraag: kunnen jullie onze elektrische Medicair-slaapsystemen in de kijker zetten met een reclamespot voor regionale televisie?\n\nNatuurlijk zeiden wij volmondig: ja!\n\nWe werkten verschillende concepten uit die perfect aansloten bij de doelgroep van de Medicair-bedden: een iets ouder publiek met een gezonde portie humor. En zo gepland? Zo gedraaid. Het resultaat werd een spot die meteen opvalt en doet lachen!\n\nDe spot werd uitgezonden op RTV en werd zelfs genomineerd voor de RTV-Awards. Mooi meegenomen, maar het échte resultaat lag bij Salus zelf: de verkoop van hun elektrische bedden kreeg een serieuze duw in de rug. Van amper één bed per kwartaal naar maar liefst 40 bedden in één maand na de lancering van de spot.\n\nSindsdien is Salus een vaste klant geworden die telkens opnieuw bij ons aanklopt voor spots met humor, kwaliteit en een duidelijke boodschap. Want reclame mag verkopen. Maar liefst ook een beetje plezant zijn.\n\nBenieuwd naar de andere spots die we voor Salus maakten? Je “spot” ze hieronder. 😉",
+      "“We hebben bijna 8 keer meer Medicair-bedden verkocht sinds de lancering van de nieuwe spot!”\n\nKijk. Als een beddenfabrikant zegt dat je spot hun verkoop weer wakker heeft geschud, dan weet je: job well done. 😴\n\nSalus, een beddenfabrikant uit Mechelen en ondertussen een van onze langstlopende klanten, klopte bij ons aan met een duidelijke vraag: kunnen jullie onze elektrische Medicair-slaapsystemen in de kijker zetten met een reclamespot voor regionale televisie?\n\nNatuurlijk zeiden wij volmondig: ja!\n\nWe werkten verschillende concepten uit die perfect aansloten bij de doelgroep van de Medicair-bedden: een iets ouder publiek met een gezonde portie humor. En zo gepland? Zo gedraaid. Het resultaat werd een spot die meteen opvalt en doet lachen!\n\nDe spot werd uitgezonden op RTV en werd zelfs genomineerd voor de RTV-Awards. Mooi meegenomen, maar het échte resultaat lag bij Salus zelf: de verkoop van hun elektrische bedden kreeg een serieuze duw in de rug. Van amper één bed per kwartaal naar maar liefst 40 bedden in één maand na de lancering van de spot.\n\nSindsdien is Salus een vaste klant die telkens opnieuw bij ons aanklopt voor spots met humor, kwaliteit en een duidelijke boodschap. En blijkbaar levert elke nieuwe video Dirk van Salus ook meteen nieuwe business op. Na onze zomercampagne, waarin we een Medicair-bed pal op het strand zetten, kreeg Dirk zelfs meerdere telefoontjes met de vraag of Salus nu ook strandbedden verkoopt. Dus… zet voor volgende zomer maar alvast een Salus-strandbed op uw wishlist! 😉\n\nBenieuwd naar de andere spots die we voor Salus maakten? Je “spot” ze hieronder. 😉",
     storyBlocks: [
       {
         kicker: "",
@@ -1215,7 +1237,7 @@ const rawCases = [
       {
         kicker: "",
         text:
-          "Sindsdien is Salus een vaste klant geworden die telkens opnieuw bij ons aanklopt voor spots met humor, kwaliteit en een duidelijke boodschap.",
+          "Sindsdien is Salus een vaste klant die telkens opnieuw bij ons aanklopt voor spots met humor, kwaliteit en een duidelijke boodschap. En blijkbaar levert elke nieuwe video Dirk van Salus ook meteen nieuwe business op. Na onze zomercampagne, waarin we een Medicair-bed pal op het strand zetten, kreeg Dirk zelfs meerdere telefoontjes met de vraag of Salus nu ook strandbedden verkoopt. Dus… zet voor volgende zomer maar alvast een Salus-strandbed op uw wishlist! 😉",
       },
       {
         kicker: "",
@@ -1408,6 +1430,9 @@ const rawCases = [
       ],
     },
     outro: "De video-output maakt meteen duidelijk wat Konligo uniek maakt binnen events en festivals.",
+    ctaTitle: "DURF JIJ SAMEN TE WERKEN?",
+    ctaLinkOnly: true,
+    ctaCard: true,
     externalVideoUrl: "https://f.io/w-LP7QYP",
   },
   {
@@ -1803,7 +1828,7 @@ const rawCases = [
     template: "x-oats-social",
     client: "Zorgbedrijf",
     heroTitle: "ZORGBEDRIJF",
-    title: "Interne video's met een menselijke twist",
+    title: "Hoe stel je een nieuwe directie voor zonder dat het voelt als… een directievoorstelling? 👔😴",
     subtitle: "Nieuwe directieleden menselijk voorgesteld.",
     category: "Video & campagnes",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
@@ -1816,17 +1841,29 @@ const rawCases = [
     needsEditorialSplit: true,
     mediaType: "vimeo-video",
     intro:
-      "Voor Zorgbedrijf Antwerpen werkten we mee aan de aankondiging van hun vier nieuwe directieleden. Geen klassieke voorstelling, maar een creatieve insteek geïnspireerd op het programma Durf te vragen – open, menselijk en verrassend. Deze case focust op: Authentieke kennismaking: We lieten de directieleden zelf aan het woord, met eerlijke antwoorden op échte vragen van medewerkers. Zo ontstond een persoonlijk portret dat afstand breekt en vertrouwen schept. Verfrissende vormgeving: Door het bekende format van Durf te vragen als kapstok te gebruiken, gaven we een luchtige maar doeltreffende twist aan wat anders een formele boodschap kon zijn. Interne connectie: De video's werden intern verspreid en zorgden meteen voor gesprek en herkenning. Nieuwe gezichten werden geen onbekenden, maar collega’s met wie je je meteen verbonden voelt. Met deze aanpak gaf Zorgbedrijf Antwerpen een menselijk gezicht aan verandering, en versterkten ze de interne cultuur van openheid en dialoog.",
+      "Nieuwe directieleden aankondigen kan natuurlijk met een klassiek interview voor een witte muur. Naam, functie, visie, klaar.\n\nMaar niet als het aan Ami Amis ligt. 😉\n\nVoor Zorgbedrijf Antwerpen kozen we daarom voor een menselijkere aanpak, geïnspireerd op het programma ‘Durf te vragen’. Zo kreeg het geheel een luchtige en spontane vibe, en leer je niet alleen kennen wat iemand doet, maar vooral ook wie er achter die functietitel zit. 👀\n\nDe video’s werden intern verspreid en maakten de afstand tussen medewerkers en de nieuwe directie meteen een stukje kleiner. 🤝",
     summary:
-      "Een creatieve introductie van vier nieuwe directieleden, geïnspireerd op Durf te vragen.",
-    introQuote: "Zorgbedrijf Antwerpen wilde vier nieuwe directieleden intern introduceren zonder formele afstand.",
+      "Vier persoonlijke video’s die nieuwe directieleden voorstellen als collega’s van vlees en bloed.",
+    introQuote:
+      "Nieuwe directieleden voorstellen zonder dat het voelt als een klassieke directievoorstelling.",
     storyBlocks: [
       {
         text:
-          "Voor Zorgbedrijf Antwerpen werkten we mee aan de aankondiging van hun vier nieuwe directieleden. Geen klassieke voorstelling, maar een creatieve insteek geïnspireerd op het programma Durf te vragen – open, menselijk en verrassend. Deze case focust op: Authentieke kennismaking: We lieten de directieleden zelf aan het woord, met eerlijke antwoorden op échte vragen van medewerkers. Zo ontstond een persoonlijk portret dat afstand breekt en vertrouwen schept. Verfrissende vormgeving: Door het bekende format van Durf te vragen als kapstok te gebruiken, gaven we een luchtige maar doeltreffende twist aan wat anders een formele boodschap kon zijn. Interne connectie: De video's werden intern verspreid en zorgden meteen voor gesprek en herkenning. Nieuwe gezichten werden geen onbekenden, maar collega’s met wie je je meteen verbonden voelt. Met deze aanpak gaf Zorgbedrijf Antwerpen een menselijk gezicht aan verandering, en versterkten ze de interne cultuur van openheid en dialoog.",
+          "Nieuwe directieleden aankondigen kan natuurlijk met een klassiek interview voor een witte muur. Naam, functie, visie, klaar.",
+      },
+      {
+        text: "Maar niet als het aan Ami Amis ligt. 😉",
+      },
+      {
+        text:
+          "Voor Zorgbedrijf Antwerpen kozen we daarom voor een menselijkere aanpak, geïnspireerd op het programma ‘Durf te vragen’. Zo kreeg het geheel een luchtige en spontane vibe, en leer je niet alleen kennen wat iemand doet, maar vooral ook wie er achter die functietitel zit. 👀",
+      },
+      {
+        text:
+          "De video’s werden intern verspreid en maakten de afstand tussen medewerkers en de nieuwe directie meteen een stukje kleiner. 🤝",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], [], []],
     deliverables: ["Interne video", "Social content", "Concept", "Regie"],
     hero: {
       sourceMediaUrl:
@@ -1840,18 +1877,18 @@ const rawCases = [
       },
     ],
     vimeoEmbeds: [
-      vimeo("1178849145", "Zorgbedrijf video 1"),
-      vimeo("1178849288", "Zorgbedrijf video 2"),
-      vimeo("1178849410", "Zorgbedrijf video 3"),
-      vimeo("1178849004", "Zorgbedrijf video 4"),
+      vimeo("1221173884", "Interview met Dirk Bervoets"),
+      vimeo("1221173882", "Interview met Miquel Joseph"),
+      vimeo("1221173881", "Interview met Olivier Naeyaert"),
+      vimeo("1221173883", "Interview met Pieter Dierckx"),
     ],
     media: {
-      hero: vimeoCaseMedia("1178849145", "Zorgbedrijf video 1"),
+      hero: vimeoCaseMedia("1221173884", "Interview met Dirk Bervoets"),
       verticalVideos: [
-        vimeoCaseMedia("1178849145", "Zorgbedrijf video 1"),
-        vimeoCaseMedia("1178849288", "Zorgbedrijf video 2"),
-        vimeoCaseMedia("1178849410", "Zorgbedrijf video 3"),
-        vimeoCaseMedia("1178849004", "Zorgbedrijf video 4"),
+        vimeoCaseMedia("1221173884", "Interview met Dirk Bervoets"),
+        vimeoCaseMedia("1221173882", "Interview met Miquel Joseph"),
+        vimeoCaseMedia("1221173881", "Interview met Olivier Naeyaert"),
+        vimeoCaseMedia("1221173883", "Interview met Pieter Dierckx"),
       ],
     },
     needsEditorialSplit: false,
@@ -1860,19 +1897,22 @@ const rawCases = [
       { label: "Doel", value: "interne communicatie" },
     ],
     question: {
-      title: "Hoe stel je nieuwe directieleden menselijk voor?",
+      label: "Probleem",
+      title: "",
       text:
-        "Zorgbedrijf Antwerpen wilde vier nieuwe directieleden intern introduceren zonder formele afstand.",
+        "Nieuwe directieleden voorstellen vervalt al snel in dezelfde formule: iemand voor de camera, een functietitel erbij en een paar veilige antwoorden. Hoe maak je zo’n interne boodschap persoonlijk, spontaan en interessant genoeg om echt bekeken te worden? 😴",
     },
     approach: {
-      title: "Een open format met echte vragen van medewerkers.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We gebruikten Durf te vragen als frisse kapstok en lieten de directieleden op een persoonlijke manier aan het woord.",
+        "We gooiden het klassieke CEO-interview overboord en bouwden een format rond vragen van medewerkers. Geïnspireerd op Durf te vragen creëerden we een losse setting waarin de nieuwe directieleden op een eerlijke en menselijke manier konden antwoorden.",
     },
     result: {
-      title: "Nieuwe gezichten werden herkenbare collega's.",
+      label: "Resultaat",
+      title: "",
       text:
-        "De video's maakten verandering menselijker en versterkten de interne connectie.",
+        "Vier persoonlijke video’s die nieuwe directieleden geen verre gezichten met indrukwekkende functietitels maken, maar collega’s van vlees en bloed. Meer herkenning, meer gesprek en vooral: een veel menselijkere manier om verandering binnen de organisatie te introduceren. 🤝💛",
       stats: [
         { value: "4", label: "video’s" },
         { value: "4", label: "directieleden" },
@@ -1880,8 +1920,14 @@ const rawCases = [
         { value: "Durf", label: "te vragen" },
       ],
     },
-    outro: "De video's maakten verandering menselijker en versterkten de interne connectie.",
-    externalVideoUrl: "https://f.io/EJ_dI-WD",
+    outro:
+      "Vier persoonlijke video’s die nieuwe directieleden geen verre gezichten met indrukwekkende functietitels maken, maar collega’s van vlees en bloed.",
+    externalVideoUrls: [
+      "https://vimeo.com/1221173884",
+      "https://vimeo.com/1221173882",
+      "https://vimeo.com/1221173881",
+      "https://vimeo.com/1221173883",
+    ],
   },
   {
     slug: "frankie-villager",

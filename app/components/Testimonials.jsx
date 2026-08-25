@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const testimonials = [
   {
@@ -10,13 +11,13 @@ const testimonials = [
     image: "/work/x-oats-thumb-portrait.jpg",
     imageAlt: "X-Oats productbeeld",
     quote:
-      "Wat ons vooral opviel, was hoe creatief én professioneel ze te werk gaan. Ze denken niet gewoon uit wat je vraagt, maar komen zelf met sterke ideeën en hooks die echt werken voor social ads.",
+      "Wat ons vooral opviel, was hoe creatief én professioneel ze te werk gaan. Ze denken niet alleen uit wat je vraagt, maar komen zelf met sterke ideeën en hooks die echt werken voor social ads.",
     tone: "x-oats",
   },
   {
     client: "Tarzan & Jane",
     href: "/work/tarzan-en-jane/",
-    image: "/work/tarzan-en-jane-thumb.webp",
+    image: "/work/tarzan-en-jane-home-thumb.jpg",
     imageAlt: "Tarzan & Jane projectbeeld",
     quote: "Ami Amis vertaalde onze energie naar content die meteen juist voelde. Speels, helder en helemaal on-brand.",
     tone: "tarzan-en-jane",
@@ -26,7 +27,7 @@ const testimonials = [
 const visitAntwerpenTestimonial = {
   client: "Visit Antwerpen",
   href: "/ons-werk/visit-antwerpen/",
-  image: "/work/visit-antwerpen-thumb-portrait.jpg",
+  image: "/images/cases/visit-antwerpen/fashion-local-poster.jpg",
   imageAlt: "Visit Antwerpen projectbeeld",
   quote: "Ami Amis levert hoogwaardige video’s met mooie, kwaliteitsvolle beelden. De samenwerking verloopt steeds proactief en elke productie wordt benaderd met een aanstekelijk enthousiasme en veel inzet.",
   tone: "visit-antwerpen",
@@ -202,9 +203,9 @@ export default function Testimonials({ variant = "default" }) {
           ))}
         </div>
 
-        <a className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")}>
+        <HomeCtaLink className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")}>
           VRIENDEN WORDEN?
-        </a>
+        </HomeCtaLink>
       </div>
     </section>
   );

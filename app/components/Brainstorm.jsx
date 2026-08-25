@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const windLines = Array.from({ length: 7 }, (_, index) => index + 1);
 const paperFlakes = Array.from({ length: 6 }, (_, index) => index + 1);
@@ -351,9 +352,9 @@ export default function Brainstorm({ ctaLabel = "All Gucci, baby" }) {
           </div>
         </div>
       </div>
-      <a className="button button--red brainstorm__button" href={assetPath("/contact/")}>
+      <HomeCtaLink className="button button--red brainstorm__button" href={assetPath("/contact/")}>
         {ctaLabel}
-      </a>
+      </HomeCtaLink>
     </section>
   );
 }

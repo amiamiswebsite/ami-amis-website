@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 import ServicePhysicsTags from "./ServicePhysicsTags";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const VISIT_ANTWERPEN_CASE_URL = "/ons-werk/visit-antwerpen/";
 
 // Optional: sync follower count via Instagram Graph API when authenticated business account access is available.
 const strategyStats = [
   {
-    value: "30,3k",
-    target: 30.3,
+    value: "265k",
+    target: 265,
     suffix: "k",
-    decimals: 1,
-    label: "weergaven / maand",
+    decimals: 0,
+    label: "weergaven",
     type: "views",
   },
   {
-    value: "+33,5%",
-    target: 33.5,
-    prefix: "+",
-    suffix: "%",
-    decimals: 1,
-    label: "nieuwe volgers / maand",
-    type: "growth",
+    value: "5220",
+    target: 5220,
+    suffix: "",
+    decimals: 0,
+    label: "likes",
+    type: "likes",
   },
 ];
 
@@ -76,60 +76,12 @@ function BadgeIcon({ icon }) {
 export default function SocialGrowth({ variant = "default" }) {
   const isHomeTwo = variant === "home2";
   const sectionRef = useRef(null);
-  const textRef = useRef(null);
   const statsRef = useRef(null);
   const videoRef = useRef(null);
   const visualRef = useRef(null);
   const hasAnimated = useRef(false);
   const [counts, setCounts] = useState(strategyStats.map((stat) => stat.target));
   const [isCounting, setIsCounting] = useState(false);
-
-  useEffect(() => {
-    const sectionNode = sectionRef.current;
-    const textNode = textRef.current;
-    const statsNode = statsRef.current;
-
-    if (!sectionNode || !textNode || !statsNode) {
-      return undefined;
-    }
-
-    const alignStats = () => {
-      if (window.innerWidth <= 1280) {
-        sectionNode.style.removeProperty("--social-stats-top");
-        sectionNode.style.removeProperty("--social-stats-height");
-        return;
-      }
-
-      const sectionRect = sectionNode.getBoundingClientRect();
-      const textRect = textNode.getBoundingClientRect();
-      const statsRect = statsNode.getBoundingClientRect();
-      const phoneNode = sectionNode.querySelector(".phone-scene");
-      const phoneRect = phoneNode?.getBoundingClientRect();
-      const textAlignedTop = textRect.bottom - sectionRect.top - statsRect.height;
-      const phoneSafeTop = phoneRect ? phoneRect.bottom - sectionRect.top + 28 : 0;
-      const top = Math.max(220, textAlignedTop, phoneSafeTop);
-
-      sectionNode.style.setProperty("--social-stats-top", `${Math.round(top)}px`);
-      sectionNode.style.setProperty("--social-stats-height", `${Math.round(statsRect.height)}px`);
-    };
-
-    alignStats();
-    window.addEventListener("resize", alignStats, { passive: true });
-
-    const copyNode = sectionNode.querySelector(".social-growth__copy");
-    const observer = "ResizeObserver" in window ? new ResizeObserver(alignStats) : null;
-    observer?.observe(sectionNode);
-    observer?.observe(textNode);
-    if (copyNode) {
-      observer?.observe(copyNode);
-    }
-    observer?.observe(statsNode);
-
-    return () => {
-      window.removeEventListener("resize", alignStats);
-      observer?.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     const statsNode = statsRef.current;
@@ -334,82 +286,98 @@ export default function SocialGrowth({ variant = "default" }) {
   }, []);
 
   return (
-    <section className="social-growth" id="groei" ref={sectionRef}>
-      <div className="social-growth__copy">
-        <h2>
-          Organische groei.
-          <span>door strategie en actie.</span>
-        </h2>
-        <p ref={textRef}>
-          {isHomeTwo
-            ? "Hoe pakken we dat aan? Simpel: we gaan in gesprek, denken na over je strategie en leggen uit wat er wél en vooral niet werkt op social media. We jagen niet alleen blind achter elke trend of virale hit aan. (ook al sluiten we dat zeker niet uit ;)) Maar daar bouw je geen sterk merk op. Wij focussen op wat blijft: een herkenbare stijl, een helder verhaal en consistente content."
-            : "Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet alleen met sterke content, maar ook met de strategie erachter. We denken mee over wat past bij jouw merk, jouw verhaal en jouw doelgroep. Wij bekijken het grote plaatje en vertalen dat naar een campagne met sterke content die juist wordt ingezet."}
-        </p>
-      </div>
-      <div className="phone-scene" ref={visualRef}>
-        <a
-          aria-label="Bekijk de case van Visit Antwerpen"
-          className="phone-frame"
-          href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
-        >
-          <video
-            aria-hidden="true"
-            loop
-            muted
-            playsInline
-            poster={assetPath("/work/visit-antwerpen-thumb-portrait.jpg")}
-            preload="none"
-            ref={videoRef}
-          >
-            <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
-          </video>
-          <span className="social-growth__case-label">Visit Antwerpen</span>
-        </a>
-        <span className="social-icon social-icon--heart" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 20.2c-5.1-3.3-8.4-6.4-8.4-10.1 0-2.4 1.7-4.2 4.1-4.2 1.5 0 2.9.8 3.6 2 .7-1.2 2.1-2 3.6-2 2.4 0 4.1 1.8 4.1 4.2 0 3.7-3.3 6.8-8.4 10.1Z" />
-          </svg>
-        </span>
-        {socialBadges.map((badge) => {
-          const Tag = badge.href ? "a" : "div";
-
-          return (
-            <Tag
-              className={`social-icon social-badge ${badge.className}`}
-              href={badge.href}
-              key={badge.type || badge.label}
-              rel={badge.href ? "noopener noreferrer" : undefined}
-              target={badge.href ? "_blank" : undefined}
-              aria-label={badge.href ? "Bekijk Ami Amis op Instagram" : undefined}
+    <>
+      <section className="social-growth" id="groei" ref={sectionRef}>
+        <div className="social-growth__copy">
+          <h2>
+            Organische groei.
+            <span>door strategie en actie.</span>
+          </h2>
+          {isHomeTwo ? (
+            <div className="social-growth__text">
+              <p>
+                Hoe pakken we dat aan? Simpel: we gaan in gesprek, denken na over je strategie en leggen uit
+                wat er wél en vooral niet werkt op social media.
+              </p>
+              <p>
+                We jagen niet alleen blind achter elke trend of virale hit aan. (ook al sluiten we dat zeker
+                niet uit ;)) Maar daarmee bouw je geen sterk merk op. Wij focussen op wat blijft: een herkenbare
+                stijl, een helder verhaal en consistente content.
+              </p>
+            </div>
+          ) : (
+            <p>
+              Een sterke campagne die niemand ziet? Lame! Daarom helpen we je niet alleen met sterke content,
+              maar ook met de strategie erachter. We denken mee over wat past bij jouw merk, jouw verhaal en jouw
+              doelgroep. Wij bekijken het grote plaatje en vertalen dat naar een campagne met sterke content die
+              juist wordt ingezet.
+            </p>
+          )}
+        </div>
+        <div className="social-growth__proof">
+          <div className="phone-scene" ref={visualRef}>
+            <a
+              aria-label="Bekijk de case van Visit Antwerpen"
+              className="phone-frame"
+              href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
             >
-              <BadgeIcon icon={badge.icon} />
-              {badge.value ? <strong>{badge.value}</strong> : null}
-              {badge.label ? <span>{badge.label}</span> : null}
-            </Tag>
-          );
-        })}
-        <img className="social-icon social-icon--bell" src={assetPath("/assets/social-bell.png")} alt="" />
-        <img className="social-icon social-icon--like" src={assetPath("/assets/social-like.png")} alt="" />
-      </div>
-      <div className={`stats${isCounting ? " is-counting" : ""}`} ref={statsRef}>
-        {strategyStats.map((stat, index) => {
-          return (
-          <div
-            className="stat"
-            key={stat.label}
-          >
-            <strong aria-hidden="true">
-              {formatStatValue(stat, counts[index])}
-            </strong>
-            <span className="aa-visually-hidden">
-              {formatStatValue(stat, stat.target)}
+              <video
+                aria-hidden="true"
+                loop
+                muted
+                playsInline
+                poster={assetPath("/images/cases/visit-antwerpen/fashion-local-poster.jpg")}
+                preload="none"
+                ref={videoRef}
+              >
+                <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />
+              </video>
+              {!isHomeTwo ? <span className="social-growth__case-label">Visit Antwerpen</span> : null}
+            </a>
+            <span className="social-icon social-icon--heart" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 20.2c-5.1-3.3-8.4-6.4-8.4-10.1 0-2.4 1.7-4.2 4.1-4.2 1.5 0 2.9.8 3.6 2 .7-1.2 2.1-2 3.6-2 2.4 0 4.1 1.8 4.1 4.2 0 3.7-3.3 6.8-8.4 10.1Z" />
+              </svg>
             </span>
-            <span>{stat.label}</span>
+            {socialBadges.map((badge) => {
+              const Tag = badge.href ? "a" : "div";
+
+              return (
+                <Tag
+                  className={`social-icon social-badge ${badge.className}`}
+                  href={badge.href}
+                  key={badge.type || badge.label}
+                  rel={badge.href ? "noopener noreferrer" : undefined}
+                  target={badge.href ? "_blank" : undefined}
+                  aria-label={badge.href ? "Bekijk Ami Amis op Instagram" : undefined}
+                >
+                  <BadgeIcon icon={badge.icon} />
+                  {badge.value ? <strong>{badge.value}</strong> : null}
+                  {badge.label ? <span>{badge.label}</span> : null}
+                </Tag>
+              );
+            })}
+            <img className="social-icon social-icon--bell" src={assetPath("/assets/social-bell.png")} alt="" />
+            <img className="social-icon social-icon--like" src={assetPath("/assets/social-like.png")} alt="" />
           </div>
-          );
-        })}
-      </div>
+          <div className={`stats${isCounting ? " is-counting" : ""}`} ref={statsRef}>
+            <HomeCtaLink
+              className="stats__title stats__case-link"
+              href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
+            >
+              8 video’s voor Visit Antwerpen
+            </HomeCtaLink>
+            {strategyStats.map((stat, index) => (
+              <div className="stat" key={stat.label}>
+                <strong aria-hidden="true">{formatStatValue(stat, counts[index])}</strong>
+                <span className="aa-visually-hidden">{formatStatValue(stat, stat.target)}</span>
+                <span>{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {isHomeTwo ? <ServicePhysicsTags /> : null}
-    </section>
+    </>
   );
 }

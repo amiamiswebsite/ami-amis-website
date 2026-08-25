@@ -20,32 +20,32 @@ export const serviceTwoExpectations = [
 export const serviceTwoApproachCards = [
   {
     title: "Hallo, met Brent?",
-    text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Hij gaat na welk probleem jullie ondervinden, en geeft aan waarmee wij jullie kunnen helpen!",
+    text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Hij luistert naar al jullie vragen.",
     image: "/assets/approach-01-call.webp",
   },
   {
     title: "Sparren met onze creative(s)",
-    text: "Daarna zet Brent een meeting op met de juiste creatieve compadre(s) voor jullie merk. Nu begint de fun. Samen denken we na over marketingstrategie. Wil je daarin volledig ontzorgd worden? No worries. We got you!",
+    text: "Daarna zet Brent een meeting op met onze creatieve compadre(s). Hier begint de fun.",
     image: "/assets/approach-02-spar.webp",
   },
   {
     title: "Een geniaal masterplan",
-    text: "Tijd om al die goeie ideeën concreet te maken. Onze creatieve compadres zetten de puntjes op de i, onze producers nemen over en leiden de voorbereiding in goede banen.",
+    text: "Tijd om al die goeie ideeën concreet te maken. Wij zetten de puntjes op de i en leiden de voorbereiding in goede banen. We’ve got you!",
     image: "/assets/approach-03-plan.webp",
   },
   {
     title: "Lights. Camera. Action!",
-    text: "Eèèn action. Ons in-house team brengt het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne.",
+    text: "Eèèn actie! Wij brengen het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne, van A tot Z.",
     image: "/assets/approach-03-camera.webp",
   },
   {
     title: "Watch Party",
-    text: "Opleveren die handel! Pak de popcorn want het eindproduct is klaar. En wij verzekeren jullie: da’s fire 🔥",
+    text: "Pak de popcorn er maar bij want het eindproduct is klaar. #boxofficehit",
     image: "/assets/approach-04-watch.webp",
   },
   {
-    title: "Hallo, Brent nog eens!",
-    text: "Na afloop koppelt ons kapoentje Brent nog eens terug. Samen kijken we naar de resultaten van de samenwerking en evalueren wat de volgende keer NOG beter kan. Dat is wat Amis doen, toch?",
+    title: "Eat, Sleep, Repeat.",
+    text: "Na afloop koppelt ons kapoentje Brent nog eens terug om de resultaten te evalueren. Amai, dat was leuk! Wat denk’te, nog eentje?",
     image: "/assets/approach-05-callback.webp",
   },
 ];
@@ -69,21 +69,21 @@ export const serviceTwoProblems = [
   {
     id: "employer-branding",
     number: "02",
-    title: "We vinden de juiste medewerkers niet",
+    title: "We zoeken nieuwe mensen om ons team te versterken",
     quote:
-      "De juiste kandidaten voor onze vacatures lijken collectief verstoppertje te spelen. Wij lanceren een campagne die de juiste gemotiveerde mensen oplevert.",
-    fix: "Employer Branding Campaign",
+      "De juiste kandidaten voor jullie vacatures lijken collectief verstoppertje te spelen. Wij lanceren een coole campagne, met een vleugje humor, die de juiste gemotiveerde mensen oplevert.",
+    fix: "Een coole videocampagne met een vleugje humor",
     result: "een sterker werkgeversmerk en meer relevante kandidaten.",
     cta: "Samen goeie werknemers zoeken?",
-    cases: ["blutsqi"],
+    cases: ["blutsqi", "groep-maes"],
     color: "blue",
   },
   {
     id: "product-explainer",
     number: "03",
-    title: "Ze snappen niet wat ons merk te bieden heeft.",
+    title: "Mensen snappen niet wat ons merk te bieden heeft.",
     quote:
-      "Als je drie meetings en een handboek nodig hebt om het uit te leggen, wordt het tijd voor een sterker verhaal.",
+      "Als je drie meetings en een handboek nodig hebt om het uit te leggen, wordt het tijd om te zoeken naar een sterk, goed opgebouwd verhaal.",
     fix: "Product Launch & Explainer Campaign",
     result: "een verhaal dat mensen sneller begrijpen, onthouden én doorvertellen.",
     cta: "Maak mijn verhaal glashelder",
@@ -99,26 +99,21 @@ export const serviceTwoProblems = [
     fix: "Social Content Take-Over",
     result: "consistente content, herkenbare formats en eindelijk rust in je planning.",
     cta: "Geef mijn socials een plan",
-    cases: ["humgy", "tarzan-en-jane"],
+    cases: [
+      "humgy",
+      "tarzan-en-jane",
+      {
+        placeholder: true,
+        displayName: "Recenter",
+        placeholderText: "recenter hier",
+      },
+    ],
     color: "cream",
   },
   {
-    id: "event-content",
-    number: "05",
-    title: "Ons event verdient meer dan enkel aftermovies.",
-    quote:
-      "Een aftermovie is tof, maar echte buzz maak je niet pas wanneer iedereen al naar huis is. We bouwen de spanning op vóór je event, pakken het moment zelf mee en laten het achteraf nog lekker nazinderen.",
-    fix: "Event Content Campaign",
-    result:
-      "content voor, tijdens én na je event, zodat het veel langer meegaat dan de avond zelf.",
-    cta: "Haal alles uit mijn event.",
-    cases: [],
-    color: "red",
-  },
-  {
     id: "always-on-partner",
-    number: "06",
-    title: "We hebben ideeën genoeg. Alleen te weinig tijd en handen",
+    number: "05",
+    title: "We hebben misschien wel een idee, maar weten niet goed hoe we eraan moeten beginnen.",
     quote:
       "Je hoeft geen volledig creatief team aan te werven. Wij helpen je stoutste dromen waar te maken.",
     fix: "Always-on Marketing Partner",
@@ -127,6 +122,30 @@ export const serviceTwoProblems = [
     cases: [
       { slug: "visit-antwerpen", displayName: "Visit Antwerp" },
       "x-oats",
+    ],
+    color: "red",
+  },
+  {
+    id: "event-content",
+    number: "06",
+    title: "Ons event verdient meer dan enkel aftermovies.",
+    quote:
+      "Een aftermovie is tof, maar echte buzz maak je niet pas wanneer iedereen al naar huis is. We bouwen de spanning op vóór je event, pakken het moment zelf mee en laten het achteraf nog lekker nazinderen.",
+    fix: "Event Content Campaign",
+    result:
+      "content voor, tijdens én na je event, zodat het veel langer meegaat dan de avond zelf.",
+    cta: "Haal alles uit mijn event.",
+    cases: [
+      {
+        placeholder: true,
+        displayName: "CRAFTAILS!",
+        placeholderText: "CRAFTAILS! — binnenkort",
+      },
+      {
+        placeholder: true,
+        displayName: "Sugar & Spice",
+        placeholderText: "Sugar & Spice — binnenkort",
+      },
     ],
     color: "blue",
   },
@@ -143,13 +162,14 @@ export const serviceTwoProblems = [
 ];
 
 export const serviceTwoTools = [
-  { label: "video", caseSlug: "billy-bonkers" },
-  { label: "fotografie", caseSlug: "blutsqi" },
-  { label: "design", caseSlug: "billy-bonkers" },
-  { label: "audio", caseSlug: "sporthouse-group" },
-  { label: "marketing", caseSlug: "visit-antwerpen" },
-  { label: "animatie", caseSlug: "jurimesh" },
-  { label: "copywriting", caseSlug: "frankie-villager" },
+  { label: "video", caseSlug: "frankie-villager" },
+  { label: "fotografie", caseSlug: "imore" },
+  { label: "design", caseSlug: "sint-jan-berchmanscollege" },
+  { label: "radio", caseSlug: "tarzan-en-jane" },
+  { label: "Podcast", href: "/work/", placeholder: "DJ school — binnenkort" },
+  { label: "marketing", caseSlug: "humgy" },
+  { label: "animatie", caseSlug: "hypotheekwereld" },
+  { label: "copywriting", caseSlug: "tarzan-en-jane" },
   { label: "…", href: "/work/" },
 ];
 
@@ -168,7 +188,9 @@ export const serviceTwoFaqs = [
   },
   {
     question: "Nemen jullie ook strategie en distributie vast?",
-    answer: ["Duuuuh! Wij doen niet anders! Website niet gelezen ;)?"],
+    answer: [
+      "Zeker! Wij denken mee over wat, waar en wanneer je content het best wordt ingezet. Wij zorgen ervoor dat de juiste content op de juiste kanalen en op het juiste moment wordt gepost. Volledige ontzorging dus. En mag het nog wat verder gaan? Dan schakelen we ons netwerk van partners en connecties in om ook de distributie extra kracht bij te zetten.",
+    ],
   },
   {
     question: "Met welke timing en budgetten werken jullie doorgaans?",
@@ -179,9 +201,8 @@ export const serviceTwoFaqs = [
   {
     question: "Kunnen jullie ook alleen een deel van een campagne uitvoeren?",
     answer: [
-      "Alleen hulp nodig bij strategie, concept, productie, postproductie, fotografie, animatie of de uitrol op social media? We springen in waar jullie vastlopen.",
+      "Alleen hulp nodig bij strategie, concept, productie, postproductie, fotografie, animatie of de uitrol op social media? We springen in waar jullie vastlopen. Stuur ons een berichtje en we luisteren graag verder!",
     ],
-    contactCta: "Stuur ons een berichtje en we luisteren graag verder!",
   },
   {
     question: "Staat jouw vraag er niet tussen?",

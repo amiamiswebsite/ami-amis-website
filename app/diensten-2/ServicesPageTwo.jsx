@@ -125,6 +125,19 @@ function getCaseReference(reference) {
   };
 }
 
+function resolveCaseReference(reference) {
+  if (typeof reference === "object" && reference.placeholder) {
+    return {
+      type: "placeholder",
+      displayName: reference.displayName,
+      placeholderText: reference.placeholderText,
+    };
+  }
+
+  const workCase = getCaseReference(reference);
+  return workCase ? { type: "case", workCase } : null;
+}
+
 function postVimeoCommand(iframe, method, value) {
   if (!iframe?.contentWindow) {
     return;
@@ -204,7 +217,7 @@ function RisoHeading({ ariaLabel, className = "", id, lines }) {
 }
 
 function TypingRotator({ reducedMotion }) {
-  const phrases = useMemo(() => ["niet gewoon content.", "oplossingen."], []);
+  const phrases = useMemo(() => ["niet gewoon met een video.", "met een plan."], []);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [text, setText] = useState(phrases[0]);
   const [phase, setPhase] = useState("hold");
@@ -247,13 +260,13 @@ function TypingRotator({ reducedMotion }) {
 
   return (
     <span className={styles.heroRotator} aria-hidden="true">
-      <span className={styles.heroRotatorSizer}>niet gewoon content.</span>
+      <span className={styles.heroRotatorSizer}>niet gewoon met een video.</span>
       <span
         className={`${styles.heroTypedTerm} ${
           phase === "select" ? styles.heroTypedTermSelected : ""
         }`}
       >
-        {reducedMotion ? "oplossingen." : text}
+        {reducedMotion ? "met een plan." : text}
       </span>
     </span>
   );
@@ -319,19 +332,19 @@ function ServicesHero({ reducedMotion }) {
         <div className={styles.heroCopy}>
           <h1
             id="services-two-title"
-            aria-label="Wij creëren niet gewoon content. Wij creëren oplossingen."
+            aria-label="Wij komen niet gewoon met een video. Wij komen met een plan."
           >
-            <span>Wij creëren</span>
+            <span>Wij komen</span>
             <TypingRotator reducedMotion={reducedMotion} />
           </h1>
           <p>
-            Je hoeft nog niet te weten of je een campagne, een video of een volledige contentflow nodig hebt. Vertel ons waar het wringt. Wij zoeken samen uit wat werkt — en maken het dan ook ;).
+            Je hoeft nog niet te weten of je een campagne, een video of een volledige contentflow nodig hebt. Vertel ons jouw ambities. Wij maken die waar.
           </p>
           <ServiceIntentLink
             className={styles.primaryButton}
-            intent={{ ...GENERAL_INTENT, ctaLabel: "Vertel ons je problemen" }}
+            intent={{ ...GENERAL_INTENT, ctaLabel: "Vertel ons je ambities" }}
           >
-            Vertel ons je problemen
+            Vertel ons je ambities
           </ServiceIntentLink>
         </div>
 
@@ -349,41 +362,174 @@ function ServicesApproach() {
   );
 }
 
-function ApproachCardsPreview() {
+function ApproachTimelinePreview() {
+  const trackRef = useRef(null);
+  const itemRefs = useRef([]);
+  const frameRef = useRef(0);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const syncTimeline = useCallback(() => {
+    if (frameRef.current) {
+      return;
+    }
+
+    frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = 0;
+
+      const track = trackRef.current;
+      const items = itemRefs.current.filter(Boolean);
+
+      if (!track || items.length === 0) {
+        return;
+      }
+
+      const snapportCenter = track.scrollLeft + track.clientWidth / 2;
+      let closestStep = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      items.forEach((item, index) => {
+        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+        const distance = Math.abs(itemCenter - snapportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestStep = index;
+        }
+      });
+
+      setActiveStep(closestStep);
+    });
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+
+    if (!track) {
+      return undefined;
+    }
+
+    syncTimeline();
+    track.addEventListener("scroll", syncTimeline, { passive: true });
+    window.addEventListener("resize", syncTimeline);
+
+    return () => {
+      window.cancelAnimationFrame(frameRef.current);
+      track.removeEventListener("scroll", syncTimeline);
+      window.removeEventListener("resize", syncTimeline);
+    };
+  }, [syncTimeline]);
+
+  const scrollToStep = useCallback((index) => {
+    const track = trackRef.current;
+    const item = itemRefs.current[index];
+
+    if (!track || !item) {
+      return;
+    }
+
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    const centeredScroll = item.offsetLeft - (track.clientWidth - item.offsetWidth) / 2;
+    const targetScroll = Math.min(maxScroll, Math.max(0, centeredScroll));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    track.scrollTo({
+      behavior: reducedMotion ? "auto" : "smooth",
+      left: targetScroll,
+    });
+  }, []);
+
+  const handleTimelineKeyDown = useCallback(
+    (event) => {
+      let nextStep = activeStep;
+
+      if (event.key === "ArrowRight") {
+        nextStep = Math.min(serviceTwoApproachCards.length - 1, activeStep + 1);
+      } else if (event.key === "ArrowLeft") {
+        nextStep = Math.max(0, activeStep - 1);
+      } else if (event.key === "Home") {
+        nextStep = 0;
+      } else if (event.key === "End") {
+        nextStep = serviceTwoApproachCards.length - 1;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      scrollToStep(nextStep);
+    },
+    [activeStep, scrollToStep],
+  );
+
   return (
     <section
-      className={`${styles.expectations} ${styles.approachCardsPreview}`}
+      className={styles.approachTimeline}
+      aria-labelledby="services-two-approach-timeline"
       id="aanpak"
-      aria-labelledby="services-two-approach-cards"
     >
-      <header className={`${styles.sectionHeading} ${styles.expectationsHeading}`}>
-        <RisoHeading
-          id="services-two-approach-cards"
-          lines={["Onze", "persoonlijke", "aanpak"]}
-        />
-      </header>
+      <div className={styles.approachTimelineInner}>
+        <header className={styles.approachTimelineHeader}>
+          <h2 aria-label="Wat kan je verwachten?" id="services-two-approach-timeline">
+            <span>Wat kan je</span>
+            <span>verwachten?</span>
+          </h2>
+          <span
+            aria-atomic="true"
+            aria-label={`Stap ${activeStep + 1} van ${serviceTwoApproachCards.length}`}
+            aria-live="polite"
+            className={styles.approachTimelineStatus}
+            key={`timeline-status-${activeStep}`}
+          >
+            <strong aria-hidden="true">{activeStep + 1}</strong>
+            <span aria-hidden="true">/{serviceTwoApproachCards.length}</span>
+          </span>
+        </header>
 
-      <ol className={`${styles.expectationList} ${styles.approachCardList}`}>
-        {serviceTwoApproachCards.map((item, index) => (
-          <li key={item.title}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            {item.image ? (
-              <img
-                alt=""
-                aria-hidden="true"
-                className={styles.approachCardImage}
-                decoding="async"
-                height="640"
-                loading="lazy"
-                src={assetPath(item.image)}
-                width="640"
-              />
-            ) : null}
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
-          </li>
-        ))}
-      </ol>
+        <ol
+          aria-label="Onze aanpak in zes stappen"
+          className={styles.approachTimelineList}
+          onKeyDown={handleTimelineKeyDown}
+          ref={trackRef}
+          tabIndex={0}
+        >
+          {serviceTwoApproachCards.map((item, index) => {
+            const isActive = index === activeStep;
+
+            return (
+              <li
+                aria-current={index === activeStep ? "step" : undefined}
+                className={`${styles.approachTimelineStep} ${
+                  isActive ? styles.approachTimelineStepActive : ""
+                }`}
+                data-step-number={index + 1}
+                data-timeline-step={index}
+                key={item.title}
+                ref={(node) => {
+                  itemRefs.current[index] = node;
+                }}
+              >
+                <div className={styles.approachTimelineCard}>
+                  <div className={styles.approachTimelineCopy}>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+
+                  {item.image ? (
+                    <figure className={styles.approachTimelineImage}>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="lazy"
+                        src={assetPath(item.image)}
+                      />
+                    </figure>
+                  ) : null}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </section>
   );
 }
@@ -402,8 +548,17 @@ function CasePreview({ workCase, reducedMotion }) {
   );
 }
 
+function CasePlaceholder({ displayName, placeholderText }) {
+  return (
+    <div className={styles.casePlaceholder} aria-label={`${displayName}, toekomstige case`}>
+      <span>{placeholderText}</span>
+      <small>case volgt</small>
+    </div>
+  );
+}
+
 function ProblemArticle({ problem, reducedMotion }) {
-  const relatedCases = problem.cases.map(getCaseReference).filter(Boolean);
+  const relatedCases = problem.cases.map(resolveCaseReference).filter(Boolean);
   const intent = {
     source: "diensten-2",
     problemId: problem.id,
@@ -446,13 +601,21 @@ function ProblemArticle({ problem, reducedMotion }) {
 
         {relatedCases.length > 0 ? (
           <div className={`${styles.caseGrid} ${relatedCases.length > 1 ? styles.caseGridDouble : ""}`}>
-            {relatedCases.map((workCase) => (
-              <CasePreview
-                key={workCase.slug}
-                workCase={workCase}
-                reducedMotion={reducedMotion}
-              />
-            ))}
+            {relatedCases.map((caseReference) =>
+              caseReference.type === "case" ? (
+                <CasePreview
+                  key={caseReference.workCase.slug}
+                  workCase={caseReference.workCase}
+                  reducedMotion={reducedMotion}
+                />
+              ) : (
+                <CasePlaceholder
+                  displayName={caseReference.displayName}
+                  key={`placeholder-${caseReference.displayName}`}
+                  placeholderText={caseReference.placeholderText}
+                />
+              ),
+            )}
           </div>
         ) : null}
       </div>
@@ -466,11 +629,14 @@ function Problems({ reducedMotion }) {
       <div className={styles.problemLayout}>
         <aside className={styles.problemAside}>
           <RisoHeading
-            ariaLabel="Wa is uw probleem?!"
+            ariaLabel="Wa is uw probleem, gast?!"
             className={styles.problemTitle}
             id="services-two-problems"
-            lines={["Wa is uw", "probleem?!"]}
+            lines={["Wa is uw", "probleem, gast?!"]}
           />
+          <p className={styles.problemSubtitle}>
+            Resoneert één van onderstaande uitspraken bij jou?
+          </p>
         </aside>
 
         <div className={styles.problemList}>
@@ -487,7 +653,6 @@ function Interstitial() {
   return (
     <section className={styles.interstitial} aria-labelledby="services-two-partner">
       <div className={styles.partnerStatement}>
-        <span className={styles.partnerStatementRule} aria-hidden="true" />
         <h2
           id="services-two-partner"
           aria-label="I got 99 problems but a goeie contentpartner ain’t one"
@@ -550,8 +715,11 @@ function Tools({ reducedMotion }) {
               <span>{activeCase.client}</span>
             </DepthFrame>
           ) : (
-            <a className={styles.toolFallback} href={assetPath(active.href || "/work/")}>
-              <span>…</span>
+            <a
+              className={`${styles.toolFallback} ${active.placeholder ? styles.toolPlaceholder : ""}`}
+              href={assetPath(active.href || "/work/")}
+            >
+              <span>{active.placeholder || "…"}</span>
             </a>
           )}
         </div>
@@ -639,7 +807,7 @@ export default function ServicesPageTwo() {
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className={styles.page}>
           <ServicesHero reducedMotion={reducedMotion} />
-          <ApproachCardsPreview />
+          <ApproachTimelinePreview />
           {SHOW_APPROACH_BACKUP ? <ServicesApproach /> : null}
           <Problems reducedMotion={reducedMotion} />
           <Interstitial />

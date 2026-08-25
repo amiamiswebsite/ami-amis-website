@@ -1,12 +1,12 @@
 {
   "source": "public/",
-  "totalFiles": 243,
-  "maxTotalBytes": 521036867,
+  "totalFiles": 245,
+  "maxTotalBytes": 523723841,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 60,
-      "bytes": 21290454
+      "count": 61,
+      "bytes": 22011494
     },
     ".json": {
       "count": 1,
@@ -21,8 +21,8 @@
       "bytes": 220740
     },
     ".png": {
-      "count": 108,
-      "bytes": 74018342
+      "count": 109,
+      "bytes": 75944326
     },
     ".svg": {
       "count": 10,
@@ -38,7 +38,7 @@
     },
     ".webp": {
       "count": 40,
-      "bytes": 15044500
+      "bytes": 15084450
     }
   },
   "largest": [
@@ -178,6 +178,11 @@
       "extension": ".png"
     },
     {
+      "path": "assets/brentvalentijn.png",
+      "bytes": 1925984,
+      "extension": ".png"
+    },
+    {
       "path": "team/mugshot-11.png",
       "bytes": 1924513,
       "extension": ".png"
@@ -185,11 +190,6 @@
     {
       "path": "images/cases/visit-antwerpen/visit-antwerpen-clapper-exact.png",
       "bytes": 1920418,
-      "extension": ".png"
-    },
-    {
-      "path": "team/mugshot-09.png",
-      "bytes": 1890896,
       "extension": ".png"
     }
   ]

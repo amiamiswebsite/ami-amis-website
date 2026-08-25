@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
+import Icon from "./ui/Icon";
 import { assetPath } from "../../src/lib/assetPath";
 import styles from "./TarzanServicesCasePage.module.css";
 
@@ -275,7 +276,7 @@ function usePointerDepth() {
   return { onPointerLeave, onPointerMove };
 }
 
-function InteractiveFigure({ children, className = "", ...figureProps }) {
+function InteractiveFigure({ children, className = "", figureRef, ...figureProps }) {
   const pointerDepthProps = usePointerDepth();
 
   return (
@@ -283,6 +284,7 @@ function InteractiveFigure({ children, className = "", ...figureProps }) {
       {...figureProps}
       {...pointerDepthProps}
       className={`${styles.pointerDepth} ${className}`}
+      ref={figureRef}
     >
       {children}
     </figure>
@@ -367,10 +369,27 @@ function sendVimeoCommand(iframe, method, value) {
   }
 }
 
-function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figureProps }) {
+function formatPlaybackTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return "0:00";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
+}
+
+function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = false, video, ...figureProps }) {
+  const figureRef = useRef(null);
   const iframeRef = useRef(null);
   const isPlayingRef = useRef(false);
+  const lastAudibleVolumeRef = useRef(1);
+  const sdkPlayerRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1);
   const instanceId = useId().replaceAll(":", "");
   const playerId = `tarzan-chromeless-${video.id}-${instanceId}`;
   const src = cleanVimeoSource(video, playerId);
@@ -378,6 +397,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
   useEffect(() => {
     const onOtherVimeoPlay = (event) => {
       if (event.detail?.playerId !== playerId) {
+        sdkPlayerRef.current?.pause().catch(() => {});
         isPlayingRef.current = false;
         setIsPlaying(false);
       }
@@ -401,6 +421,8 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
         return;
       }
 
+      const eventData = data.data || {};
+
       if (data.event === "play") {
         isPlayingRef.current = true;
         setIsPlaying(true);
@@ -410,21 +432,149 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
         isPlayingRef.current = false;
         setIsPlaying(false);
       }
+
+      if (data.event === "ended") {
+        setCurrentTime(0);
+      }
+
+      if (data.event === "timeupdate") {
+        setCurrentTime(Number(eventData.seconds) || 0);
+        setDuration(Number(eventData.duration) || 0);
+      }
+
+      if (data.event === "volumechange") {
+        const nextVolume = eventData.muted ? 0 : Number(eventData.volume);
+
+        if (Number.isFinite(nextVolume)) {
+          setVolume(nextVolume);
+
+          if (nextVolume > 0) {
+            lastAudibleVolumeRef.current = nextVolume;
+          }
+        }
+      }
+
+      if (data.event === "loaded") {
+        sendVimeoCommand(iframeRef.current, "getDuration");
+        sendVimeoCommand(iframeRef.current, "getVolume");
+        sendVimeoCommand(iframeRef.current, "getPaused");
+      }
+
+      if (data.method === "getDuration") {
+        setDuration(Number(data.value) || 0);
+      }
+
+      if (data.method === "getVolume") {
+        const nextVolume = Number(data.value);
+
+        if (Number.isFinite(nextVolume)) {
+          setVolume(nextVolume);
+        }
+      }
+
+      if (data.method === "getPaused") {
+        const nextIsPlaying = data.value === false;
+        isPlayingRef.current = nextIsPlaying;
+        setIsPlaying(nextIsPlaying);
+      }
     };
 
     window.addEventListener("case-vimeo-play", onOtherVimeoPlay);
     window.addEventListener("message", onVimeoMessage);
     return () => {
+      sdkPlayerRef.current?.destroy().catch(() => {});
+      sdkPlayerRef.current = null;
       window.removeEventListener("case-vimeo-play", onOtherVimeoPlay);
       window.removeEventListener("message", onVimeoMessage);
     };
   }, [playerId]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement === figureRef.current);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  const initializeCustomControls = async () => {
+    const iframe = iframeRef.current;
+
+    if (!iframe || sdkPlayerRef.current) {
+      return;
+    }
+
+    try {
+      const { default: VimeoPlayer } = await import("@vimeo/player");
+
+      if (!iframe.isConnected || sdkPlayerRef.current) {
+        return;
+      }
+
+      const player = new VimeoPlayer(iframe);
+      sdkPlayerRef.current = player;
+
+      player.on("play", () => {
+        isPlayingRef.current = true;
+        setIsPlaying(true);
+      });
+      player.on("pause", () => {
+        isPlayingRef.current = false;
+        setIsPlaying(false);
+      });
+      player.on("ended", () => {
+        isPlayingRef.current = false;
+        setIsPlaying(false);
+        setCurrentTime(0);
+      });
+      player.on("timeupdate", ({ duration: nextDuration, seconds }) => {
+        setCurrentTime(Number(seconds) || 0);
+        setDuration(Number(nextDuration) || 0);
+      });
+      player.on("volumechange", ({ muted, volume: nextVolume }) => {
+        const normalizedVolume = muted ? 0 : Number(nextVolume);
+
+        if (Number.isFinite(normalizedVolume)) {
+          setVolume(normalizedVolume);
+
+          if (normalizedVolume > 0) {
+            lastAudibleVolumeRef.current = normalizedVolume;
+          }
+        }
+      });
+
+      await player.ready();
+      const [nextDuration, nextVolume, isPaused] = await Promise.all([
+        player.getDuration(),
+        player.getVolume(),
+        player.getPaused(),
+      ]);
+
+      if (iframeRef.current !== iframe || !iframe.isConnected) {
+        return;
+      }
+
+      setDuration(Number(nextDuration) || 0);
+      setVolume(Number(nextVolume) || 0);
+      isPlayingRef.current = !isPaused;
+      setIsPlaying(!isPaused);
+    } catch {
+      sendVimeoCommand(iframe, "getDuration");
+      sendVimeoCommand(iframe, "getVolume");
+      sendVimeoCommand(iframe, "getPaused");
+    }
+  };
+
   const togglePlayback = () => {
     const iframe = iframeRef.current;
 
     if (isPlayingRef.current) {
-      sendVimeoCommand(iframe, "pause");
+      if (sdkPlayerRef.current) {
+        sdkPlayerRef.current.pause().catch(() => sendVimeoCommand(iframe, "pause"));
+      } else {
+        sendVimeoCommand(iframe, "pause");
+      }
       isPlayingRef.current = false;
       setIsPlaying(false);
       return;
@@ -438,12 +588,14 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
     window.dispatchEvent(new CustomEvent("case-vimeo-play", { detail: { playerId } }));
     isPlayingRef.current = true;
     setIsPlaying(true);
-    sendVimeoCommand(iframe, "setVolume", 1);
-    sendVimeoCommand(iframe, "play");
-    window.setTimeout(() => {
+
+    if (sdkPlayerRef.current) {
+      sdkPlayerRef.current.play().catch(() => sendVimeoCommand(iframe, "play"));
+    } else {
       sendVimeoCommand(iframe, "setVolume", 1);
       sendVimeoCommand(iframe, "play");
-    }, 160);
+      window.setTimeout(() => sendVimeoCommand(iframe, "play"), 160);
+    }
   };
 
   const activateVideo = () => {
@@ -464,8 +616,135 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
     activateVideo();
   };
 
+  const handleSeek = (event) => {
+    const nextTime = Number(event.target.value);
+
+    if (!Number.isFinite(nextTime)) {
+      return;
+    }
+
+    setCurrentTime(nextTime);
+    if (sdkPlayerRef.current) {
+      sdkPlayerRef.current
+        .setCurrentTime(nextTime)
+        .catch(() => sendVimeoCommand(iframeRef.current, "setCurrentTime", nextTime));
+    } else {
+      sendVimeoCommand(iframeRef.current, "setCurrentTime", nextTime);
+    }
+  };
+
+  const toggleVolume = () => {
+    const nextVolume = volume > 0 ? 0 : lastAudibleVolumeRef.current || 1;
+    setVolume(nextVolume);
+    if (sdkPlayerRef.current) {
+      sdkPlayerRef.current
+        .setVolume(nextVolume)
+        .catch(() => sendVimeoCommand(iframeRef.current, "setVolume", nextVolume));
+    } else {
+      sendVimeoCommand(iframeRef.current, "setVolume", nextVolume);
+    }
+  };
+
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (figureRef.current?.requestFullscreen) {
+        await figureRef.current.requestFullscreen();
+      } else {
+        sendVimeoCommand(iframeRef.current, "requestFullscreen");
+      }
+    } catch {
+      sendVimeoCommand(iframeRef.current, "requestFullscreen");
+    }
+  };
+
   if (!src) {
     return null;
+  }
+
+  if (showControls) {
+    const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
+
+    return (
+      <InteractiveFigure
+        {...figureProps}
+        aria-label={itemLabel || video.title}
+        className={`${styles.chromelessVideo} ${styles.chromelessVideoWithControls} ${className}`}
+        figureRef={figureRef}
+      >
+        <div className={styles.chromelessVideoScreen}>
+          <iframe
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            data-case-vimeo-player={playerId}
+            loading="lazy"
+            onLoad={initializeCustomControls}
+            ref={iframeRef}
+            src={src}
+            title={video.title}
+          />
+        </div>
+
+        {!isPlaying ? (
+          <button
+            aria-label={`Start video: ${video.title}`}
+            className={styles.customVideoPrimaryPlay}
+            onClick={togglePlayback}
+            type="button"
+          >
+            <Icon name="play" size="lg" />
+          </button>
+        ) : null}
+
+        <div aria-label={`Bediening voor ${video.title}`} className={styles.customVideoControls} role="group">
+          <button
+            aria-label={isPlaying ? `Pauzeer video: ${video.title}` : `Speel video: ${video.title}`}
+            className={styles.customVideoControlButton}
+            onClick={togglePlayback}
+            type="button"
+          >
+            <Icon name={isPlaying ? "pause" : "play"} size="sm" />
+          </button>
+
+          <input
+            aria-label={`Voortgang van ${video.title}`}
+            className={styles.customVideoTimeline}
+            max={duration || 0}
+            min="0"
+            onChange={handleSeek}
+            step="0.1"
+            style={{ "--video-progress": `${progress}%` }}
+            type="range"
+            value={Math.min(currentTime, duration || 0)}
+          />
+
+          <span aria-hidden="true" className={styles.customVideoTime}>
+            {formatPlaybackTime(currentTime)} / {formatPlaybackTime(duration)}
+          </span>
+
+          <button
+            aria-label={volume > 0 ? `Demp ${video.title}` : `Zet geluid aan voor ${video.title}`}
+            aria-pressed={volume <= 0}
+            className={styles.customVideoControlButton}
+            onClick={toggleVolume}
+            type="button"
+          >
+            <Icon name={volume > 0 ? "volume" : "volumeOff"} size="sm" />
+          </button>
+
+          <button
+            aria-label={isFullscreen ? `Sluit volledig scherm voor ${video.title}` : `Toon ${video.title} op volledig scherm`}
+            aria-pressed={isFullscreen}
+            className={styles.customVideoControlButton}
+            onClick={toggleFullscreen}
+            type="button"
+          >
+            <Icon name="maximize" size="sm" />
+          </button>
+        </div>
+      </InteractiveFigure>
+    );
   }
 
   return (
@@ -509,7 +788,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, video, ...figurePr
   );
 }
 
-function CaseMediaVisual({ className = "", client, item, priority = false }) {
+function CaseMediaVisual({ className = "", client, item, priority = false, showControls = false }) {
   if (!item) {
     return null;
   }
@@ -522,6 +801,7 @@ function CaseMediaVisual({ className = "", client, item, priority = false }) {
       <ChromelessVideo
         className={className}
         itemLabel={title}
+        showControls={showControls}
         video={{ ...item, title }}
       />
     );
@@ -797,6 +1077,7 @@ function StorySection({ caseData }) {
 }
 
 function StaticProcessSection({ caseData }) {
+  const isLierseCase = caseData.slug === "k-lierse-sk";
   const steps = useMemo(
     () => stepConfig
       .map((item) => {
@@ -825,15 +1106,27 @@ function StaticProcessSection({ caseData }) {
 
   return (
     <section
-      className={styles.staticProcess}
+      aria-label={isLierseCase ? undefined : "Statische weergave van probleem, oplossing en resultaat"}
+      aria-labelledby={isLierseCase ? "lierse-process-title" : undefined}
+      className={`${styles.staticProcess} ${isLierseCase ? styles.lierseProcess : ""}`}
       id="proces-statisch-test"
-      aria-label="Statische weergave van probleem, oplossing en resultaat"
     >
+      {isLierseCase ? (
+        <header className={`${styles.lierseSectionHeader} ${styles.reveal}`}>
+          <h2 id="lierse-process-title">Aanpak</h2>
+        </header>
+      ) : null}
+
       <div className={styles.staticProcessGrid}>
         {steps.map((step, index) => (
-          <article className={styles.staticProcessCard} key={step.key}>
+          <article
+            className={`${styles.staticProcessCard} ${isLierseCase ? styles.reveal : ""}`}
+            key={step.key}
+          >
             <div className={styles.staticProcessCardTop}>
-              <span className={styles.staticProcessNumber}>{index + 1}</span>
+              <span className={styles.staticProcessNumber}>
+                {isLierseCase ? String(index + 1).padStart(2, "0") : index + 1}
+              </span>
               <span
                 aria-hidden="true"
                 className={styles.staticProcessIcon}
@@ -842,7 +1135,7 @@ function StaticProcessSection({ caseData }) {
             </div>
             <h3>{step.label}</h3>
             {step.text ? <p>{step.text}</p> : null}
-            {step.stats.length ? (
+            {!isLierseCase && step.stats.length ? (
               <dl className={styles.staticProcessStats}>
                 {step.stats.map((stat) => (
                   <div key={`${stat.value}-${stat.label}`}>
@@ -860,10 +1153,51 @@ function StaticProcessSection({ caseData }) {
 }
 
 function VideoSection({ caseData }) {
-  const videos = getVideoItems(caseData);
+  const isLierseCase = caseData.slug === "k-lierse-sk";
+  const videos = isLierseCase
+    ? uniqueMediaItems([getHeroMedia(caseData), ...getVideoItems(caseData)].filter(Boolean))
+    : getVideoItems(caseData);
 
   if (!videos.length) {
     return null;
+  }
+
+  if (isLierseCase) {
+    return (
+      <section
+        className={`${styles.videos} ${styles.lierseVideos}`}
+        aria-labelledby="tarzan-videos-title"
+      >
+        <div className={styles.videosInner}>
+          <header className={`${styles.lierseVideoHeader} ${styles.reveal}`}>
+            <h2 id="tarzan-videos-title">Content</h2>
+          </header>
+
+          <div className={`${styles.lierseVideoGrid} ${styles.reveal}`}>
+            {videos.map((video, index) => {
+              const isPortrait = isPortraitMedia(video);
+
+              return (
+                <article
+                  className={`${styles.lierseVideoItem} ${isPortrait ? styles.lierseVideoItemPortrait : styles.lierseVideoItemLandscape}`}
+                  key={`${mediaKey(video)}-${index}`}
+                >
+                  <header className={styles.lierseVideoMeta}>
+                    <h3>{video.title}</h3>
+                  </header>
+                  <CaseMediaVisual
+                    className={`${styles.lierseCaseVideo} ${isPortrait ? styles.lierseCaseVideoPortrait : styles.lierseCaseVideoLandscape}`}
+                    client={caseData.client}
+                    item={video}
+                    showControls
+                  />
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
   }
 
   const rowClassName = [
@@ -922,7 +1256,7 @@ function GallerySection({ group }) {
 }
 
 function OutroSection({ caseData }) {
-  if (!caseData.outro) {
+  if (!caseData.outro || caseData.slug === "k-lierse-sk") {
     return null;
   }
 
@@ -1017,16 +1351,37 @@ function MixedMediaGridSection({ caseData }) {
   );
 }
 
-function ClosingSection() {
+function ClosingSection({ caseData }) {
+  const title = caseData.ctaTitle || "Durf jij een samenwerking aan te gaan?";
+
+  if (caseData.ctaLinkOnly) {
+    return (
+      <section
+        className={`${styles.cta} ${styles.ctaBlue} ${styles.ctaLinkOnly} ${caseData.ctaCard ? styles.ctaCard : ""}`}
+        id="case-contact-cta"
+        aria-label="Contact"
+      >
+        <h2>
+          <a className={styles.ctaTitleLink} href={assetPath("/contact/")}>
+            <span>{title}</span>
+            <span className={styles.ctaTitleIcon} aria-hidden="true">
+              <Icon name="arrowUpRight" size="lg" />
+            </span>
+          </a>
+        </h2>
+      </section>
+    );
+  }
+
   return (
-    <section className={styles.cta} aria-label="Contact">
+    <section className={styles.cta} id="case-contact-cta" aria-label="Contact">
       <img
         alt=""
         aria-hidden="true"
         src={assetPath("/images/cases/visit-antwerpen/visit-antwerpen-megaphone-exact.png")}
       />
       <div>
-        <h2>Durf jij een samenwerking aan te gaan?</h2>
+        <h2>{title}</h2>
         <a className="button button--yellow" href={assetPath("/contact/")}>Eens afspreken?</a>
       </div>
     </section>
@@ -1043,6 +1398,10 @@ export default function TarzanServicesCasePage({ caseData }) {
   }));
   const introText = caseData.introQuote || caseData.oneLiner || caseData.summary || caseData.intro;
   const heroIsPortrait = isPortraitMedia(heroMedia);
+  const isLierseCase = caseData.slug === "k-lierse-sk";
+  const [lierseGoalText = "", ...lierseGoalSuffix] = isLierseCase && introText
+    ? introText.split(" ")
+    : [];
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1071,8 +1430,8 @@ export default function TarzanServicesCasePage({ caseData }) {
 
   return (
     <>
-      <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
-        <main className={styles.page}>
+      <div className={`site-shell ${isLierseCase ? styles.lierseShell : ""} ${menuOpen ? "menu-open" : ""}`}>
+        <main className={`${styles.page} ${isLierseCase ? styles.liersePage : ""}`}>
           <a className={`hero__logo ${styles.logo}`} href={assetPath("/")} aria-label="Ami Amis home" />
 
           <section className={styles.hero} aria-labelledby="tarzan-services-title">
@@ -1082,7 +1441,30 @@ export default function TarzanServicesCasePage({ caseData }) {
               <div className={styles.heroCopy}>
                 {caseData.year ? <span className={styles.sectionNumber}>{caseData.year}</span> : null}
                 <h1 id="tarzan-services-title">{caseData.title}</h1>
-                {introText ? <p>{introText}</p> : null}
+                {introText ? (
+                  isLierseCase ? (
+                    <p aria-label={introText} className={styles.lierseGoal}>
+                      <span aria-hidden="true" className={styles.lierseGoalWave}>
+                        {Array.from(lierseGoalText).map((character, index) => (
+                          <span
+                            className={styles.lierseGoalCharacter}
+                            key={`${character}-${index}`}
+                            style={{ "--lierse-goal-index": index }}
+                          >
+                            {character}
+                          </span>
+                        ))}
+                      </span>
+                      {lierseGoalSuffix.length ? (
+                        <span aria-hidden="true" className={styles.lierseGoalIcons}>
+                          {` ${lierseGoalSuffix.join(" ")}`}
+                        </span>
+                      ) : null}
+                    </p>
+                  ) : (
+                    <p>{introText}</p>
+                  )
+                ) : null}
                 {caseData.categories?.length ? (
                   <div className={styles.heroTags}>
                     {caseData.categories.map((category) => (
@@ -1097,6 +1479,7 @@ export default function TarzanServicesCasePage({ caseData }) {
                 client={caseData.client}
                 item={heroMedia}
                 priority
+                showControls={isLierseCase}
               />
             </div>
           </section>
@@ -1108,7 +1491,7 @@ export default function TarzanServicesCasePage({ caseData }) {
             <GallerySection group={group} key={group.key} />
           ))}
           <OutroSection caseData={caseData} />
-          <ClosingSection />
+          <ClosingSection caseData={caseData} />
         </main>
         <Footer variant="paper-flat" />
       </div>

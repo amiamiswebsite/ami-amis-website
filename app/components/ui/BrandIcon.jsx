@@ -2,7 +2,11 @@ export default function BrandIcon({ className = "", name }) {
   if (name === "instagram") {
     return (
       <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M7.6 3.5h8.8c2.28 0 4.1 1.82 4.1 4.1v8.8c0 2.28-1.82 4.1-4.1 4.1H7.6c-2.28 0-4.1-1.82-4.1-4.1V7.6c0-2.28 1.82-4.1 4.1-4.1z" />
+        <path
+          clipRule="evenodd"
+          d="M7.6 3.5h8.8c2.28 0 4.1 1.82 4.1 4.1v8.8c0 2.28-1.82 4.1-4.1 4.1H7.6c-2.28 0-4.1-1.82-4.1-4.1V7.6c0-2.28 1.82-4.1 4.1-4.1Zm4.4 4.15a4.35 4.35 0 1 0 0 8.7 4.35 4.35 0 0 0 0-8.7Zm0 2a2.35 2.35 0 1 1 0 4.7 2.35 2.35 0 0 1 0-4.7Zm5.55-2.28a1.08 1.08 0 1 1-2.16 0 1.08 1.08 0 0 1 2.16 0Z"
+          fillRule="evenodd"
+        />
       </svg>
     );
   }

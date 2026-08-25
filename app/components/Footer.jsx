@@ -122,7 +122,7 @@ export default function Footer({ variant = "dark" }) {
               {socialLinks.map((link) => (
                 <FooterLink
                   aria-label={link.label}
-                  className="site-footer__social"
+                  className={`site-footer__social site-footer__social--${link.icon}`}
                   href={link.href}
                   key={link.label}
                 >

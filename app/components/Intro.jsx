@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import CtaArrowIcon from "./ui/CtaArrowIcon";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const tags = [
   ["Marketing", "red"],
@@ -34,26 +36,26 @@ const tagRows = [
 const homeTwoIntro = [
   "Je bedrijf doet zotte dingen… Maar weet de buitenwereld dat al?",
   "Wij zorgen ervoor dat je merk niet verloren loopt tussen kattenfilmpjes en saaie reclameblabla. Wij maken je verhaal scherper, sterker en een pak moeilijker te negeren. Want als er iets is waar wij niet tegen kunnen, dan is het slechte content!",
-  "Als creatieve groeipartner denken we mee en zoeken we uit wat je merk nodig heeft voor meer visibiliteit.",
+  "Als jouw creatieve compadre bouwen we mee aan de groei van jouw bedrijf.",
 ];
 
 const problemCards = [
   {
     number: "1",
-    title: "Te weinig werknemers?",
-    body: "Na onze employer branding krijg je mogelijks keuzestress door al die eindbaas-sollicitanten!",
+    title: "Op zoek naar de juiste werknemers?",
+    body: "Na onze employer branding krijg je keuzestress door al die nieuwe sollicitanten.",
     icon: "profile",
   },
   {
     number: "2",
     title: "Blijft je merk onder de radar?",
-    body: "We maken consistente social content die je zichtbaar én herkenbaar houdt.",
+    body: "Met onze strategie krijgen je socials consistente content die je merk zichtbaar én herkenbaar houdt.",
     icon: "eye",
   },
   {
     number: "3",
     title: "Is je product of dienst moeilijk uit te leggen?",
-    body: "Wij maken je boodschap ZO duidelijk zodat zelfs Joske van café De Schele Teen er een powerpointpresentatie van kan geven.",
+    body: "Wij maken complexe boodschappen helder en aantrekkelijk, zodat je verhaal meteen landt bij de juiste doelgroep.",
     icon: "mystery-box",
   },
 ];
@@ -64,20 +66,22 @@ const problemCardIcons = {
   profile: "/assets/problem-cards/profile.png",
 };
 
-const homeTwoOutro = [
-  "Zie ons als jouw creatieve compadre die luistert, meedenkt én jou volledig kan ontzorgen van al je marketingperikelen.",
-  "Dus… Zullen we samen iets strafs van je merk maken?",
-];
+const homeTwoOutro = {
+  body: "Zie ons als jouw creatieve sparringspartner die luistert, meedenkt én jou volledig kan ontzorgen in al jouw marketingdromen.",
+  quote: "Wat denk’te, Zullen we samen iets cool maken?",
+  author: "Big Boss Britti",
+};
 
-const homeTwoCaseVisuals = [
-  {
-    type: "video",
-    src: "/assets/creative-growth-reel.mp4",
-    poster: "/work/tarzan-en-jane-thumb.webp",
-    alt: "Ami Amis showreel",
-    width: 1080,
-    height: 1080,
-  },
+const homeTwoReel = {
+  type: "video",
+  src: "/assets/creative-growth-reel.mp4",
+  poster: "/work/tarzan-en-jane-home-thumb.jpg",
+  alt: "Ami Amis showreel",
+  width: 1080,
+  height: 1080,
+};
+
+const homeTwoCasePool = [
   {
     src: "/work/sporthouse-group-thumb.webp",
     alt: "Sporthouse Group casebeeld",
@@ -85,10 +89,10 @@ const homeTwoCaseVisuals = [
     height: 1342,
   },
   {
-    src: "/work/visit-antwerpen-thumb-portrait.jpg",
-    alt: "Visit Antwerpen casebeeld",
-    width: 1080,
-    height: 1920,
+    src: "/images/cases/visit-antwerpen/fashion-local-poster.jpg",
+    alt: "Fashion Local voor Visit Antwerpen",
+    width: 675,
+    height: 1200,
   },
   {
     src: "/images/cases/humgy/humgy-instagram-feed.png",
@@ -114,7 +118,83 @@ const homeTwoCaseVisuals = [
     width: 1273,
     height: 1800,
   },
+  {
+    src: "/work/x-oats-thumb-portrait.jpg",
+    alt: "X-Oats casebeeld",
+    width: 1080,
+    height: 1920,
+  },
+  {
+    src: "/work/blutsqi-thumb.webp",
+    alt: "Blutsqi casebeeld",
+    width: 2498,
+    height: 1396,
+  },
+  {
+    src: "/work/kdg-thumb.jpg",
+    alt: "KdG casebeeld",
+    width: 1600,
+    height: 1100,
+  },
+  {
+    src: "/work/bazwil-thumb.jpg",
+    alt: "Bazwil casebeeld",
+    width: 1600,
+    height: 1100,
+  },
+  {
+    src: "/work/weplanet-thumb.jpg",
+    alt: "WePlanet casebeeld",
+    width: 1600,
+    height: 1100,
+  },
+  {
+    src: "/work/vdab.webp",
+    alt: "VDAB casebeeld",
+    width: 1000,
+    height: 667,
+  },
+  {
+    src: "/work/groep-maes.webp",
+    alt: "Groep Maes casebeeld",
+    width: 1000,
+    height: 417,
+  },
 ];
+
+function selectCaseVisuals() {
+  const shuffled = [...homeTwoCasePool];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  let selection = shuffled.slice(0, 6);
+  const signature = selection.map(({ src }) => src).join("|");
+  let previousSignature = "";
+
+  try {
+    previousSignature = window.sessionStorage.getItem("ami-amis-home-case-visuals") ?? "";
+  } catch {
+    previousSignature = "";
+  }
+
+  if (signature === previousSignature && shuffled.length > 6) {
+    selection = [...selection.slice(0, 5), shuffled[6]];
+  }
+
+  try {
+    window.sessionStorage.setItem(
+      "ami-amis-home-case-visuals",
+      selection.map(({ src }) => src).join("|"),
+    );
+  } catch {
+    // Storage can be unavailable in hardened privacy modes; the collage can still randomize.
+  }
+
+  return [homeTwoReel, ...selection];
+}
 
 const homeTwoCaseMotion = [
   [-14, -9],
@@ -129,6 +209,7 @@ const homeTwoCaseMotion = [
 export default function Intro({ variant = "default" }) {
   const isHomeTwo = variant === "home2";
   const ctaLabel = isHomeTwo ? "Samen jouw merk doen groeien?" : "eens afspreken?";
+  const [caseVisuals, setCaseVisuals] = useState([homeTwoReel, ...homeTwoCasePool.slice(0, 6)]);
   const challengeStageRef = useRef(null);
   const explosionVideoRef = useRef(null);
   const introMediaMotionRef = useRef({
@@ -293,6 +374,12 @@ export default function Intro({ variant = "default" }) {
   }, [startIntroCtaMotion]);
 
   useEffect(() => {
+    if (isHomeTwo) {
+      setCaseVisuals(selectCaseVisuals());
+    }
+  }, [isHomeTwo]);
+
+  useEffect(() => {
     const motion = introMediaMotionRef.current;
 
     return () => {
@@ -421,7 +508,7 @@ export default function Intro({ variant = "default" }) {
               onPointerMove={handleIntroMediaPointerMove}
             >
               <div className="intro__case-orbit" aria-hidden="true">
-                {homeTwoCaseVisuals.map(({ alt, height, poster, src, type, width }, index) => (
+                {caseVisuals.map(({ alt, height, poster, src, type, width }, index) => (
                   type === "video" ? (
                     <video
                       aria-label={alt}
@@ -458,6 +545,7 @@ export default function Intro({ variant = "default" }) {
         </div>
 
         <div className="intro__challenge-stage" ref={challengeStageRef}>
+          <h2 className="intro__challenge-heading">Komt dit je bekend voor?</h2>
           <div className="intro__challenge-grid" aria-label="Waar we mee helpen">
             {problemCards.map(({ body, icon, number, title }, index) => (
               <article
@@ -486,6 +574,9 @@ export default function Intro({ variant = "default" }) {
               </article>
             ))}
           </div>
+          <HomeCtaLink className="intro__challenge-cta" href={assetPath("/diensten/")}>
+            Diensten
+          </HomeCtaLink>
         </div>
 
         <div
@@ -524,16 +615,14 @@ export default function Intro({ variant = "default" }) {
             />
           </div>
           <div className="intro__home-two-cta-copy">
-            <p>{homeTwoOutro[0]}</p>
-            <strong className="intro__home-two-cta-title">
-              <span className="sr-only">{homeTwoOutro[1]}</span>
-              <span aria-hidden="true">Dus… Zullen we samen</span>
-              <span aria-hidden="true">iets strafs van je merk</span>
-              <span aria-hidden="true">maken?</span>
-            </strong>
-            <a className="button button--red" href={assetPath("/contact/")}>
-              {ctaLabel}
+            <p>{homeTwoOutro.body}</p>
+            <a className="intro__home-two-quote" href={assetPath("/contact/")}>
+              <span className="intro__home-two-cta-title">“{homeTwoOutro.quote}”</span>
+              <span className="intro__home-two-quote-icon" aria-hidden="true">
+                <CtaArrowIcon />
+              </span>
             </a>
+            <cite>- {homeTwoOutro.author}</cite>
           </div>
         </div>
       </section>

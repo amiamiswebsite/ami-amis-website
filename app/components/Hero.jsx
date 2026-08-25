@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
-
-function CtaArrowIcon() {
-  return (
-    <svg className="hero__cta-arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M7 17 17 7" />
-      <path d="M9 7h8v8" />
-    </svg>
-  );
-}
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const welcomeStickerWords = [
   { text: "DURVEN", start: 0, mobileWidth: "min(70vw, 16.8rem)", svgWidth: 500 },
@@ -323,7 +315,7 @@ export default function Hero({
                     width="2140"
                     height="624"
                   />
-                  <span>Video-first content marketing agency in Antwerpen</span>
+                  <span>Dé video-first marketing agency in Antwerpen</span>
                 </p>
 
                 {semanticHeading ? (
@@ -384,7 +376,7 @@ export default function Hero({
                   <p className="welcome-hero__title-fragment welcome-hero__title-fragment--bottom" aria-hidden="true">
                     {welcomeStickerWords.map(({ text, start, mobileWidth, svgWidth }) => (
                       <span
-                        className="welcome-hero__sticker-word"
+                        className={`welcome-hero__sticker-word${text === "DURVEN" ? " welcome-hero__sticker-word--wave" : ""}`}
                         data-text={text}
                         key={text}
                         style={{ "--welcome-sticker-mobile-width": mobileWidth }}
@@ -401,12 +393,9 @@ export default function Hero({
                             x={svgWidth / 2}
                             y="119"
                             textAnchor="middle"
-                            stroke="#fabb00"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="34"
+                            stroke="none"
+                            strokeWidth="0"
                             fill="#fffae5"
-                            paintOrder="stroke fill"
                           >
                             {text}
                           </text>
@@ -430,34 +419,28 @@ export default function Hero({
                     <p className="welcome-hero__descriptor">
                       <span className="welcome-hero__descriptor-riso" aria-hidden="true" />
                       <span className="welcome-hero__descriptor-text">
-                        Video-first content marketing agency in Antwerpen
+                        Dé video-first marketing agency in Antwerpen
                       </span>
                     </p>
 
                     <div className="hero__actions" aria-label="Hero acties">
-                      <a className="hero__cta hero__cta--primary" href={assetPath("/contact/")}>
-                        <span>Eens afspreken</span>
-                        <span className="hero__cta-icon" aria-hidden="true">
-                          <CtaArrowIcon />
-                        </span>
-                      </a>
-                      <button
-                        className="welcome-hero__scroll-cue"
-                        type="button"
-                        onClick={scrollToIntro}
-                        aria-label="Scroll naar de volgende sectie"
-                      >
-                        <span className="hero__scroll-cue-animation" aria-hidden="true" />
-                      </button>
-                      <a className="hero__cta hero__cta--secondary" href={assetPath("/work/")}>
-                        <span>Bekijk ons werk</span>
-                        <span className="hero__cta-icon" aria-hidden="true">
-                          <CtaArrowIcon />
-                        </span>
-                      </a>
+                      <HomeCtaLink className="hero__cta hero__cta--primary" href={assetPath("/contact/")}>
+                        Eens afspreken
+                      </HomeCtaLink>
+                      <HomeCtaLink className="hero__cta hero__cta--secondary" href={assetPath("/work/")}>
+                        Bekijk ons werk
+                      </HomeCtaLink>
                     </div>
                   </div>
                 </div>
+                <button
+                  className="welcome-hero__scroll-cue"
+                  type="button"
+                  onClick={scrollToIntro}
+                  aria-label="Scroll naar de volgende sectie"
+                >
+                  <span className="hero__scroll-cue-animation" aria-hidden="true" />
+                </button>
               </div>
 
               <div className="hero__visual" aria-hidden="true">
@@ -523,7 +506,7 @@ export default function Hero({
                   </span>
                 </div>
               )}
-              <p className="hero__agency-label">Video-first content marketing agency in Antwerpen</p>
+              <p className="hero__agency-label">Dé video-first marketing agency in Antwerpen</p>
               <div className="hero__skydiver" aria-hidden="true">
                 <div className="hero__skydiver-drop">
                   <img src={assetPath("/assets/brentskydive.webp")} alt="" width="1308" height="760" />

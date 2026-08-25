@@ -319,63 +319,52 @@ export default function ContactPage() {
 
             <div className="contact-minimal__inner">
               <div className="contact-minimal__content contact-editorial__frame contact-overview">
-                <div className="contact-overview__intro-column">
-                  <div className="contact-minimal__composition contact-intro contact-editorial__lead contact-overview__lead">
-                    <h1 className="contact-intro__title" id="contact-title">
-                      <span>Goesting in een</span>
-                      <span>samenwerking?</span>
-                    </h1>
-                    <div className="contact-choice" aria-label="Goesting in een samenwerking?">
-                      <button
-                        aria-pressed={contactChoice === "yes"}
-                        className="contact-choice__button"
-                        onClick={() => handleContactChoice("yes")}
-                        type="button"
-                      >
-                        Ja
-                      </button>
-                      <button
-                        aria-pressed={contactChoice === "no"}
-                        className="contact-choice__button"
-                        onClick={() => handleContactChoice("no")}
-                        type="button"
-                      >
-                        {noConverted ? "Ja" : "Nee"}
-                      </button>
-                    </div>
-                    <p className="aa-visually-hidden" aria-live="polite">
-                      {contactChoice ? "Top. Kies Agenda Brent of vul het formulier in." : null}
-                    </p>
-                    <div className="contact-booking">
-                      <p>
-                        Heb je een vraag? Ben je benieuwd naar onze producties of andere diensten?
-                        Of wil je gewoon kennismaken? Boek snel een date in Brent zijn agenda!
-                      </p>
-                      <a
-                        className="button contact-booking__button"
-                        href="https://calendly.com/brent-amiamis/30min"
-                        rel="noopener noreferrer"
-                        ref={bookingButtonRef}
-                        target="_blank"
-                      >
-                        <span>Agenda Brent</span>
-                        <Icon name="calendar" />
-                      </a>
-                    </div>
+                <div className="contact-minimal__composition contact-intro contact-editorial__lead contact-overview__lead">
+                  <h1 className="contact-intro__title" id="contact-title">
+                    <span>Goesting in een</span>
+                    <span>samenwerking?</span>
+                  </h1>
+                  <div className="contact-choice" aria-label="Goesting in een samenwerking?">
+                    <button
+                      aria-pressed={contactChoice === "yes"}
+                      className="contact-choice__button"
+                      onClick={() => handleContactChoice("yes")}
+                      type="button"
+                    >
+                      Ja
+                    </button>
+                    <button
+                      aria-pressed={contactChoice === "no"}
+                      className="contact-choice__button"
+                      onClick={() => handleContactChoice("no")}
+                      type="button"
+                    >
+                      {noConverted ? "Ja" : "Nee"}
+                    </button>
                   </div>
+                  <p className="aa-visually-hidden" aria-live="polite">
+                    {contactChoice ? "Top. Kies Agenda Brent of vul het formulier in." : null}
+                  </p>
+                  <div className="contact-booking">
+                    <p>
+                      Heb je een vraag? Ben je benieuwd naar onze producties of andere diensten?
+                      Of wil je gewoon kennismaken? Boek snel een date in Brent zijn agenda!
+                    </p>
+                    <a
+                      className="button contact-booking__button"
+                      href="https://calendly.com/brent-amiamis/30min"
+                      rel="noopener noreferrer"
+                      ref={bookingButtonRef}
+                      target="_blank"
+                    >
+                      <span>Agenda Brent</span>
+                      <Icon name="calendar" />
+                    </a>
+                  </div>
+                </div>
 
-                  <section className="contact-overview__card contact-overview__contact" aria-labelledby="contact-details-title">
-                    <h2 id="contact-details-title">Contact</h2>
-                    <ContactInfoList />
-                    <dl className="contact-overview__practical">
-                      {practicalItems.map((item) => (
-                        <div key={item.label}>
-                          <dt>{item.label}</dt>
-                          <dd>{item.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </section>
+                <div className="contact-overview__form-focus" ref={contactFormFocusRef}>
+                  <ContactForm intent={serviceIntent} />
                 </div>
 
                 <figure
@@ -405,53 +394,60 @@ export default function ContactPage() {
                   />
                 </figure>
 
-                <div className="contact-overview__form-column">
-                  <div className="contact-overview__form-focus" ref={contactFormFocusRef}>
-                    <ContactForm intent={serviceIntent} />
-                  </div>
+                <section className="contact-overview__card contact-overview__contact" aria-labelledby="contact-details-title">
+                  <h2 id="contact-details-title">Contact</h2>
+                  <ContactInfoList />
+                  <dl className="contact-overview__practical">
+                    {practicalItems.map((item) => (
+                      <div key={item.label}>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
 
-                  <div className="contact-overview__secondary">
-                    <section className="contact-overview__card contact-overview__social" aria-labelledby="contact-social-title">
-                      <h2 id="contact-social-title">Volg ons</h2>
-                      <div className="contact-overview__socials">
-                        {socialLinks.map((link) => (
-                          <a
-                            aria-label={link.label}
-                            className="contact-overview__social-link"
-                            href={link.href}
-                            key={link.label}
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            <BrandIcon className={`brand-icon brand-icon--${link.icon}`} name={link.icon} />
-                            <span>{link.label}</span>
+                <div className="contact-overview__secondary">
+                  <section className="contact-overview__card contact-overview__social" aria-labelledby="contact-social-title">
+                    <h2 id="contact-social-title">Volg ons</h2>
+                    <div className="contact-overview__socials">
+                      {socialLinks.map((link) => (
+                        <a
+                          aria-label={link.label}
+                          className="contact-overview__social-link"
+                          href={link.href}
+                          key={link.label}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <BrandIcon className={`brand-icon brand-icon--${link.icon}`} name={link.icon} />
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section className="contact-overview__card contact-overview__locations" aria-labelledby="contact-locations-title">
+                    <h2 id="contact-locations-title">Locaties</h2>
+                    <div className="contact-overview__location-list">
+                      {locations.map((location) => (
+                        <p key={location}>
+                          <Icon name="location" />
+                          <span>{location}</span>
+                        </p>
+                      ))}
+                    </div>
+                    <div className="contact-overview__legal" aria-label="Juridische informatie">
+                      <div className="contact-overview__legal-links">
+                        {legalLinks.map((link) => (
+                          <a href={link.href} key={link.label} rel="noreferrer" target="_blank">
+                            {link.label}
                           </a>
                         ))}
                       </div>
-                    </section>
-
-                    <section className="contact-overview__card contact-overview__locations" aria-labelledby="contact-locations-title">
-                      <h2 id="contact-locations-title">Locaties</h2>
-                      <div className="contact-overview__location-list">
-                        {locations.map((location) => (
-                          <p key={location}>
-                            <Icon name="location" />
-                            <span>{location}</span>
-                          </p>
-                        ))}
-                      </div>
-                      <div className="contact-overview__legal" aria-label="Juridische informatie">
-                        <div className="contact-overview__legal-links">
-                          {legalLinks.map((link) => (
-                            <a href={link.href} key={link.label} rel="noreferrer" target="_blank">
-                              {link.label}
-                            </a>
-                          ))}
-                        </div>
-                        <p>&copy; 2026 Ami Amis</p>
-                      </div>
-                    </section>
-                  </div>
+                      <p>&copy; 2026 Ami Amis</p>
+                    </div>
+                  </section>
                 </div>
               </div>
             </div>

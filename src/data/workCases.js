@@ -19,7 +19,7 @@ export const workCases = [
       "Samen maken we content die even levendig is als hun speeltuin: vrolijk, kleurrijk en 100% Tarzan & Jane.",
     categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding"],
     image: "/work/tarzan-en-jane-thumb.webp",
-    homeImage: "/work/tarzan-en-jane-home-thumb.webp",
+    homeImage: "/work/tarzan-en-jane-home-thumb.jpg",
     href: "/work/tarzan-en-jane/",
     featured: false,
     status: "ready",
@@ -32,6 +32,7 @@ export const workCases = [
       "Een social-first promotievideo voor Stad Antwerpen en Visit Antwerpen rond hoeveel cultuur je in Antwerpen kan beleven in een dag.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     image: "/work/visit-antwerpen-thumb-portrait.jpg",
+    homeImage: "/images/cases/visit-antwerpen/fashion-local-poster.jpg",
     href: "/ons-werk/visit-antwerpen/",
     featured: true,
     status: "ready",
@@ -87,9 +88,9 @@ export const workCases = [
   {
     client: "Hypotheekwereld",
     slug: "hypotheekwereld",
-    title: "Gepersonaliseerde billboard-video's",
+    title: "Een stresserend onderwerp speels uitgelegd",
     description:
-      "Een dynamisch billboard-project met storyboarding en animatie, per filiaal gepersonaliseerd.",
+      "Een kleurrijke billboardcampagne die hypotheekvragen helder maakt, met een lokale versie per filiaal.",
     categories: ["Animatie & montage", "Video & campagnes", "Marketingstrategie"],
     image: "/work/hypotheekwereld.webp",
     href: "/work/hypotheekwereld/",
@@ -207,9 +208,9 @@ export const workCases = [
   {
     client: "Zorgbedrijf",
     slug: "zorgbedrijf",
-    title: "Interne video's met een menselijke twist",
+    title: "Nieuwe directie, menselijk voorgesteld",
     description:
-      "Een creatieve introductie van vier nieuwe directieleden, geinspireerd op Durf te vragen.",
+      "Vier persoonlijke video’s die de afstand tussen medewerkers en nieuwe directieleden kleiner maken.",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     image: "/work/zorgbedrijf-thumb.webp",
     href: "/work/zorgbedrijf/",

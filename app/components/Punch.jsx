@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import HomeCtaLink from "./ui/HomeCtaLink";
 
 const audiences = ["KMO's", "Creatieve bureaus", "Organisaties", "..."];
 const rotatingWords = ["KMO’S", "BEDRIJVEN", "ONDERNEMERS", "MERKEN", "INNOVEERDERS"];
@@ -69,9 +70,9 @@ export default function Punch() {
               </span>
             ))}
           </div>
-          <a className="button button--red punch__button" href={assetPath("/contact/")}>
+          <HomeCtaLink className="button button--red punch__button" href={assetPath("/contact/")}>
             Eens sparren?
-          </a>
+          </HomeCtaLink>
         </div>
       </div>
     </section>
