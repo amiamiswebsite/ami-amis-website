@@ -432,7 +432,7 @@
   min-height: 0;
   padding: var(--aa-space-9)
     max(var(--page-pad), calc((100vw - var(--content-max)) / 2 + var(--page-pad))) var(--aa-space-8);
-  background: var(--sky);
+  background: color-mix(in srgb, var(--blue) 80%, var(--ink));
 }
 
 .home-two .social-growth__copy {
@@ -624,7 +624,7 @@
 }
 
 .home-two .social-growth .stat > span {
-  color: var(--ink);
+  color: var(--paper);
 }
 
 .home-two .social-growth-game {

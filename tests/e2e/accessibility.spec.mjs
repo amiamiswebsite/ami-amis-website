@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { publicRoutes } from "../../scripts/public-routes.mjs";
 import { revealLazyContent, routeUrl } from "./test-helpers.mjs";
 
-test.use({ viewport: { width: 390, height: 844 } });
+test.use({ reducedMotion: "reduce", viewport: { width: 390, height: 844 } });
 
 for (const route of publicRoutes) {
   test(`axe serious/critical: ${route}`, async ({ page }) => {

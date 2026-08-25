@@ -478,6 +478,7 @@ function ApproachTimelinePreview() {
             aria-live="polite"
             className={styles.approachTimelineStatus}
             key={`timeline-status-${activeStep}`}
+            role="status"
           >
             <strong aria-hidden="true">{activeStep + 1}</strong>
             <span aria-hidden="true">/{serviceTwoApproachCards.length}</span>

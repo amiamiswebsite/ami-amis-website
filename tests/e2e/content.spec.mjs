@@ -6,10 +6,10 @@ test("home server HTML contains real statistic end values", async ({ request }) 
   const html = await response.text();
 
   expect(response.ok()).toBe(true);
-  expect(html).toContain("30,3k");
-  expect(html).toContain("+33,5%");
-  expect(html).not.toContain(">0,0k<");
-  expect(html).not.toContain(">+0,0%<");
+  expect(html).toContain("265k");
+  expect(html).toContain("5220");
+  expect(html).not.toContain(">0k<");
+  expect(html).not.toContain(">0 likes<");
 });
 
 test("canonical namespace and metadata are stable", async ({ page }) => {

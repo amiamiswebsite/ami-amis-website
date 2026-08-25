@@ -928,6 +928,7 @@ export default function ServicePhysicsTags() {
             className={styles.scoreCounter}
             data-testid="service-score-counter"
             key={`score-${score}`}
+            role="status"
           >
             <strong aria-hidden="true">{score}</strong>
             <span aria-hidden="true">/{WIN_SCORE}</span>

@@ -1443,7 +1443,8 @@ export default function TarzanServicesCasePage({ caseData }) {
                 <h1 id="tarzan-services-title">{caseData.title}</h1>
                 {introText ? (
                   isLierseCase ? (
-                    <p aria-label={introText} className={styles.lierseGoal}>
+                    <p className={styles.lierseGoal}>
+                      <span className="aa-visually-hidden">{introText}</span>
                       <span aria-hidden="true" className={styles.lierseGoalWave}>
                         {Array.from(lierseGoalText).map((character, index) => (
                           <span

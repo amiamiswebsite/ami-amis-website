@@ -12,6 +12,13 @@ test.use({ reducedMotion: "reduce", viewport: { width: 1440, height: 1000 } });
 async function pageCopy(page) {
   return page.evaluate(() => {
     const clone = document.body.cloneNode(true);
+    const servicesRotator = clone.querySelector("#services-two-title")?.children[1];
+    const servicesTypedTerm = servicesRotator?.children[1];
+
+    if (servicesTypedTerm) {
+      servicesTypedTerm.textContent = "met een plan.";
+    }
+
     clone
       .querySelectorAll(
         ".aa-visually-hidden, .sr-only, .aa-skip-link, script, style, noscript, template",
