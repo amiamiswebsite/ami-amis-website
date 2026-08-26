@@ -1,6 +1,8 @@
 import { test } from "@playwright/test";
 import { revealLazyContent, routeUrl } from "./test-helpers.mjs";
 
+test.use({ reducedMotion: "reduce" });
+
 const routes = [
   ["home", "/"],
   ["home-2", "/home-2/"],
@@ -23,7 +25,6 @@ for (const [routeName, route] of routes) {
       await page.setViewportSize(viewport);
       await page.goto(routeUrl(route), { waitUntil: "domcontentloaded" });
       await revealLazyContent(page);
-      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.screenshot({
         path: test.info().outputPath(`${routeName}-${viewportName}.jpg`),
         fullPage: true,

@@ -27,6 +27,16 @@ export async function expectStableRoute(page, route) {
 }
 
 export async function revealLazyContent(page) {
+  await page
+    .waitForFunction(
+      () =>
+        !document.querySelector(".collage-flow") ||
+        document.body.classList.contains("collage-ready"),
+      null,
+      { timeout: 5_000 },
+    )
+    .catch(() => {});
+
   await page.evaluate(async () => {
     const height = document.documentElement.scrollHeight;
     for (let y = 0; y < height; y += Math.max(innerHeight * 0.75, 400)) {
