@@ -2,7 +2,6 @@ import { spawn } from "node:child_process";
 import { mkdir, rm } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
 import { chromium } from "@playwright/test";
 
 const VIEWPORT = { width: 1920, height: 1080 };
@@ -269,11 +268,18 @@ async function animateHomepageCards(page) {
 
 async function runFfmpeg(argumentsList) {
   await new Promise((resolvePromise, rejectPromise) => {
-    const ffmpeg = spawn(process.env.FFMPEG_PATH || ffmpegInstaller.path, argumentsList, {
+    const ffmpeg = spawn(process.env.FFMPEG_PATH || "ffmpeg", argumentsList, {
       stdio: ["ignore", "inherit", "inherit"],
     });
 
-    ffmpeg.once("error", rejectPromise);
+    ffmpeg.once("error", (error) => {
+      if (error.code === "ENOENT") {
+        rejectPromise(new Error("FFmpeg niet gevonden. Installeer FFmpeg of stel FFMPEG_PATH in."));
+        return;
+      }
+
+      rejectPromise(error);
+    });
     ffmpeg.once("exit", (code) => {
       if (code === 0) {
         resolvePromise();
