@@ -7,6 +7,18 @@ test.use({ reducedMotion: "reduce", viewport: { width: 390, height: 844 } });
 
 for (const route of publicRoutes) {
   test(`axe serious/critical: ${route}`, async ({ page }) => {
+    await page.route("**/*", async (requestRoute) => {
+      const request = requestRoute.request();
+      const requestUrl = new URL(request.url());
+      const isOwnOrigin = ["127.0.0.1", "localhost"].includes(requestUrl.hostname);
+
+      if (request.resourceType() === "media" || !isOwnOrigin) {
+        await requestRoute.abort();
+        return;
+      }
+
+      await requestRoute.continue();
+    });
     await page.goto(routeUrl(route), { waitUntil: "domcontentloaded" });
     await revealLazyContent(page);
     const frameTitles = await page

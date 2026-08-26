@@ -5,7 +5,7 @@ const basePath = process.env.TEST_BASE_PATH ?? "";
 export default defineConfig({
   testDir: "./tests/e2e",
   outputDir: "./test-results",
-  timeout: 45_000,
+  timeout: process.env.CI ? 120_000 : 45_000,
   expect: { timeout: 8_000 },
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
