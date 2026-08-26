@@ -1,20 +1,20 @@
 {
   "source": "public/",
-  "totalFiles": 245,
-  "maxTotalBytes": 523723841,
+  "totalFiles": 276,
+  "maxTotalBytes": 550585749,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 61,
-      "bytes": 22011494
+      "count": 79,
+      "bytes": 30346445
     },
     ".json": {
       "count": 1,
       "bytes": 11766
     },
     ".mp4": {
-      "count": 16,
-      "bytes": 408881595
+      "count": 17,
+      "bytes": 422021122
     },
     ".otf": {
       "count": 3,
@@ -22,7 +22,7 @@
     },
     ".png": {
       "count": 109,
-      "bytes": 75944326
+      "bytes": 76861696
     },
     ".svg": {
       "count": 10,
@@ -33,12 +33,12 @@
       "bytes": 139760
     },
     ".webm": {
-      "count": 2,
-      "bytes": 1337042
+      "count": 3,
+      "bytes": 5036194
     },
     ".webp": {
-      "count": 40,
-      "bytes": 15084450
+      "count": 51,
+      "bytes": 15855358
     }
   },
   "largest": [
@@ -93,6 +93,11 @@
       "extension": ".mp4"
     },
     {
+      "path": "images/cases/sjb/sjb-website-showcase.mp4",
+      "bytes": 13139527,
+      "extension": ".mp4"
+    },
+    {
       "path": "videos/cases/humgy/DMx-wVHhOTA.mp4",
       "bytes": 4859474,
       "extension": ".mp4"
@@ -106,6 +111,11 @@
       "path": "assets/dianavisitthumb-loop.mp4",
       "bytes": 3832531,
       "extension": ".mp4"
+    },
+    {
+      "path": "images/cases/sjb/sjb-website-showcase-source.webm",
+      "bytes": 3699152,
+      "extension": ".webm"
     },
     {
       "path": "team/movieshots/luca.png",
@@ -180,16 +190,6 @@
     {
       "path": "assets/brentvalentijn.png",
       "bytes": 1925984,
-      "extension": ".png"
-    },
-    {
-      "path": "team/mugshot-11.png",
-      "bytes": 1924513,
-      "extension": ".png"
-    },
-    {
-      "path": "images/cases/visit-antwerpen/visit-antwerpen-clapper-exact.png",
-      "bytes": 1920418,
       "extension": ".png"
     }
   ]

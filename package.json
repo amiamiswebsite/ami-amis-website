@@ -10,6 +10,7 @@
     "assets:baseline": "node scripts/audit-assets.mjs --write",
     "assets:check": "node scripts/audit-assets.mjs --check",
     "capture:routes": "node scripts/capture-routes.mjs",
+    "capture:sjb-showcase": "node scripts/capture-sjb-showcase.mjs",
     "check:generated-root": "node scripts/check-generated-root.mjs",
     "lint": "eslint app src scripts tests next.config.mjs playwright.config.mjs eslint.config.mjs",
     "format": "prettier --write --ignore-unknown .",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.62.1",
     "eslint": "^9.39.5",

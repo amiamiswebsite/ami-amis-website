@@ -98,7 +98,7 @@ function HighlightDossierCard({ item, index }) {
         <h3>{item.client}</h3>
         <p className="highlight-dossier-card__description">{item.description}</p>
         <a className="highlight-dossier-card__cta" href={href}>
-          Bekijk case <span aria-hidden="true">-&gt;</span>
+          Bekijk case
         </a>
       </div>
     </article>

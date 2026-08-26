@@ -11,8 +11,14 @@
   padding: 0 !important;
   overflow: hidden !important;
   border-radius: 0 0 clamp(2.25rem, 4vw, 4.5rem) clamp(2.25rem, 4vw, 4.5rem) !important;
-  background: var(--paper-bg-image), var(--paper) !important;
+  background:
+    linear-gradient(rgb(28 28 28 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(28 28 28 / 5%) 1px, transparent 1px), var(--paper-bg-image),
+    var(--paper) !important;
+  background-position: center top !important;
   background-size:
+    32px 32px,
+    32px 32px,
     760px auto,
     auto !important;
 }
@@ -536,9 +542,14 @@
     clamp(5.5rem, 8vw, 8rem) !important;
   border-radius: 0 !important;
   color: var(--paper) !important;
-  background: var(--paper-bg-image), var(--paper) !important;
-  background-position: center !important;
+  background:
+    linear-gradient(rgb(28 28 28 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(28 28 28 / 5%) 1px, transparent 1px), var(--paper-bg-image),
+    var(--paper) !important;
+  background-position: center top !important;
   background-size:
+    32px 32px,
+    32px 32px,
     720px auto,
     auto !important;
 }
@@ -560,7 +571,11 @@
   margin-inline: auto !important;
   padding: clamp(2.5rem, 5vw, 5rem) !important;
   border-radius: 8px !important;
-  background: var(--red) !important;
+  background:
+    linear-gradient(rgb(255 248 224 / 20%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 248 224 / 20%) 1px, transparent 1px), var(--red) !important;
+  background-position: center !important;
+  background-size: 32px 32px !important;
   text-align: left !important;
 }
 
@@ -639,7 +654,7 @@
   }
 }
 
-@media (width <= 900px) {
+@media (width <= 720px) {
   .team-page > .team-total-care .team-total-care__inner {
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-areas:

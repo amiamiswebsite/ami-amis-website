@@ -17,19 +17,7 @@ import {
   serviceTwoTools,
 } from "./servicesTwoContent";
 
-const CASES_BY_SLUG = new Map([
-  ...workCases.map((workCase) => [workCase.slug, workCase]),
-  [
-    "sint-jan-berchmanscollege",
-    {
-      client: "Sint-Jan Berchmanscollege",
-      slug: "sint-jan-berchmanscollege",
-      image: "/work/sint-jan.webp",
-      href: "/work/",
-      status: "ready",
-    },
-  ],
-]);
+const CASES_BY_SLUG = new Map(workCases.map((workCase) => [workCase.slug, workCase]));
 const GENERAL_INTENT = {
   source: "diensten-2",
   problemId: "algemeen",

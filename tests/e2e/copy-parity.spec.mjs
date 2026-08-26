@@ -21,7 +21,7 @@ async function pageCopy(page) {
 
     clone
       .querySelectorAll(
-        ".aa-visually-hidden, .sr-only, .aa-skip-link, script, style, noscript, template",
+        '[data-copy-ignore="true"], .aa-visually-hidden, .sr-only, .aa-skip-link, script, style, noscript, template',
       )
       .forEach((element) => element.remove());
 

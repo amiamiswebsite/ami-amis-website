@@ -98,6 +98,18 @@ export const workCases = [
     status: "ready",
   },
   {
+    client: "Sint-Jan Berchmanscollege",
+    slug: "sint-jan-berchmanscollege",
+    title: "Een volledige digitale rebranding voor SJB",
+    description:
+      "Van positionering en campagne tot video, fotografie, brochure, website en 3D-tour.",
+    categories: ["Video & campagnes", "Fotografie", "Design & branding", "Webdesign & optimalisatie", "Marketingstrategie"],
+    image: "/work/sint-jan.webp",
+    href: "/work/sint-jan-berchmanscollege/",
+    featured: false,
+    status: "ready",
+  },
+  {
     client: "K. Lierse S.K.",
     slug: "k-lierse-sk",
     title: "Videopartnership rond voetbalmomenten",

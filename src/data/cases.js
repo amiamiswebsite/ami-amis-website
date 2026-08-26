@@ -851,6 +851,317 @@ const rawCases = [
     externalVideoUrl: "https://www.amiamis.com/work/hypotheekwereld",
   },
   {
+    slug: "sint-jan-berchmanscollege",
+    template: "x-oats-social",
+    client: "Sint-Jan Berchmanscollege",
+    heroTitle: "Sint-Jan Berchmanscollege",
+    title: "“Kunnen jullie ons imago toegankelijker maken?”",
+    storyTitle: "Tijd om de buitenkant wat beter te laten aansluiten bij wat er binnen allemaal leeft.",
+    category: "Digitale rebranding",
+    categories: [
+      "Video & campagnes",
+      "Fotografie",
+      "Design & branding",
+      "Webdesign & optimalisatie",
+      "Marketingstrategie",
+    ],
+    sourceUrl: oldSource("/work/sjb"),
+    sourceType: "official-site-and-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsEditorialSplit: false,
+    mediaType: "mixed-media",
+    seo: {
+      title: "Sint-Jan Berchmanscollege | Ami Amis",
+      description:
+        "Een volledige digitale rebranding voor Sint-Jan Berchmanscollege: campagne, videoclip, website, fotografie, brochure en 3D-tour.",
+    },
+    heroMedia: {
+      type: "image",
+      src: "/images/cases/sjb/sjb-hero.webp",
+      title: "Sint-Jan Berchmanscollege",
+      alt: "Leerlingen van Sint-Jan Berchmanscollege tijdens de opname van de videoclip",
+      orientation: "landscape",
+      aspectRatio: "3 / 2",
+      hideCaption: true,
+    },
+    hero: {
+      image: "/images/cases/sjb/sjb-hero.webp",
+      sourceMediaUrl:
+        "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/f9dd6c60-1bb0-400a-8b56-c0f17d1779f5/SJB-VideoclipBTS-WEB-047.JPG",
+    },
+    introQuote: "Ja! Graag zelfs.",
+    intro:
+      "Sint-Jan Berchmanscollege wilde meer leerlingen warm maken voor hun school.",
+    storyBlocks: [
+      {
+        text:
+          "Sint-Jan Berchmanscollege wilde meer leerlingen warm maken voor hun school. Alleen zorgde het label ‘katholieke school’ ⛪ bij sommigen al voor een nee nog voor ze één stap binnen hadden gezet. Zonde, want achter dat conservatieve elite-imago zat een open, bruisende school vol talent, creativiteit en ambitie.",
+      },
+      {
+        text:
+          "We gingen aan de slag met de positionering, beelden, website, campagne en zowat alles daartussenin. Met één duidelijk doel: tonen dat SJB een warme, toegankelijke en levendige school is waar je alle kanten uit kunt.",
+      },
+    ],
+    storyHighlights: [[], []],
+    deliverables: ["Positionering", "Campagne", "Videoclip", "Website", "Fotografie", "Brochure", "3D-tour"],
+    media: {
+      landscapeVideos: [
+        {
+          ...vimeoCaseMedia("1073132991", "Ik heet je welkom"),
+          poster: "/images/cases/sjb/sjb-ik-heet-je-welkom-thumbnail.jpg",
+        },
+      ],
+      verticalVideos: [],
+    },
+    vimeoEmbeds: [vimeo("1073132991", "Ik heet je welkom")],
+    contentTitle: "Videoclip",
+    contentIntroBlocks: [
+      "Een klassieke testimonial met lege gangen, brave interviews en iemand die enthousiast naar een smartboard wijst?",
+      "Nee, merci.",
+      "Samen met de leerlingen bedachten we een videoclip waarmee ze toekomstige leerlingen op hun eigen manier welkom heetten. De ideeën kwamen van hen, wij hielpen om er een sterk creatief geheel van te maken.",
+      "Het resultaat werd een clip vol muziek, persoonlijkheid en schoolenergie. Door en voor leerlingen. Krijgen wij hierdoor een klein beetje heimwee naar het middelbaar? Misschien…",
+    ],
+    contentMediaLayout: "photo-triptych",
+    contentImages: [
+      {
+        src: "/images/cases/sjb/sjb-videoclip-bts-02.webp",
+        alt: "Leerlingen op het podium tijdens de SJB-videoclip",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/sjb/sjb-videoclip-bts-03.webp",
+        alt: "Cameraploeg tijdens de opname van de SJB-videoclip",
+        orientation: "landscape",
+      },
+      {
+        src: "/images/cases/sjb/sjb-videoclip-bts-04.webp",
+        alt: "Leerlingen in de klas tijdens de SJB-videoclip",
+        orientation: "landscape",
+      },
+    ],
+    editorialSections: [
+      {
+        title: "‘Later word ik’-campagne",
+        theme: "paper",
+        mediaLayout: "poster-series",
+        paragraphs: [
+          "Wat wil je later worden?",
+          "Astronaut? Dokter? Modeontwerper? Wetenschapper? Profvoetballer? Of iets dat vandaag misschien nog niet eens bestaat?",
+          "Voor de campagne ‘Later word ik’ lieten we leerlingen fantaseren over hun toekomst. We werkten een reeks campagnebeelden uit waarin ze even in de huid van hun droomberoep konden kruipen.",
+          "De boodschap was simpel: bij SJB hoef je vandaag nog niet exact te weten waar je later eindigt. Je krijgt er wel de kennis, begeleiding en kansen om te ontdekken wat bij je past.",
+          "De campagne verscheen niet alleen online, maar ook in kranten en op bussen. Zo werd het nieuwe verhaal van SJB zichtbaar in de hele omgeving.",
+        ],
+        images: [
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-astronaut.jpg",
+            alt: "Later word ik astronaut, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-developer.jpg",
+            alt: "Later word ik developer, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-prinses.jpg",
+            alt: "Later word ik prinses, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-dokter.jpg",
+            alt: "Later word ik dokter, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-kapitein.jpg",
+            alt: "Later word ik kapitein, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-apotheker.jpg",
+            alt: "Later word ik apotheker, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-dierenarts.jpg",
+            alt: "Later word ik dierenarts, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-leraar.jpg",
+            alt: "Later word ik leraar, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-journalist.jpg",
+            alt: "Later word ik journalist, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-racepiloot.jpg",
+            alt: "Later word ik racepiloot, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-boekhouder.jpg",
+            alt: "Later word ik boekhouder, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-architect.jpg",
+            alt: "Later word ik architect, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+          {
+            src: "/images/cases/sjb/posters/later-word-ik-advocaat.jpg",
+            alt: "Later word ik advocaat, campagnebeeld voor Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+            width: 843,
+            height: 1191,
+          },
+        ],
+      },
+      {
+        title: "Website",
+        theme: "blue",
+        paragraphs: [
+          "Ook de volledige website mocht opnieuw worden opgebouwd. En met volledig bedoelen we ook echt volledig.",
+          "We brachten structuur in alle informatie, maakten de website overzichtelijker voor leerlingen en ouders en trokken de nieuwe uitstraling door naar elke pagina. Zo werd de website niet alleen frisser, maar vond je er ook eindelijk vlot je weg.",
+          "Een stevig huzarenwerk, maar gelukkig doen wij dat graag!",
+        ],
+        images: [
+          {
+            src: "/images/cases/sjb/sjb-website-showcase.jpg",
+            alt: "Homepage van de website van Sint-Jan Berchmanscollege",
+            width: 3024,
+            height: 1528,
+            orientation: "landscape",
+            href: "https://www.sjbmalle.be/",
+            actionLabel: "Bekijk de website van Sint-Jan Berchmanscollege",
+          },
+        ],
+      },
+      {
+        title: "Fotografie",
+        theme: "paper",
+        paragraphs: [
+          "Een nieuwe huisstijl met foto’s uit de jaren stillekes? Dat zou wat jammer zijn.",
+          "Daarom trokken we de school in om het echte leven op SJB vast te leggen.",
+        ],
+        images: [
+          {
+            src: "/images/cases/sjb/sjb-photography-01.webp",
+            alt: "Leerlingen in de gangen van Sint-Jan Berchmanscollege",
+            orientation: "portrait",
+          },
+          {
+            src: "/images/cases/sjb/sjb-photography-02.webp",
+            alt: "Leerling tijdens een practicum op Sint-Jan Berchmanscollege",
+            orientation: "landscape",
+          },
+          {
+            src: "/images/cases/sjb/sjb-photography-03.webp",
+            alt: "Leerlingen in de bibliotheek van Sint-Jan Berchmanscollege",
+            orientation: "landscape",
+          },
+        ],
+      },
+      {
+        title: "Brochure",
+        theme: "yellow",
+        mediaLayout: "landscape-showcase",
+        paragraphs: [
+          "Toekomstige leerlingen en hun ouders kregen ook een nieuwe brochure mee naar huis.",
+          "Daarin brachten we alle belangrijke informatie samen in een vorm die duidelijk, aantrekkelijk en helemaal in lijn met de nieuwe stijl was. Informatief genoeg voor de ouders, speels genoeg voor de leerlingen.",
+        ],
+        images: [
+          {
+            src: "/images/cases/sjb/flyers/sjb-flyer-folded.jpg",
+            alt: "Gevouwen SJB-flyer met de Later word ik-campagne",
+            width: 3000,
+            height: 2250,
+            orientation: "landscape",
+          },
+          {
+            src: "/images/cases/sjb/flyers/sjb-flyer-inside.jpg",
+            alt: "Binnenzijde van de SJB-flyer met studierichtingen en schoolinformatie",
+            width: 3000,
+            height: 2250,
+            orientation: "landscape",
+          },
+          {
+            src: "/images/cases/sjb/flyers/sjb-flyer-outside.jpg",
+            alt: "Buitenzijde van de SJB-flyer met campagnebeeld en infomomenten",
+            width: 3000,
+            height: 2250,
+            orientation: "landscape",
+          },
+        ],
+      },
+      {
+        title: "3D-Tour",
+        theme: "blue",
+        paragraphs: [
+          "Onze samenwerking met SJB begon met één duidelijke vraag: kunnen jullie onze school virtueel tot leven brengen? Natuurlijk. 😉 We creëerden een 3D-tour waarmee bezoekers digitaal door de school kunnen wandelen en de sfeer al vanop afstand kunnen ontdekken.",
+          "Die eerste samenwerking smaakte naar meer, en gaf SJB het vertrouwen om ook de rest van hun digitale rebranding aan ons toe te vertrouwen.",
+        ],
+      },
+    ],
+    question: {
+      label: "Probleem",
+      title: "",
+      text:
+        "De school wilde meer inschrijvingen én een uitstraling die beter paste bij wat er binnen de muren leefde: warmte, ambitie, creativiteit en heel veel jonge mensen met grote plannen.",
+    },
+    approach: {
+      label: "Oplossing",
+      title: "",
+      text:
+        "We gaven SJB geen losse campagne, maar een volledige digitale rebranding. Van de website en fotografie tot een videoclip, brochure, 3D-tour en de campagne ‘Later word ik’: alles kreeg dezelfde frisse, speelse en herkenbare uitstraling. Zo bouwden we één sterk verhaal dat op elk kanaal klopte.",
+    },
+    result: {
+      label: "Resultaat",
+      title: "",
+      text:
+        "Een school die eindelijk ook aan de buitenkant uitstraalde wat er binnen allemaal gebeurde. De digitale rebranding maakte SJB toegankelijker, herkenbaarder en aantrekkelijker voor toekomstige leerlingen. En ja hoor, het volgende jaar waren er beduidend meer inschrijvingen! Mission Accomplished 💪!",
+      stats: [],
+    },
+    summary:
+      "Een school die eindelijk ook aan de buitenkant uitstraalde wat er binnen allemaal gebeurde.",
+    outro:
+      "Een school die eindelijk ook aan de buitenkant uitstraalde wat er binnen allemaal gebeurde.",
+    ctaTitle: "KLAAR VOOR EEN TOFFE SAMENWERKING?",
+    ctaLinkOnly: true,
+    ctaCard: true,
+    externalVideoUrls: ["https://vimeo.com/1073132991"],
+  },
+  {
     slug: "k-lierse-sk",
     template: "x-oats-social",
     client: "K. Lierse S.K.",

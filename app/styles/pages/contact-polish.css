@@ -226,12 +226,14 @@
 }
 
 .contact-redesign.contact-editorial .contact-minimal__submit {
+  --contact-submit-red: color-mix(in srgb, var(--red) 75%, var(--ink));
+
   min-height: 52px;
   margin-top: 2px;
-  border: 1px solid var(--red);
+  border: 1px solid var(--contact-submit-red);
   border-radius: 8px;
-  background: var(--red);
-  color: var(--ink) !important;
+  background: var(--contact-submit-red);
+  color: var(--paper) !important;
   box-shadow: none;
 }
 
@@ -250,7 +252,8 @@
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background: var(--red);
+  border: 0;
+  background: transparent;
   transform: perspective(1200px)
     translate3d(calc(var(--contact-pointer-x) * 3px), calc(var(--contact-pointer-y) * 2px), 0)
     rotateX(calc(var(--contact-pointer-y) * -1.15deg))
@@ -258,8 +261,20 @@
   transform-origin: center;
 }
 
-.contact-redesign.contact-editorial .contact-overview__photo img {
-  object-position: 50% 44%;
+.contact-redesign.contact-editorial
+  .contact-overview__photo
+  img.contact-overview__photo-image--default {
+  top: -10%;
+  object-position: 50% 100%;
+}
+
+.contact-redesign.contact-editorial
+  .contact-overview__photo
+  img.contact-overview__photo-image--answer {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-position: 50% 0%;
 }
 
 .contact-redesign.contact-editorial .contact-overview__contact {
@@ -291,8 +306,9 @@
 }
 
 .contact-redesign.contact-editorial .contact-overview__contact .contact-info-item__icon {
-  border-color: color-mix(in srgb, var(--red) 65%, transparent);
+  border-color: var(--ink);
   background: transparent;
+  color: var(--ink);
 }
 
 .contact-redesign.contact-editorial .contact-overview__secondary .contact-overview__social-link svg,
@@ -306,7 +322,11 @@
 }
 
 .contact-redesign.contact-editorial .contact-overview__contact .contact-info-item__icon svg {
-  fill: var(--red);
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
 }
 
 .contact-redesign.contact-editorial .contact-overview__contact .contact-info-item__text > span,
