@@ -165,15 +165,6 @@ export default function FilmrollHighlights() {
       event.preventDefault();
     };
 
-    const onWheel = (event) => {
-      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) && event.deltaX === 0) {
-        return;
-      }
-
-      event.preventDefault();
-      scroller.scrollLeft += event.deltaY + event.deltaX;
-    };
-
     const onKeyDown = (event) => {
       const step = event.shiftKey ? scroller.clientWidth * 0.82 : scroller.clientWidth * 0.46;
       const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
@@ -205,7 +196,6 @@ export default function FilmrollHighlights() {
       observer.observe(scroller);
     }
 
-    scroller.addEventListener("wheel", onWheel, { passive: false });
     scroller.addEventListener("pointerdown", onPointerDown);
     scroller.addEventListener("pointermove", onPointerMove);
     scroller.addEventListener("pointerup", endDrag);
@@ -215,7 +205,6 @@ export default function FilmrollHighlights() {
 
     return () => {
       observer?.disconnect();
-      scroller.removeEventListener("wheel", onWheel);
       scroller.removeEventListener("pointerdown", onPointerDown);
       scroller.removeEventListener("pointermove", onPointerMove);
       scroller.removeEventListener("pointerup", endDrag);

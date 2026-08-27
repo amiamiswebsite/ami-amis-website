@@ -55,16 +55,7 @@ export default function HomeExperience({ variant = "default" }) {
     <>
       <div className={`site-shell ${isHomeTwo ? "home-two" : ""} ${menuOpen ? "menu-open" : ""}`}>
         {isHomeTwo ? (
-          <>
-            <div className="home-two__backup-hero" hidden>
-              <Hero
-                variant={variant}
-                scrollTargetId="home-two-proposal-header"
-                semanticHeading={false}
-              />
-            </div>
-            <Hero id="home-two-proposal-header" proposal="new" />
-          </>
+          <Hero id="home-two-proposal-header" proposal="new" />
         ) : (
           <Hero id="hero-new-proposal" proposal="new" />
         )}

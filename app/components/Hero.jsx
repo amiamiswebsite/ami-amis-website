@@ -272,6 +272,47 @@ export default function Hero({
     };
   }, []);
 
+  useEffect(() => {
+    const hero = heroRef.current;
+
+    if (!hero || hero.classList.contains("hero--home-two")) {
+      return undefined;
+    }
+
+    const handleInitialWheel = (event) => {
+      if (
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.deltaY <= 0 ||
+        Math.abs(event.deltaX) > Math.abs(event.deltaY) ||
+        window.scrollY > 1
+      ) {
+        return;
+      }
+
+      if (event.target instanceof Element && !hero.contains(event.target)) {
+        return;
+      }
+
+      const initialScrollY = window.scrollY;
+      const deltaY = event.deltaY;
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY <= initialScrollY + 1) {
+            window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
+          }
+        });
+      });
+    };
+
+    window.addEventListener("wheel", handleInitialWheel, { capture: true, passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", handleInitialWheel, { capture: true });
+    };
+  }, []);
+
   const scrollToIntro = () => {
     const target = document.getElementById(scrollTargetId);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

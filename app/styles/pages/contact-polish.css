@@ -226,13 +226,11 @@
 }
 
 .contact-redesign.contact-editorial .contact-minimal__submit {
-  --contact-submit-red: color-mix(in srgb, var(--red) 75%, var(--ink));
-
   min-height: 52px;
   margin-top: 2px;
-  border: 1px solid var(--contact-submit-red);
+  border: 1px solid var(--red);
   border-radius: 8px;
-  background: var(--contact-submit-red);
+  background: var(--red);
   color: var(--paper) !important;
   box-shadow: none;
 }

@@ -2566,7 +2566,7 @@
 
 /* Problem cards: turn the text links into compact brand pills. */
 .problemCopy .textLink {
-  --problem-cta-red: color-mix(in srgb, var(--red) 75%, var(--ink));
+  --problem-cta-red: var(--red);
 
   width: fit-content;
   max-width: min(100%, 25rem);
