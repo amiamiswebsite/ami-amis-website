@@ -447,6 +447,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
+  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
@@ -32631,6 +32632,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   min-height: 100svh;
   height: 100svh;
   overflow: hidden;
+  overflow: clip;
 }
 
 @supports selector(html:has(.hero)) {

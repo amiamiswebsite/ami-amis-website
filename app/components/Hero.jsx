@@ -272,58 +272,6 @@ export default function Hero({
     };
   }, []);
 
-  useEffect(() => {
-    const hero = heroRef.current;
-
-    if (!hero) {
-      return undefined;
-    }
-
-    const handleHeroWheelFallback = (event) => {
-      if (
-        event.defaultPrevented ||
-        event.ctrlKey ||
-        event.deltaY === 0 ||
-        Math.abs(event.deltaX) > Math.abs(event.deltaY)
-      ) {
-        return;
-      }
-
-      if (event.target instanceof Element && !hero.contains(event.target)) {
-        return;
-      }
-
-      const initialScrollY = window.scrollY;
-      const deltaY = event.deltaY;
-      const maxScrollY = Math.max(
-        0,
-        document.documentElement.scrollHeight - (window.innerHeight || document.documentElement.clientHeight || 0),
-      );
-
-      if ((deltaY < 0 && initialScrollY <= 1) || (deltaY > 0 && initialScrollY >= maxScrollY - 1)) {
-        return;
-      }
-
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const movedInDirection =
-            deltaY > 0 ? currentScrollY > initialScrollY + 1 : currentScrollY < initialScrollY - 1;
-
-          if (!movedInDirection) {
-            window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
-          }
-        });
-      });
-    };
-
-    window.addEventListener("wheel", handleHeroWheelFallback, { capture: true, passive: true });
-
-    return () => {
-      window.removeEventListener("wheel", handleHeroWheelFallback, { capture: true });
-    };
-  }, []);
-
   const scrollToIntro = () => {
     const target = document.getElementById(scrollTargetId);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

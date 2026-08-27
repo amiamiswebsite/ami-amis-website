@@ -210,8 +210,10 @@ export default function Intro({ variant = "default" }) {
   const isHomeTwo = variant === "home2";
   const ctaLabel = isHomeTwo ? "Samen jouw merk doen groeien?" : "eens afspreken?";
   const [caseVisuals, setCaseVisuals] = useState([homeTwoReel, ...homeTwoCasePool.slice(0, 6)]);
+  const [shouldLoadHomeReel, setShouldLoadHomeReel] = useState(false);
   const challengeStageRef = useRef(null);
   const explosionVideoRef = useRef(null);
+  const homeReelVideoRef = useRef(null);
   const introMediaMotionRef = useRef({
     active: false,
     currentX: 0,
@@ -380,6 +382,90 @@ export default function Intro({ variant = "default" }) {
   }, [isHomeTwo]);
 
   useEffect(() => {
+    if (!isHomeTwo) {
+      return undefined;
+    }
+
+    const video = homeReelVideoRef.current;
+    const media = video?.closest(".intro__home-two-media");
+
+    if (!video || !media) {
+      return undefined;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setShouldLoadHomeReel(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+          setShouldLoadHomeReel(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px", threshold: [0, 0.3] },
+    );
+
+    observer.observe(media);
+    return () => observer.disconnect();
+  }, [isHomeTwo]);
+
+  useEffect(() => {
+    if (!isHomeTwo || !shouldLoadHomeReel) {
+      return undefined;
+    }
+
+    const video = homeReelVideoRef.current;
+
+    if (!video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined;
+    }
+
+    video.muted = true;
+    video.playsInline = true;
+    video.load();
+
+    const play = () => {
+      if (document.visibilityState === "visible") {
+        void video.play().catch(() => {});
+      }
+    };
+
+    const pause = () => {
+      video.pause();
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      play();
+      return pause;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.08) {
+          play();
+          return;
+        }
+
+        pause();
+      },
+      { rootMargin: "80px 0px", threshold: [0, 0.08, 0.2] },
+    );
+
+    observer.observe(video);
+    return () => {
+      observer.disconnect();
+      pause();
+    };
+  }, [isHomeTwo, shouldLoadHomeReel]);
+
+  useEffect(() => {
     const motion = introMediaMotionRef.current;
 
     return () => {
@@ -512,7 +598,7 @@ export default function Intro({ variant = "default" }) {
                   type === "video" ? (
                     <video
                       aria-label={alt}
-                      autoPlay
+                      autoPlay={shouldLoadHomeReel}
                       className={`intro__case-card intro__case-card--video intro__case-card--${index + 1}`}
                       height={height}
                       key={src}
@@ -520,10 +606,11 @@ export default function Intro({ variant = "default" }) {
                       muted
                       playsInline
                       poster={poster ? assetPath(poster) : undefined}
-                      preload="metadata"
+                      preload={shouldLoadHomeReel ? "metadata" : "none"}
+                      ref={src === homeTwoReel.src ? homeReelVideoRef : undefined}
                       width={width}
                     >
-                      <source src={assetPath(src)} type="video/mp4" />
+                      {shouldLoadHomeReel ? <source src={assetPath(src)} type="video/mp4" /> : null}
                     </video>
                   ) : (
                     <img
