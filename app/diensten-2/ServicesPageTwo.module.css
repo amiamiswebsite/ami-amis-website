@@ -2584,7 +2584,7 @@
   border-radius: 999px;
   background: var(--problem-cta-red);
   color: var(--paper);
-  font-size: clamp(0.94rem, 1.05vw, 1.05rem);
+  font-size: clamp(1.18rem, 1.18vw, 1.28rem);
   font-weight: 900;
   line-height: 1;
   text-decoration: none;
@@ -2633,7 +2633,7 @@
     min-height: 48px;
     padding-left: 18px;
     gap: 12px;
-    font-size: clamp(0.92rem, 4.2vw, 1rem);
+    font-size: clamp(1.18rem, 4.8vw, 1.28rem);
   }
 
   .problemCopy .textLink .buttonArrow {

@@ -232,6 +232,8 @@
   border-radius: 8px;
   background: var(--red);
   color: var(--paper) !important;
+  font-size: clamp(1.2rem, 1.2vw, 1.34rem);
+  font-weight: 900;
   box-shadow: none;
 }
 

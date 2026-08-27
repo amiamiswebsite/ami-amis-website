@@ -635,6 +635,14 @@
   background: color-mix(in srgb, var(--blue) 82%, var(--ink));
 }
 
+/* stylelint-disable no-descending-specificity */
+.home-two .social-growth-game [class*="gameMeta"] p,
+.home-two .social-growth-game [class*="scoreCounter"],
+.home-two .social-growth-game [class*="scoreCounter"] span {
+  color: var(--paper) !important;
+}
+/* stylelint-enable no-descending-specificity */
+
 @media (width >= 901px) {
   .home-two .social-growth {
     align-items: end;

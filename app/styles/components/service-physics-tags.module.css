@@ -101,7 +101,7 @@
   background: rgb(255 250 229 / 10%);
   color: var(--paper);
   font-family: var(--font-black);
-  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+  font-size: clamp(1.18rem, 1.35vw, 1.32rem);
   font-variant-numeric: tabular-nums;
   font-weight: 900;
   line-height: 1;
@@ -119,6 +119,10 @@
 .scoreCounter strong {
   color: var(--yellow);
   font: inherit;
+}
+
+.scoreCounter span {
+  color: #fff;
 }
 
 .stage {
@@ -903,7 +907,7 @@
 
 @keyframes score-counter-bump {
   0% {
-    opacity: 0.5;
+    opacity: 1;
     transform: translateY(5px) scale(0.82) rotate(-3deg);
   }
 

@@ -3041,7 +3041,7 @@
   display: block;
   border: 0;
   border-radius: 0;
-  color: var(--yellow);
+  color: var(--paper);
   background: transparent;
   font-size: 2rem;
   line-height: 0.82;
@@ -3061,7 +3061,7 @@
 .lierseProcess .staticProcessCard p {
   max-width: 36ch;
   margin-top: 22px;
-  color: color-mix(in srgb, var(--paper) 82%, transparent);
+  color: var(--paper);
   font-size: 1rem;
   font-weight: 560;
   line-height: 1.58;

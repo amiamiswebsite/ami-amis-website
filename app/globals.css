@@ -3137,12 +3137,13 @@ a {
   width: min(1120px, calc(100vw - (var(--page-pad) * 2)));
   aspect-ratio: 1448 / 1086;
   padding: clamp(6px, 1vw, 16px);
+  filter: drop-shadow(var(--brainstorm-desk-x) 12px 10px rgba(28, 28, 28, 0.1));
   transform: translate3d(calc(-50% + var(--brainstorm-desk-x)), var(--brainstorm-drift), 0) rotate(var(--brainstorm-roll));
   transform-origin: 50% 58%;
   perspective: 1100px;
   pointer-events: none;
   user-select: none;
-  will-change: transform;
+  will-change: filter, transform;
 }
 
 .desk-storm-inner {
@@ -3163,7 +3164,7 @@ a {
   backface-visibility: hidden;
   transform-origin: 50% 52%;
   transform-style: preserve-3d;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
 }
 
 .desk-storm-image {
@@ -3192,6 +3193,7 @@ a {
 
 .desk-storm-assets-layer--back {
   opacity: calc(0.2 + var(--desk-storm-intensity) * 0.16);
+  filter: blur(0.35px) saturate(0.95);
   transform:
     translate3d(var(--desk-assets-back-x), var(--desk-assets-back-y), 18px)
     rotateX(var(--desk-assets-back-rotate-x))
@@ -3203,6 +3205,7 @@ a {
 .desk-storm-assets-layer--front {
   z-index: 4;
   opacity: calc(0.88 + var(--desk-storm-intensity) * 0.1);
+  filter: drop-shadow(0 10px 12px rgba(28, 28, 28, 0.1));
   transform-origin: var(--desk-assets-front-origin-x) var(--desk-assets-front-origin-y);
   transform:
     translate3d(var(--desk-assets-front-x), var(--desk-assets-front-y), var(--desk-assets-front-z))
@@ -3210,7 +3213,9 @@ a {
     rotateY(var(--desk-assets-front-rotate-y))
     rotateZ(calc(var(--desk-assets-front-rotate-z) + var(--desk-assets-front-gust-rotate)))
     scale(var(--desk-assets-front-scale));
-  transition: opacity 160ms ease;
+  transition:
+    opacity 160ms ease,
+    filter 180ms ease;
 }
 
 .desk-storm-assets-layer--back .desk-storm-assets {
@@ -3223,6 +3228,9 @@ a {
 
 .brainstorm.is-chaos-burst .desk-storm-assets-layer--front {
   opacity: 1;
+  filter:
+    drop-shadow(0 20px 22px rgba(28, 28, 28, 0.18))
+    saturate(1.05);
 }
 
 .brainstorm.is-chaos-burst .desk-storm-assets-layer--front .desk-storm-assets {

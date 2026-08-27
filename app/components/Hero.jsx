@@ -275,17 +275,16 @@ export default function Hero({
   useEffect(() => {
     const hero = heroRef.current;
 
-    if (!hero || hero.classList.contains("hero--home-two")) {
+    if (!hero) {
       return undefined;
     }
 
-    const handleInitialWheel = (event) => {
+    const handleHeroWheelFallback = (event) => {
       if (
         event.defaultPrevented ||
         event.ctrlKey ||
-        event.deltaY <= 0 ||
-        Math.abs(event.deltaX) > Math.abs(event.deltaY) ||
-        window.scrollY > 1
+        event.deltaY === 0 ||
+        Math.abs(event.deltaX) > Math.abs(event.deltaY)
       ) {
         return;
       }
@@ -296,20 +295,32 @@ export default function Hero({
 
       const initialScrollY = window.scrollY;
       const deltaY = event.deltaY;
+      const maxScrollY = Math.max(
+        0,
+        document.documentElement.scrollHeight - (window.innerHeight || document.documentElement.clientHeight || 0),
+      );
+
+      if ((deltaY < 0 && initialScrollY <= 1) || (deltaY > 0 && initialScrollY >= maxScrollY - 1)) {
+        return;
+      }
 
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
-          if (window.scrollY <= initialScrollY + 1) {
+          const currentScrollY = window.scrollY;
+          const movedInDirection =
+            deltaY > 0 ? currentScrollY > initialScrollY + 1 : currentScrollY < initialScrollY - 1;
+
+          if (!movedInDirection) {
             window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
           }
         });
       });
     };
 
-    window.addEventListener("wheel", handleInitialWheel, { capture: true, passive: true });
+    window.addEventListener("wheel", handleHeroWheelFallback, { capture: true, passive: true });
 
     return () => {
-      window.removeEventListener("wheel", handleInitialWheel, { capture: true });
+      window.removeEventListener("wheel", handleHeroWheelFallback, { capture: true });
     };
   }, []);
 
