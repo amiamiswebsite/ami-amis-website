@@ -2022,7 +2022,7 @@ function InstagramProfilePreview({ group }) {
       </div>
 
       {profile.highlights?.length ? (
-        <div className={styles.instagramHighlights} aria-label="Instagram highlights">
+        <div className={styles.instagramHighlights} aria-label="Instagram highlights" tabIndex={0}>
           {profile.highlights.map((highlight, index) => (
             <span key={highlight}>
               <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>

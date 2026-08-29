@@ -549,6 +549,7 @@ function ApproachTimelineOpen() {
           aria-label="Wat kan je verwachten, horizontaal scrollbaar"
           className={styles.approachOpenTimelineList}
           onScroll={handleOpenTimelineScroll}
+          tabIndex={0}
         >
           {serviceTwoApproachCards.map((item, index) => (
             <li className={styles.approachOpenTimelineStep} key={item.title}>
