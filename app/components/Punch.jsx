@@ -70,7 +70,7 @@ export default function Punch() {
               </span>
             ))}
           </div>
-          <HomeCtaLink className="button button--red punch__button" href={assetPath("/contact/")}>
+          <HomeCtaLink className="button button--red punch__button" href={assetPath("/contact/")} showIcon={false}>
             Eens sparren?
           </HomeCtaLink>
         </div>

@@ -203,7 +203,7 @@ export default function Testimonials({ variant = "default" }) {
           ))}
         </div>
 
-        <HomeCtaLink className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")}>
+        <HomeCtaLink className="button testimonials__button friends-testimonials__cta" href={assetPath("/contact/")} showIcon={false}>
           VRIENDEN WORDEN?
         </HomeCtaLink>
       </div>

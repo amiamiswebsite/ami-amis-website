@@ -664,7 +664,7 @@ export default function Intro({ variant = "default" }) {
               </article>
             ))}
           </div>
-          <HomeCtaLink className="intro__challenge-cta" href={assetPath("/diensten/")}>
+          <HomeCtaLink className="intro__challenge-cta" href={assetPath("/diensten/")} showIcon={false}>
             Diensten
           </HomeCtaLink>
         </div>

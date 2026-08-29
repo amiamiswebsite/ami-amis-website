@@ -352,7 +352,7 @@ export default function Brainstorm({ ctaLabel = "All Gucci, baby" }) {
           </div>
         </div>
       </div>
-      <HomeCtaLink className="button button--red brainstorm__button" href={assetPath("/contact/")}>
+      <HomeCtaLink className="button button--red brainstorm__button" href={assetPath("/contact/")} showIcon={false}>
         {ctaLabel}
       </HomeCtaLink>
     </section>

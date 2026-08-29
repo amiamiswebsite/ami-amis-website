@@ -401,7 +401,7 @@ export default function Projects() {
         </div>
       </div>
 
-      <HomeCtaLink className="button projects__button projects__button--yellow" href={assetPath("/work/")}>
+      <HomeCtaLink className="button projects__button projects__button--yellow" href={assetPath("/work/")} showIcon={false}>
         Zie alle projecten
       </HomeCtaLink>
     </section>
