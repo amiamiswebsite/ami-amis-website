@@ -165,7 +165,7 @@ function ServiceIntentLink({ children, className = "", intent }) {
       href={buildServiceIntentHref(normalizedIntent)}
       onClick={() => trackServiceIntent(normalizedIntent)}
     >
-      {children}
+      <span className={styles.textLinkLabel}>{children}</span>
       <ButtonArrow />
     </a>
   );
@@ -523,6 +523,59 @@ function ApproachTimelinePreview() {
   );
 }
 
+function ApproachTimelineOpen() {
+  const handleOpenTimelineScroll = useCallback((event) => {
+    const rail = event.currentTarget;
+    const maxScroll = rail.scrollWidth - rail.clientWidth;
+    const progress = maxScroll > 0 ? rail.scrollLeft / maxScroll : 1;
+
+    rail.style.setProperty("--open-timeline-progress", `${Math.round(18 + progress * 82)}%`);
+  }, []);
+
+  return (
+    <section
+      className={styles.approachOpenTimeline}
+      aria-labelledby="services-two-approach-open"
+    >
+      <div className={styles.approachOpenTimelineInner}>
+        <header className={styles.approachOpenTimelineHeader}>
+          <h2 aria-label="Wat kan je verwachten?" id="services-two-approach-open">
+            <span>Wat kan je</span>
+            <span>verwachten?</span>
+          </h2>
+        </header>
+
+        <ol
+          aria-label="Wat kan je verwachten, horizontaal scrollbaar"
+          className={styles.approachOpenTimelineList}
+          onScroll={handleOpenTimelineScroll}
+        >
+          {serviceTwoApproachCards.map((item, index) => (
+            <li className={styles.approachOpenTimelineStep} key={item.title}>
+              <span className={styles.approachOpenTimelineNumber}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className={styles.approachOpenTimelineCopy}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+              <figure className={styles.approachOpenTimelineImage}>
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  decoding="async"
+                  loading="lazy"
+                  src={assetPath(item.image)}
+                />
+              </figure>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 function CasePreview({ workCase, reducedMotion }) {
   return (
     <DepthFrame
@@ -621,7 +674,7 @@ function Problems({ reducedMotion }) {
             ariaLabel="Wa is uw probleem, gast?!"
             className={styles.problemTitle}
             id="services-two-problems"
-            lines={["Wa is uw", "probleem, gast?!"]}
+            lines={["Wa is uw", "probleem,", "gast?!"]}
           />
           <p className={styles.problemSubtitle}>
             Resoneert één van onderstaande uitspraken bij jou?
@@ -796,7 +849,7 @@ export default function ServicesPageTwo() {
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className={styles.page}>
           <ServicesHero reducedMotion={reducedMotion} />
-          <ApproachTimelinePreview />
+          <ApproachTimelineOpen />
           {SHOW_APPROACH_BACKUP ? <ServicesApproach /> : null}
           <Problems reducedMotion={reducedMotion} />
           <Interstitial />

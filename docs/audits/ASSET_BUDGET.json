@@ -1,12 +1,12 @@
 {
   "source": "public/",
-  "totalFiles": 276,
-  "maxTotalBytes": 550585749,
+  "totalFiles": 295,
+  "maxTotalBytes": 554820828,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 79,
-      "bytes": 30346445
+      "count": 89,
+      "bytes": 32923156
     },
     ".json": {
       "count": 1,
@@ -21,8 +21,8 @@
       "bytes": 220740
     },
     ".png": {
-      "count": 109,
-      "bytes": 76861696
+      "count": 118,
+      "bytes": 78520064
     },
     ".svg": {
       "count": 10,

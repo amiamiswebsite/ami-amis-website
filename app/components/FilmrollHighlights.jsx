@@ -16,8 +16,8 @@ const highlightProjects = [
     title: "Visit Antwerpen",
     client: "Visit Antwerpen",
     type: "Fotografie",
-    image: "/work/sint-jan.webp",
-    href: "/work/visitantwerp/",
+    image: "/work/visit-antwerpen-work-thumb.jpg",
+    href: "/ons-werk/visit-antwerpen/",
     alt: "Videostill van de Visit Antwerpen case",
   },
   {

@@ -420,7 +420,7 @@ export default function ContactPage() {
                           rel="noreferrer"
                           target="_blank"
                         >
-                          <BrandIcon className={`brand-icon brand-icon--${link.icon}`} name={link.icon} />
+                          <BrandIcon name={link.icon} />
                           <span>{link.label}</span>
                         </a>
                       ))}

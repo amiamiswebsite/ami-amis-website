@@ -722,7 +722,7 @@ function CaseCTA() {
         src={assetPath("/images/cases/visit-antwerpen/visit-antwerpen-megaphone-exact.png")}
       />
       <div>
-        <h2>Durf jij een samenwerking aan te gaan?</h2>
+        <h2>DURF JIJ SAMEN TE WERKEN?</h2>
         <a className="button button--yellow" href={assetPath("/contact/")}>
           Eens afspreken?
         </a>
@@ -743,6 +743,7 @@ export default function VisitAntwerpenCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const hasTarzanSectionBands = caseData.slug === "tarzan-en-jane";
+  const isVisitAntwerpCase = caseData.slug === "visitantwerp" || caseData.slug === "visit-antwerpen";
   const showHeroBeforeStats = caseData.media?.heroPlacement === "before-stats";
   const showVideoGridBeforeStats = caseData.media?.videoGridPlacement === "before-stats";
 
@@ -755,7 +756,6 @@ export default function VisitAntwerpenCasePage({ caseData }) {
           <CaseSectionBand enabled={hasTarzanSectionBands} tone="videos">
             {showHeroBeforeStats ? <FeaturedVideo video={caseData.media?.hero} /> : null}
             {showVideoGridBeforeStats ? <VideoGrid videos={caseData.media?.verticalVideos} /> : null}
-            <StatsRow stats={caseData.result?.stats} />
             <VideoGrid videos={caseData.media?.landscapeVideos} />
             {showVideoGridBeforeStats ? null : <VideoGrid videos={caseData.media?.verticalVideos} />}
           </CaseSectionBand>
@@ -777,7 +777,7 @@ export default function VisitAntwerpenCasePage({ caseData }) {
             <CaseSummaryCards data={caseData} />
             {hasTarzanSectionBands ? <PostItCaseSummary data={caseData} /> : null}
           </CaseSectionBand>
-          <CaseCTA />
+          {isVisitAntwerpCase ? <CaseCTA /> : null}
         </main>
         <Footer />
       </div>

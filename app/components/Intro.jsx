@@ -89,10 +89,10 @@ const homeTwoCasePool = [
     height: 1342,
   },
   {
-    src: "/images/cases/visit-antwerpen/fashion-local-poster.jpg",
+    src: "/work/visit-antwerpen-work-thumb.jpg",
     alt: "Fashion Local voor Visit Antwerpen",
-    width: 675,
-    height: 1200,
+    width: 1600,
+    height: 900,
   },
   {
     src: "/images/cases/humgy/humgy-instagram-feed.png",
@@ -632,7 +632,10 @@ export default function Intro({ variant = "default" }) {
         </div>
 
         <div className="intro__challenge-stage" ref={challengeStageRef}>
-          <h2 className="intro__challenge-heading">Komt dit je bekend voor?</h2>
+          <h2 className="intro__challenge-heading">
+            <span className="intro__challenge-heading-line">Komt dit je</span>{" "}
+            <span className="intro__challenge-heading-line">bekend voor?</span>
+          </h2>
           <div className="intro__challenge-grid" aria-label="Waar we mee helpen">
             {problemCards.map(({ body, icon, number, title }, index) => (
               <article

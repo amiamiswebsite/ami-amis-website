@@ -74,7 +74,10 @@
     cursor: pointer;
     font-family: var(--aa-font-family-display);
     font-weight: var(--aa-font-weight-black);
+    line-height: 1;
+    text-align: center;
     text-decoration: none;
+    white-space: nowrap;
     transition:
       box-shadow var(--aa-motion-feedback-duration) ease,
       transform var(--aa-motion-feedback-duration) ease;

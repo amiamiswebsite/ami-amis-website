@@ -69,7 +69,7 @@ const rawCases = [
     oneLiner:
       "Voor Tarzan & Jane trokken we onze mooiste jungle-outfits aan en maakten we een videoclip vol energie, kleur en plezier.",
     category: "Social content",
-    categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding"],
+    categories: ["Video & campagnes", "Social content", "Fotografie", "Design & branding", "Radio & Podcast"],
     year: "2026",
     sourceUrl: null,
     sourceType: "manual-new-copy",
@@ -319,8 +319,13 @@ const rawCases = [
     media: {
       zuidVideo: {
         label: "Zuidvideo",
-        type: "popup",
-        src: "/videos/cases/visit-antwerpen/zuidvideo.mp4",
+        type: "vimeo",
+        id: "1222095474",
+        hash: "d15c6a914a",
+        aspectRatio: "16/9",
+        orientation: "landscape",
+        url: "https://vimeo.com/1222095474?share=copy&fl=sv&fe=ci",
+        fallbackSrc: "/videos/cases/visit-antwerpen/zuidvideo.mp4",
         poster: "/images/cases/visit-antwerpen/zuidvideo-poster.jpg",
       },
       hero: {
@@ -473,11 +478,53 @@ const rawCases = [
     ],
     campaignGalleryEyebrow: "Social media",
     campaignGalleryTitle: "Humgy op Instagram",
+    campaignGalleryType: "instagramProfile",
+    instagramProfile: {
+      handle: "humgy.cowork.antwerp",
+      url: "https://www.instagram.com/humgy.cowork.antwerp/",
+      bio: "Werkplekken waar go-getters zich thuisvoelen, productief kunnen werken en hun netwerk kunnen uitbreiden.",
+      stats: ["4 locaties", "members", "events"],
+      highlights: ["Central", "South", "Meeting?", "Community", "Wallpapers", "#HelloHumgy"],
+    },
     campaignImages: [
       {
-        src: "/images/cases/humgy/humgy-instagram-feed.png",
-        alt: "De socialmediafeed van Humgy Cowork op Instagram",
-        orientation: "landscape",
+        src: "/images/cases/humgy/DXHhKvGEXw8-feed.jpg",
+        alt: "Humgy Instagram post met aftermovie",
+        type: "reel",
+      },
+      {
+        src: "/images/cases/humgy/humgy-community.jpg",
+        alt: "Humgy communitybeeld op Instagram",
+      },
+      {
+        src: "/images/cases/humgy/DMx-wVHhOTA-feed.jpg",
+        alt: "Humgy Instagram post met grappig format",
+        type: "reel",
+      },
+      {
+        src: "/images/cases/humgy/humgy-member-laptop.jpg",
+        alt: "Humgy member aan het werk op Instagram",
+      },
+      {
+        src: "/images/cases/humgy/DNWAzo4x8g0-feed.jpg",
+        alt: "Humgy Instagram post met snackable video",
+        type: "reel",
+      },
+      {
+        src: "/images/cases/humgy/humgy-meeting.jpg",
+        alt: "Humgy meetingruimte op Instagram",
+      },
+      {
+        src: "/images/cases/humgy/humgy-reading.jpg",
+        alt: "Humgy member leest in de coworkingruimte",
+      },
+      {
+        src: "/images/cases/humgy/humgy-member-board.jpg",
+        alt: "Humgy memberboard op Instagram",
+      },
+      {
+        src: "/images/cases/humgy/humgy-stairs.jpg",
+        alt: "Humgy trapportret op Instagram",
       },
     ],
     imageGalleryEyebrow: "Fotografie",
@@ -549,31 +596,6 @@ const rawCases = [
     mediaSectionIntro:
       "Afters, grappige formats, snackable content en member stories, verwerkt als compacte play-cards.",
     mediaSections: [
-      {
-        title: "Social feed",
-        key: "instagram",
-        featured: true,
-        items: [
-          {
-            type: "instagram",
-            url: "https://www.instagram.com/p/DXHhKvGEXw8/",
-            fallbackLabel: "Instagram",
-            hideCaption: true,
-          },
-          {
-            type: "instagram",
-            url: "https://www.instagram.com/p/DMx-wVHhOTA/",
-            fallbackLabel: "Instagram",
-            hideCaption: true,
-          },
-          {
-            type: "instagram",
-            url: "https://www.instagram.com/p/DNWAzo4x8g0/",
-            fallbackLabel: "Instagram",
-            hideCaption: true,
-          },
-        ],
-      },
       {
         title: "Members",
         key: "members",
@@ -1156,7 +1178,7 @@ const rawCases = [
       "Een school die eindelijk ook aan de buitenkant uitstraalde wat er binnen allemaal gebeurde.",
     outro:
       "Een school die eindelijk ook aan de buitenkant uitstraalde wat er binnen allemaal gebeurde.",
-    ctaTitle: "KLAAR VOOR EEN TOFFE SAMENWERKING?",
+    ctaTitle: "Klaar voor een toffe samenwerking?",
     ctaLinkOnly: true,
     ctaCard: true,
     externalVideoUrls: ["https://vimeo.com/1073132991"],
@@ -1675,31 +1697,49 @@ const rawCases = [
     template: "x-oats-social",
     client: "Konligo",
     heroTitle: "KONLIGO",
-    title: "Showcase voor duurzame eventstructuren",
-    subtitle: "Studio-showcase rond de Fastival-tent.",
+    title: "Hoe laat je een tent tot leven komen?",
+    subtitle: "Twee video’s rond één slimme tent.",
     category: "Video & campagnes",
-    categories: ["Video & campagnes", "Fotografie"],
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     year: "2026",
     sourceUrl: oldSource("/work/konligo"),
     sourceType: "old-site",
     needsContent: false,
     needsReview: false,
     needsAssetDownload: false,
-    needsEditorialSplit: true,
-    mediaType: "mixed-media",
+    needsEditorialSplit: false,
+    mediaType: "vimeo-video",
+    videoSectionPlacement: "before-process",
+    contentTitle: "Video’s",
     intro:
-      "Konligo doorbreekt routine met innovatieve en duurzame inzetbare podia. Door hun baanbrekend systeem wordt het verrassend simpel om jouw event- of festival-ervaring naar een hoger niveau te tillen. Wij doken samen met de Fastival -tent de studio in voor deze showcase.",
+      "Op papier is het simpel: Konligo maakt slimme, opvouwbare tenten die je in no-time opzet. Handig? Absoluut. Maar hoe maak je dat ook nog eens sexy op video? 👀",
     summary:
-      "Een studio-showcase en fotografie rond de Fastival-tent en Konligo's innovatieve podia.",
-    introQuote: "Konligo wilde de Fastival-tent en hun duurzame eventstructuren krachtig en begrijpelijk in beeld brengen.",
+      "Twee spots die tonen hoe veelzijdig, snel en gebruiksvriendelijk de slimme tenten van Konligo zijn.",
+    introQuote: "Twee video’s, twee duidelijke jobs.",
     storyBlocks: [
       {
         text:
-          "Konligo doorbreekt routine met innovatieve en duurzame inzetbare podia. Door hun baanbrekend systeem wordt het verrassend simpel om jouw event- of festival-ervaring naar een hoger niveau te tillen. Wij doken samen met de Fastival -tent de studio in voor deze showcase.",
+          "Op papier is het simpel: Konligo maakt slimme, opvouwbare tenten die je in no-time opzet. Handig? Absoluut. Maar hoe maak je dat ook nog eens sexy op video? 👀",
+      },
+      {
+        text:
+          "Daar kwamen wij in beeld. In plaats van met een gigantische productie langs allerlei locaties te trekken, draaiden we het gewoon om: wij gingen niet naar de locaties, de locaties kwamen naar de tent. 🌍",
+      },
+      {
+        text:
+          "In één studio bouwden we telkens een compleet nieuwe wereld rond dezelfde tent. Het ene moment stond ze op een trouwfeest, even later deed ze dienst als EHBO-post of stond ze midden in de sfeer van een concert. Zo lieten we niet alleen zien hoe veelzijdig Konligo is, maar ook waar zo’n tent uiteindelijk écht voor dient: onderdak bieden aan grote momenten. ❤️",
+      },
+      {
+        text:
+          "Naast de herospot maakten we ook een tweede video rond één van Konligo’s sterkste USP’s: hoe snel de tent staat én weer verdwijnt. Geen ingewikkelde handleiding, geen eindeloos gepruts met stokken. Gewoon kijken, opbouwen, klaar. ⛺️💨",
+      },
+      {
+        text:
+          "Zo kregen we met een relatief eenvoudige productie twee soorten content: één video die gevoel en mogelijkheden verkoopt, en één video die vooral doet wat hij moet doen: alles glashelder uitleggen. Win-win. 🤝",
       },
     ],
-    storyHighlights: [[]],
-    deliverables: ["Showcase", "Fotografie", "Aftermovie"],
+    storyHighlights: [[], [], [], [], []],
+    deliverables: ["Herospot", "USP-video", "Productvideo", "Studio-opname"],
     hero: {
       image: "/work/konligo.webp",
       sourceMediaUrl:
@@ -1707,44 +1747,47 @@ const rawCases = [
     },
     gallery: [{ src: "/work/konligo.webp", alt: "Konligo projectbeeld" }],
     media: {
-      hero: vimeoCaseMedia("986299959", "Konligo aftermovie"),
-      verticalVideos: [
-        vimeoCaseMedia("986299959", "Konligo aftermovie"),
-        imageCaseMedia("/work/konligo.webp", "Konligo projectbeeld"),
+      hero: vimeoCaseMedia("1222088181", "Konligo herospot"),
+      landscapeVideos: [
+        {
+          ...vimeoCaseMedia("1222088181", "Emotie"),
+          instanceKey: "emotie",
+        },
+        {
+          ...vimeoCaseMedia("1222088181", "USP"),
+          instanceKey: "usp",
+        },
       ],
     },
-    vimeoEmbeds: [vimeo("986299959", "Konligo aftermovie")],
-    needsEditorialSplit: false,
-    facts: [
-      { label: "Output", value: "20+ video's" },
-      { label: "Type", value: "showcase" },
-    ],
+    vimeoEmbeds: [],
+    facts: [],
+    hideInfoStrip: true,
     question: {
-      title: "Hoe toon je een innovatieve eventstructuur zonder ze uit te leggen tot ze saai wordt?",
+      label: "Probleem",
+      title: "",
       text:
-        "Konligo wilde de Fastival-tent en hun duurzame eventstructuren krachtig en begrijpelijk in beeld brengen.",
+        "Hoe toon je op een aantrekkelijke manier dat één tent op heel wat verschillende locaties en voor verschillende toepassingen kan worden ingezet, zonder daarvoor met een gigantische productie de halve wereld rond te rijden?",
     },
     approach: {
-      title: "Een studio-showcase met beweging, detail en wow-moment.",
+      label: "Oplossing",
+      title: "",
       text:
-        "We brachten de constructie in de studio tot leven met focus op vorm, gebruiksgemak en visuele impact.",
+        "Simpel: we brachten de wereld naar de tent. Met kleurrijke en speelse visuele ingrepen veranderden we dezelfde setting telkens opnieuw en maakten we de veelzijdigheid van Konligo voelbaar.",
     },
     result: {
-      title: "Heldere content voor een technische innovatie.",
+      label: "Resultaat",
+      title: "",
       text:
-        "De video-output maakt meteen duidelijk wat Konligo uniek maakt binnen events en festivals.",
-      stats: [
-        { value: "20+", label: "video’s" },
-        { value: "1", label: "showcase" },
-        { value: "Fastival", label: "tent" },
-        { value: "PLACEHOLDER", label: "fotografie" },
-      ],
+        "Twee video’s, twee duidelijke jobs. Eén herospot die sfeer, emotie en de mogelijkheden van Konligo verkoopt. En één praktische video die meteen bewijst hoe gebruiksvriendelijk het product is.",
+      stats: [],
     },
-    outro: "De video-output maakt meteen duidelijk wat Konligo uniek maakt binnen events en festivals.",
     ctaTitle: "DURF JIJ SAMEN TE WERKEN?",
     ctaLinkOnly: true,
     ctaCard: true,
-    externalVideoUrl: "https://f.io/w-LP7QYP",
+    externalVideoUrls: [
+      "https://vimeo.com/1222088181?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1222088181?share=copy&fl=sv&fe=ci",
+    ],
   },
   {
     slug: "billy-bonkers",
@@ -1955,7 +1998,7 @@ const rawCases = [
     title: "Documentaire sportstory rond veerkracht",
     subtitle: "Felipe Nystrom, Younited en cyclocross.",
     category: "Video & campagnes",
-    categories: ["Video & campagnes", "Audio engineering", "Animatie & montage"],
+    categories: ["Video & campagnes", "Animatie & montage"],
     year: "2026",
     sourceUrl: oldSource("/work/sporthousegroup"),
     sourceType: "old-site",
@@ -1976,7 +2019,7 @@ const rawCases = [
       },
     ],
     storyHighlights: [[]],
-    deliverables: ["Documentaire video", "Montage", "Audio engineering", "Storytelling"],
+    deliverables: ["Documentaire video", "Montage", "Sounddesign", "Storytelling"],
     hero: {
       sourceMediaUrl:
         "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/8d707e9d-44f5-48fe-a098-c6ce64fa656b/Scherm­afbeelding+2026-03-17+om+14.46.36.png",
@@ -2142,7 +2185,7 @@ const rawCases = [
     title: "Hoe stel je een nieuwe directie voor zonder dat het voelt als… een directievoorstelling? 👔😴",
     subtitle: "Nieuwe directieleden menselijk voorgesteld.",
     category: "Video & campagnes",
-    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
+    categories: ["Video & campagnes", "Marketingstrategie"],
     year: "2026",
     sourceUrl: oldSource("/work/zorgbedrijf"),
     sourceType: "old-site",
@@ -2353,8 +2396,8 @@ const rawCases = [
     template: "x-oats-social",
     client: "Groep Maes",
     heroTitle: "GROEP MAES",
-    title: "Groep Maes",
-    subtitle: "Hoogwerkoplossingen in actie.",
+    title: "Hoe vind je technische profielen die iedereen zoekt? 👷‍♂️🔧",
+    subtitle: "Vacaturevideo’s",
     category: "Video & campagnes",
     categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     year: "2026",
@@ -2363,71 +2406,91 @@ const rawCases = [
     needsContent: false,
     needsReview: false,
     needsAssetDownload: false,
-    needsEditorialSplit: true,
+    needsEditorialSplit: false,
     mediaType: "vimeo-video",
+    videoSectionPlacement: "before-process",
+    contentTitle: false,
+    storyTitle: "Vacaturevideo’s",
     oneLiner:
-      "Drone- en GoPro-beelden voor hoogwerkoplossingen, aangevuld met originele vacaturevideo's en campagnestrategie.",
+      "Authentieke vacaturevideo’s en actiebeelden voor een technische werkgever in volle groei.",
     intro:
-      "Groep Maes blinkt uit in innovatieve hoogwerkoplossingen. Om het unieke “point of view” van een hoogtewerker te laten zien tijdens het installeren van ledverlichting in een voetbalstadion, gebruikten we spectaculaire drone- en GoPro-beelden. Voor het eerste concept van deze aanwervingscampagne gingen we vol enthousiasme mee op pad met enkele hoogtewerkers om unieke vacaturevideo’s te maken – ideaal voor sociale media. Het leukste detail? De video’s worden gepresenteerd door de dochter van de CEO! Een subtiele knipoog naar de warme, familiale sfeer die Groep Maes zo bijzonder maakt.",
+      "Groep Maes zat midden in een stevige groeispurt en zocht nieuwe collega’s. Alleen: sommige technische profielen vind je nu eenmaal niet door gewoon een vacature online te gooien en te hopen op het beste. 😅",
     summary:
-      "Drone- en GoPro-beelden voor hoogwerkoplossingen, aangevuld met originele vacaturevideo's en campagnestrategie.",
-    introQuote: "Groep Maes wilde hun technische werk en warme bedrijfscultuur zichtbaarder maken.",
+      "Authentieke vacaturevideo’s leverden concrete sollicitanten op, aangevuld met spectaculaire actiebeelden van hun hoogwerkoplossingen.",
+    introQuote: "Groep Maes zat midden in een stevige groeispurt en zocht nieuwe collega’s.",
     storyBlocks: [
       {
         text:
-          "Groep Maes blinkt uit in innovatieve hoogwerkoplossingen. Om het unieke “point of view” van een hoogtewerker te laten zien tijdens het installeren van ledverlichting in een voetbalstadion, gebruikten we spectaculaire drone- en GoPro-beelden. Voor het eerste concept van deze aanwervingscampagne gingen we vol enthousiasme mee op pad met enkele hoogtewerkers om unieke vacaturevideo’s te maken – ideaal voor sociale media. Het leukste detail? De video’s worden gepresenteerd door de dochter van de CEO! Een subtiele knipoog naar de warme, familiale sfeer die Groep Maes zo bijzonder maakt.",
+          "Groep Maes zat midden in een stevige groeispurt en zocht nieuwe collega’s. Alleen: sommige technische profielen vind je nu eenmaal niet door gewoon een vacature online te gooien en te hopen op het beste. 😅",
+      },
+      {
+        text: "Dus gooiden we het over een andere boeg.",
+      },
+      {
+        text:
+          "In plaats van droge vacatureteksten maakten we korte videoportretten met échte medewerkers van Groep Maes. Collega’s die zelf vertellen wat hun job inhoudt, waarom ze er graag werken en wat je als nieuwe medewerker kunt verwachten. Die authenticiteit brengt de boodschap persoonlijker naar de kijker. 🎥",
+      },
+      {
+        text:
+          "Elke video focuste op een andere functie, zodat potentiële kandidaten meteen een eerlijk beeld kregen van de job, de werksfeer en de mensen achter Groep Maes.",
+      },
+      {
+        text:
+          "En dat werkte. Maar liefst 15 mensen solliciteerden bij de vacature via deze campagne waarvan er 3 het team ook vervoegden! Bovendien deden de video’s meer dan vacatures invullen: ze versterkten de trots intern én het imago extern.",
       },
     ],
     storyHighlights: [[]],
-    deliverables: ["Actiebeelden", "Drone", "GoPro", "Vacaturevideo's", "Campagnestrategie"],
+    deliverables: ["Vacaturevideo’s", "Employer branding", "Drone", "GoPro", "Actiebeelden"],
     hero: {
       image: "/work/groep-maes.webp",
     },
     hideInfoStrip: true,
     ctaVariant: "blue",
-    ctaTitle: "Durf jij een samenwerking aan te gaan?",
+    ctaTitle: "DURF JIJ SAMEN TE WERKEN?",
     ctaButton: "Eens afspreken?",
     footerVariant: "dark",
     gallery: [],
     vimeoEmbeds: [
-      vimeo("1055488422", "Groep Maes video 1", "66a9e925c9"),
-      vimeo("1055488333", "Groep Maes video 2", "97ea7df7e1"),
-      vimeo("926207596", "Groep Maes video 3"),
+      vimeo("1055488422", "Groep Maes vacaturevideo 1", "66a9e925c9"),
+      vimeo("1055488333", "Groep Maes vacaturevideo 2", "97ea7df7e1"),
     ],
     media: {
-      hero: vimeoCaseMedia("1055488422", "Groep Maes video 1", "66a9e925c9"),
-      verticalVideos: [
-        vimeoCaseMedia("1055488422", "Groep Maes video 1", "66a9e925c9"),
-        vimeoCaseMedia("1055488333", "Groep Maes video 2", "97ea7df7e1"),
-        vimeoCaseMedia("926207596", "Groep Maes video 3"),
-        imageCaseMedia("/work/groep-maes.webp", "Groep Maes projectbeeld"),
+      landscapeVideos: [
+        vimeoCaseMedia("1055488422", "Groep Maes vacaturevideo 1", "66a9e925c9"),
+        vimeoCaseMedia("1055488333", "Groep Maes vacaturevideo 2", "97ea7df7e1"),
       ],
     },
-    needsReview: true,
-    needsEditorialSplit: false,
+    editorialSections: [
+      {
+        title: "Actiebeelden",
+        theme: "paper",
+        paragraphs: [
+          "Naast de vacaturevideo’s groeide onze samenwerking met Groep Maes uit tot een breder partnership. Zo brachten we onder andere de nieuwe stadionverlichting in het Lisp in beeld. 💡⚽️ Om hun innovatieve hoogwerkoplossing echt van dichtbij te tonen, kozen we voor spectaculaire drone- en GoPro-beelden. Zo krijg je als kijker letterlijk het gevoel dat je mee de hoogte in gaat. 🚁🎥",
+        ],
+        videos: [
+          {
+            ...vimeoCaseMedia("926207596", "Stadionverlichting in het Lisp"),
+            poster: "/work/groep-maes.webp",
+          },
+        ],
+      },
+    ],
     facts: [],
     question: {
-      title: "Hoe toon je hoogwerkers én vacatures op een manier die blijft hangen?",
+      title: "Probleem",
       text:
-        "Groep Maes wilde hun technische werk en warme bedrijfscultuur zichtbaarder maken.",
+        "Groep Maes wilde stevig groeien, maar de juiste technische profielen vinden bleek allesbehalve evident. Hoe bereik je mensen die moeilijk te vinden én moeilijk te overtuigen zijn?",
     },
     approach: {
-      title: "Drone, GoPro en vacatureverhalen met een familiale twist.",
+      title: "Oplossing",
       text:
-        "We combineerden actiebeelden van hoogwerkoplossingen met creatieve vacaturevideo's waarin de mensen en sfeer centraal staan.",
+        "We maakten authentieke employer-brandingvideo’s waarin medewerkers zélf hun job en werkomgeving laten zien 👀!",
     },
     result: {
-      title: "Content die techniek menselijk maakt.",
+      title: "Resultaat",
       text:
-        "Groep Maes kreeg inzetbare video's voor social media, employer branding en campagnegebruik.",
-      stats: [
-        { value: "3", label: "video’s" },
-        { value: "drone", label: "beelden" },
-        { value: "GoPro", label: "beelden" },
-        { value: "vacature", label: "video’s" },
-      ],
+        "De campagne leverde 15 concrete sollicitanten op, waarvan drie nieuwe collega’s effectief het team vervoegden. 🚀",
     },
-    outro: "Groep Maes kreeg inzetbare video's voor social media, employer branding en campagnegebruik.",
     externalVideoUrls: ["https://www.amiamis.com/work/groepmaes", "https://f.io/NUX0WIU3", "https://f.io/ikINiub0"],
   },
   {
@@ -2631,15 +2694,13 @@ const rawCases = [
       description:
         "Voor KdG werkt Ami Amis als vaste videopartner aan videofolders, graduations, strategievideo's en eindejaarscontent.",
     },
-    introQuote: "School = Cool. 🎓",
-    intro: "School = Cool. 🎓",
+    introQuote:
+      "Bij Ami Amis mogen we ons met trots de vaste videopartner van KdG noemen. En geloof ons: dat levert allesbehalve saaie opdrachten op. 😉",
+    intro:
+      "Bij Ami Amis mogen we ons met trots de vaste videopartner van KdG noemen. En geloof ons: dat levert allesbehalve saaie opdrachten op. 😉",
     summary:
       "Een langdurige samenwerking waarin we de meest uiteenlopende verhalen tot leven brengen.",
     storyBlocks: [
-      {
-        text:
-          "School = Cool. 🎓",
-      },
       {
         text:
           "Bij Ami Amis mogen we ons met trots de vaste videopartner van KdG noemen. En geloof ons: dat levert allesbehalve saaie opdrachten op. 😉",
@@ -2848,7 +2909,7 @@ const rawCases = [
     title: "X-OATS",
     oneLiner: "Twee funny maar duidelijke advertenties die samen meer dan een miljoen mensen hebben bereikt.",
     category: "Social content",
-    categories: ["Social content", "Fotografie", "Video & campagnes"],
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
     year: "2026",
     mediaType: "vertical-video-grid",
     sourceUrl: null,
@@ -2934,7 +2995,7 @@ const rawCases = [
     services: ["Concept", "Draaien", "Montage", "Social content"],
     nextCase: {
       title: "Visit Antwerpen",
-      href: "/work/visitantwerp/",
+      href: "/ons-werk/visit-antwerpen/",
     },
   },
 ];

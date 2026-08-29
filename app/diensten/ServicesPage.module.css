@@ -745,13 +745,20 @@
 }
 
 .fixResult dt {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
+  color: var(--red);
   font-family: var(--font-black);
-  font-size: 0.92rem;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.22;
+  text-transform: uppercase;
 }
 
 .fixResult dd {
   margin: 0;
+  font-family: var(--font-black);
+  font-weight: 900;
   font-size: 1.05rem;
   line-height: 1.22;
 }

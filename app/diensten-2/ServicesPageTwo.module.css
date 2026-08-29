@@ -1,5 +1,5 @@
 .page {
-  --page-pad: clamp(20px, 4.5vw, 72px);
+  --page-pad: clamp(20px, 4vw, 64px);
   --page-max: 1360px;
   --section-radius: clamp(36px, 4.5vw, 70px);
   --panel-radius: clamp(28px, 3.4vw, 48px);
@@ -43,8 +43,9 @@
 }
 
 .hero {
+  position: relative;
   min-height: 100svh;
-  padding: clamp(30px, 4vw, 60px) 0 clamp(64px, 7vw, 104px);
+  padding: clamp(24px, 3svh, 40px) 0 clamp(64px, 7vw, 104px);
   display: grid;
   grid-template-rows: auto 1fr;
   background: transparent;
@@ -59,10 +60,13 @@
 }
 
 .topBar .logo {
-  position: relative;
-  inset: auto !important;
-  width: clamp(116px, 11vw, 158px);
-  height: clamp(66px, 6vw, 84px);
+  position: absolute !important;
+  top: var(--site-header-top) !important;
+  right: auto !important;
+  left: var(--site-header-inset) !important;
+  width: var(--site-logo-width) !important;
+  height: auto;
+  aspect-ratio: 1536 / 637;
   background-color: var(--ink);
   animation: none !important;
   transform: none !important;
@@ -78,6 +82,7 @@
 
 .heroCopy {
   max-width: 760px;
+  min-width: 0;
 }
 
 .heroCopy h1 {
@@ -678,17 +683,19 @@
 
 .problemCopy dl > div {
   display: grid;
-  grid-template-columns: 130px minmax(0, 1fr);
+  grid-template-columns: clamp(156px, 12vw, 180px) minmax(0, 1fr);
   gap: 18px;
   padding-top: 16px;
   border-top: 1px solid rgba(255, 250, 229, 0.22);
 }
 
 .problemCopy dt {
-  color: rgba(255, 250, 229, 0.5);
-  font-size: 0.72rem;
-  font-weight: 850;
-  text-transform: uppercase;
+  color: var(--red);
+  font-size: 0.95rem;
+  font-weight: 720;
+  line-height: 1.36;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .problemCopy dd {
@@ -804,6 +811,8 @@
 
 .tools {
   position: relative;
+  z-index: 1;
+  isolation: isolate;
   width: 100%;
   padding-block: clamp(96px, 12vw, 168px);
   padding-inline: max(var(--page-pad), calc((100% - var(--page-max)) / 2));
@@ -811,6 +820,7 @@
   background-image: var(--paper-bg-image);
   background-position: center;
   background-size: 720px auto;
+  color: var(--ink);
 }
 
 .tools::before {
@@ -1083,7 +1093,7 @@
 
 @media (max-width: 820px) {
   .heroGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .heroCopy {
@@ -1091,10 +1101,11 @@
   }
 
   .heroVisual {
-    width: min(100%, 620px);
-    height: 58svh;
-    min-height: 430px;
-    justify-self: end;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    justify-self: stretch;
   }
 
   .expectationList li {
@@ -1179,8 +1190,8 @@
   }
 
   .topBar .logo {
-    width: 112px;
-    height: 62px;
+    width: var(--site-logo-width) !important;
+    height: auto;
   }
 
   .heroGrid {
@@ -1211,15 +1222,20 @@
   }
 
   .heroVisual {
-    width: 88%;
-    height: 58svh;
-    min-height: 390px;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .expectations,
   .problems,
   .tools,
   .faq {
+    padding-block: 88px;
+  }
+
+  .tools {
     padding-block: 88px;
   }
 
@@ -1315,6 +1331,17 @@
   .toolList a {
     min-height: 60px;
     font-size: 1.45rem;
+  }
+
+  .tools .toolList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tools .toolList a {
+    min-height: 68px;
+    font-size: clamp(1rem, 4.9vw, 1.16rem);
+    overflow-wrap: normal;
+    word-break: keep-all;
   }
 
   .faqList {
@@ -1497,12 +1524,10 @@
   padding-top: calc(clamp(96px, 12vw, 168px) + var(--section-radius));
   background-color: var(--paper);
   background-image:
-    linear-gradient(rgba(28, 28, 28, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
     radial-gradient(circle at 88% 16%, rgba(250, 187, 0, 0.14), transparent 24%),
     var(--paper-bg-image);
-  background-position: 0 0, 0 0, center top, center top;
-  background-size: 32px 32px, 32px 32px, auto, 720px auto;
+  background-position: center top, center top;
+  background-size: auto, 720px auto;
   color: var(--ink);
 }
 
@@ -1664,7 +1689,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 6px;
-    border: 1px solid rgba(28, 28, 28, 0.14);
+    border: 1px solid rgba(28, 28, 28, 0.2);
     border-radius: 12px;
     font-size: clamp(0.85rem, 2vw, 1.1rem);
   }
@@ -2364,6 +2389,355 @@
 
 }
 
+.approachOpenTimeline {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  padding: clamp(88px, 10vw, 152px)
+    max(var(--page-pad), calc((100% - var(--page-max)) / 2));
+  overflow: hidden;
+  border-radius: 0 0 var(--section-radius) var(--section-radius);
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.approachOpenTimeline::before {
+  position: absolute;
+  z-index: -1;
+  top: 58%;
+  left: 50%;
+  width: clamp(760px, 92vw, 1480px);
+  aspect-ratio: 1;
+  background: var(--orange);
+  clip-path: polygon(
+    50% 0%,
+    60% 31%,
+    84% 14%,
+    69% 40%,
+    100% 50%,
+    69% 60%,
+    84% 86%,
+    60% 69%,
+    50% 100%,
+    40% 69%,
+    16% 86%,
+    31% 60%,
+    0% 50%,
+    31% 40%,
+    16% 14%,
+    40% 31%
+  );
+  content: "";
+  opacity: 0.42;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(7deg);
+}
+
+.approachOpenTimelineInner {
+  width: min(var(--page-max), 100%);
+  margin-inline: auto;
+}
+
+.approachOpenTimelineHeader {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  justify-items: start;
+  gap: clamp(28px, 4vw, 64px);
+}
+
+.approachOpenTimelineKicker {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(18px, 2vw, 28px);
+  padding: 0 16px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--red);
+  font-family: var(--font-black);
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.approachOpenTimelineHeader h2 {
+  display: grid;
+  justify-items: start;
+  max-width: 13ch;
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(3.8rem, 5.4vw, 6rem);
+  font-weight: 900;
+  line-height: 0.82;
+  text-wrap: balance;
+}
+
+.approachOpenTimelineHeader h2 span {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  padding: 0.06em 0.14em 0.12em;
+  overflow: hidden;
+  background: var(--red);
+  clip-path: polygon(0.6% 5%, 99.2% 0, 100% 92%, 1.3% 100%);
+}
+
+.approachOpenTimelineHeader h2 span:first-child {
+  transform: rotate(-0.65deg);
+}
+
+.approachOpenTimelineHeader h2 span + span {
+  margin-top: -0.05em;
+  margin-left: 0.18em;
+  transform: rotate(0.45deg);
+}
+
+.approachOpenTimelineList {
+  --open-timeline-item-width: clamp(320px, 31vw, 405px);
+  --open-timeline-list-top: clamp(34px, 3.2vw, 44px);
+  --open-timeline-number-size: clamp(52px, 4.5vw, 62px);
+  --open-timeline-title-rail: clamp(5.75rem, 6.65vw, 7.2rem);
+  --open-timeline-copy-gap: clamp(16px, 1.6vw, 22px);
+  --open-timeline-image-size: clamp(200px, 18vw, 260px);
+  --open-timeline-line-top: 0px;
+  --open-timeline-progress: 18%;
+  position: relative;
+  display: grid;
+  grid-auto-columns: var(--open-timeline-item-width);
+  grid-auto-flow: column;
+  grid-auto-rows: 1fr;
+  gap: 0;
+  margin: clamp(36px, 4.4vw, 56px) 0 0;
+  padding: var(--open-timeline-list-top) clamp(54px, 7vw, 104px) 14px 0;
+  overflow-x: auto;
+  background:
+    linear-gradient(
+        90deg,
+        var(--red) 0 var(--open-timeline-progress),
+        color-mix(in srgb, var(--red) 28%, transparent) var(--open-timeline-progress)
+          calc(100% - 78px),
+        transparent 100%
+      )
+      left var(--open-timeline-line-top) / 100% 2px no-repeat;
+  overscroll-behavior-inline: contain;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 0;
+  scroll-snap-type: inline mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.approachOpenTimelineList::-webkit-scrollbar {
+  display: none;
+}
+
+.approachOpenTimelineStep {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: clamp(56px, 4.8vw, 66px) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
+  gap: clamp(16px, 1.8vw, 22px) clamp(18px, 2.1vw, 26px);
+  min-height: clamp(455px, 36vw, 525px);
+  padding: clamp(22px, 2.5vw, 30px) clamp(24px, 2.4vw, 30px) clamp(10px, 1vw, 14px) 0;
+  border-top: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.approachOpenTimelineStep::before {
+  content: none;
+}
+
+.approachOpenTimelineNumber {
+  position: relative;
+  z-index: 1;
+  width: var(--open-timeline-number-size);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--yellow) 96%, transparent);
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(1rem, 1.12vw, 1.12rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.approachOpenTimelineCopy {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-rows: var(--open-timeline-title-rail) auto;
+  align-content: start;
+  min-width: 0;
+}
+
+.approachOpenTimelineCopy h3 {
+  min-height: var(--open-timeline-title-rail);
+  max-width: 13ch;
+  color: var(--paper);
+  font-family: var(--font-black);
+  font-size: clamp(1.85rem, 2.85vw, 3rem);
+  font-weight: 900;
+  line-height: 0.92;
+  text-shadow: 0.045em 0.052em 0 color-mix(in srgb, var(--red) 48%, transparent);
+  text-wrap: balance;
+}
+
+.approachOpenTimelineCopy p {
+  max-width: 34ch;
+  margin-top: 0;
+  padding-top: var(--open-timeline-copy-gap);
+  border-top: 1px solid color-mix(in srgb, var(--red) 45%, transparent);
+  color: color-mix(in srgb, var(--ink) 84%, transparent);
+  font-size: clamp(1rem, 1.08vw, 1.12rem);
+  font-weight: 650;
+  line-height: 1.44;
+  text-wrap: pretty;
+}
+
+.approachOpenTimelineImage {
+  grid-column: 2;
+  grid-row: 3;
+  position: relative;
+  isolation: isolate;
+  align-self: end;
+  width: var(--open-timeline-image-size);
+  max-width: min(96%, 260px);
+  aspect-ratio: 1;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  margin: clamp(22px, 2.5vw, 32px) auto 0;
+  filter: drop-shadow(0.35rem 0.45rem 0 rgba(28, 28, 28, 0.12));
+  transform: translateX(12px);
+  transition:
+    filter 220ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.approachOpenTimelineImage::before {
+  content: none;
+}
+
+.approachOpenTimelineStep:nth-child(even) .approachOpenTimelineImage {
+  transform: translateX(-12px);
+}
+
+.approachOpenTimelineImage img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.12);
+  transform-origin: 50% 62%;
+}
+
+@media (hover: hover) {
+  .approachOpenTimelineStep:hover .approachOpenTimelineImage {
+    filter: drop-shadow(0.5rem 0.65rem 0 rgba(28, 28, 28, 0.14));
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 980px) {
+  .approachOpenTimelineHeader {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(24px, 4vw, 34px);
+  }
+
+  .approachOpenTimelineHeader h2 {
+    max-width: 12ch;
+    font-size: clamp(3.2rem, 8vw, 4.9rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .approachOpenTimeline {
+    padding: clamp(72px, 18vw, 96px) var(--page-pad);
+  }
+
+  .approachOpenTimeline::before {
+    top: 62%;
+    width: 760px;
+  }
+
+  .approachOpenTimelineInner {
+    width: 100%;
+  }
+
+  .approachOpenTimelineKicker {
+    min-height: 38px;
+    margin-bottom: 14px;
+    font-size: 0.86rem;
+  }
+
+  .approachOpenTimelineHeader h2 {
+    max-width: 9ch;
+    font-size: clamp(3.05rem, 14vw, 4.1rem);
+  }
+
+  .approachOpenTimelineList {
+    --open-timeline-item-width: min(82vw, 320px);
+    --open-timeline-list-top: 24px;
+    --open-timeline-number-size: 50px;
+    --open-timeline-title-rail: clamp(5.35rem, 21vw, 6.35rem);
+    --open-timeline-image-size: min(100%, clamp(150px, 48vw, 190px));
+    margin-top: clamp(42px, 12vw, 58px);
+    padding-right: clamp(44px, 16vw, 70px);
+  }
+
+  .approachOpenTimelineStep {
+    grid-template-columns: 52px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 16px;
+    min-height: 420px;
+    padding: 22px 20px 10px 0;
+  }
+
+  .approachOpenTimelineNumber {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--yellow) 96%, transparent);
+  }
+
+  .approachOpenTimelineCopy h3 {
+    max-width: 12ch;
+    font-size: clamp(1.55rem, 7.4vw, 2.15rem);
+  }
+
+  .approachOpenTimelineCopy p {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .approachOpenTimelineImage {
+    grid-column: 2;
+    grid-row: 3;
+    width: var(--open-timeline-image-size);
+    justify-self: center;
+    margin-top: 16px;
+    transform: translateX(0);
+  }
+
+  .approachOpenTimelineStep:nth-child(even) .approachOpenTimelineImage {
+    transform: translateX(0);
+  }
+}
+
 @keyframes approachTimelineCounterBump {
   0% {
     transform: scale(0.92);
@@ -2385,7 +2759,8 @@
   .approachTimelineStep::after,
   .approachTimelineCard,
   .approachTimelineStatus,
-  .approachTimelineImage {
+  .approachTimelineImage,
+  .approachOpenTimelineImage {
     animation: none;
     transition: none;
     scroll-behavior: auto;
@@ -2569,7 +2944,7 @@
   --problem-cta-red: var(--red);
 
   width: fit-content;
-  max-width: min(100%, 25rem);
+  max-width: 100%;
   min-height: 48px;
   padding:
     6px
@@ -2589,6 +2964,7 @@
   line-height: 1;
   text-decoration: none;
   text-transform: none;
+  white-space: nowrap;
   box-shadow: none;
   transition:
     background-color 180ms ease,
@@ -2596,7 +2972,13 @@
     transform 180ms ease;
 }
 
+.problemCopy .textLinkLabel {
+  min-width: 0;
+  white-space: nowrap;
+}
+
 .problemCopy .textLink .buttonArrow {
+  flex: 0 0 clamp(34px, 2.8vw, 38px);
   width: clamp(34px, 2.8vw, 38px);
   background: var(--paper);
   color: var(--problem-cta-red);
@@ -2629,14 +3011,15 @@
 @media (max-width: 600px) {
   .problemCopy .textLink {
     width: fit-content;
-    max-width: min(100%, 22rem);
+    max-width: 100%;
     min-height: 48px;
     padding-left: 18px;
     gap: 12px;
-    font-size: clamp(1.18rem, 4.8vw, 1.28rem);
+    font-size: clamp(0.82rem, 3.55vw, 1rem);
   }
 
   .problemCopy .textLink .buttonArrow {
+    flex-basis: 34px;
     width: 34px;
   }
 }

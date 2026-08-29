@@ -106,6 +106,8 @@ export default function RootLayout({ children }) {
   const assetVariables = {
     "--logo-mask-image": `url("${assetPath("/assets/logo-black.png")}")`,
     "--paper-bg-image": `url("${assetPath("/assets/paper-bg.webp")}")`,
+    "--riso-mask-image": `url("${assetPath("/assets/textures/riso-mask.png")}")`,
+    "--riso-ink-breakup-mask-image": `url("${assetPath("/assets/textures/riso-ink-breakup-mask.png")}")`,
   };
 
   return (

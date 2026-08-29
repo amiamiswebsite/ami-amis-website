@@ -895,7 +895,7 @@ function CaseExtraMedia({ data }) {
 
 function CaseCTA({ data }) {
   const ctaVariant = data.ctaVariant || "red";
-  const ctaTitle = data.ctaTitle || "Klaar om iets te maken dat blijft hangen?";
+  const ctaTitle = data.ctaTitle || "DURF JIJ SAMEN TE WERKEN?";
   const ctaButton = data.ctaButton || "Plan een quick call";
 
   return (

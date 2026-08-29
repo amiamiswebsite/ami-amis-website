@@ -350,7 +350,11 @@ export default function TeamPage() {
             aria-labelledby="team-total-care-title"
           >
             <div className="team-total-care__inner">
-              <h2 id="team-total-care-title">Totale ontzorging? We’ve got you</h2>
+              <h2 id="team-total-care-title">
+                <span>Totale</span>
+                <span>ontzorging?</span>
+                <em>We’ve got you</em>
+              </h2>
               <a className="button team-total-care__button" href={assetPath("/contact/")}>
                 Kom eens sparren
               </a>

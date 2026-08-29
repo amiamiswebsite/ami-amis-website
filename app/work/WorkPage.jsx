@@ -14,7 +14,7 @@ const workFilters = [
   "Fotografie",
   "Design & branding",
   "Animatie & montage",
-  "Audio engineering",
+  "Radio & Podcast",
   "Webdesign & optimalisatie",
   "Marketingstrategie",
 ];

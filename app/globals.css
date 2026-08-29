@@ -18,6 +18,16 @@
   --riso-ink-breakup-mask-image: url("/assets/textures/riso-ink-breakup-mask.png");
 }
 
+.brand-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--brand-icon-mask) center / contain no-repeat;
+  mask: var(--brand-icon-mask) center / contain no-repeat;
+}
+
 /* Contact editorial grid: one framed composition with responsive pointer depth. */
 .contact-editorial {
   --contact-pointer-x: 0;
@@ -529,6 +539,7 @@ a {
   font-size: clamp(0.9rem, 1.5vw, 1.15rem);
   line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
   box-shadow: 5px 5px 0 var(--ink);
   cursor: pointer;
   text-decoration: none;
@@ -5908,8 +5919,8 @@ a {
 
 .site-footer__social-icon {
   display: block;
-  width: 84%;
-  height: 84%;
+  width: clamp(35px, 4.2vw, 54px);
+  height: clamp(35px, 4.2vw, 54px);
   color: currentColor;
   fill: currentColor;
 }
@@ -34922,13 +34933,6 @@ body.collage-ready .case-portfolio-reveal.is-visible {
     line-height: 0.86;
   }
 
-  .contact-shell + .menu-toggle {
-    top: 24px;
-    right: var(--page-pad);
-    width: 48px;
-    height: 48px;
-  }
-
   .contact-redesign.contact-editorial .contact-booking {
     margin-top: 52px;
   }
@@ -35180,7 +35184,8 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   text-decoration: none;
 }
 
-.contact-redesign.contact-editorial .contact-overview__social-link svg {
+.contact-redesign.contact-editorial .contact-overview__social-link svg,
+.contact-redesign.contact-editorial .contact-overview__social-link .brand-icon {
   flex: 0 0 25px;
   width: 25px;
   height: 25px;
@@ -35513,7 +35518,8 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   font-weight: 800;
 }
 
-.contact-redesign.contact-editorial .contact-overview__social-link svg {
+.contact-redesign.contact-editorial .contact-overview__social-link svg,
+.contact-redesign.contact-editorial .contact-overview__social-link .brand-icon {
   flex-basis: 22px;
   width: 22px;
   height: 22px;
@@ -37243,6 +37249,31 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 }
 
+@media (min-width: 421px) and (max-width: 767px) and (orientation: portrait) {
+  .hero--proposal-new:not(.hero--home-two) {
+    --hero-title-top-size: clamp(3.65rem, 11.2vw, 4.3rem);
+    --hero-mobile-title-top: clamp(94px, 13svh, 124px);
+    --hero-person-width: clamp(370px, 68vw, 390px);
+    --hero-mobile-person-center-y: clamp(398px, 51.6svh, 486px);
+    --hero-mobile-bottom-title-top: clamp(526px, 67svh, 626px);
+  }
+
+  .hero--proposal-new:not(.hero--home-two) .welcome-hero__title-fragment--top {
+    line-height: 0.88;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 819px) and (max-height: 900px) and (orientation: portrait) {
+  .hero--proposal-new:not(.hero--home-two) {
+    --hero-title-top-size: clamp(3.45rem, 7.1vw, 3.9rem);
+    --hero-title-bottom-size: clamp(4.05rem, 8.2vw, 4.9rem);
+    --hero-person-width: min(64vw, 500px);
+    --hero-desktop-person-center-y: clamp(214px, 32svh, 254px);
+    --hero-desktop-title-top: clamp(450px, 58svh, 480px);
+    --hero-desktop-bottom-title-top: calc(var(--hero-desktop-title-top) + clamp(60px, 7.5vw, 68px));
+  }
+}
+
 @media (min-width: 1100px) {
   .home-two .intro__challenge-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -38589,5 +38620,182 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 
   #team-intro .team-story-hero__answer strong {
     font-size: clamp(1.35rem, 6vw, 1.62rem);
+  }
+}
+
+/* Home brainstorm: keep the desk scene centered between the title and CTA on every breakpoint. */
+.brainstorm {
+  min-height: clamp(940px, 68vw, 980px);
+}
+
+.desk-storm-scene {
+  top: clamp(82px, 6.6vw, 96px);
+  bottom: auto;
+  width: min(1000px, calc(100vw - (var(--page-pad) * 2)));
+}
+
+.brainstorm__button {
+  bottom: clamp(62px, 5vw, 78px);
+}
+
+@media (min-width: 980px) and (max-width: 1180px) {
+  .brainstorm {
+    min-height: 820px;
+  }
+
+  .desk-storm-scene {
+    top: clamp(94px, 9vw, 118px);
+    width: min(780px, calc(100vw - 140px));
+  }
+
+  .brainstorm__button {
+    bottom: clamp(58px, 5.5vw, 66px);
+  }
+}
+
+@media (min-width: 980px) and (max-width: 1180px) and (max-height: 850px) {
+  .desk-storm-scene {
+    top: clamp(82px, 9vw, 96px);
+    width: min(720px, calc(100vw - 180px));
+  }
+
+  .brainstorm__button {
+    bottom: clamp(96px, 12vh, 112px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 979px) {
+  .brainstorm {
+    min-height: 820px;
+  }
+
+  .desk-storm-scene {
+    top: clamp(104px, 13vw, 116px);
+    width: min(720px, calc(100vw - (var(--page-pad) * 2)));
+  }
+
+  .brainstorm__button {
+    bottom: clamp(62px, 7vw, 70px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 979px) and (max-height: 850px) {
+  .desk-storm-scene {
+    top: clamp(98px, 13vw, 112px);
+    width: min(680px, calc(100vw - 96px));
+  }
+
+  .brainstorm__button {
+    bottom: clamp(112px, 14vh, 124px);
+  }
+}
+
+@media (min-width: 521px) and (max-width: 768px) {
+  .brainstorm {
+    min-height: clamp(820px, 112vw, 850px);
+  }
+
+  .brainstorm h2 {
+    padding-top: clamp(64px, 9vw, 78px);
+    font-size: clamp(3.3rem, 9.8vw, 4rem);
+  }
+
+  .desk-storm-scene {
+    top: clamp(178px, 24vw, 198px);
+    width: min(680px, calc(100vw - 40px));
+  }
+
+  .brainstorm__button {
+    bottom: clamp(74px, 10vw, 84px);
+  }
+}
+
+@media (max-width: 520px) {
+  .brainstorm {
+    min-height: clamp(800px, 188vw, 840px);
+  }
+
+  .brainstorm h2 {
+    padding-top: clamp(96px, 23vw, 116px);
+    font-size: clamp(2.65rem, 10.4vw, 3rem);
+  }
+
+  .desk-storm-scene {
+    top: clamp(186px, 47vw, 212px);
+    width: min(610px, 143vw);
+  }
+
+  .brainstorm__button {
+    bottom: clamp(72px, 12vw, 92px);
+  }
+}
+
+/* Case header chrome must scroll away with the hero; only the hamburger stays viewport-fixed. */
+.case-portfolio-shell .hero__logo,
+.va-case-shell .hero__logo,
+.case-experiment-shell .hero__logo {
+  position: absolute !important;
+}
+
+.case-portfolio-shell .case-portfolio-tags,
+.case-portfolio-shell .case-portfolio-tags li,
+.va-case-shell .case-portfolio-tags,
+.va-case-shell .case-portfolio-tags li,
+.case-experiment-shell .case-portfolio-tags,
+.case-experiment-shell .case-portfolio-tags li {
+  position: static !important;
+  inset: auto !important;
+}
+
+/* Canonical site header chrome: same visual logo/menu placement on every route. */
+:root {
+  --site-header-inset: clamp(20px, 5.2vw, 75px);
+  --site-header-top: clamp(24px, 3svh, 30px);
+  --site-logo-width: clamp(112px, 9.2vw, 132px);
+  --site-menu-size: clamp(48px, 4vw, 58px);
+}
+
+.hero__logo,
+.work-page__logo,
+.team-hero__logo,
+.contact-hero__logo,
+.contact-editorial .contact-hero__logo,
+.contact-redesign.contact-editorial .contact-hero__logo,
+.case-hero__logo,
+.case-portfolio-hero__logo,
+.case-experiment-logo,
+.project-case-hero__logo,
+.va-hero__logo,
+.va-pdf-logo {
+  position: absolute !important;
+  top: var(--site-header-top) !important;
+  right: auto !important;
+  left: var(--site-header-inset) !important;
+  width: var(--site-logo-width) !important;
+  height: auto !important;
+  aspect-ratio: 1536 / 637 !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+.hero:not(.hero--home-two) .hero__inner > .hero__logo {
+  left: calc(var(--site-header-inset) - var(--hero-gutter, var(--site-header-inset))) !important;
+}
+
+.menu-toggle,
+.menu-toggle.is-open {
+  position: fixed !important;
+  top: var(--site-header-top) !important;
+  right: var(--site-header-inset) !important;
+  width: var(--site-menu-size) !important;
+  height: var(--site-menu-size) !important;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --site-header-inset: 20px;
+    --site-header-top: clamp(36px, 4.5svh, 38px);
+    --site-logo-width: clamp(100px, 28vw, 109px);
+    --site-menu-size: 43px;
   }
 }

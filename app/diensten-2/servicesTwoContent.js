@@ -21,32 +21,32 @@ export const serviceTwoApproachCards = [
   {
     title: "Hallo, met Brent?",
     text: "Alles begint met een gesprekje met Brent, ons immer goedgehumeurd aanspreekpunt. Hij luistert naar al jullie vragen.",
-    image: "/assets/approach-01-call.webp",
+    image: "/assets/approach-01-call-matte.png",
   },
   {
     title: "Sparren met onze creative(s)",
     text: "Daarna zet Brent een meeting op met onze creatieve compadre(s). Hier begint de fun.",
-    image: "/assets/approach-02-spar.webp",
+    image: "/assets/approach-02-spar-matte.png",
   },
   {
     title: "Een geniaal masterplan",
     text: "Tijd om al die goeie ideeën concreet te maken. Wij zetten de puntjes op de i en leiden de voorbereiding in goede banen. We’ve got you!",
-    image: "/assets/approach-03-plan.webp",
+    image: "/assets/approach-03-plan-matte.png",
   },
   {
     title: "Lights. Camera. Action!",
     text: "Eèèn actie! Wij brengen het plan tot leven. Van video, fotografie, design, animatie, audio tot een volledige campagne, van A tot Z.",
-    image: "/assets/approach-03-camera.webp",
+    image: "/assets/approach-03-camera-matte.png",
   },
   {
     title: "Watch Party",
     text: "Pak de popcorn er maar bij want het eindproduct is klaar. #boxofficehit",
-    image: "/assets/approach-04-watch.webp",
+    image: "/assets/approach-04-watch-matte.png",
   },
   {
     title: "Eat, Sleep, Repeat.",
     text: "Na afloop koppelt ons kapoentje Brent nog eens terug om de resultaten te evalueren. Amai, dat was leuk! Wat denk’te, nog eentje?",
-    image: "/assets/approach-05-callback.webp",
+    image: "/assets/approach-05-callback-matte.png",
   },
 ];
 

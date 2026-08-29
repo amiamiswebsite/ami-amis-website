@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
@@ -16,6 +16,8 @@ const stepConfig = [
 ];
 
 const ORIGINAL_EDITORIAL_CASE_SLUGS = new Set(["k-lierse-sk", "sint-jan-berchmanscollege"]);
+const VISIT_ANTWERP_SLUGS = new Set(["visitantwerp", "visit-antwerpen"]);
+const VIDEO_SHOWCASE_CASE_SLUGS = new Set(["imore", "tarzan-en-jane"]);
 
 function usesModernCaseTemplate(caseData) {
   return Boolean(caseData?.slug);
@@ -23,6 +25,10 @@ function usesModernCaseTemplate(caseData) {
 
 function usesOriginalEditorialContent(caseData) {
   return ORIGINAL_EDITORIAL_CASE_SLUGS.has(caseData?.slug);
+}
+
+function isVisitAntwerpCase(caseData) {
+  return VISIT_ANTWERP_SLUGS.has(caseData?.slug);
 }
 
 function mediaPath(src) {
@@ -54,6 +60,12 @@ function textFrom(value) {
 function mediaKey(item) {
   if (!item) {
     return "";
+  }
+
+  if (item.instanceKey) {
+    return [item.type || (item.id ? "vimeo" : "media"), item.id || item.src || item.url, item.instanceKey]
+      .filter(Boolean)
+      .join(":");
   }
 
   const youtubeId = getYouTubeId(item);
@@ -218,6 +230,21 @@ function getVideoItems(caseData) {
   );
 }
 
+function getHeroGalleryVideo(caseData, heroMedia) {
+  const heroKey = mediaKey(heroMedia);
+
+  if (!heroKey) {
+    return null;
+  }
+
+  return [
+    ...(caseData.media?.verticalVideos || []),
+    ...(caseData.media?.landscapeVideos || []),
+    ...(caseData.vimeoEmbeds || []),
+    ...(caseData.media?.vimeoEmbeds || []),
+  ].find((item) => mediaKey(item) === heroKey);
+}
+
 function getGalleryGroups(caseData) {
   const groups = [];
   const seenMedia = new Set([mediaKey(getHeroMedia(caseData))].filter(Boolean));
@@ -226,6 +253,8 @@ function getGalleryGroups(caseData) {
     groups.push({
       eyebrow: caseData.campaignGalleryEyebrow,
       title: caseData.campaignGalleryTitle || "Campagnebeelden",
+      type: caseData.campaignGalleryType,
+      instagramProfile: caseData.instagramProfile,
       images: caseData.campaignImages,
     });
   }
@@ -364,6 +393,7 @@ function lightboxVimeoSource(video) {
   }
 
   const params = new URLSearchParams({
+    api: "1",
     airplay: "0",
     autoplay: "1",
     autopause: "0",
@@ -960,6 +990,200 @@ function LightboxVideo({ video }) {
   );
 }
 
+function HeroIntroText({ onOpenVideo, text, videoLabel = "Zuidvideo" }) {
+  if (!text?.includes(videoLabel)) {
+    return <p>{text}</p>;
+  }
+
+  const parts = text.split(videoLabel);
+
+  return (
+    <p>
+      {parts.map((part, index) => (
+        <span key={`${part.slice(0, 16)}-${index}`}>
+          {part}
+          {index < parts.length - 1 ? (
+            <button className={styles.heroInlineVideoTrigger} onClick={onOpenVideo} type="button">
+              <span>{videoLabel}</span>
+              <span aria-hidden="true" className={styles.heroInlineVideoTriggerIcon}>
+                <span />
+              </span>
+            </button>
+          ) : null}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+function IntroVideoModal({ onClose, video }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const iframeRef = useRef(null);
+  const [useFallbackVideo, setUseFallbackVideo] = useState(false);
+  const videoSrc = video?.id ? lightboxVimeoSource(video) : "";
+  const fallbackSrc = video?.fallbackSrc || "";
+  const videoTitle = video?.label || video?.title || "Zuidvideo";
+  const orientationClass = isPortraitMedia(video)
+    ? styles.mediaLightboxPortrait
+    : styles.mediaLightboxLandscape;
+
+  useEffect(() => {
+    if (!videoSrc) {
+      return undefined;
+    }
+
+    const previousActiveElement = document.activeElement;
+    closeButtonRef.current?.focus();
+    document.body.classList.add("case-modal-open");
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) {
+        return;
+      }
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll("button, iframe, [href], [tabindex]:not([tabindex='-1'])"),
+      ).filter((element) => !element.disabled);
+      const firstElement = focusable[0];
+      const lastElement = focusable.at(-1);
+
+      if (!firstElement || !lastElement) {
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("case-modal-open");
+      previousActiveElement?.focus?.();
+    };
+  }, [onClose, videoSrc]);
+
+  useEffect(() => {
+    if (!videoSrc || !fallbackSrc) {
+      return undefined;
+    }
+
+    let isVimeoReady = false;
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (!isVimeoReady) {
+        setUseFallbackVideo(true);
+      }
+    }, 2600);
+
+    const handleVimeoMessage = (event) => {
+      if (event.origin !== "https://player.vimeo.com" || event.source !== iframeRef.current?.contentWindow) {
+        return;
+      }
+
+      let data = event.data;
+
+      if (typeof data === "string") {
+        try {
+          data = JSON.parse(data);
+        } catch {
+          data = {};
+        }
+      }
+
+      if (["ready", "loaded", "play"].includes(data?.event)) {
+        isVimeoReady = true;
+        window.clearTimeout(fallbackTimer);
+      }
+    };
+
+    window.addEventListener("message", handleVimeoMessage);
+    return () => {
+      window.clearTimeout(fallbackTimer);
+      window.removeEventListener("message", handleVimeoMessage);
+    };
+  }, [fallbackSrc, videoSrc]);
+
+  if (!videoSrc && !fallbackSrc) {
+    return null;
+  }
+
+  return createPortal(
+    <div
+      className={`${styles.mediaLightbox} ${styles.introVideoLightbox}`}
+      onMouseDown={(event) => {
+        const target = event.target;
+
+        if (
+          target === event.currentTarget ||
+          (target instanceof Element && !target.closest("[data-media-lightbox-content], button"))
+        ) {
+          onClose();
+        }
+      }}
+      role="presentation"
+    >
+      <div
+        aria-label={`${videoTitle} bekijken`}
+        aria-modal="true"
+        className={`${styles.mediaLightboxDialog} ${styles.introVideoDialog}`}
+        ref={dialogRef}
+        role="dialog"
+        tabIndex={-1}
+      >
+        <div
+          className={`${styles.mediaLightboxContent} ${orientationClass} ${styles.introVideoContent}`}
+          data-media-lightbox-content
+        >
+          <button
+            aria-label="Sluit video"
+            className={`${styles.mediaLightboxClose} ${styles.introVideoClose}`}
+            onClick={onClose}
+            ref={closeButtonRef}
+            type="button"
+          >
+            <span aria-hidden="true" className={styles.mediaLightboxCloseIcon} />
+          </button>
+          <div className={styles.mediaLightboxVisual}>
+            {useFallbackVideo && fallbackSrc ? (
+              <video
+                autoPlay
+                className={`${styles.mediaLightboxPlayer} ${styles.introVideoFallback}`}
+                controls
+                playsInline
+                poster={video.poster ? mediaPath(video.poster) : undefined}
+              >
+                <source src={mediaPath(fallbackSrc)} type="video/mp4" />
+              </video>
+            ) : (
+              <iframe
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                allowFullScreen
+                className={styles.mediaLightboxPlayer}
+                ref={iframeRef}
+                src={videoSrc}
+                title={videoTitle}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function MediaLightbox({ activeIndex, items, onChange, onClose }) {
   const dialogRef = useRef(null);
   const item = items[activeIndex];
@@ -1137,7 +1361,8 @@ function StaticProcessSection({ caseData }) {
     () => stepConfig
       .map((item) => {
         const block = caseData[item.key] || caseData[item.fallback];
-        const stats = typeof block === "string" ? [] : block?.stats || [];
+        const rawStats = typeof block === "string" ? [] : block?.stats || [];
+        const stats = usesModernTemplate ? [] : rawStats;
 
         if (!block && !stats.length) {
           return null;
@@ -1152,7 +1377,7 @@ function StaticProcessSection({ caseData }) {
       })
       .filter(Boolean)
       .filter((step) => step.text || step.stats.length),
-    [caseData],
+    [caseData, usesModernTemplate],
   );
 
   if (!steps.length) {
@@ -1210,11 +1435,32 @@ function StaticProcessSection({ caseData }) {
 function VideoSection({ caseData }) {
   const usesModernTemplate = usesModernCaseTemplate(caseData);
   const usesOriginalEditorialLayout = usesOriginalEditorialContent(caseData);
+  const usesVideoShowcaseLayout = VIDEO_SHOWCASE_CASE_SLUGS.has(caseData.slug) && !usesOriginalEditorialLayout;
   const heroMedia = getHeroMedia(caseData);
   const heroIsVideo = isVimeoMedia(heroMedia) || isLocalVideoMedia(heroMedia) || Boolean(getYouTubeId(heroMedia));
-  const videos = usesOriginalEditorialLayout
+  const baseVideos = usesOriginalEditorialLayout
     ? uniqueMediaItems([...(heroIsVideo ? [heroMedia] : []), ...getVideoItems(caseData)].filter(Boolean))
     : getVideoItems(caseData);
+  const heroGallerySource = usesVideoShowcaseLayout && heroIsVideo
+    ? getHeroGalleryVideo(caseData, heroMedia) || heroMedia
+    : null;
+  const heroGalleryVideo = heroGallerySource
+    ? {
+        ...heroMedia,
+        ...heroGallerySource,
+        aspectRatio:
+          caseData.slug === "imore"
+            ? "9 / 16"
+            : heroGallerySource.aspectRatio || heroMedia.aspectRatio || "16 / 9",
+        orientation:
+          caseData.slug === "imore"
+            ? "portrait"
+            : heroGallerySource.orientation || heroMedia.orientation || "landscape",
+      }
+    : null;
+  const videos = heroGalleryVideo && !usesOriginalEditorialLayout
+    ? uniqueMediaItems([...baseVideos, heroGalleryVideo])
+    : baseVideos;
 
   if (!videos.length) {
     return null;
@@ -1224,48 +1470,78 @@ function VideoSection({ caseData }) {
     const contentIntroBlocks = (caseData.contentIntroBlocks || [])
       .map((block) => textFrom(block))
       .filter(Boolean);
-    const sectionTitle = caseData.contentTitle || (usesOriginalEditorialLayout ? "Content" : "Videogalerij");
+    const sectionTitle = caseData.contentTitle === false
+      ? ""
+      : caseData.contentTitle || (usesOriginalEditorialLayout ? "Content" : "Videogalerij");
+    const showcaseLeadIndex = usesVideoShowcaseLayout
+      ? videos.findIndex((video) => !isPortraitMedia(video))
+      : -1;
+    const showcaseLeadVideo = showcaseLeadIndex >= 0 ? videos[showcaseLeadIndex] : null;
+    const showcaseSliderVideos = usesVideoShowcaseLayout
+      ? videos.filter((_, index) => index !== showcaseLeadIndex)
+      : [];
+    const renderVideoArticle = (video, index, extraClassName = "") => {
+      const isPortrait = isPortraitMedia(video);
+
+      return (
+        <article
+          className={[
+            styles.lierseVideoItem,
+            isPortrait ? styles.lierseVideoItemPortrait : styles.lierseVideoItemLandscape,
+            extraClassName,
+          ].filter(Boolean).join(" ")}
+          key={`${mediaKey(video)}-${index}`}
+        >
+          {video.title ? (
+            <header className={styles.lierseVideoMeta}>
+              <h3>{video.title}</h3>
+            </header>
+          ) : null}
+          <CaseMediaVisual
+            className={`${styles.lierseCaseVideo} ${isPortrait ? styles.lierseCaseVideoPortrait : styles.lierseCaseVideoLandscape}`}
+            client={caseData.client}
+            item={video}
+            showControls
+          />
+        </article>
+      );
+    };
 
     return (
       <section
         className={`${styles.videos} ${styles.lierseVideos}`}
-        aria-labelledby="tarzan-videos-title"
+        aria-label={sectionTitle ? undefined : "Video's"}
+        aria-labelledby={sectionTitle ? "tarzan-videos-title" : undefined}
       >
         <div className={styles.videosInner}>
-          <header className={`${styles.lierseVideoHeader} ${styles.reveal}`}>
-            <h2 id="tarzan-videos-title">{sectionTitle}</h2>
-            {contentIntroBlocks.length ? (
-              <div className={styles.lierseVideoIntro}>
-                {contentIntroBlocks.map((paragraph, index) => (
-                  <p key={`${paragraph.slice(0, 24)}-${index}`}>{paragraph}</p>
-                ))}
-              </div>
-            ) : null}
-          </header>
+          {sectionTitle || contentIntroBlocks.length ? (
+            <header className={`${styles.lierseVideoHeader} ${styles.reveal}`}>
+              {sectionTitle ? <h2 id="tarzan-videos-title">{sectionTitle}</h2> : null}
+              {contentIntroBlocks.length ? (
+                <div className={styles.lierseVideoIntro}>
+                  {contentIntroBlocks.map((paragraph, index) => (
+                    <p key={`${paragraph.slice(0, 24)}-${index}`}>{paragraph}</p>
+                  ))}
+                </div>
+              ) : null}
+            </header>
+          ) : null}
 
-          <div className={`${styles.lierseVideoGrid} ${styles.reveal}`}>
-            {videos.map((video, index) => {
-              const isPortrait = isPortraitMedia(video);
-
-              return (
-                <article
-                  className={`${styles.lierseVideoItem} ${isPortrait ? styles.lierseVideoItemPortrait : styles.lierseVideoItemLandscape}`}
-                  key={`${mediaKey(video)}-${index}`}
-                >
-                  {video.title ? (
-                    <header className={styles.lierseVideoMeta}>
-                      <h3>{video.title}</h3>
-                    </header>
-                  ) : null}
-                  <CaseMediaVisual
-                    className={`${styles.lierseCaseVideo} ${isPortrait ? styles.lierseCaseVideoPortrait : styles.lierseCaseVideoLandscape}`}
-                    client={caseData.client}
-                    item={video}
-                    showControls
-                  />
-                </article>
-              );
-            })}
+          <div className={`${styles.lierseVideoGrid} ${usesVideoShowcaseLayout ? styles.showcaseVideoGrid : ""} ${styles.reveal}`}>
+            {usesVideoShowcaseLayout ? (
+              <>
+                {showcaseLeadVideo ? renderVideoArticle(showcaseLeadVideo, showcaseLeadIndex, styles.showcaseLeadVideo) : null}
+                {showcaseSliderVideos.length ? (
+                  <div className={styles.showcaseVideoSlider} aria-label={`${caseData.client} video slider`}>
+                    {showcaseSliderVideos.map((video, index) =>
+                      renderVideoArticle(video, index, styles.showcaseVideoSliderItem),
+                    )}
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              videos.map((video, index) => renderVideoArticle(video, index))
+            )}
           </div>
 
           {caseData.contentImages?.length ? (
@@ -1546,9 +1822,46 @@ function EditorialMediaGrid({ images = [], label, layout }) {
   );
 }
 
+function EditorialVideoGrid({ client, label, videos = [] }) {
+  if (!videos.length) {
+    return null;
+  }
+
+  return (
+    <div
+      aria-label={label}
+      className={`${styles.lierseVideoGrid} ${styles.editorialVideoGrid} ${styles.reveal}`}
+      role="group"
+    >
+      {videos.map((video, index) => {
+        const isPortrait = isPortraitMedia(video);
+
+        return (
+          <article
+            className={`${styles.lierseVideoItem} ${isPortrait ? styles.lierseVideoItemPortrait : styles.lierseVideoItemLandscape}`}
+            key={`${mediaKey(video)}-${index}`}
+          >
+            {video.title ? (
+              <header className={styles.lierseVideoMeta}>
+                <h3>{video.title}</h3>
+              </header>
+            ) : null}
+            <CaseMediaVisual
+              className={`${styles.lierseCaseVideo} ${isPortrait ? styles.lierseCaseVideoPortrait : styles.lierseCaseVideoLandscape}`}
+              client={client}
+              item={video}
+              showControls
+            />
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
 function EditorialSections({ caseData }) {
   const sections = (caseData.editorialSections || []).filter(
-    (section) => section?.title && ((section.paragraphs || []).length || (section.images || []).length),
+    (section) => section?.title && ((section.paragraphs || []).length || (section.images || []).length || (section.videos || []).length),
   );
 
   if (!sections.length) {
@@ -1611,6 +1924,7 @@ function EditorialSections({ caseData }) {
             label={section.title}
             layout={section.mediaLayout}
           />
+          <EditorialVideoGrid client={caseData.client} label={section.title} videos={section.videos} />
         </div>
       </section>
     );
@@ -1635,26 +1949,107 @@ function GallerySection({ group, index, total }) {
           <h2 id={`tarzan-${group.id}-title`}>{group.title}</h2>
         </header>
 
-        <div
-          className={`${styles.galleryGrid} ${styles.reveal}`}
-          data-count={Math.min(group.images.length, 6)}
-        >
-          {group.images.map((image, index) => (
-            <InteractiveFigure
-              className={image.orientation === "landscape" ? styles.galleryLandscape : ""}
-              key={`${image.src}-${index}`}
-            >
-              <img alt={image.alt || group.title} loading="lazy" src={mediaPath(image.src || image.poster)} />
-            </InteractiveFigure>
-          ))}
-        </div>
+        {group.type === "instagramProfile" ? (
+          <InstagramProfilePreview group={group} />
+        ) : (
+          <div
+            className={`${styles.galleryGrid} ${styles.reveal}`}
+            data-count={Math.min(group.images.length, 6)}
+          >
+            {group.images.map((image, index) => (
+              <InteractiveFigure
+                className={image.orientation === "landscape" ? styles.galleryLandscape : ""}
+                key={`${image.src}-${index}`}
+              >
+                <img alt={image.alt || group.title} loading="lazy" src={mediaPath(image.src || image.poster)} />
+              </InteractiveFigure>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
+function InstagramProfilePreview({ group }) {
+  const profile = group.instagramProfile || {};
+  const profileUrl = profile.url || "#";
+  const handle = profile.handle || "instagram";
+  const handleParts = handle.split(".");
+  const posts = (group.images || []).slice(0, 6);
+
+  return (
+    <a
+      aria-label={`Open ${handle} op Instagram`}
+      className={`${styles.instagramProfilePreview} ${styles.reveal}`}
+      href={profileUrl}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div className={styles.instagramProfileHeader}>
+        <div className={styles.instagramAvatar} aria-hidden="true">
+          <strong>humgy</strong>
+          <span>cowork space</span>
+        </div>
+        <div className={styles.instagramProfileMeta}>
+          <div className={styles.instagramProfileHandleRow}>
+            <p className={styles.instagramHandle} aria-label={`@${handle}`}>
+              @{handleParts.map((part, index) => (
+                <Fragment key={`${part}-${index}`}>
+                  {part}
+                  {index < handleParts.length - 1 ? (
+                    <>
+                      .
+                      <wbr />
+                    </>
+                  ) : null}
+                </Fragment>
+              ))}
+            </p>
+            <span className={styles.instagramOpenCue} aria-hidden="true">
+              <Icon name="arrowUpRight" size="md" />
+            </span>
+          </div>
+          {profile.stats?.length ? (
+            <div className={styles.instagramStats} aria-label="Humgy Instagram kernpunten">
+              {profile.stats.map((stat) => (
+                <span key={stat}>{stat}</span>
+              ))}
+            </div>
+          ) : null}
+          {profile.bio ? <p className={styles.instagramBio}>{profile.bio}</p> : null}
+        </div>
+      </div>
+
+      {profile.highlights?.length ? (
+        <div className={styles.instagramHighlights} aria-label="Instagram highlights">
+          {profile.highlights.map((highlight, index) => (
+            <span key={highlight}>
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              {highlight}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <div className={styles.instagramFeedGrid}>
+        {posts.map((post, index) => (
+          <figure key={`${post.src}-${index}`}>
+            <img alt={post.alt || group.title} loading="lazy" src={mediaPath(post.src || post.poster)} />
+            {post.type === "reel" ? (
+              <span className={styles.instagramReelCue} aria-hidden="true">
+                <Icon name="play" size="sm" />
+              </span>
+            ) : null}
+          </figure>
+        ))}
+      </div>
+    </a>
+  );
+}
+
 function OutroSection({ caseData }) {
-  if (!caseData.outro) {
+  if (!caseData.outro || !isVisitAntwerpCase(caseData)) {
     return null;
   }
 
@@ -1750,7 +2145,7 @@ function MixedMediaGridSection({ caseData }) {
 }
 
 function ClosingSection({ caseData }) {
-  const title = caseData.ctaTitle || "Durf jij een samenwerking aan te gaan?";
+  const title = caseData.ctaTitle || "DURF JIJ SAMEN TE WERKEN?";
   const usesModernTemplate = usesModernCaseTemplate(caseData);
 
   if (usesModernTemplate || caseData.ctaLinkOnly) {
@@ -1764,7 +2159,6 @@ function ClosingSection({ caseData }) {
           <a className={styles.ctaTitleLink} href={assetPath("/contact/")}>
             <span className={styles.ctaTitleCopy}>
               <span>{title}</span>
-              {!caseData.ctaLinkOnly ? <small>Eens afspreken?</small> : null}
             </span>
             <span className={styles.ctaTitleIcon} aria-hidden="true">
               <Icon name="arrowUpRight" size="lg" />
@@ -1792,6 +2186,7 @@ function ClosingSection({ caseData }) {
 
 export default function TarzanServicesCasePage({ caseData }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [introVideoOpen, setIntroVideoOpen] = useState(false);
   const heroMedia = getHeroMedia(caseData);
   const galleryGroups = getGalleryGroups(caseData).map((group, index) => ({
     ...group,
@@ -1802,6 +2197,10 @@ export default function TarzanServicesCasePage({ caseData }) {
   const heroIsPortrait = isPortraitMedia(heroMedia);
   const isLierseCase = caseData.slug === "k-lierse-sk";
   const isSjbCase = caseData.slug === "sint-jan-berchmanscollege";
+  const isImoreCase = caseData.slug === "imore";
+  const isVisitCase = isVisitAntwerpCase(caseData);
+  const isVideoShowcaseCase = VIDEO_SHOWCASE_CASE_SLUGS.has(caseData.slug);
+  const introVideo = isVisitCase && introText?.includes("Zuidvideo") ? caseData.media?.zuidVideo : null;
   const usesModernTemplate = usesModernCaseTemplate(caseData);
   const heroTitleLength = String(caseData.title || "").replace(/\s+/g, " ").trim().length;
   const heroTitleClass = heroTitleLength > 52
@@ -1843,7 +2242,7 @@ export default function TarzanServicesCasePage({ caseData }) {
     <>
       <div className={`site-shell ${usesModernTemplate ? styles.lierseShell : ""} ${menuOpen ? "menu-open" : ""}`}>
         <main
-          className={`${styles.page} ${usesModernTemplate ? styles.liersePage : ""} ${isSjbCase ? styles.sjbPage : ""} ${heroPageClass}`}
+          className={`${styles.page} ${usesModernTemplate ? styles.liersePage : ""} ${isSjbCase ? styles.sjbPage : ""} ${isImoreCase ? styles.imorePage : ""} ${isVideoShowcaseCase ? styles.videoShowcasePage : ""} ${heroPageClass}`}
         >
           <a
             className={`hero__logo ${styles.logo} ${isSjbCase ? styles.sjbLogo : ""}`}
@@ -1881,6 +2280,11 @@ export default function TarzanServicesCasePage({ caseData }) {
                         </span>
                       ) : null}
                     </p>
+                  ) : introVideo ? (
+                    <HeroIntroText
+                      onOpenVideo={() => setIntroVideoOpen(true)}
+                      text={introText}
+                    />
                   ) : (
                     <p>{introText}</p>
                   )
@@ -1905,8 +2309,9 @@ export default function TarzanServicesCasePage({ caseData }) {
           </section>
 
           <StorySection caseData={caseData} />
+          {caseData.videoSectionPlacement === "before-process" ? <VideoSection caseData={caseData} /> : null}
           <StaticProcessSection caseData={caseData} />
-          <VideoSection caseData={caseData} />
+          {caseData.videoSectionPlacement === "before-process" ? null : <VideoSection caseData={caseData} />}
           <EditorialSections caseData={caseData} />
           {galleryGroups.map((group, index) => (
             <GallerySection
@@ -1924,6 +2329,9 @@ export default function TarzanServicesCasePage({ caseData }) {
 
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
       <NavOverlay activePage="work" open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {introVideoOpen && introVideo ? (
+        <IntroVideoModal onClose={() => setIntroVideoOpen(false)} video={introVideo} />
+      ) : null}
     </>
   );
 }
