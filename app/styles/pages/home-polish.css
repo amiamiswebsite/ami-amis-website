@@ -1071,3 +1071,63 @@
     font-size: 0.88rem;
   }
 }
+
+/* Final CTA layout guard for home. Keeps hero buttons stable after the global cascade. */
+.home-two .hero--proposal-new:not(.hero--home-two) .hero__actions {
+  display: flex !important;
+  flex-wrap: nowrap;
+  align-items: center !important;
+  justify-content: center !important;
+  width: fit-content !important;
+  max-width: min(100%, calc(100vw - (2 * var(--page-pad)))) !important;
+  gap: clamp(0.75rem, 1.35vw, 1rem) !important;
+}
+
+.home-two .hero--proposal-new:not(.hero--home-two) .hero__cta.home-cta-pill {
+  flex: 0 0 auto;
+}
+
+.home-two .friends-testimonials__cta.home-cta-pill {
+  display: flex !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+@media (width <= 719px) {
+  .home-two .hero--proposal-new:not(.hero--home-two) .hero__actions {
+    flex-direction: column;
+    gap: 0.45rem !important;
+    width: fit-content !important;
+  }
+
+  .home-two .hero--proposal-new:not(.hero--home-two) .hero__cta.home-cta-pill {
+    grid-template-columns: max-content 1.65rem;
+    min-width: min(calc(100vw - (2 * var(--page-pad))), 13.9rem);
+    min-height: 2.65rem;
+    gap: 0.45rem;
+    padding: 0.32rem 0.32rem 0.32rem 0.8rem;
+    font-size: clamp(0.72rem, 2.45vw, 0.78rem);
+  }
+
+  .home-two
+    .hero--proposal-new:not(.hero--home-two)
+    .hero__cta.home-cta-pill
+    > .home-cta-pill__icon {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .home-two .hero--proposal-new:not(.hero--home-two) .welcome-hero__scroll-cue {
+    display: none !important;
+  }
+
+  .home-two .social-growth__copy {
+    padding-right: clamp(3.75rem, 17vw, 5.25rem);
+  }
+}
+
+@media (421px <= width <= 719px) and (orientation: portrait) {
+  .home-two .hero--proposal-new:not(.hero--home-two) {
+    --hero-mobile-bottom-title-top: min(clamp(408px, 65svh, 668px), calc(100svh - 23.5rem));
+  }
+}
