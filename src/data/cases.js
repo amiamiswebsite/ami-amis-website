@@ -1348,13 +1348,13 @@ const rawCases = [
       hero: imageCaseMedia("/assets/work/4allseasons/hero.jpg", "Milo billboardcampagne", "Milo billboardcampagne voor 4 All Seasons"),
       verticalVideos: [
         imageCaseMedia("/assets/work/4allseasons/hero.jpg", "Milo billboardcampagne", "Milo billboardcampagne voor 4 All Seasons"),
-        vimeoCaseMedia("1071852332", "4allseasons behind the scenes"),
+        vimeoCaseMedia("1071852332", "4allseasons behind the scenes", "32b274e68e"),
         vimeoCaseMedia("926238307", "4AllSeasons - Milo aftermovie", "bfb29739be"),
         vimeoCaseMedia("1073163342", "4allseasons video"),
       ],
     },
     vimeoEmbeds: [
-      vimeo("1071852332", "4allseasons behind the scenes"),
+      vimeo("1071852332", "4allseasons behind the scenes", "32b274e68e"),
       vimeo("926238307", "4AllSeasons - Milo aftermovie", "bfb29739be"),
       vimeo("1073163342", "4allseasons video"),
     ],
@@ -1501,6 +1501,7 @@ const rawCases = [
           {
             type: "vimeo",
             id: "1071852332",
+            hash: "32b274e68e",
             title: "Behind the scenes",
             caption: "Behind the scenes",
           },
@@ -1510,7 +1511,7 @@ const rawCases = [
     externalVideoUrls: [
       "https://vimeo.com/926238307/bfb29739be",
       "https://vimeo.com/1073163342",
-      "https://vimeo.com/1071852332",
+      "https://vimeo.com/1071852332/32b274e68e",
       "https://www.amiamis.com/work/4allseasons",
     ],
   },
@@ -2530,16 +2531,16 @@ const rawCases = [
     },
     gallery: [{ src: "/work/vdab.webp", alt: "VDAB projectbeeld" }],
     vimeoEmbeds: [
-      vimeo("1055573602", "VDAB social media video"),
-      vimeo("1055574019", "VDAB video 2"),
-      vimeo("1055577145", "VDAB video 3"),
+      vimeo("1055573602", "VDAB social media video", "43641632ca"),
+      vimeo("1055574019", "VDAB video 2", "99a472e978"),
+      vimeo("1055577145", "VDAB video 3", "3d65ef19c1"),
     ],
     media: {
-      hero: vimeoCaseMedia("1055573602", "VDAB social media video"),
+      hero: vimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
       verticalVideos: [
-        vimeoCaseMedia("1055573602", "VDAB social media video"),
-        vimeoCaseMedia("1055574019", "VDAB video 2"),
-        vimeoCaseMedia("1055577145", "VDAB video 3"),
+        vimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
+        vimeoCaseMedia("1055574019", "VDAB video 2", "99a472e978"),
+        vimeoCaseMedia("1055577145", "VDAB video 3", "3d65ef19c1"),
         imageCaseMedia("/work/vdab.webp", "VDAB projectbeeld"),
       ],
     },
