@@ -634,10 +634,6 @@
   color: var(--red) !important;
   background: var(--paper) !important;
   box-shadow: none !important;
-  font-family: var(--font-black) !important;
-  font-size: clamp(1.2rem, 4.9vw, 1.4rem) !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
   transform: translateY(var(--team-total-care-balance-y)) !important;
   translate: 0 0 !important;
 }

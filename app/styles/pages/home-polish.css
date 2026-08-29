@@ -340,7 +340,7 @@
   border: 0;
   border-radius: 999px;
   background: var(--home-cta-red);
-  color: var(--ink) !important;
+  color: var(--paper) !important;
   box-shadow: none;
 }
 

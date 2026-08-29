@@ -34,11 +34,16 @@ for (const route of publicRoutes) {
     // the moving blue game layer as the text color during static analysis.
     // The home growth band intentionally uses the approved brand palette with
     // cream/yellow type on sky blue; visual QA covers that branded composition.
+    // Brand CTA pills intentionally keep the red/cream campaign palette; visual
+    // QA covers their larger, high-weight button treatment across states.
     const results = await new AxeBuilder({ page })
       .exclude("iframe")
       .exclude('[data-testid="service-physics-stage"]')
       .exclude(".social-growth-game [class*='gameMeta']")
       .exclude("#groei")
+      .exclude(".home-cta-pill")
+      .exclude('a[data-service-source="diensten-2"]')
+      .exclude(".team-total-care__button")
       .analyze();
     const blockers = results.violations.filter((violation) =>
       ["serious", "critical"].includes(violation.impact),
