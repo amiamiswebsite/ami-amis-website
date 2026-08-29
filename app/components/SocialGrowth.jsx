@@ -364,7 +364,6 @@ export default function SocialGrowth({ variant = "default" }) {
             <HomeCtaLink
               className="stats__title stats__case-link"
               href={assetPath(VISIT_ANTWERPEN_CASE_URL)}
-              showIcon={false}
             >
               8 video’s voor Visit Antwerpen
             </HomeCtaLink>
