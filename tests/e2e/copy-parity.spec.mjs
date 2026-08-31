@@ -46,8 +46,7 @@ test("the copy baseline covers every public route", () => {
 for (const route of publicRoutes) {
   test(`visible copy remains unchanged: ${route}`, async ({ page }) => {
     await page.goto(routeUrl(route), { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(250);
 
-    expect(await pageCopy(page)).toEqual(baseline[route]);
+    await expect.poll(() => pageCopy(page), { timeout: 10_000 }).toEqual(baseline[route]);
   });
 }
