@@ -53,9 +53,9 @@
 }
 
 .logo {
-  top: clamp(26px, 3.2vw, 44px);
-  left: clamp(32px, 5vw, 72px);
-  width: clamp(112px, 11vw, 154px);
+  top: var(--site-header-top) !important;
+  left: var(--site-header-inset) !important;
+  width: var(--site-logo-width) !important;
   background: var(--ink);
   transform: none;
 }
@@ -1517,9 +1517,9 @@
   }
 
   .logo {
-    top: 26px;
-    left: 18px;
-    width: 124px;
+    top: var(--site-header-top) !important;
+    left: var(--site-header-inset) !important;
+    width: var(--site-logo-width) !important;
   }
 
   .hero {

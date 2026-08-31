@@ -170,6 +170,31 @@ test.describe("homepage service physics tags", () => {
       modal.getByRole("heading", { name: "Proficiat, je hebt gewonnen!" }),
     ).toBeFocused();
 
+    for (const viewport of [
+      { width: 1440, height: 1000 },
+      { width: 1024, height: 768 },
+      { width: 768, height: 1024 },
+      { width: 390, height: 844 },
+      { width: 360, height: 740 },
+    ]) {
+      await page.setViewportSize(viewport);
+
+      const geometry = await modal.evaluate((node) => {
+        const panel = node.getBoundingClientRect();
+        const cta = node.querySelector('a[href*="calendly.com"]')?.getBoundingClientRect();
+
+        return {
+          bottomSpace: panel.bottom - cta.bottom,
+          fitsViewport: panel.top >= 0 && panel.bottom <= innerHeight,
+          horizontalOverflow: document.documentElement.scrollWidth - innerWidth,
+        };
+      });
+
+      expect(geometry.bottomSpace).toBeLessThanOrEqual(64);
+      expect(geometry.fitsViewport).toBe(true);
+      expect(geometry.horizontalOverflow).toBeLessThanOrEqual(1);
+    }
+
     await page.getByTestId("service-reward-code").click();
     await expect(page.getByTestId("service-reward-code")).toContainText("Gekopieerd");
     await expect(modal).toBeVisible();

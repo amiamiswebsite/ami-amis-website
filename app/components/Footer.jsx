@@ -11,8 +11,8 @@ const contactLinks = [
 ];
 
 const locations = [
-  "Hoofdzetel: IJzerenpoortkaai 3, 2000 Antwerpen",
   "Kantoor: Meir 78 - Stadsfeestzaal, 2000 Antwerpen",
+  "Hoofdzetel: IJzerenpoortkaai 3, 2000 Antwerpen",
 ];
 
 const socialLinks = [

@@ -528,7 +528,7 @@ const rawCases = [
       },
     ],
     imageGalleryEyebrow: "Fotografie",
-    imageGalleryTitle: "Humgy in beeld",
+    imageGalleryTitle: "Fotografie voor Humgy",
     imageGallery: [
       {
         src: "/images/cases/humgy/humgy-community.jpg",
@@ -1605,7 +1605,7 @@ const rawCases = [
         wide: true,
         aspectRatio: "16 / 9",
       },
-      verticalVideos: [
+      landscapeVideos: [
         {
           type: "vimeo",
           id: "1055218065",
@@ -1794,8 +1794,8 @@ const rawCases = [
     slug: "billy-bonkers",
     aliases: ["billy-bonkers-stad-gent"],
     template: "x-oats-social",
-    client: "Billy Bonkers",
-    heroTitle: "BILLY BONKERS",
+    client: "Billie Bonkers",
+    heroTitle: "BILLIE BONKERS",
     title: "Campagne rond duurzaam wonen",
     subtitle: "Voor Stad Gent.",
     category: "Video & campagnes",
@@ -1846,7 +1846,7 @@ const rawCases = [
       {
         src:
           "https://images.squarespace-cdn.com/content/v1/643d2a65d8203861cae47bbe/da00ab33-0d7d-451f-9863-14dc7ceee76a/SEB08389.JPG",
-        alt: "Billy Bonkers campagnebeeld",
+        alt: "Billie Bonkers campagnebeeld",
       },
     ],
     campaignImages: [
@@ -1863,10 +1863,10 @@ const rawCases = [
         alt: "Campagnebeeld Stad Gent Energiecentrale met warmwaterkruiken",
       },
     ],
-    vimeoEmbeds: [vimeo("1169918332", "Billy Bonkers - Stad Gent")],
+    vimeoEmbeds: [vimeo("1169918332", "Billie Bonkers - Stad Gent")],
     media: {
-      hero: vimeoCaseMedia("1169918332", "Billy Bonkers - Stad Gent"),
-      verticalVideos: [vimeoCaseMedia("1169918332", "Billy Bonkers - Stad Gent")],
+      hero: vimeoCaseMedia("1169918332", "Billie Bonkers - Stad Gent"),
+      verticalVideos: [vimeoCaseMedia("1169918332", "Billie Bonkers - Stad Gent")],
     },
     needsEditorialSplit: false,
     facts: [
@@ -1953,9 +1953,11 @@ const rawCases = [
     vimeoEmbeds: [vimeo("1169932151", "Jurimesh video")],
     media: {
       hero: vimeoCaseMedia("1169932151", "Jurimesh video"),
-      verticalVideos: [
-        vimeoCaseMedia("1169932151", "Jurimesh video"),
-        imageCaseMedia("/work/jurimesh-thumb.webp", "Jurimesh projectbeeld"),
+      landscapeVideos: [
+        {
+          ...vimeoCaseMedia("1169932151", "Jurimesh video"),
+          instanceKey: "gallery",
+        },
       ],
     },
     needsEditorialSplit: false,
@@ -2016,10 +2018,14 @@ const rawCases = [
     storyBlocks: [
       {
         text:
-          "In deze video volgen we Felipe Nystrom en Younited tijdens de UCI Cyclo-cross World Cup — een plaats waar sport, herstel en menselijkheid samenkomen. De productie focust op Felipe’s uitzonderlijke reis: van een jeugd vol geweld in Costa Rica, zware verslavingen, dakloosheid en meerdere bijna-doodervaringen, tot zijn doorbraak als professioneel renner en nationaal kampioen. We kozen voor een documentaire stijl waarin intensiteit en intimiteit elkaar afwisselen. Niet alleen de actie van de koers, maar ook de stille momenten ervoor krijgen ruimte: de voorbereiding, de spanning, de kwetsbaarheid. Deze storytelling laat zien hoe sport niet alleen prestaties voortbrengt, maar mensen opnieuw richting geeft. Felipe’s contact met Younited onderstreept dat boodschap: sport als hefboom voor zelfvertrouwen, verbondenheid en een nieuw begin. Onze cinematografische beelden, zorgvuldige montage en sfeervolle audio versterken dat verhaal—een verhaal dat verder gaat dan cyclocross, en raakt aan veerkracht en tweede kansen. Het resultaat is een krachtige, authentieke vertelling die toont hoe één mens, gewapend met wilskracht en steun, letterlijk en figuurlijk uit de modder kan opstaan.",
+          "In deze video volgen we Felipe Nystrom en Younited tijdens de UCI Cyclo-cross World Cup — een plaats waar sport, herstel en menselijkheid samenkomen.",
+      },
+      {
+        text:
+          "De productie focust op Felipe’s uitzonderlijke reis: van een jeugd vol geweld in Costa Rica, zware verslavingen, dakloosheid en meerdere bijna-doodervaringen, tot zijn doorbraak als professioneel renner en nationaal kampioen. We kozen voor een documentaire stijl waarin intensiteit en intimiteit elkaar afwisselen. Niet alleen de actie van de koers, maar ook de stille momenten ervoor krijgen ruimte: de voorbereiding, de spanning, de kwetsbaarheid. Deze storytelling laat zien hoe sport niet alleen prestaties voortbrengt, maar mensen opnieuw richting geeft. Felipe’s contact met Younited onderstreept dat boodschap: sport als hefboom voor zelfvertrouwen, verbondenheid en een nieuw begin. Onze cinematografische beelden, zorgvuldige montage en sfeervolle audio versterken dat verhaal—een verhaal dat verder gaat dan cyclocross, en raakt aan veerkracht en tweede kansen. Het resultaat is een krachtige, authentieke vertelling die toont hoe één mens, gewapend met wilskracht en steun, letterlijk en figuurlijk uit de modder kan opstaan.",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], []],
     deliverables: ["Documentaire video", "Montage", "Sounddesign", "Storytelling"],
     hero: {
       sourceMediaUrl:
@@ -2136,12 +2142,8 @@ const rawCases = [
       hero: vimeoCaseMedia("1174402980", "Blutsqi employer branding"),
       landscapeVideos: [
         vimeoCaseMedia("1217619293", "Blutsqi customer journey"),
-      ],
-      verticalVideos: [
-        vimeoCaseMedia("1174402980", "Blutsqi employer branding"),
         vimeoCaseMedia("1174402742", "Blutsqi vacaturevideo"),
         vimeoCaseMedia("1174402589", "Blutsqi social snippet"),
-        imageCaseMedia("/work/blutsqi-thumb.webp", "Blutsqi projectbeeld"),
       ],
     },
     needsEditorialSplit: false,
@@ -2239,7 +2241,7 @@ const rawCases = [
     ],
     media: {
       hero: vimeoCaseMedia("1221173884", "Interview met Dirk Bervoets"),
-      verticalVideos: [
+      landscapeVideos: [
         vimeoCaseMedia("1221173884", "Interview met Dirk Bervoets"),
         vimeoCaseMedia("1221173882", "Interview met Miquel Joseph"),
         vimeoCaseMedia("1221173881", "Interview met Olivier Naeyaert"),
@@ -2536,12 +2538,11 @@ const rawCases = [
       vimeo("1055577145", "VDAB video 3", "3d65ef19c1"),
     ],
     media: {
-      hero: vimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
+      hero: portraitVimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
       verticalVideos: [
-        vimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
-        vimeoCaseMedia("1055574019", "VDAB video 2", "99a472e978"),
-        vimeoCaseMedia("1055577145", "VDAB video 3", "3d65ef19c1"),
-        imageCaseMedia("/work/vdab.webp", "VDAB projectbeeld"),
+        portraitVimeoCaseMedia("1055573602", "VDAB social media video", "43641632ca"),
+        portraitVimeoCaseMedia("1055574019", "VDAB video 2", "99a472e978"),
+        portraitVimeoCaseMedia("1055577145", "VDAB video 3", "3d65ef19c1"),
       ],
     },
     needsEditorialSplit: false,
@@ -2986,13 +2987,19 @@ const rawCases = [
         {
           title: "Yinne Gymness",
           src: "/videos/cases/x-oats/x-oats-yinne-gymness.mp4",
+          orientation: "portrait",
+          aspectRatio: "9 / 16",
         },
         {
           title: "Politie-ondervraging",
           src: "/videos/cases/x-oats/x-oats-politie-ondervraging.mp4",
+          orientation: "portrait",
+          aspectRatio: "9 / 16",
         },
+        portraitVimeoCaseMedia("1222690669", "Ruben Van Gucht"),
       ],
     },
+    externalVideoUrls: ["https://vimeo.com/1222690669?share=copy"],
     services: ["Concept", "Draaien", "Montage", "Social content"],
     nextCase: {
       title: "Visit Antwerpen",

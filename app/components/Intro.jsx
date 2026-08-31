@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
 import CtaArrowIcon from "./ui/CtaArrowIcon";
 import HomeCtaLink from "./ui/HomeCtaLink";
@@ -35,7 +36,7 @@ const tagRows = [
 
 const homeTwoIntro = [
   "Je bedrijf doet zotte dingen… Maar weet de buitenwereld dat al?",
-  "Wij zorgen ervoor dat je merk niet verloren loopt tussen kattenfilmpjes en saaie reclameblabla. Wij maken je verhaal scherper, sterker en een pak moeilijker te negeren. Want als er iets is waar wij niet tegen kunnen, dan is het slechte content!",
+  "Wij zorgen ervoor dat je merk niet verloren loopt tussen kattenfilmpjes en saaie reclameblabla. Wij maken je verhaal scherper, sterker en een pak moeilijker te negeren. Want als er iets is waar wij niet tegen kunnen, dan is het saaie content!",
   "Als jouw creatieve compadre bouwen we mee aan de groei van jouw bedrijf.",
 ];
 
@@ -81,86 +82,55 @@ const homeTwoReel = {
   height: 1080,
 };
 
-const homeTwoCasePool = [
-  {
-    src: "/work/sporthouse-group-thumb.webp",
-    alt: "Sporthouse Group casebeeld",
-    width: 2398,
-    height: 1342,
-  },
-  {
-    src: "/work/visit-antwerpen-work-thumb.jpg",
-    alt: "Fashion Local voor Visit Antwerpen",
-    width: 1600,
-    height: 900,
-  },
-  {
-    src: "/images/cases/humgy/humgy-instagram-feed.png",
-    alt: "Humgy casebeeld",
-    width: 950,
-    height: 720,
-  },
-  {
-    src: "/work/imore.webp",
-    alt: "Imore casebeeld",
-    width: 1000,
-    height: 563,
-  },
-  {
-    src: "/work/4allseasons.webp",
-    alt: "4AllSeasons casebeeld",
-    width: 1000,
-    height: 667,
-  },
-  {
-    src: "/images/cases/billy-bonkers/stad-gent-energiecentrale-campagnebeeld-01.jpg",
-    alt: "Billy Bonkers casebeeld",
-    width: 1273,
-    height: 1800,
-  },
-  {
-    src: "/work/x-oats-thumb-portrait.jpg",
-    alt: "X-Oats casebeeld",
-    width: 1080,
-    height: 1920,
-  },
-  {
-    src: "/work/blutsqi-thumb.webp",
-    alt: "Blutsqi casebeeld",
-    width: 2498,
-    height: 1396,
-  },
-  {
-    src: "/work/kdg-thumb.jpg",
-    alt: "KdG casebeeld",
-    width: 1600,
-    height: 1100,
-  },
-  {
-    src: "/work/bazwil-thumb.jpg",
-    alt: "Bazwil casebeeld",
-    width: 1600,
-    height: 1100,
-  },
-  {
-    src: "/work/weplanet-thumb.jpg",
-    alt: "WePlanet casebeeld",
-    width: 1600,
-    height: 1100,
-  },
-  {
-    src: "/work/vdab.webp",
-    alt: "VDAB casebeeld",
-    width: 1000,
-    height: 667,
-  },
-  {
-    src: "/work/groep-maes.webp",
-    alt: "Groep Maes casebeeld",
-    width: 1000,
-    height: 417,
-  },
+const homeTwoCaseSlugs = [
+  "sporthouse-group",
+  "visit-antwerpen",
+  "humgy",
+  "imore",
+  "4allseasons",
+  "billy-bonkers",
+  "x-oats",
+  "blutsqi",
+  "kdg",
+  "bazwil",
+  "weplanet",
+  "vdab",
+  "groep-maes",
 ];
+
+const homeTwoCaseDimensions = {
+  "4allseasons": [1500, 1000],
+  bazwil: [1600, 1100],
+  blutsqi: [1400, 784],
+  "billy-bonkers": [2500, 1667],
+  "groep-maes": [1400, 787],
+  humgy: [1120, 1400],
+  imore: [1400, 933],
+  kdg: [1400, 788],
+  "sporthouse-group": [1400, 788],
+  "visit-antwerpen": [1600, 900],
+  vdab: [1000, 667],
+  weplanet: [1400, 933],
+  "x-oats": [1080, 1920],
+};
+
+const workCasesBySlug = new Map(workCases.map((item) => [item.slug, item]));
+const homeTwoCasePool = homeTwoCaseSlugs
+  .map((slug) => {
+    const item = workCasesBySlug.get(slug);
+    const [width, height] = homeTwoCaseDimensions[slug] || [1600, 900];
+
+    if (!item || item.status !== "ready" || !(item.homeImage || item.image)) return null;
+
+    return {
+      alt: `${item.client} casebeeld`,
+      height,
+      imagePosition: item.imagePosition,
+      src: item.homeImage || item.image,
+      width,
+    };
+  })
+  .filter(Boolean);
 
 function selectCaseVisuals() {
   const shuffled = [...homeTwoCasePool];
@@ -210,7 +180,6 @@ export default function Intro({ variant = "default" }) {
   const isHomeTwo = variant === "home2";
   const ctaLabel = isHomeTwo ? "Samen jouw merk doen groeien?" : "eens afspreken?";
   const [caseVisuals, setCaseVisuals] = useState([homeTwoReel, ...homeTwoCasePool.slice(0, 6)]);
-  const [shouldLoadHomeReel, setShouldLoadHomeReel] = useState(false);
   const challengeStageRef = useRef(null);
   const explosionVideoRef = useRef(null);
   const homeReelVideoRef = useRef(null);
@@ -387,50 +356,18 @@ export default function Intro({ variant = "default" }) {
     }
 
     const video = homeReelVideoRef.current;
-    const media = video?.closest(".intro__home-two-media");
 
-    if (!video || !media) {
+    if (!video) {
       return undefined;
     }
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return undefined;
-    }
-
-    if (!("IntersectionObserver" in window)) {
-      setShouldLoadHomeReel(true);
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
-          setShouldLoadHomeReel(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px", threshold: [0, 0.3] },
-    );
-
-    observer.observe(media);
-    return () => observer.disconnect();
-  }, [isHomeTwo]);
-
-  useEffect(() => {
-    if (!isHomeTwo || !shouldLoadHomeReel) {
-      return undefined;
-    }
-
-    const video = homeReelVideoRef.current;
-
-    if (!video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
       return undefined;
     }
 
     video.muted = true;
     video.playsInline = true;
-    video.load();
-
     const play = () => {
       if (document.visibilityState === "visible") {
         void video.play().catch(() => {});
@@ -463,7 +400,7 @@ export default function Intro({ variant = "default" }) {
       observer.disconnect();
       pause();
     };
-  }, [isHomeTwo, shouldLoadHomeReel]);
+  }, [isHomeTwo]);
 
   useEffect(() => {
     const motion = introMediaMotionRef.current;
@@ -594,11 +531,11 @@ export default function Intro({ variant = "default" }) {
               onPointerMove={handleIntroMediaPointerMove}
             >
               <div className="intro__case-orbit" aria-hidden="true">
-                {caseVisuals.map(({ alt, height, poster, src, type, width }, index) => (
+                {caseVisuals.map(({ alt, height, imagePosition, poster, src, type, width }, index) => (
                   type === "video" ? (
                     <video
                       aria-label={alt}
-                      autoPlay={shouldLoadHomeReel}
+                      autoPlay
                       className={`intro__case-card intro__case-card--video intro__case-card--${index + 1}`}
                       height={height}
                       key={src}
@@ -606,11 +543,11 @@ export default function Intro({ variant = "default" }) {
                       muted
                       playsInline
                       poster={poster ? assetPath(poster) : undefined}
-                      preload={shouldLoadHomeReel ? "metadata" : "none"}
+                      preload="auto"
                       ref={src === homeTwoReel.src ? homeReelVideoRef : undefined}
                       width={width}
                     >
-                      {shouldLoadHomeReel ? <source src={assetPath(src)} type="video/mp4" /> : null}
+                      <source src={assetPath(src)} type="video/mp4" />
                     </video>
                   ) : (
                     <img
@@ -621,6 +558,7 @@ export default function Intro({ variant = "default" }) {
                       key={src}
                       loading="lazy"
                       src={assetPath(src)}
+                      style={imagePosition ? { objectPosition: imagePosition } : undefined}
                       width={width}
                     />
                   )

@@ -1191,6 +1191,14 @@
   }
 }
 
+@media (421px <= width) and (width <= 480px) and (orientation: portrait) {
+  .home-two .hero--proposal-new:not(.hero--home-two) {
+    --hero-mobile-title-top: clamp(104px, 14.2svh, 128px);
+    --hero-mobile-person-center-y: clamp(278px, 49.5svh, 418px);
+    --hero-person-width: min(98vw, 392px);
+  }
+}
+
 @media (width <= 719px) and (height <= 700px) and (orientation: portrait) {
   .home-two .hero--proposal-new:not(.hero--home-two) {
     min-height: calc(100svh + 2rem);

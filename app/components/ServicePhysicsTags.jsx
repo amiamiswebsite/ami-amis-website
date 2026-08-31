@@ -112,12 +112,18 @@ function WinModal({ closeButtonRef, onClose, phase }) {
         </button>
 
         <div className={styles.rewardVisual}>
-          <img
-            alt="Brent als Ami Amis-engel"
-            className={styles.rewardImage}
-            decoding="async"
-            src={assetPath("/assets/brentvalentijn.png")}
-          />
+          <picture>
+            <source
+              media="(min-width: 681px) and (min-height: 600px)"
+              srcSet={assetPath("/assets/brentvalentijn-desktop.webp")}
+            />
+            <img
+              alt="Brent als Ami Amis-engel"
+              className={styles.rewardImage}
+              decoding="async"
+              src={assetPath("/assets/brentvalentijn.png")}
+            />
+          </picture>
         </div>
 
         <div className={styles.rewardCopy}>

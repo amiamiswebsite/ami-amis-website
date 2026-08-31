@@ -36,8 +36,8 @@ const practicalItems = [
 ];
 
 const locations = [
-  "Hoofdzetel: IJzerenpoortkaai 3, 2000 Antwerpen",
   "Kantoor: Meir 78 - Stadsfeestzaal, 2000 Antwerpen",
+  "Hoofdzetel: IJzerenpoortkaai 3, 2000 Antwerpen",
 ];
 
 const socialLinks = [
@@ -197,9 +197,7 @@ export default function ContactPage() {
   const [serviceIntent, setServiceIntent] = useState(null);
   const [contactChoice, setContactChoice] = useState(null);
   const [noConverted, setNoConverted] = useState(false);
-  const bookingButtonRef = useRef(null);
   const contactFormFocusRef = useRef(null);
-  const contactPhotoRef = useRef(null);
 
   useEffect(() => {
     const intentFromSearch = readServiceIntentFromSearch(window.location.search);
@@ -211,101 +209,50 @@ export default function ContactPage() {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  const highlightContactActions = () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const focusContactForm = () => {
+    const element = contactFormFocusRef.current;
+    if (!element) return;
 
-    [bookingButtonRef.current, contactFormFocusRef.current].forEach((element, index) => {
-      if (!element || typeof element.animate !== "function") return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 720px)").matches;
+    const bounds = element.getBoundingClientRect();
+    const visibleHeight = Math.max(
+      0,
+      Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0),
+    );
+    const isSufficientlyVisible = visibleHeight >= Math.min(bounds.height * 0.62, 360);
 
-      element.animate(
-        [
-          {
-            boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)",
-            transform: "translate3d(0, 0, 0)",
-          },
-          {
-            boxShadow: "0 0 0 6px rgba(242, 69, 34, 0.14)",
-            transform: "translate3d(0, -2px, 0)",
-            offset: 0.42,
-          },
-          {
-            boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)",
-            transform: "translate3d(0, 0, 0)",
-          },
-        ],
-        {
-          delay: index * 90,
-          duration: 820,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-        },
-      );
-    });
+    element.focus({ preventScroll: true });
+
+    if (isMobile || !isSufficientlyVisible) {
+      element.scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth",
+        block: isMobile ? "start" : "center",
+      });
+    }
+
+    if (reducedMotion || typeof element.animate !== "function") return;
+
+    element.animate(
+      [
+        { boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)" },
+        { boxShadow: "0 0 0 6px rgba(242, 69, 34, 0.14)", offset: 0.42 },
+        { boxShadow: "0 0 0 0 rgba(242, 69, 34, 0)" },
+      ],
+      {
+        duration: 760,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+    );
   };
 
   const handleContactChoice = (choice) => {
     if (choice === "no") setNoConverted(true);
     setContactChoice(choice);
     window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(highlightContactActions);
+      window.requestAnimationFrame(focusContactForm);
     });
   };
-
-  useEffect(() => {
-    const stage = contactPhotoRef.current;
-    const finePointer = window.matchMedia("(pointer: fine)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (!stage || !finePointer.matches || reducedMotion.matches) return undefined;
-
-    const target = { x: 0, y: 0 };
-    const current = { x: 0, y: 0 };
-    let frame = 0;
-    let running = false;
-
-    const render = () => {
-      current.x += (target.x - current.x) * 0.1;
-      current.y += (target.y - current.y) * 0.1;
-
-      stage.style.setProperty("--contact-pointer-x", current.x.toFixed(4));
-      stage.style.setProperty("--contact-pointer-y", current.y.toFixed(4));
-
-      if (Math.abs(target.x - current.x) > 0.002 || Math.abs(target.y - current.y) > 0.002) {
-        frame = window.requestAnimationFrame(render);
-      } else {
-        running = false;
-      }
-    };
-
-    const requestRender = () => {
-      if (running) return;
-      running = true;
-      frame = window.requestAnimationFrame(render);
-    };
-
-    const handlePointerMove = (event) => {
-      const bounds = stage.getBoundingClientRect();
-      target.x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1));
-      target.y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1));
-      requestRender();
-    };
-
-    const handlePointerLeave = () => {
-      target.x = 0;
-      target.y = 0;
-      requestRender();
-    };
-
-    stage.addEventListener("pointermove", handlePointerMove, { passive: true });
-    stage.addEventListener("pointerleave", handlePointerLeave);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      stage.removeEventListener("pointermove", handlePointerMove);
-      stage.removeEventListener("pointerleave", handlePointerLeave);
-      stage.style.removeProperty("--contact-pointer-x");
-      stage.style.removeProperty("--contact-pointer-y");
-    };
-  }, []);
 
   return (
     <>
@@ -354,7 +301,6 @@ export default function ContactPage() {
                       className="button contact-booking__button"
                       href="https://calendly.com/brent-amiamis/30min"
                       rel="noopener noreferrer"
-                      ref={bookingButtonRef}
                       target="_blank"
                     >
                       <span>Agenda Brent</span>
@@ -363,34 +309,33 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="contact-overview__form-focus" ref={contactFormFocusRef}>
+                <div
+                  aria-label="Contactformulier"
+                  className="contact-overview__form-focus"
+                  ref={contactFormFocusRef}
+                  tabIndex={-1}
+                >
                   <ContactForm intent={serviceIntent} />
                 </div>
 
-                <figure
-                  className={`contact-intro__photo contact-editorial__photo contact-overview__photo ${
-                    contactChoice ? "is-affirmed" : ""
-                  }`}
-                  ref={contactPhotoRef}
-                >
+                <figure className="contact-intro__photo contact-editorial__photo contact-overview__photo">
                   <img
-                    aria-hidden={Boolean(contactChoice)}
                     className="contact-overview__photo-image contact-overview__photo-image--default"
                     src={assetPath("/assets/contact-phones-portrait.jpg")}
-                    alt="Contactpersoon omringd door oude en nieuwe telefoons"
-                    width="1024"
-                    height="1536"
+                    alt="Ami Amis-contactpersoon met een koffiemok"
+                    width="2000"
+                    height="1333"
                     decoding="async"
                     fetchPriority="high"
                   />
                   <img
-                    aria-hidden={!contactChoice}
-                    className="contact-overview__photo-image contact-overview__photo-image--answer"
-                    src={assetPath("/assets/contact-phones-answer.jpg")}
-                    alt="Brent met verschillende telefoons in zijn armen"
-                    width="1024"
-                    height="1536"
+                    alt=""
+                    aria-hidden="true"
+                    className="contact-overview__photo-image contact-overview__photo-image--hover"
                     decoding="async"
+                    src={assetPath("/assets/contact-phones-answer.jpg")}
+                    width="2000"
+                    height="1333"
                   />
                 </figure>
 

@@ -221,26 +221,37 @@
   will-change: transform;
 }
 
-.team-story-hero__video video,
-.team-story-hero__video iframe {
+.team-story-hero__video.team-intro-static__visual {
+  background:
+    linear-gradient(135deg, rgb(255 250 229 / 48%), rgb(255 250 229 / 18%)), rgb(255 250 229 / 14%) !important;
+  box-shadow: inset 0 0 0 1px rgb(255 250 229 / 48%) !important;
+  backdrop-filter: blur(18px) saturate(0.9);
+}
+
+.team-story-hero__video-viewport {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 240 / 426;
+  overflow: hidden;
+  transform: translateX(-50%) scale(1.12);
+  transform-origin: center;
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.team-story-hero__video-viewport iframe {
   display: block;
   width: 100%;
   height: 100%;
   border: 0;
-  background: var(--ink);
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.12);
-  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.team-story-hero__video iframe {
+  background: transparent;
   pointer-events: none;
 }
 
-.team-story-hero__video.is-tracking video,
-.team-story-hero__video.is-tracking iframe {
-  transform: scale(1.15);
+.team-story-hero__video.is-tracking .team-story-hero__video-viewport {
+  transform: translateX(-50%) scale(1.15);
 }
 
 .team-story-hero__sound {
@@ -308,6 +319,23 @@
   62% {
     opacity: 1;
     transform: translate3d(0.035em, -0.025em, 0) scale(1.035);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes team-awieee-letter-shout-mobile {
+  0% {
+    opacity: 0;
+    transform: translate3d(-0.2em, 0.16em, 0) scale(0.7);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translate3d(0.02em, -0.025em, 0) scale(1.025);
   }
 
   100% {
@@ -755,6 +783,22 @@
     font-size: clamp(4rem, 23.9cqw, 11.5rem) !important;
   }
 
+  .team-story-hero__title-letters {
+    width: calc(100% - 0.08em);
+    margin-inline: auto;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .team-intro-static--story.team-intro-static--animated .team-story-hero__title-char {
+      transform: translate3d(-0.2em, 0.16em, 0) scale(0.7);
+    }
+
+    .team-intro-static--story.team-intro-static--animated.is-visible .team-story-hero__title-char {
+      animation-name: team-awieee-letter-shout-mobile !important;
+    }
+  }
+
   .team-story-hero__body {
     gap: 1rem !important;
     padding-top: var(--aa-space-5) !important;
@@ -866,13 +910,35 @@
   }
 }
 
+/* Keep the portrait header video prominent without overwhelming shorter mobile screens. */
+@media (width <= 860px) {
+  .team-story-hero__video.team-intro-static__visual {
+    width: min(78vw, 19rem, 36.25svh) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 5 / 8 !important;
+    justify-self: center !important;
+  }
+
+  .team-story-hero__video-viewport {
+    transform: translateX(-50%) scale(1.035);
+  }
+
+  .team-story-hero__video.is-tracking .team-story-hero__video-viewport {
+    transform: translateX(-50%) scale(1.055);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .team-story-hero__title-char,
   .team-story-hero__photo.team-intro-static__visual,
-  .team-story-hero__video video {
+  .team-story-hero__video-viewport {
     opacity: 1 !important;
     animation: none !important;
     transition-duration: 1ms !important;
-    transform: none !important;
+  }
+
+  .team-story-hero__video-viewport {
+    transform: translateX(-50%) !important;
   }
 }

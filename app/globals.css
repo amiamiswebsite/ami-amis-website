@@ -16392,7 +16392,7 @@ body.collage-ready .filmroll-highlights__cta {
 .work-card:focus-visible {
   border-color: transparent;
   box-shadow: none;
-  transform: translateY(-4px);
+  transform: none;
 }
 
 .work-card:focus-visible {
@@ -16404,40 +16404,54 @@ body.collage-ready .filmroll-highlights__cta {
   aspect-ratio: 16 / 11;
   border: 3px solid var(--ink);
   border-radius: 10px;
-  box-shadow: 8px 8px 0 rgba(28, 28, 28, 0.9);
+  box-shadow: none;
   transition:
-    box-shadow 260ms ease,
+    border-color 260ms ease,
+    box-shadow 220ms ease,
     transform 260ms ease;
 }
 
 .work-card:hover .work-card__media,
 .work-card:focus-visible .work-card__media {
-  box-shadow: 10px 10px 0 var(--blue);
+  border-color: var(--ink);
+  box-shadow: clamp(4px, 0.55vw, 7px) clamp(4px, 0.55vw, 7px) 0 var(--blue);
+  transform: translate(-1px, -2px);
 }
 
-.work-card__media::after {
+.work-card__arrow {
   position: absolute;
-  inset: 0;
+  right: clamp(12px, 1.35vw, 18px);
+  bottom: clamp(12px, 1.35vw, 18px);
   z-index: 2;
   display: grid;
-  place-items: end start;
-  padding: clamp(16px, 2vw, 24px);
-  background: linear-gradient(to top, rgba(28, 28, 28, 0.72), rgba(28, 28, 28, 0) 64%);
-  color: var(--paper);
-  content: "Bekijk case";
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 1.2vw, 1.25rem);
-  font-weight: 950;
-  line-height: 1;
-  text-transform: uppercase;
+  width: clamp(46px, 4vw, 58px);
+  height: clamp(46px, 4vw, 58px);
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
   opacity: 0;
-  transition: opacity 260ms ease;
+  transform: scale(0.9);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
   pointer-events: none;
 }
 
-.work-card:hover .work-card__media::after,
-.work-card:focus-visible .work-card__media::after {
+.work-card__arrow svg {
+  width: 46%;
+  height: 46%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.work-card:hover .work-card__arrow,
+.work-card:focus-visible .work-card__arrow {
   opacity: 1;
+  transform: translate3d(2px, -2px, 0) scale(1.04);
 }
 
 .work-card__body {
@@ -16448,12 +16462,14 @@ body.collage-ready .filmroll-highlights__cta {
 .work-card h2 {
   margin: 0;
   color: var(--ink);
-  font-family: var(--font-sans);
-  font-size: clamp(1.2rem, 1.45vw, 1.8rem);
+  font-family: var(--font-black);
+  font-size: clamp(1.35rem, 1.55vw, 1.65rem);
   font-style: normal;
-  font-weight: 950;
-  line-height: 1;
-  text-transform: uppercase;
+  font-weight: 900;
+  line-height: 1.02;
+  overflow-wrap: break-word;
+  text-transform: none;
+  text-wrap: balance;
 }
 
 .work-card__client,
@@ -17483,9 +17499,9 @@ body.collage-ready .filmroll-highlights__cta {
 /* Start polish fixes: work filters, team cue, menu shadow, CTA */
 .work-filters {
   display: block;
-  position: sticky;
-  top: 0;
-  z-index: 28;
+  position: relative;
+  top: auto;
+  z-index: auto;
   margin-bottom: clamp(34px, 4.8vw, 62px);
   border: 0;
   background: transparent;
@@ -38697,12 +38713,12 @@ body.collage-ready .case-portfolio-reveal.is-visible {
 
   .brainstorm h2 {
     padding-top: clamp(64px, 9vw, 78px);
-    font-size: clamp(3.3rem, 9.8vw, 4rem);
+    font-size: clamp(3.7rem, 9vw, 4.4rem);
   }
 
   .desk-storm-scene {
     top: clamp(178px, 24vw, 198px);
-    width: min(680px, calc(100vw - 40px));
+    width: min(620px, 122vw);
   }
 
   .brainstorm__button {
@@ -38716,17 +38732,37 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   }
 
   .brainstorm h2 {
-    padding-top: clamp(96px, 23vw, 116px);
-    font-size: clamp(2.65rem, 10.4vw, 3rem);
+    padding-top: clamp(78px, 20vw, 96px);
+    font-size: clamp(3.35rem, 13vw, 4rem);
   }
 
   .desk-storm-scene {
-    top: clamp(186px, 47vw, 212px);
-    width: min(610px, 143vw);
+    top: clamp(164px, 42vw, 190px);
+    width: min(650px, 170vw);
   }
 
   .brainstorm__button {
-    bottom: clamp(72px, 12vw, 92px);
+    bottom: clamp(44px, 10vw, 56px);
+  }
+}
+
+@media (max-width: 360px) {
+  .brainstorm {
+    min-height: 740px;
+  }
+
+  .brainstorm h2 {
+    padding-top: 124px;
+    font-size: 3rem;
+  }
+
+  .desk-storm-scene {
+    top: 165px;
+    width: min(610px, 180vw);
+  }
+
+  .brainstorm__button {
+    bottom: 40px;
   }
 }
 

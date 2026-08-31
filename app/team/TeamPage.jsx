@@ -62,14 +62,16 @@ function TeamHeroVideo({ onPointerLeave, onPointerMove }) {
       onPointerLeave={onPointerLeave}
       onPointerMove={onPointerMove}
     >
-      <iframe
-        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-        data-case-vimeo-player={teamHeroVimeoPlayerId}
-        loading="eager"
-        ref={iframeRef}
-        src={teamHeroVimeoSrc}
-        title="Ami Amis BTS-video"
-      />
+      <div className="team-story-hero__video-viewport">
+        <iframe
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+          data-case-vimeo-player={teamHeroVimeoPlayerId}
+          loading="eager"
+          ref={iframeRef}
+          src={teamHeroVimeoSrc}
+          title="Ami Amis BTS-video"
+        />
+      </div>
       <button
         aria-label={soundOn ? "Zet geluid uit" : "Zet geluid aan"}
         aria-pressed={soundOn}

@@ -327,7 +327,7 @@ export default function SocialGrowth({ variant = "default" }) {
                 muted
                 playsInline
                 poster={assetPath("/images/cases/visit-antwerpen/fashion-local-poster.jpg")}
-                preload="none"
+                preload="auto"
                 ref={videoRef}
               >
                 <source src={assetPath("/assets/dianavisitthumb-loop.mp4")} type="video/mp4" />

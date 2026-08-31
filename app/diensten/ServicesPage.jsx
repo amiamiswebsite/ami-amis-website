@@ -605,13 +605,13 @@ export default function ServicesPage() {
     <>
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className={styles.servicesPage} ref={pageRef}>
+          <a
+            className={`hero__logo ${styles.logo}`}
+            href={assetPath("/")}
+            aria-label="Ami Amis home"
+          />
           <div className={styles.servicesTop}>
             <div className={styles.servicesTopPaper}>
-              <a
-                className={`hero__logo ${styles.logo}`}
-                href={assetPath("/")}
-                aria-label="Ami Amis home"
-              />
               <ServicesHero />
               <ExpectationSection />
             </div>

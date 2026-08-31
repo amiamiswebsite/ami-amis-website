@@ -135,7 +135,7 @@ export const workCases = [
     image: "/assets/work/4allseasons/hero.jpg",
     href: "/work/4allseasons/",
     featured: false,
-    status: "ready",
+    status: "inactive",
   },
   {
     client: "Salus",
@@ -163,7 +163,7 @@ export const workCases = [
     status: "ready",
   },
   {
-    client: "Billy Bonkers",
+    client: "Billie Bonkers",
     slug: "billy-bonkers",
     title: "Campagne rond duurzaam wonen",
     description:

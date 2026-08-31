@@ -350,7 +350,7 @@
   display: grid;
   grid-template-columns: minmax(340px, 0.9fr) minmax(420px, 1.1fr);
   width: min(920px, 100%);
-  height: min(540px, calc(100dvh - 32px));
+  height: auto;
   min-height: 0;
   max-height: calc(100dvh - 32px);
   border: 2px solid var(--ink);
@@ -441,7 +441,10 @@
   flex-direction: column;
   justify-content: center;
   min-width: 0;
+  min-height: 0;
   padding: clamp(34px, 4vw, 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background-color: var(--paper);
   background-image: var(--paper-bg-image);
   background-size: 720px auto;
@@ -634,9 +637,9 @@
 
   .modalPanel {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 34%) minmax(0, 66%);
+    grid-template-rows: clamp(210px, 36dvh, 300px) minmax(0, auto);
     width: min(560px, 100%);
-    height: min(540px, calc(100dvh - 20px));
+    height: auto;
     max-height: calc(100dvh - 20px);
   }
 
@@ -647,10 +650,12 @@
   }
 
   .rewardImage {
-    bottom: -5%;
+    bottom: 8px;
     left: 50%;
     width: auto;
-    height: 110%;
+    height: auto;
+    max-width: calc(100% - 20px);
+    max-height: calc(100% - 16px);
     transform: translateX(-50%);
   }
 
@@ -821,11 +826,13 @@
   }
 
   .rewardImage {
-    bottom: -2px;
-    left: -14%;
-    width: 136%;
+    bottom: 8px;
+    left: 50%;
+    width: auto;
     height: auto;
-    transform: none;
+    max-width: calc(100% - 16px);
+    max-height: calc(100% - 16px);
+    transform: translateX(-50%);
   }
 
   .rewardCopy {

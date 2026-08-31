@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Footer from "../components/Footer";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import CtaArrowIcon from "../components/ui/CtaArrowIcon";
 import { assetPath } from "../../src/lib/assetPath";
 import { workCases } from "../../src/data/workCases";
 
@@ -73,6 +74,9 @@ function WorkCard({ item, index }) {
             {item.client}
           </span>
         )}
+        <span className="work-card__arrow" aria-hidden="true">
+          <CtaArrowIcon />
+        </span>
       </figure>
 
       <div className="work-card__body">
@@ -104,11 +108,13 @@ export default function WorkPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Alles");
   const filteredCases = useMemo(() => {
+    const activeCases = workCases.filter((item) => item.status === "ready");
+
     if (activeFilter === "Alles") {
-      return workCases;
+      return activeCases;
     }
 
-    return workCases.filter((item) => item.categories.includes(activeFilter));
+    return activeCases.filter((item) => item.categories.includes(activeFilter));
   }, [activeFilter]);
 
   return (
