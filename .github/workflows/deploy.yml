@@ -46,23 +46,21 @@ jobs:
         run: pnpm quality:fast
 
       - name: Build static site
-        run: pnpm build
-        env:
-          GITHUB_PAGES: "true"
-          NEXT_PUBLIC_BASE_PATH: /ami-amis-website
-          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/ami-amis-website', github.repository_owner) }}
+        run: pnpm build:pages
+
+      - name: Verify custom-domain artifact
+        run: test -f out/CNAME && test "$(cat out/CNAME)" = "amiamis.com"
 
       - name: Route, interaction, accessibility, reflow and motion checks
         run: pnpm test:smoke && pnpm test:content && pnpm test:interaction && pnpm test:a11y && pnpm test:zoom && pnpm test:reduced-motion
         env:
           CI: "true"
-          TEST_BASE_PATH: /ami-amis-website
+          EXPECTED_SITE_URL: https://amiamis.com
 
       - name: Representative visual captures
         run: pnpm test:visual
         env:
           CI: "true"
-          TEST_BASE_PATH: /ami-amis-website
 
       - name: Upload QA artifacts
         if: always()

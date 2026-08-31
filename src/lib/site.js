@@ -1,4 +1,4 @@
-const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://amiamis.com";
 
 export const siteUrl = configuredSiteUrl.endsWith("/")
   ? configuredSiteUrl

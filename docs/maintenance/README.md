@@ -8,8 +8,10 @@
 4. Controleer 390×844, 768×1024 en 1440×1000, inclusief reduced motion wanneer motion geraakt wordt.
 5. Leg bewuste visuele veranderingen vast met before/after-screenshots.
 
-Gebruik voor een lokale Pages-pariteitscheck `pnpm build:pages` en
-`pnpm test:pages`. `pnpm quality` voert beide automatisch uit.
+Gebruik voor een lokale custom-domain Pages-pariteitscheck `pnpm build:pages`
+en `pnpm test:pages`. `pnpm quality` voert beide automatisch uit. Gebruik
+`pnpm build:pages:preview` en `pnpm test:pages:preview` uitsluitend om de oude
+repository-basepath `/ami-amis-website` te controleren.
 
 ## Zichtbare copy en content
 
@@ -30,7 +32,8 @@ Gebruik voor een lokale Pages-pariteitscheck `pnpm build:pages` en
 2. Gebruik bestaande layoutprimitives en semantische tokens.
 3. Voeg de route aan de centrale route-inventory toe.
 4. Voeg smoke-, accessibility- en visual coverage toe.
-5. Controleer static export onder de GitHub Pages-basepath.
+5. Controleer de root static export en, indien relevant, ook de legacy
+   GitHub Pages-basepath.
 
 ## Nieuwe case
 
@@ -44,7 +47,7 @@ Gebruik voor een lokale Pages-pariteitscheck `pnpm build:pages` en
 
 1. `pnpm install --frozen-lockfile`
 2. `pnpm quality`
-3. Draai bij een visuele release `CAPTURE_BASE_PATH=/ami-amis-website pnpm capture:routes` en inspecteer de artifacts.
+3. Draai bij een visuele release `pnpm capture:routes` en inspecteer de artifacts.
 4. Inspecteer diff, auditrapport en visuele artifacts.
 5. Laat een onafhankelijke `release-reviewer` de finale diff controleren.
 6. Push alleen op expliciete opdracht. GitHub Pages publiceert pas na een geslaagde qualityjob.

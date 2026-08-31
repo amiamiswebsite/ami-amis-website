@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { routeUrl } from "./test-helpers.mjs";
 
+const expectedSiteUrl = (process.env.EXPECTED_SITE_URL || "https://amiamis.com").replace(/\/$/, "");
+
 test("home server HTML contains real statistic end values", async ({ request }) => {
   const response = await request.get(routeUrl("/"));
   const html = await response.text();
@@ -18,7 +20,7 @@ test("canonical namespace and metadata are stable", async ({ page }) => {
   await expect(page).toHaveTitle(/X-Oats.*Ami Amis/i);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://amiamiswebsite.github.io/ami-amis-website/work/x-oats/",
+    `${expectedSiteUrl}/work/x-oats/`,
   );
 });
 
@@ -32,7 +34,7 @@ test("robots and sitemap are exported with canonical work routes", async ({ requ
 
   expect(robotsResponse.ok()).toBe(true);
   expect(sitemapResponse.ok()).toBe(true);
-  expect(robots).toContain("/ami-amis-website/sitemap.xml");
-  expect(sitemap).toContain("/ami-amis-website/work/x-oats/");
+  expect(robots).toContain(`${expectedSiteUrl}/sitemap.xml`);
+  expect(sitemap).toContain(`${expectedSiteUrl}/work/x-oats/`);
   expect(sitemap).not.toContain("/ons-werk/x-oats/");
 });

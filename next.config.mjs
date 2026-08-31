@@ -1,3 +1,15 @@
+function normalizeBasePath(value = "") {
+  const path = value.trim();
+
+  if (!path || path === "/") {
+    return "";
+  }
+
+  return `/${path.replace(/^\/+|\/+$/g, "")}`;
+}
+
+const basePath = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH);
+
 const nextConfig = {
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   devIndicators: false,
@@ -6,8 +18,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.GITHUB_PAGES === "true" ? "/ami-amis-website" : "",
-  assetPrefix: process.env.GITHUB_PAGES === "true" ? "/ami-amis-website/" : "",
+  basePath,
+  ...(basePath ? { assetPrefix: `${basePath}/` } : {}),
 };
 
 export default nextConfig;
