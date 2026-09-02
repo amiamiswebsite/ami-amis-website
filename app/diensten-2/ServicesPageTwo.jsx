@@ -34,6 +34,7 @@ const SERVICES_HERO_VIMEO_HASH = "c9550c4c41";
 const SERVICES_HERO_VIMEO_PLAYER_ID = `services-hero-vimeo-${SERVICES_HERO_VIMEO_ID}`;
 const SERVICES_HERO_VIMEO_SRC = `https://player.vimeo.com/video/${SERVICES_HERO_VIMEO_ID}?h=${SERVICES_HERO_VIMEO_HASH}&autoplay=1&loop=1&muted=1&controls=0&autopause=0&playsinline=1&title=0&byline=0&portrait=0&dnt=1&player_id=${SERVICES_HERO_VIMEO_PLAYER_ID}`;
 const SHOW_APPROACH_BACKUP = false;
+const SHOW_PROBLEM_PLACEHOLDERS = false;
 
 function useReducedMotion() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -115,6 +116,10 @@ function getCaseReference(reference) {
 
 function resolveCaseReference(reference) {
   if (typeof reference === "object" && reference.placeholder) {
+    if (!SHOW_PROBLEM_PLACEHOLDERS) {
+      return null;
+    }
+
     return {
       type: "placeholder",
       displayName: reference.displayName,

@@ -3045,14 +3045,19 @@
 
 @media (max-width: 720px) {
   .problemList {
-    width: 100%;
-    max-height: min(78svh, 44rem);
-    padding-right: 8px;
-    overflow: hidden auto;
-    scroll-padding-top: 0;
-    scroll-snap-type: y proximity;
+    width: calc(100% + var(--page-pad));
+    max-width: calc(100% + var(--page-pad));
+    max-height: none;
+    margin-right: calc(-1 * var(--page-pad));
+    padding: 0 var(--page-pad) 14px 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--page-pad);
+    overflow: auto hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 0 var(--page-pad);
+    scroll-snap-type: inline mandatory;
     scrollbar-color: var(--red) color-mix(in srgb, var(--ink) 14%, transparent);
-    scrollbar-gutter: stable;
     scrollbar-width: thin;
     -webkit-overflow-scrolling: touch;
   }
@@ -3063,7 +3068,7 @@
   }
 
   .problemList::-webkit-scrollbar {
-    width: 4px;
+    height: 4px;
   }
 
   .problemList::-webkit-scrollbar-track {
@@ -3077,9 +3082,82 @@
   }
 
   .problemArticle {
-    scroll-margin-top: 0;
+    flex: 0 0 100%;
+    padding: 28px 0 10px;
+    border-right: 0;
+    border-bottom: 0;
     scroll-snap-align: start;
-    scroll-snap-stop: normal;
+    scroll-snap-stop: always;
+  }
+
+  .problemArticle > header {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .problemArticle > header > span {
+    width: 48px;
+    font-size: 1.25rem;
+  }
+
+  .problemArticle h3 {
+    max-width: 20ch;
+    font-size: clamp(1.45rem, 6.4vw, 1.75rem);
+    line-height: 0.98;
+  }
+
+  .problemContent {
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  .problemCopy {
+    gap: 16px;
+  }
+
+  .problemQuote,
+  .problemBody {
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .problemCopy dl {
+    gap: 10px;
+  }
+
+  .problemCopy dl > div {
+    grid-template-columns: minmax(92px, 0.42fr) minmax(0, 1fr);
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .problemCopy dt,
+  .problemCopy dd {
+    font-size: 0.82rem;
+    line-height: 1.28;
+  }
+
+  .caseGrid {
+    width: min(100%, 260px);
+    gap: 10px;
+  }
+
+  .caseGrid:not(.caseGridDouble) {
+    grid-template-columns: minmax(0, 160px);
+  }
+
+  .casePreview,
+  .caseGridDouble .casePreview,
+  .caseGridDouble .casePlaceholder {
+    aspect-ratio: 1;
+  }
+
+  .casePreview > span {
+    right: 7px;
+    bottom: 7px;
+    max-width: calc(100% - 14px);
+    padding: 5px 6px;
+    font-size: 0.56rem;
   }
 }
 

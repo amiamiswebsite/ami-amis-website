@@ -5,11 +5,10 @@ import { extname, resolve, sep } from "node:path";
 const root = resolve(import.meta.dirname, "../out");
 const portIndex = process.argv.indexOf("--port");
 const port = Number(portIndex >= 0 ? process.argv[portIndex + 1] : (process.env.PORT ?? 4173));
-const basePath = (
-  process.env.TEST_BASE_PATH ??
-  process.env.NEXT_PUBLIC_BASE_PATH ??
-  "/ami-amis-website"
-).replace(/\/$/, "");
+const basePath = (process.env.TEST_BASE_PATH ?? process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(
+  /\/$/,
+  "",
+);
 const mime = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
