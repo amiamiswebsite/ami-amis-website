@@ -51,8 +51,9 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { label: "Privacy policy", href: "https://www.amiamis.com/privacy-policy" },
-  { label: "Algemene voorwaarden", href: "https://www.amiamis.com/algemene-voorwaarden" },
+  { label: "FAQ", href: assetPath("/diensten/#faq") },
+  { label: "Privacy policy", href: assetPath("/privacy-policy/") },
+  { label: "Algemene voorwaarden", href: assetPath("/algemene-voorwaarden/") },
 ];
 
 function ContactInfoList() {
@@ -309,15 +310,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div
-                  aria-label="Contactformulier"
-                  className="contact-overview__form-focus"
-                  ref={contactFormFocusRef}
-                  tabIndex={-1}
-                >
-                  <ContactForm intent={serviceIntent} />
-                </div>
-
                 <figure className="contact-intro__photo contact-editorial__photo contact-overview__photo">
                   <img
                     className="contact-overview__photo-image contact-overview__photo-image--default"
@@ -338,6 +330,15 @@ export default function ContactPage() {
                     height="1333"
                   />
                 </figure>
+
+                <div
+                  aria-label="Contactformulier"
+                  className="contact-overview__form-focus"
+                  ref={contactFormFocusRef}
+                  tabIndex={-1}
+                >
+                  <ContactForm intent={serviceIntent} />
+                </div>
 
                 <section className="contact-overview__card contact-overview__contact" aria-labelledby="contact-details-title">
                   <h2 id="contact-details-title">Contact</h2>
@@ -385,7 +386,7 @@ export default function ContactPage() {
                     <div className="contact-overview__legal" aria-label="Juridische informatie">
                       <div className="contact-overview__legal-links">
                         {legalLinks.map((link) => (
-                          <a href={link.href} key={link.label} rel="noreferrer" target="_blank">
+                          <a href={link.href} key={link.label}>
                             {link.label}
                           </a>
                         ))}

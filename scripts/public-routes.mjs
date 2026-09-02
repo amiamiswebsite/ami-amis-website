@@ -13,7 +13,16 @@ if (caseSlugs.length !== new Set(caseSlugs).size) {
   throw new Error("Duplicate case slugs found in src/data/cases.js");
 }
 
-export const primaryRoutes = ["/", "/contact/", "/diensten/", "/home-2/", "/team/", "/work/"];
+export const primaryRoutes = [
+  "/",
+  "/algemene-voorwaarden/",
+  "/contact/",
+  "/diensten/",
+  "/home-2/",
+  "/privacy-policy/",
+  "/team/",
+  "/work/",
+];
 export const caseRoutes = caseSlugs.flatMap((slug) => [`/work/${slug}/`, `/ons-werk/${slug}/`]);
 export const publicRoutes = [...primaryRoutes, ...caseRoutes];
 

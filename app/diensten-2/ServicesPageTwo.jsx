@@ -672,7 +672,12 @@ function Problems({ reducedMotion }) {
           </p>
         </aside>
 
-        <div className={styles.problemList}>
+        <div
+          aria-label="Problemen en oplossingen"
+          className={styles.problemList}
+          role="region"
+          tabIndex={0}
+        >
           {serviceTwoProblems.map((problem) => (
             <ProblemArticle key={problem.id} problem={problem} reducedMotion={reducedMotion} />
           ))}
@@ -765,7 +770,7 @@ function Faq() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className={styles.faq} aria-labelledby="services-two-faq">
+    <section className={styles.faq} id="faq" aria-labelledby="services-two-faq">
       <header className={styles.sectionHeading}>
         <RisoHeading id="services-two-faq" lines={["FAQ:"]} />
       </header>

@@ -6,6 +6,7 @@ import "./globals.css";
 import "./styles/pages/home-polish.css";
 import "./styles/pages/team-polish.css";
 import "./styles/pages/contact-polish.css";
+import "./styles/pages/legal.css";
 import PixelCursor from "./components/PixelCursor";
 import { assetPath } from "../src/lib/assetPath";
 import { canonicalUrl, siteUrl } from "../src/lib/site";

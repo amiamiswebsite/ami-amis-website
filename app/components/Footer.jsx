@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { assetPath } from "../../src/lib/assetPath";
 import BrandIcon from "./ui/BrandIcon";
 
 const contactLinks = [
@@ -23,8 +24,9 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { label: "Privacy policy", href: "https://www.amiamis.com/privacy-policy" },
-  { label: "Algemene voorwaarden", href: "https://www.amiamis.com/algemene-voorwaarden" },
+  { label: "FAQ", href: assetPath("/diensten/#faq") },
+  { label: "Privacy policy", href: assetPath("/privacy-policy/") },
+  { label: "Algemene voorwaarden", href: assetPath("/algemene-voorwaarden/") },
 ];
 
 function FooterLink({ href, children, className = "", ...props }) {

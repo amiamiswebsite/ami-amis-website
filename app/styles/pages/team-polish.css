@@ -823,6 +823,10 @@
     line-height: 1.24 !important;
   }
 
+  .team-story-hero__video.team-intro-static__visual {
+    display: none !important;
+  }
+
   .team-story-hero__answer strong {
     font-size: clamp(1.55rem, 8vw, 1.95rem);
   }

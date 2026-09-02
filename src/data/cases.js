@@ -702,22 +702,22 @@ const rawCases = [
           hash: "90107e79ed",
           title: "Imore video 3",
         },
-        portraitVimeoCaseMedia("1217615155", "Imore drone reel"),
-        portraitVimeoCaseMedia("1217615156", "Imore kantoorbeelden"),
-        portraitVimeoCaseMedia("1217615157", "Imore Koetshuis reel"),
+        portraitVimeoCaseMedia("1217615155", "Imore drone reel", "6fa00d11fb"),
+        portraitVimeoCaseMedia("1217615156", "Imore kantoorbeelden", "eefa099f12"),
+        portraitVimeoCaseMedia("1217615157", "Imore Koetshuis reel", "4ff128f1be"),
       ],
       landscapeVideos: [
-        vimeoCaseMedia("1217615158", "Imore Koetshuis testimonial"),
+        vimeoCaseMedia("1217615158", "Imore Koetshuis testimonial", "bfe4590a1d"),
       ],
     },
     vimeoEmbeds: [
       vimeo("1055562671", "Imore video 1", "688a1873bb"),
       vimeo("1055562589", "Imore video 2", "d817a8a495"),
       vimeo("1055562711", "Imore video 3", "90107e79ed"),
-      vimeo("1217615155", "Imore drone reel"),
-      vimeo("1217615156", "Imore kantoorbeelden"),
-      vimeo("1217615158", "Imore Koetshuis testimonial"),
-      vimeo("1217615157", "Imore Koetshuis reel"),
+      vimeo("1217615155", "Imore drone reel", "6fa00d11fb"),
+      vimeo("1217615156", "Imore kantoorbeelden", "eefa099f12"),
+      vimeo("1217615158", "Imore Koetshuis testimonial", "bfe4590a1d"),
+      vimeo("1217615157", "Imore Koetshuis reel", "4ff128f1be"),
     ],
     imageGalleryTitle: "Fotogalerij",
     imageGalleryEyebrow: "Fotografie",
@@ -2703,10 +2703,6 @@ const rawCases = [
     summary:
       "Een langdurige samenwerking waarin we de meest uiteenlopende verhalen tot leven brengen.",
     storyBlocks: [
-      {
-        text:
-          "Bij Ami Amis mogen we ons met trots de vaste videopartner van KdG noemen. En geloof ons: dat levert allesbehalve saaie opdrachten op. 😉",
-      },
       {
         text:
           "Van videofolders voor verschillende studierichtingen tot aftermovies van graduations en strategievideo's. Elke productie heeft hetzelfde doel: complexe informatie helder, aantrekkelijk en vooral menselijk maken.",

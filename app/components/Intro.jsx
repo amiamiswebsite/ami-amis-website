@@ -574,7 +574,7 @@ export default function Intro({ variant = "default" }) {
             <span className="intro__challenge-heading-line">Komt dit je</span>{" "}
             <span className="intro__challenge-heading-line">bekend voor?</span>
           </h2>
-          <div className="intro__challenge-grid" aria-label="Waar we mee helpen">
+          <div className="intro__challenge-grid">
             {problemCards.map(({ body, icon, number, title }, index) => (
               <article
                 className={`intro__challenge intro__challenge--${icon}`}

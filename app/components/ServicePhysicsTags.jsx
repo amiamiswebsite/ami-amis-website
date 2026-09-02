@@ -975,6 +975,13 @@ export default function ServicePhysicsTags() {
           ))}
         </ul>
       </div>
+      <a
+        aria-label="Ga verder naar Wat vrienden zeggen"
+        className={styles.nextSectionButton}
+        href="#vrienden"
+      >
+        <CtaArrowIcon />
+      </a>
       {isWinModalMounted && typeof document !== "undefined"
         ? createPortal(
             <WinModal

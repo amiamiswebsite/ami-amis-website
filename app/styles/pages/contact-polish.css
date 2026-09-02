@@ -266,9 +266,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 50%;
+  object-position: 67% 50%;
   pointer-events: none;
-  transform: none;
+  transform: scale(1.2);
   transition: opacity 220ms ease;
 }
 
@@ -505,8 +505,8 @@
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "lead"
-      "form"
       "photo"
+      "form"
       "contact"
       "secondary";
     gap: 12px;
@@ -552,7 +552,12 @@
 
   .contact-redesign.contact-editorial .contact-overview__photo {
     min-height: 0;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3;
+  }
+
+  .contact-redesign.contact-editorial .contact-overview__photo img.contact-overview__photo-image {
+    object-position: 100% 50%;
+    transform: scale(1.5) translateX(-12%);
   }
 
   .contact-redesign.contact-editorial .contact-overview__contact {

@@ -1385,7 +1385,12 @@ function StaticProcessSection({ caseData }) {
         </header>
       ) : null}
 
-      <div className={styles.staticProcessGrid}>
+      <div
+        aria-label="Vraag, oplossing en resultaat"
+        className={styles.staticProcessGrid}
+        role="region"
+        tabIndex={0}
+      >
         {steps.map((step, index) => (
           <article
             className={`${styles.staticProcessCard} ${usesModernTemplate ? styles.reveal : ""}`}

@@ -901,6 +901,11 @@
   gap: clamp(18px, 2vw, 28px);
 }
 
+.staticProcessGrid:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 8px;
+}
+
 .staticProcessCard {
   min-width: 0;
   display: flex;
@@ -4927,15 +4932,45 @@
   }
 
   .lierseProcess .staticProcessGrid {
+    display: flex;
+    width: calc(100% + var(--case-pad));
+    max-width: none;
+    margin-right: calc(-1 * var(--case-pad));
     margin-top: 48px;
+    padding-right: var(--case-pad);
+    padding-bottom: 14px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--red) color-mix(in srgb, var(--paper) 20%, transparent);
+    scrollbar-width: thin;
+    gap: 18px;
+  }
+
+  .lierseProcess .staticProcessGrid::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .lierseProcess .staticProcessGrid::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--paper) 20%, transparent);
+  }
+
+  .lierseProcess .staticProcessGrid::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--red);
   }
 
   .lierseProcess .staticProcessCard,
   .lierseProcess .staticProcessCard:first-child,
   .lierseProcess .staticProcessCard:last-child {
+    width: min(84vw, 24rem);
+    min-width: min(84vw, 24rem);
     grid-template-columns: 44px minmax(0, 1fr);
     gap: 18px;
     padding-block: 28px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .lierseProcess .staticProcessNumber {

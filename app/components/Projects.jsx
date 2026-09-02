@@ -5,11 +5,11 @@ import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
 import HomeCtaLink from "./ui/HomeCtaLink";
 
-const highlightedProjectSlugs = ["visit-antwerpen", "x-oats", "tarzan-en-jane"];
+const highlightedProjectSlugs = ["imore", "humgy", "billy-bonkers"];
 const projectLabels = {
-  "visit-antwerpen": "Visit Antwerp",
-  "x-oats": "X-Oats",
-  "tarzan-en-jane": "Tarzan & Jane",
+  imore: "Imore",
+  humgy: "Humgy",
+  "billy-bonkers": "Billie Bonkers",
 };
 const highlightedProjects = highlightedProjectSlugs
   .map((slug) => workCases.find((item) => item.slug === slug))

@@ -19,7 +19,7 @@ const testimonials = [
     href: "/work/tarzan-en-jane/",
     image: "/work/tarzan-en-jane-home-thumb.jpg",
     imageAlt: "Tarzan & Jane projectbeeld",
-    quote: "Ami Amis vertaalde onze energie naar content die meteen juist voelde. Speels, helder en helemaal on-brand.",
+    quote: "Van mascotte tot magie… elk beeld van Ami Amis raakt jong en oud!",
     tone: "tarzan-en-jane",
   },
 ];
