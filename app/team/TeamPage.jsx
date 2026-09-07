@@ -12,48 +12,23 @@ const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
 const teamGroupPhoto = "/assets/ami-amis-team-group.webp";
 const teamIntroTitle = "Ami Awieee?";
 const teamIntroLetterSizes = [0.48, 0.55, 0.62, 0.3, 0.7, 0.8, 0.92, 1.05, 1.18, 1.32, 1.5];
-const teamHeroVimeoId = "1220145767";
-const teamHeroVimeoPlayerId = `team-hero-vimeo-${teamHeroVimeoId}`;
-const teamHeroVimeoSrc = `https://player.vimeo.com/video/${teamHeroVimeoId}?autoplay=1&loop=1&muted=1&controls=0&autopause=0&playsinline=1&title=0&byline=0&portrait=0&dnt=1&player_id=${teamHeroVimeoPlayerId}`;
+const teamHeroVideoSrc = "/assets/amiamis-taskforce-kids-header.mp4";
 const friendsLetters = "FRIENDS".split("");
 const friendsDotColors = ["red", "blue", "yellow", "red", "yellow", "blue"];
 
-function postVimeoCommand(iframe, method, value) {
-  if (!iframe?.contentWindow) {
-    return;
-  }
-
-  const message = value === undefined ? { method } : { method, value };
-  const payload = JSON.stringify(message);
-
-  try {
-    iframe.contentWindow.postMessage(payload, "https://player.vimeo.com");
-  } catch {
-    iframe.contentWindow.postMessage(payload, "*");
-  }
-}
-
 function TeamHeroVideo({ onPointerLeave, onPointerMove }) {
-  const iframeRef = useRef(null);
+  const videoRef = useRef(null);
   const [soundOn, setSoundOn] = useState(false);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      postVimeoCommand(iframeRef.current, "setMuted", true);
-      postVimeoCommand(iframeRef.current, "setVolume", 0);
-      postVimeoCommand(iframeRef.current, "play");
-    }, 320);
-
-    return () => window.clearTimeout(timer);
-  }, []);
 
   const toggleSound = () => {
     const nextSoundOn = !soundOn;
 
     setSoundOn(nextSoundOn);
-    postVimeoCommand(iframeRef.current, "setMuted", !nextSoundOn);
-    postVimeoCommand(iframeRef.current, "setVolume", nextSoundOn ? 1 : 0);
-    postVimeoCommand(iframeRef.current, "play");
+    const video = videoRef.current;
+    if (video) {
+      video.muted = !nextSoundOn;
+      video.play().catch(() => {});
+    }
   };
 
   return (
@@ -63,13 +38,15 @@ function TeamHeroVideo({ onPointerLeave, onPointerMove }) {
       onPointerMove={onPointerMove}
     >
       <div className="team-story-hero__video-viewport">
-        <iframe
-          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-          data-case-vimeo-player={teamHeroVimeoPlayerId}
-          loading="eager"
-          ref={iframeRef}
-          src={teamHeroVimeoSrc}
-          title="Ami Amis BTS-video"
+        <video
+          autoPlay
+          loop
+          muted={!soundOn}
+          playsInline
+          preload="metadata"
+          ref={videoRef}
+          src={assetPath(teamHeroVideoSrc)}
+          aria-label="Ami Amis Taskforce Kids-video"
         />
       </div>
       <button

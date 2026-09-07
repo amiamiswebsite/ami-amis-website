@@ -1,20 +1,20 @@
 {
   "source": "public/",
-  "totalFiles": 295,
-  "maxTotalBytes": 554820828,
+  "totalFiles": 297,
+  "maxTotalBytes": 611548416,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
       "count": 89,
-      "bytes": 32923156
+      "bytes": 32563273
     },
     ".json": {
       "count": 1,
       "bytes": 11766
     },
     ".mp4": {
-      "count": 17,
-      "bytes": 422021122
+      "count": 18,
+      "bytes": 479324903
     },
     ".otf": {
       "count": 3,
@@ -22,7 +22,7 @@
     },
     ".png": {
       "count": 118,
-      "bytes": 78520064
+      "bytes": 78100310
     },
     ".svg": {
       "count": 10,
@@ -37,8 +37,8 @@
       "bytes": 5036194
     },
     ".webp": {
-      "count": 51,
-      "bytes": 15855358
+      "count": 52,
+      "bytes": 16058802
     }
   },
   "largest": [
@@ -50,6 +50,11 @@
     {
       "path": "assets/amiamis_teamvideo2026.mp4",
       "bytes": 59926296,
+      "extension": ".mp4"
+    },
+    {
+      "path": "assets/amiamis-taskforce-kids-header.mp4",
+      "bytes": 57303781,
       "extension": ".mp4"
     },
     {
@@ -185,11 +190,6 @@
     {
       "path": "team/mugshot-01.png",
       "bytes": 1961955,
-      "extension": ".png"
-    },
-    {
-      "path": "assets/brentvalentijn.png",
-      "bytes": 1925984,
       "extension": ".png"
     }
   ]

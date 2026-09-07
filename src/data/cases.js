@@ -2737,14 +2737,12 @@ const rawCases = [
       verticalVideos: [
         vimeoCaseMedia("1215735592", "KdG videofolder"),
         vimeoCaseMedia("1215735591", "KdG graduation"),
-        vimeoCaseMedia("1215735589", "KdG strategie"),
         vimeoCaseMedia("1215735590", "KdG eindejaarsvideo"),
       ],
     },
     vimeoEmbeds: [
       vimeo("1215735592", "KdG videofolder"),
       vimeo("1215735591", "KdG graduation"),
-      vimeo("1215735589", "KdG strategie"),
       vimeo("1215735590", "KdG eindejaarsvideo"),
     ],
     facts: [
@@ -2782,7 +2780,6 @@ const rawCases = [
     externalVideoUrls: [
       "https://vimeo.com/1215735592?share=copy&fl=sv&fe=ci",
       "https://vimeo.com/1215735591?share=copy&fl=sv&fe=ci",
-      "https://vimeo.com/1215735589?share=copy&fl=sv&fe=ci",
       "https://vimeo.com/1215735590?share=copy&fl=sv&fe=ci",
     ],
   },
