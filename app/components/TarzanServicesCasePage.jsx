@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom";
 import CaseVideo from "./CaseVideo";
 import Footer from "./Footer";
+import ScrollIndicator from "./ScrollIndicator";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import Icon from "./ui/Icon";
@@ -63,12 +64,6 @@ function textFrom(value) {
 function mediaKey(item) {
   if (!item) {
     return "";
-  }
-
-  if (item.instanceKey) {
-    return [item.type || (item.id ? "vimeo" : "media"), item.id || item.src || item.url, item.instanceKey]
-      .filter(Boolean)
-      .join(":");
   }
 
   const youtubeId = getYouTubeId(item);
@@ -210,7 +205,9 @@ function getHeroMedia(caseData) {
 }
 
 function getVideoItems(caseData) {
-  const heroKey = mediaKey(getHeroMedia(caseData));
+  const heroMedia = getHeroMedia(caseData);
+  const heroIsVideo = isVimeoMedia(heroMedia) || isLocalVideoMedia(heroMedia) || Boolean(getYouTubeId(heroMedia));
+  const imageHeroKey = heroIsVideo ? "" : mediaKey(heroMedia);
   const sectionVideos = (caseData.mediaSections || [])
     .flatMap((section) => section.items || [])
     .filter((item) => ["external", "instagram", "video", "vimeo", "youtube"].includes(item?.type) || item?.id);
@@ -233,7 +230,7 @@ function getVideoItems(caseData) {
     (item) =>
       item &&
       (item.id || item.src || item.url) &&
-      (!heroKey || mediaKey(item) !== heroKey),
+      (!imageHeroKey || mediaKey(item) !== imageHeroKey),
   );
 }
 
@@ -1318,7 +1315,7 @@ function StorySection({ caseData }) {
   const blocks = (caseData.storyBlocks || caseData.introTextBlocks || [])
     .map((block) => (typeof block === "string" ? { text: block } : block))
     .filter((block) => textFrom(block));
-  const heading = caseData.storyTitle || caseData.subtitle || caseData.oneLiner || caseData.intro || caseData.summary || caseData.introQuote;
+  const heading = caseData.storyTitle === false ? "" : caseData.storyTitle || caseData.subtitle || caseData.oneLiner || caseData.intro || caseData.summary || caseData.introQuote;
 
   if (!blocks.length) {
     return null;
@@ -1326,7 +1323,7 @@ function StorySection({ caseData }) {
 
   return (
     <section className={styles.story} aria-label="Case verhaal">
-      <div className={styles.storyGrid}>
+      <div className={`${styles.storyGrid} ${heading ? "" : styles.storyGridTextOnly}`}>
         {heading ? (
           <header className={`${styles.sectionIntro} ${styles.reveal}`}>
             <h2>{heading}</h2>
@@ -1335,7 +1332,10 @@ function StorySection({ caseData }) {
 
         <div className={`${styles.storyCopy} ${styles.reveal}`}>
           {blocks.map((block, index) => (
-            <p key={`${textFrom(block).slice(0, 24)}-${index}`}>{textFrom(block)}</p>
+            <p key={`${textFrom(block).slice(0, 24)}-${index}`}>
+              {textFrom(block)}
+              {block.videoLink ? <a className={styles.storyVideoLink} href={block.videoLink.href}>{block.videoLink.label}</a> : null}
+            </p>
           ))}
         </div>
       </div>
@@ -1388,6 +1388,7 @@ function StaticProcessSection({ caseData }) {
       <div
         aria-label="Vraag, oplossing en resultaat"
         className={styles.staticProcessGrid}
+        id="case-process-steps"
         role="region"
         tabIndex={0}
       >
@@ -1400,13 +1401,14 @@ function StaticProcessSection({ caseData }) {
               <span className={styles.staticProcessNumber}>
                 {usesModernTemplate ? String(index + 1).padStart(2, "0") : index + 1}
               </span>
+              {usesModernTemplate ? <h3>{step.label}</h3> : null}
               <span
                 aria-hidden="true"
                 className={styles.staticProcessIcon}
                 style={{ "--tarzan-service-icon": `url(${assetPath(step.icon)})` }}
               />
             </div>
-            <h3>{step.label}</h3>
+            {usesModernTemplate ? null : <h3>{step.label}</h3>}
             {step.text ? <p>{step.text}</p> : null}
             {step.stats.length ? (
               <dl className={styles.staticProcessStats}>
@@ -1421,6 +1423,7 @@ function StaticProcessSection({ caseData }) {
           </article>
         ))}
       </div>
+      <ScrollIndicator targetId="case-process-steps" />
     </section>
   );
 }
@@ -1471,9 +1474,7 @@ function VideoSection({ caseData }) {
   const usesVideoShowcaseLayout = hasMultiplePortraitVideos(caseData) && !usesOriginalEditorialLayout;
   const heroMedia = getHeroMedia(caseData);
   const heroIsVideo = isVimeoMedia(heroMedia) || isLocalVideoMedia(heroMedia) || Boolean(getYouTubeId(heroMedia));
-  const baseVideos = usesOriginalEditorialLayout
-    ? uniqueMediaItems([...(heroIsVideo ? [heroMedia] : []), ...getVideoItems(caseData)].filter(Boolean))
-    : getVideoItems(caseData);
+  const baseVideos = uniqueMediaItems([...getVideoItems(caseData), ...(heroIsVideo ? [heroMedia] : [])].filter(Boolean));
   const heroGallerySource = usesVideoShowcaseLayout && heroIsVideo
     ? getHeroGalleryVideo(caseData, heroMedia) || heroMedia
     : null;
@@ -1505,7 +1506,7 @@ function VideoSection({ caseData }) {
     const contentIntroBlocks = (caseData.contentIntroBlocks || [])
       .map((block) => textFrom(block))
       .filter(Boolean);
-    const sectionTitle = caseData.contentTitle === false ? "" : VIDEO_GALLERY_TITLE;
+    const sectionTitle = caseData.contentTitle === false ? "" : caseData.contentTitle || VIDEO_GALLERY_TITLE;
     const showcaseLeadIndex = usesVideoShowcaseLayout
       ? videos.findIndex((video) => !isPortraitMedia(video))
       : -1;
@@ -1519,6 +1520,7 @@ function VideoSection({ caseData }) {
 
       return (
         <article
+          id={video.anchor || `case-video-${video.id || index + 1}`}
           className={[
             styles.lierseVideoItem,
             isPortrait ? styles.lierseVideoItemPortrait : styles.lierseVideoItemLandscape,
@@ -1751,6 +1753,7 @@ function PosterSeriesCarousel({ images, label }) {
                 <InteractiveFigure
                   className={styles.editorialPosterFigure}
                   key={`${image.src}-${imageIndex}`}
+                  style={image.width && image.height ? { aspectRatio: `${image.width} / ${image.height}` } : undefined}
                 >
                   <img
                     alt={image.alt || label}
@@ -1917,7 +1920,7 @@ function EditorialSections({ caseData }) {
   };
 
   return sections.map((section, index) => {
-    const linkedImage = (section.images || []).find((image) => image.href);
+    const linkedImage = section.link || (section.images || []).find((image) => image.href);
     const isLaterWordIkSection = section.title === "‘Later word ik’-campagne";
     const hasRedTitle = isLaterWordIkSection || section.title === "Fotografie";
 
@@ -2333,7 +2336,7 @@ export default function TarzanServicesCasePage({ caseData }) {
     <>
       <div className={`site-shell ${usesModernTemplate ? styles.lierseShell : ""} ${menuOpen ? "menu-open" : ""}`}>
         <main
-          className={`${styles.page} ${usesModernTemplate ? styles.liersePage : ""} ${isSjbCase ? styles.sjbPage : ""} ${isImoreCase ? styles.imorePage : ""} ${isBillieBonkersCase ? styles.billieBonkersPage : ""} ${isVideoShowcaseCase ? styles.videoShowcasePage : ""} ${heroPageClass}`}
+          className={`${styles.page} ${usesModernTemplate ? styles.liersePage : ""} ${caseData.slug === "humgy" ? styles.humgyPage : ""} ${isSjbCase ? styles.sjbPage : ""} ${isImoreCase ? styles.imorePage : ""} ${isBillieBonkersCase ? styles.billieBonkersPage : ""} ${isVideoShowcaseCase ? styles.videoShowcasePage : ""} ${heroPageClass}`}
         >
           <a
             className={`hero__logo ${styles.logo} ${isSjbCase ? styles.sjbLogo : ""}`}
@@ -2403,9 +2406,10 @@ export default function TarzanServicesCasePage({ caseData }) {
 
           <StorySection caseData={caseData} />
           {caseData.videoSectionPlacement === "before-process" ? <VideoSection caseData={caseData} /> : null}
-          <StaticProcessSection caseData={caseData} />
+          {caseData.processPlacement === "after-media" ? null : <StaticProcessSection caseData={caseData} />}
+          {caseData.editorialBeforeVideo ? <EditorialSections caseData={{ ...caseData, editorialSections: caseData.editorialSections.filter(section => section.beforeVideo) }} /> : null}
           {caseData.videoSectionPlacement === "before-process" ? null : <VideoSection caseData={caseData} />}
-          <EditorialSections caseData={caseData} />
+          <EditorialSections caseData={caseData.editorialBeforeVideo ? { ...caseData, editorialSections: caseData.editorialSections.filter(section => !section.beforeVideo) } : caseData} />
           {galleryGroups.map((group, index) => (
             <GallerySection
               group={group}
@@ -2414,6 +2418,7 @@ export default function TarzanServicesCasePage({ caseData }) {
               total={galleryGroups.length}
             />
           ))}
+          {caseData.processPlacement === "after-media" ? <StaticProcessSection caseData={caseData} /> : null}
           <OutroSection caseData={caseData} />
           <ClosingSection caseData={caseData} />
           <CaseNavigation caseData={caseData} />

@@ -5,10 +5,10 @@ import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
 import HomeCtaLink from "./ui/HomeCtaLink";
 
-const highlightedProjectSlugs = ["imore", "humgy", "billy-bonkers"];
+const highlightedProjectSlugs = ["x-oats", "frankie-villager", "billy-bonkers"];
 const projectLabels = {
-  imore: "Imore",
-  humgy: "Humgy",
+  "x-oats": "X-Oats",
+  "frankie-villager": "Frankie Villager",
   "billy-bonkers": "Billie Bonkers",
 };
 const highlightedProjects = highlightedProjectSlugs

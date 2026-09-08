@@ -294,3 +294,35 @@ test.describe("homepage service physics tags", () => {
     expect(new Set(state.transforms)).toEqual(new Set(["none"]));
   });
 });
+
+for (const width of [390, 1440]) {
+  test(`service tags fall visibly after reload at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(routeUrl("/"), { waitUntil: "domcontentloaded" });
+    const stage = page.getByTestId("service-physics-stage");
+    await stage.scrollIntoViewIfNeeded();
+    await expect(stage).toHaveAttribute("data-physics-ready", "true");
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await stage.scrollIntoViewIfNeeded();
+    await expect(stage).toHaveAttribute("data-physics-ready", "true");
+    const averageY = () =>
+      stage
+        .locator("[data-physics-tag]")
+        .evaluateAll(
+          (tags) =>
+            tags.reduce(
+              (sum, tag) =>
+                sum +
+                tag.getBoundingClientRect().y -
+                tag.closest('[data-testid="service-physics-stage"]').getBoundingClientRect().y,
+              0,
+            ) / tags.length,
+        );
+    const initialY = await averageY();
+    await expect.poll(averageY).toBeGreaterThan(initialY + 30);
+    await expect(page.getByTestId("service-score-counter")).toHaveAttribute(
+      "aria-label",
+      "Score: 0 van 5",
+    );
+  });
+}

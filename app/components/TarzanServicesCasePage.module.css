@@ -3792,12 +3792,17 @@
 
 .lierseProcess .staticProcessGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
+  grid-template-rows: auto 1fr;
+  gap: var(--aa-space-5) 0;
   margin-top: clamp(48px, 5vw, 64px);
   border-top: 1px solid color-mix(in srgb, var(--paper) 36%, transparent);
 }
 
 .lierseProcess .staticProcessCard {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  align-content: start;
   min-height: 300px;
   padding: 32px clamp(24px, 3vw, 40px) 0;
   border: 0;
@@ -3826,7 +3831,10 @@
 }
 
 .lierseProcess .staticProcessCardTop {
+  align-items: baseline;
   justify-content: flex-start;
+  gap: var(--aa-space-4);
+  font-size: clamp(1.25rem, 2vw, 2rem);
 }
 
 .lierseProcess .staticProcessNumber {
@@ -3837,8 +3845,8 @@
   border-radius: 0;
   color: var(--paper);
   background: transparent;
-  font-size: 2rem;
-  line-height: 0.82;
+  font-size: inherit;
+  line-height: 1;
 }
 
 .lierseProcess .staticProcessIcon {
@@ -3846,15 +3854,16 @@
 }
 
 .lierseProcess .staticProcessCard h3 {
-  margin-top: clamp(42px, 4vw, 56px);
+  min-width: 0;
+  margin: 0;
   color: var(--paper);
-  font-size: 2rem;
-  line-height: 0.92;
+  font-size: inherit;
+  line-height: 1;
 }
 
 .lierseProcess .staticProcessCard p {
   max-width: 36ch;
-  margin-top: 22px;
+  margin-top: 0;
   color: var(--paper);
   font-size: 1rem;
   font-weight: 560;
@@ -4712,6 +4721,8 @@
 
   .lierseProcess .staticProcessGrid {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 0;
   }
 
   .lierseProcess .staticProcessCard,
@@ -4719,7 +4730,9 @@
   .lierseProcess .staticProcessCard:last-child {
     min-height: 0;
     display: grid;
-    grid-template-columns: 64px minmax(170px, 0.4fr) minmax(0, 0.6fr);
+    grid-row: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
     align-items: start;
     gap: clamp(20px, 4vw, 36px);
     padding: 32px 0;
@@ -4932,7 +4945,11 @@
   }
 
   .lierseProcess .staticProcessGrid {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(84vw, 24rem);
+    grid-template-columns: none;
+    grid-template-rows: auto 1fr;
     width: calc(100% + var(--case-pad));
     max-width: none;
     margin-right: calc(-1 * var(--case-pad));
@@ -4942,23 +4959,12 @@
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-snap-type: x mandatory;
-    scrollbar-color: var(--red) color-mix(in srgb, var(--paper) 20%, transparent);
-    scrollbar-width: thin;
-    gap: 18px;
+    scrollbar-width: none;
+    gap: var(--aa-space-5) 18px;
   }
 
   .lierseProcess .staticProcessGrid::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .lierseProcess .staticProcessGrid::-webkit-scrollbar-track {
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--paper) 20%, transparent);
-  }
-
-  .lierseProcess .staticProcessGrid::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: var(--red);
+    display: none;
   }
 
   .lierseProcess .staticProcessCard,
@@ -4966,19 +4972,16 @@
   .lierseProcess .staticProcessCard:last-child {
     width: min(84vw, 24rem);
     min-width: min(84vw, 24rem);
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 18px;
+    grid-row: span 2;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: subgrid;
+    row-gap: var(--aa-space-5);
     padding-block: 28px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
 
-  .lierseProcess .staticProcessNumber {
-    font-size: 1.6rem;
-  }
-
-  .lierseProcess .staticProcessCard h3 {
-    align-self: center;
+  .lierseProcess .staticProcessCardTop {
     font-size: 1.5rem;
   }
 
@@ -5154,5 +5157,60 @@
   .compactHeroPage .hero h1.heroTitleCompact {
     font-size: clamp(1.45rem, 7vw, 1.7rem);
     line-height: 1.08;
+  }
+}
+
+/* Local editorial feedback: shorter reading blocks and complete photography. */
+.storyGridTextOnly {
+  grid-template-columns: minmax(0, 1fr);
+}
+.storyGridTextOnly .storyCopy {
+  width: min(100%, 70ch);
+  margin-inline: auto;
+}
+.storyVideoLink {
+  display: block;
+  width: fit-content;
+  min-height: 44px;
+  margin-top: var(--aa-space-3);
+  color: var(--blue);
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+.lierseProcess {
+  color: var(--ink);
+  background: var(--paper);
+}
+.lierseProcess .lierseSectionHeader h2,
+.lierseProcess .staticProcessCard h3 {
+  color: var(--blue);
+}
+.lierseProcess .staticProcessGrid {
+  border-color: color-mix(in srgb, var(--ink) 20%, transparent);
+}
+.lierseProcess .staticProcessCard {
+  min-height: 0;
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 20%, transparent);
+}
+.lierseProcess .staticProcessCard p {
+  color: var(--ink);
+  line-height: 1.5;
+}
+.lierseProcess .staticProcessNumber {
+  color: var(--blue);
+}
+.humgyPage .modernGallery .galleryGrid figure:nth-child(n) {
+  aspect-ratio: auto;
+  align-self: start;
+}
+.humgyPage .modernGallery .galleryGrid img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+@media (max-width: 720px) {
+  .storyGridTextOnly {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

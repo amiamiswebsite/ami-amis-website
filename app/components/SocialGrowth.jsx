@@ -301,7 +301,7 @@ export default function SocialGrowth({ variant = "default" }) {
               </p>
               <p>
                 We jagen niet alleen blind achter elke trend of virale hit aan. (ook al sluiten we dat zeker
-                niet uit ;)) Maar daarmee bouw je geen sterk merk op. Wij focussen op wat blijft: een herkenbare
+                niet uit 😉) Maar daarmee bouw je geen sterk merk op. Wij focussen op wat blijft: een herkenbare
                 stijl, een helder verhaal en consistente content.
               </p>
             </div>

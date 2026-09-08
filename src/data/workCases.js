@@ -12,6 +12,18 @@ export const workFilters = [
 
 export const workCases = [
   {
+    client: "X-Oats",
+    slug: "x-oats",
+    title: "X-Oats",
+    description: "Twee advertenties op korte tijd rond de 1.000.000 sales milestone.",
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
+    image: "/work/x-oats-thumb-portrait.jpg",
+    imagePosition: "50% 24%",
+    href: "/work/x-oats/",
+    featured: false,
+    status: "ready",
+  },
+  {
     client: "Tarzan & Jane",
     slug: "tarzan-en-jane",
     title: "Een videoclip vol energie, kleur en plezier",
@@ -270,18 +282,6 @@ export const workCases = [
     categories: ["Video & campagnes", "Fotografie", "Social content"],
     image: "/work/vdab.webp",
     href: "/work/vdab/",
-    featured: false,
-    status: "ready",
-  },
-  {
-    client: "X-Oats",
-    slug: "x-oats",
-    title: "X-Oats",
-    description: "Twee advertenties op korte tijd rond de 1.000.000 sales milestone.",
-    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
-    image: "/work/x-oats-thumb-portrait.jpg",
-    imagePosition: "50% 24%",
-    href: "/work/x-oats/",
     featured: false,
     status: "ready",
   },

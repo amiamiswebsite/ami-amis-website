@@ -289,17 +289,23 @@ export default function TeamPage() {
                   <p className="team-story-hero__detail">
                     Aangevuld met een goede dosis durf en humor zorgen wij voor die extra
                     “je-ne-sais-quois” in uw marketing. Onze no-bullshit mentaliteit betekent
-                    dat wij tot het uiterste gaan, zonder gezever. Wij zijn er voor de
-                    ondernemers die écht willen groeien, voor de marketeers die écht durven,
-                    voor bedrijven met ballen.
+                    dat wij tot het uiterste gaan, zonder gezever.
                   </p>
+                  <div className="team-story-hero__audience">
+                    <p>Wij zijn er voor</p>
+                    <ul>
+                      <li>de ondernemers die écht willen groeien,</li>
+                      <li>voor de marketeers die écht durven,</li>
+                      <li>voor bedrijven met ballen.</li>
+                    </ul>
+                  </div>
                   <div className="team-story-hero__closing">
                     <p className="team-story-hero__question">
                       Dus, wilt ge samenwerken met een partner die zelfs saaie video’s sexy
                       maakt?
                     </p>
                     <p className="team-story-hero__answer">
-                      <strong>Zeg dan Ami A-Oui.</strong>
+                      <strong>Zeg dan Ami A-Oui 🇫🇷🥖.</strong>
                       <span>
                         Want als ge écht wilt groeien, zijn wij gewoon de logische keuze ;).
                       </span>

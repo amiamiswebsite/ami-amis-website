@@ -1291,3 +1291,21 @@
     height: 1.4rem;
   }
 }
+
+/* Case links in the three recognition cards. */
+.intro__challenge-grid > a.intro__challenge {
+  display: block;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.intro__challenge-grid > a.intro__challenge:hover,
+.intro__challenge-grid > a.intro__challenge:focus-visible {
+  box-shadow: var(--aa-space-2) var(--aa-space-2) 0 var(--blue);
+}
+
+.intro__challenge-grid > a.intro__challenge:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: var(--aa-space-2);
+}

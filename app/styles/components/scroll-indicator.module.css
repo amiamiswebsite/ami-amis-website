@@ -1,0 +1,38 @@
+.indicator {
+  position: relative;
+  width: min(var(--case-max), 100%);
+  height: var(--aa-space-2);
+  margin: var(--aa-space-5) auto 0;
+  overflow: hidden;
+  border-radius: var(--aa-radius-pill);
+  background: var(--aa-color-background-canvas);
+  box-shadow: inset 0 0 0 var(--aa-border-thin) var(--aa-color-border-strong);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.indicator[data-scrollable="true"] {
+  visibility: visible;
+}
+
+.indicator span {
+  position: absolute;
+  inset: 0 auto auto 0;
+  border-radius: inherit;
+  background: var(--aa-color-background-accent-blue);
+  width: var(--scroll-thumb-size, var(--aa-space-6));
+  height: 100%;
+  transform: translateX(var(--scroll-thumb-offset, 0));
+}
+
+@media (forced-colors: active) {
+  .indicator {
+    background: Canvas;
+    outline: 1px solid CanvasText;
+  }
+
+  .indicator span {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+}

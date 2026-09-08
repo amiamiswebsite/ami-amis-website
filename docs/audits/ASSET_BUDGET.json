@@ -1,20 +1,20 @@
 {
   "source": "public/",
-  "totalFiles": 297,
-  "maxTotalBytes": 611548416,
+  "totalFiles": 346,
+  "maxTotalBytes": 673422310,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 89,
-      "bytes": 32563273
+      "count": 134,
+      "bytes": 39308881
     },
     ".json": {
       "count": 1,
       "bytes": 11766
     },
     ".mp4": {
-      "count": 18,
-      "bytes": 479324903
+      "count": 21,
+      "bytes": 534075801
     },
     ".otf": {
       "count": 3,
@@ -37,8 +37,8 @@
       "bytes": 5036194
     },
     ".webp": {
-      "count": 52,
-      "bytes": 16058802
+      "count": 53,
+      "bytes": 16436190
     }
   },
   "largest": [
@@ -93,8 +93,23 @@
       "extension": ".mp4"
     },
     {
+      "path": "videos/cases/imore/fintro.mp4",
+      "bytes": 21147920,
+      "extension": ".mp4"
+    },
+    {
       "path": "assets/creative-growth-reel.mp4",
       "bytes": 20312422,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/konligo/usp.mp4",
+      "bytes": 18735306,
+      "extension": ".mp4"
+    },
+    {
+      "path": "videos/cases/salus/spot-medicair.mp4",
+      "bytes": 14867672,
       "extension": ".mp4"
     },
     {
@@ -175,21 +190,6 @@
     {
       "path": "team/movieshots/brent.png",
       "bytes": 2007518,
-      "extension": ".png"
-    },
-    {
-      "path": "team/mugshot-03.png",
-      "bytes": 2004603,
-      "extension": ".png"
-    },
-    {
-      "path": "team/movieshots/diana.png",
-      "bytes": 1981956,
-      "extension": ".png"
-    },
-    {
-      "path": "team/mugshot-01.png",
-      "bytes": 1961955,
       "extension": ".png"
     }
   ]

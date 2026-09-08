@@ -12,6 +12,25 @@ const CASE_VIDEO_PLAY_EVENT = "ami-amis:case-video-play";
 
 let youtubeApiPromise;
 
+function withTimeout(promise, milliseconds = 15000) {
+  return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(
+      () => reject(new Error("Video laden duurt te lang")),
+      milliseconds,
+    );
+    promise.then(
+      (value) => {
+        window.clearTimeout(timer);
+        resolve(value);
+      },
+      (error) => {
+        window.clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
+}
+
 function mediaPath(src) {
   if (!src) return "";
   const source = String(src);
@@ -99,7 +118,9 @@ function loadYouTubeApi() {
       resolve(window.YT);
     };
 
-    const existingScript = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+    const existingScript = document.querySelector(
+      'script[src="https://www.youtube.com/iframe_api"]',
+    );
     if (existingScript) return;
 
     const script = document.createElement("script");
@@ -119,7 +140,9 @@ function formatPlaybackTime(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
 
   const minutes = Math.floor(seconds / 60);
-  const remainder = Math.floor(seconds % 60).toString().padStart(2, "0");
+  const remainder = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
   return `${minutes}:${remainder}`;
 }
 
@@ -141,6 +164,8 @@ export default function CaseVideo({
   const controlsTimerRef = useRef(0);
   const feedbackTimerRef = useRef(0);
   const playbackTimerRef = useRef(0);
+  const seekVersionRef = useRef(0);
+  const seekingRef = useRef(false);
   const [controlsVisible, setControlsVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -150,14 +175,16 @@ export default function CaseVideo({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
   const [volume, setVolume] = useState(1);
+  const [playbackError, setPlaybackError] = useState("");
   const instanceId = useId().replaceAll(":", "");
   const provider = getVideoProvider(video);
   const playerId = `case-video-${provider}-${video?.id || instanceId}-${instanceId}`;
-  const source = provider === "vimeo"
-    ? getVimeoSource(video, playerId)
-    : provider === "youtube"
-      ? getYouTubeSource(video)
-      : mediaPath(video?.src);
+  const source =
+    provider === "vimeo"
+      ? getVimeoSource(video, playerId)
+      : provider === "youtube"
+        ? getYouTubeSource(video)
+        : mediaPath(video?.src);
   const resolvedPoster = mediaPath(
     poster ||
       video?.poster ||
@@ -208,6 +235,7 @@ export default function CaseVideo({
     setHasStarted(true);
     setIsPlaying(true);
     setIsStarting(false);
+    setPlaybackError("");
     setControlsVisible(true);
     scheduleControlsHide();
     window.dispatchEvent(new CustomEvent(CASE_VIDEO_PLAY_EVENT, { detail: { playerId } }));
@@ -231,7 +259,7 @@ export default function CaseVideo({
 
   const syncTime = useCallback((seconds, nextDuration) => {
     if (!isMountedRef.current) return;
-    setCurrentTime(Number(seconds) || 0);
+    if (!seekingRef.current) setCurrentTime(Number(seconds) || 0);
     setDuration(Number(nextDuration) || 0);
   }, []);
 
@@ -258,25 +286,27 @@ export default function CaseVideo({
         player.on("play", markPlaying);
         player.on("pause", markPaused);
         player.on("ended", markEnded);
-        player.on("timeupdate", ({ duration: nextDuration, seconds }) => syncTime(seconds, nextDuration));
+        player.on("timeupdate", ({ duration: nextDuration, seconds }) =>
+          syncTime(seconds, nextDuration),
+        );
         player.on("volumechange", ({ muted, volume: nextVolume }) => syncVolume(nextVolume, muted));
         player.on("fullscreenchange", ({ fullscreen }) => {
           if (isMountedRef.current) setIsFullscreen(Boolean(fullscreen));
         });
 
         await player.ready();
-        const [nextDuration, nextVolume, paused] = await Promise.all([
-          player.getDuration(),
-          player.getVolume(),
-          player.getPaused(),
-        ]);
-
-        if (isMountedRef.current) {
-          setDuration(Number(nextDuration) || 0);
-          syncVolume(nextVolume);
-          isPlayingRef.current = !paused;
-          setIsPlaying(!paused);
-        }
+        void Promise.all([player.getDuration(), player.getVolume(), player.getPaused()])
+          .then(([nextDuration, nextVolume, paused]) => {
+            if (isMountedRef.current) {
+              setDuration(Number(nextDuration) || 0);
+              syncVolume(nextVolume);
+              if (!hasStartedRef.current) {
+                isPlayingRef.current = !paused;
+                setIsPlaying(!paused);
+              }
+            }
+          })
+          .catch(() => {});
 
         return player;
       });
@@ -358,7 +388,8 @@ export default function CaseVideo({
                     play: async () => target.playVideo(),
                     requestFullscreen: async () => {
                       const frame = target.getIframe();
-                      const requestFullscreen = frame.requestFullscreen || frame.webkitRequestFullscreen;
+                      const requestFullscreen =
+                        frame.requestFullscreen || frame.webkitRequestFullscreen;
                       return requestFullscreen?.call(frame);
                     },
                     setCurrentTime: async (nextTime) => {
@@ -400,15 +431,7 @@ export default function CaseVideo({
     }
 
     return playerPromiseRef.current;
-  }, [
-    clearPlaybackTimer,
-    markEnded,
-    markPaused,
-    markPlaying,
-    provider,
-    syncTime,
-    syncVolume,
-  ]);
+  }, [clearPlaybackTimer, markEnded, markPaused, markPlaying, provider, syncTime, syncVolume]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -427,8 +450,11 @@ export default function CaseVideo({
 
   useEffect(() => {
     const pauseOtherVideo = (event) => {
-      if (event.detail?.playerId === playerId || !hasStartedRef.current || !isPlayingRef.current) return;
-      void ensurePlayer().then((player) => player.pause()).catch(() => {});
+      if (event.detail?.playerId === playerId || !hasStartedRef.current || !isPlayingRef.current)
+        return;
+      void ensurePlayer()
+        .then((player) => player.pause())
+        .catch(() => {});
     };
 
     window.addEventListener(CASE_VIDEO_PLAY_EVENT, pauseOtherVideo);
@@ -450,21 +476,23 @@ export default function CaseVideo({
 
   const playVideo = async ({ withFeedback = false } = {}) => {
     setIsStarting(true);
+    setPlaybackError("");
 
     try {
-      const player = await ensurePlayer();
+      const player = await withTimeout(ensurePlayer());
 
       if (!hasStartedRef.current) {
-        await player.setVolume(1);
+        void player.setVolume(1).catch(() => {});
         lastAudibleVolumeRef.current = 1;
       }
 
-      await player.play();
+      await withTimeout(Promise.resolve(player.play()));
       if (withFeedback) showFeedback("play");
     } catch {
       if (isMountedRef.current) {
         setIsStarting(false);
         setControlsVisible(true);
+        setPlaybackError("De video kon niet starten. Probeer opnieuw.");
       }
     }
   };
@@ -488,16 +516,29 @@ export default function CaseVideo({
 
   const handleSeek = async (event) => {
     const nextTime = Number(event.currentTarget.value);
-    if (!Number.isFinite(nextTime)) return;
+    if (!Number.isFinite(nextTime) || duration <= 0) return;
+
+    const seekVersion = ++seekVersionRef.current;
+    const previousTime = currentTime;
+    seekingRef.current = true;
 
     setCurrentTime(nextTime);
     revealControls();
 
     try {
       const player = await ensurePlayer();
-      await player.setCurrentTime(nextTime);
+      const actualTime = await withTimeout(Promise.resolve(player.setCurrentTime(nextTime)));
+      if (seekVersion === seekVersionRef.current && isMountedRef.current) {
+        setCurrentTime(Number.isFinite(actualTime) ? actualTime : nextTime);
+        setPlaybackError("");
+      }
     } catch {
-      // Keep the visible range value while the remote player reconnects.
+      if (seekVersion === seekVersionRef.current && isMountedRef.current) {
+        setCurrentTime(previousTime);
+        setPlaybackError("Doorspoelen lukte niet. Probeer opnieuw.");
+      }
+    } finally {
+      if (seekVersion === seekVersionRef.current) seekingRef.current = false;
     }
   };
 
@@ -648,6 +689,8 @@ export default function CaseVideo({
             aria-label={`Voortgang van ${video.title}`}
             className={styles.timeline}
             max={duration || 0}
+            disabled={duration <= 0}
+            aria-valuetext={`${formatPlaybackTime(currentTime)} van ${formatPlaybackTime(duration)}`}
             min="0"
             onChange={handleSeek}
             step="0.1"
@@ -671,7 +714,11 @@ export default function CaseVideo({
           </button>
 
           <button
-            aria-label={isFullscreen ? `Sluit volledig scherm voor ${video.title}` : `Toon ${video.title} op volledig scherm`}
+            aria-label={
+              isFullscreen
+                ? `Sluit volledig scherm voor ${video.title}`
+                : `Toon ${video.title} op volledig scherm`
+            }
             aria-pressed={isFullscreen}
             className={styles.controlButton}
             onClick={() => void toggleFullscreen()}
@@ -680,6 +727,11 @@ export default function CaseVideo({
             <Icon name="maximize" size="sm" />
           </button>
         </div>
+      ) : null}
+      {playbackError ? (
+        <p className={styles.error} role="status">
+          {playbackError}
+        </p>
       ) : null}
     </figure>
   );

@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
 const basePath = process.env.TEST_BASE_PATH ?? "";
+const testPort = process.env.TEST_PORT ?? "4173";
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -13,13 +14,13 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? [["line"], ["html", { open: "never" }]] : "list",
   use: {
-    baseURL: `http://127.0.0.1:4173${basePath}`,
+    baseURL: `http://127.0.0.1:${testPort}${basePath}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   webServer: {
-    command: "pnpm preview -- --port 4173",
-    url: `http://127.0.0.1:4173${basePath || "/"}`,
+    command: `pnpm preview -- --port ${testPort}`,
+    url: `http://127.0.0.1:${testPort}${basePath || "/"}`,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
   },

@@ -49,16 +49,10 @@ jobs:
         run: pnpm build:pages
 
       - name: Verify custom-domain artifact
-        run: test -f out/CNAME && test "$(cat out/CNAME)" = "amiamis.com"
+        run: node scripts/check-pages-export.mjs
 
-      - name: Route, interaction, accessibility, reflow and motion checks
-        run: pnpm test:smoke && pnpm test:content && pnpm test:interaction && pnpm test:a11y && pnpm test:zoom && pnpm test:reduced-motion
-        env:
-          CI: "true"
-          EXPECTED_SITE_URL: https://amiamis.com
-
-      - name: Representative visual captures
-        run: pnpm test:visual
+      - name: Complete production test suite
+        run: pnpm test:pages
         env:
           CI: "true"
 

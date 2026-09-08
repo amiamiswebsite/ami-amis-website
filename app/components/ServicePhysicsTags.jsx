@@ -55,7 +55,7 @@ function WinModal({ closeButtonRef, onClose, phase }) {
     () => () => {
       window.clearTimeout(copyFeedbackTimerRef.current);
     },
-    []
+    [],
   );
 
   const copyRewardCode = async () => {
@@ -142,7 +142,11 @@ function WinModal({ closeButtonRef, onClose, phase }) {
           >
             <code>AMIS4EVER</code>
             <span className={styles.rewardCodeAction}>
-              {copyState === "copied" ? "Gekopieerd" : copyState === "failed" ? "Probeer opnieuw" : "Kopieer"}
+              {copyState === "copied"
+                ? "Gekopieerd"
+                : copyState === "failed"
+                  ? "Probeer opnieuw"
+                  : "Kopieer"}
             </span>
           </button>
           <span className="aa-visually-hidden" aria-live="polite">
@@ -239,7 +243,11 @@ export default function ServicePhysicsTags() {
 
       const panel = closeButtonRef.current?.closest('[role="dialog"]');
       const focusableElements = panel
-        ? [...panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        ? [
+            ...panel.querySelectorAll(
+              'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            ),
+          ]
         : [];
       const firstElement = focusableElements[0];
       const lastElement = focusableElements.at(-1);
@@ -250,7 +258,8 @@ export default function ServicePhysicsTags() {
 
       if (
         event.shiftKey &&
-        (document.activeElement === firstElement || document.activeElement?.id === "service-win-title")
+        (document.activeElement === firstElement ||
+          document.activeElement?.id === "service-win-title")
       ) {
         event.preventDefault();
         lastElement.focus();
@@ -280,7 +289,7 @@ export default function ServicePhysicsTags() {
     () => () => {
       window.clearTimeout(closeTimerRef.current);
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -307,7 +316,7 @@ export default function ServicePhysicsTags() {
         heading.dataset.revealed = "true";
         observer.disconnect();
       },
-      { rootMargin: "0px 0px -5%", threshold: 0.15 }
+      { rootMargin: "0px 0px -5%", threshold: 0.15 },
     );
 
     observer.observe(game);
@@ -388,9 +397,8 @@ export default function ServicePhysicsTags() {
     };
 
     const getStageCeilingY = () => {
-      const gameRect = game?.getBoundingClientRect();
-      const stageRect = stage.getBoundingClientRect();
-      const ceilingY = gameRect ? gameRect.top - stageRect.top + STAGE_INSET : STAGE_INSET;
+      // Layout coordinates stay stable while the section entrance animates translate.
+      const ceilingY = STAGE_INSET - stage.offsetTop;
 
       stage.style.setProperty("--service-stage-ceiling-y", `${ceilingY}px`);
       return ceilingY;
@@ -414,28 +422,28 @@ export default function ServicePhysicsTags() {
           ceilingY - thickness / 2,
           width + thickness * 2,
           thickness,
-          wallOptions
+          wallOptions,
         ),
         matter.Bodies.rectangle(
           width / 2,
           height - STAGE_INSET + thickness / 2,
           width + thickness * 2,
           thickness,
-          wallOptions
+          wallOptions,
         ),
         matter.Bodies.rectangle(
           STAGE_INSET - thickness / 2,
           verticalWallTop + verticalWallHeight / 2,
           thickness,
           verticalWallHeight,
-          wallOptions
+          wallOptions,
         ),
         matter.Bodies.rectangle(
           width - STAGE_INSET + thickness / 2,
           verticalWallTop + verticalWallHeight / 2,
           thickness,
           verticalWallHeight,
-          wallOptions
+          wallOptions,
         ),
       ];
     };
@@ -474,7 +482,7 @@ export default function ServicePhysicsTags() {
             restitution: 0.35,
             friction: 0.3,
             label: "service-hoop-backboard",
-          }
+          },
         ),
       ];
     };
@@ -514,7 +522,8 @@ export default function ServicePhysicsTags() {
       records.forEach((record) => {
         const previousY = record.previousY ?? record.body.position.y;
         const halfWidth = record.width / 2;
-        const insideOpening = Math.abs(record.body.position.x - x) < ringWidth / 2 - halfWidth * 0.5;
+        const insideOpening =
+          Math.abs(record.body.position.x - x) < ringWidth / 2 - halfWidth * 0.5;
 
         if (record.body.position.y < y - Math.max(18, record.height * 0.3)) {
           record.wasAboveHoop = true;
@@ -558,7 +567,7 @@ export default function ServicePhysicsTags() {
         matter.Body.setVelocity(activeRecord.body, velocity);
         matter.Body.setAngularVelocity(
           activeRecord.body,
-          clamp(activeRecord.body.angularVelocity + velocity.x * 0.006, -0.18, 0.18)
+          clamp(activeRecord.body.angularVelocity + velocity.x * 0.006, -0.18, 0.18),
         );
       }
 
@@ -660,17 +669,17 @@ export default function ServicePhysicsTags() {
         const column = index % columns;
         const row = Math.floor(index / columns);
         const columnWidth = rect.width / columns;
-        const spawnTop = rect.height * (rect.width < 520 ? 0.46 : 0.52);
-        const rowSpacing = clamp(measurement.height * 0.34, 14, 22);
+        const spawnTop = rect.height * 0.16;
+        const rowSpacing = measurement.height * 0.82;
         const x = clamp(
           columnWidth * (column + 0.5) + (random() - 0.5) * columnWidth * 0.26,
           measurement.width / 2 + STAGE_INSET,
-          rect.width - measurement.width / 2 - STAGE_INSET
+          rect.width - measurement.width / 2 - STAGE_INSET,
         );
         const y = clamp(
           spawnTop + row * rowSpacing + random() * 10,
           measurement.height / 2 + STAGE_INSET,
-          rect.height - measurement.height / 2 - STAGE_INSET
+          rect.height - measurement.height / 2 - STAGE_INSET,
         );
         const body = matter.Bodies.rectangle(x, y, measurement.width, measurement.height, {
           chamfer: { radius: Math.min(measurement.height / 2, 28) },
@@ -697,7 +706,11 @@ export default function ServicePhysicsTags() {
 
       walls = createWalls(rect.width, rect.height, stageCeilingY);
       hoopBodies = createHoop(rect.width, rect.height);
-      matter.Composite.add(engine.world, [...walls, ...hoopBodies, ...records.map(({ body }) => body)]);
+      matter.Composite.add(engine.world, [
+        ...walls,
+        ...hoopBodies,
+        ...records.map(({ body }) => body),
+      ]);
       renderBodies();
       stage.dataset.physicsReady = "true";
       initialized = true;
@@ -726,7 +739,11 @@ export default function ServicePhysicsTags() {
         const nextWidth = record.node.offsetWidth;
         const nextHeight = record.node.offsetHeight;
 
-        if (record.width && record.height && (record.width !== nextWidth || record.height !== nextHeight)) {
+        if (
+          record.width &&
+          record.height &&
+          (record.width !== nextWidth || record.height !== nextHeight)
+        ) {
           matter.Body.scale(record.body, nextWidth / record.width, nextHeight / record.height);
         }
 
@@ -735,14 +752,18 @@ export default function ServicePhysicsTags() {
         record.wasAboveHoop = false;
         matter.Body.setPosition(record.body, {
           x: clamp(
-            oldSize.width ? (record.body.position.x / oldSize.width) * rect.width : record.body.position.x,
+            oldSize.width
+              ? (record.body.position.x / oldSize.width) * rect.width
+              : record.body.position.x,
             nextWidth / 2 + STAGE_INSET,
-            rect.width - nextWidth / 2 - STAGE_INSET
+            rect.width - nextWidth / 2 - STAGE_INSET,
           ),
           y: clamp(
-            oldSize.height ? (record.body.position.y / oldSize.height) * rect.height : record.body.position.y,
+            oldSize.height
+              ? (record.body.position.y / oldSize.height) * rect.height
+              : record.body.position.y,
             stageCeilingY + nextHeight / 2,
-            rect.height - nextHeight / 2 - STAGE_INSET
+            rect.height - nextHeight / 2 - STAGE_INSET,
           ),
         });
         record.previousY = record.body.position.y;
@@ -767,7 +788,8 @@ export default function ServicePhysicsTags() {
         return;
       }
 
-      const item = event.target instanceof Element ? event.target.closest("[data-physics-tag]") : null;
+      const item =
+        event.target instanceof Element ? event.target.closest("[data-physics-tag]") : null;
       const index = Number(item?.getAttribute("data-physics-index"));
       const record = Number.isInteger(index) ? records[index] : null;
 
@@ -851,7 +873,7 @@ export default function ServicePhysicsTags() {
 
     const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
-        isInView = entry.isIntersecting && entry.intersectionRatio >= 0.1;
+        isInView = entry.isIntersecting && entry.intersectionRatio >= (initialized ? 0.1 : 0.55);
 
         if (isInView) {
           initialize();
@@ -859,7 +881,7 @@ export default function ServicePhysicsTags() {
 
         syncLoop();
       },
-      { threshold: [0, 0.1, 0.2] }
+      { threshold: [0, 0.1, 0.55, 0.75] },
     );
 
     intersectionObserver.observe(stage);
@@ -898,7 +920,11 @@ export default function ServicePhysicsTags() {
   }, [registerGoal]);
 
   return (
-    <section className={`social-growth-game ${styles.game}`} aria-labelledby="social-growth-game-title" ref={gameRef}>
+    <section
+      className={`social-growth-game ${styles.game}`}
+      aria-labelledby="social-growth-game-title"
+      ref={gameRef}
+    >
       <div className={styles.titleZone}>
         <h2
           className={styles.scoreHeading}
@@ -984,12 +1010,8 @@ export default function ServicePhysicsTags() {
       </a>
       {isWinModalMounted && typeof document !== "undefined"
         ? createPortal(
-            <WinModal
-              closeButtonRef={closeButtonRef}
-              onClose={closeWinModal}
-              phase={modalPhase}
-            />,
-            document.body
+            <WinModal closeButtonRef={closeButtonRef} onClose={closeWinModal} phase={modalPhase} />,
+            document.body,
           )
         : null}
     </section>

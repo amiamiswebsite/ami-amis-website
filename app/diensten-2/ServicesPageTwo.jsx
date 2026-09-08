@@ -666,15 +666,26 @@ function Problems({ reducedMotion }) {
     <section className={styles.problems} aria-labelledby="services-two-problems">
       <div className={styles.problemLayout}>
         <aside className={styles.problemAside}>
-          <RisoHeading
-            ariaLabel="Wa is uw probleem, gast?!"
-            className={styles.problemTitle}
-            id="services-two-problems"
-            lines={["Wa is uw", "probleem,", "gast?!"]}
+          <div className={styles.problemIntroCopy}>
+            <RisoHeading
+              ariaLabel="Wa is uw probleem, gast?!"
+              className={styles.problemTitle}
+              id="services-two-problems"
+              lines={["Wa is uw", "probleem,", "gast?!"]}
+            />
+            <p className={styles.problemSubtitle}>
+              Resoneert één van onderstaande uitspraken bij jou?
+            </p>
+          </div>
+          <img
+            alt="Still uit de Ami Amis-rapvideo: drie mannen met hoeden en zonnebrillen."
+            className={styles.problemStill}
+            decoding="async"
+            height={941}
+            loading="lazy"
+            src={assetPath("/images/services/rapvideo-still.webp")}
+            width={1672}
           />
-          <p className={styles.problemSubtitle}>
-            Resoneert één van onderstaande uitspraken bij jou?
-          </p>
         </aside>
 
         <div
@@ -852,8 +863,8 @@ export default function ServicesPageTwo() {
           <ServicesHero reducedMotion={reducedMotion} />
           <ApproachTimelineOpen />
           {SHOW_APPROACH_BACKUP ? <ServicesApproach /> : null}
-          <Problems reducedMotion={reducedMotion} />
           <Interstitial />
+          <Problems reducedMotion={reducedMotion} />
           <Tools reducedMotion={reducedMotion} />
           <Faq />
           <FinalCta />

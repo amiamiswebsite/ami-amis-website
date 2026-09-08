@@ -46,18 +46,21 @@ const problemCards = [
     title: "Op zoek naar de juiste werknemers?",
     body: "Na onze employer branding krijg je keuzestress door al die nieuwe sollicitanten.",
     icon: "profile",
+    caseSlug: "blutsqi",
   },
   {
     number: "2",
     title: "Blijft je merk onder de radar?",
     body: "Met onze strategie krijgen je socials consistente content die je merk zichtbaar én herkenbaar houdt.",
     icon: "eye",
+    caseSlug: "humgy",
   },
   {
     number: "3",
     title: "Is je product of dienst moeilijk uit te leggen?",
     body: "Wij maken complexe boodschappen helder en aantrekkelijk, zodat je verhaal meteen landt bij de juiste doelgroep.",
     icon: "mystery-box",
+    caseSlug: "jurimesh",
   },
 ];
 
@@ -69,7 +72,7 @@ const problemCardIcons = {
 
 const homeTwoOutro = {
   body: "Zie ons als jouw creatieve sparringspartner die luistert, meedenkt én jou volledig kan ontzorgen in al jouw marketingdromen.",
-  quote: "Wat denk’te, Zullen we samen iets cool maken?",
+  quote: "Wat denk’te, zullen we samen iets cool maken?",
   author: "Big Boss Britti",
 };
 
@@ -575,9 +578,10 @@ export default function Intro({ variant = "default" }) {
             <span className="intro__challenge-heading-line">bekend voor?</span>
           </h2>
           <div className="intro__challenge-grid">
-            {problemCards.map(({ body, icon, number, title }, index) => (
-              <article
+            {problemCards.map(({ body, caseSlug, icon, number, title }, index) => (
+              <a
                 className={`intro__challenge intro__challenge--${icon}`}
+                href={assetPath(`/work/${caseSlug}/`)}
                 key={number}
                 style={{ "--challenge-index": index }}
               >
@@ -599,7 +603,7 @@ export default function Intro({ variant = "default" }) {
                 <h3>{title}</h3>
                 <span className="intro__challenge-divider" aria-hidden="true" />
                 <p>{body}</p>
-              </article>
+              </a>
             ))}
           </div>
           <HomeCtaLink className="intro__challenge-cta" href={assetPath("/diensten/")} showIcon={false}>

@@ -311,6 +311,7 @@ export default function ContactPage() {
                 </div>
 
                 <figure className="contact-intro__photo contact-editorial__photo contact-overview__photo">
+                  <a className="contact-overview__call-me" href="tel:+32472657595">Call me</a>
                   <img
                     className="contact-overview__photo-image contact-overview__photo-image--default"
                     src={assetPath("/assets/contact-phones-portrait.jpg")}
