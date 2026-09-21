@@ -15,9 +15,9 @@ for (const width of [360, 390, 640, 768, 900, 901, 1024, 1440, 1920]) {
         const heading = card.querySelector("h3");
         const number = card.querySelector("span");
         return {
-          numberY: number.getBoundingClientRect().top,
-          headingY: heading.getBoundingClientRect().top,
-          bodyY: card.querySelector("p").getBoundingClientRect().top,
+          numberY: number.offsetTop,
+          headingY: heading.offsetTop,
+          bodyY: card.querySelector("p").offsetTop,
           numberColor: getComputedStyle(number).color,
           headingColor: getComputedStyle(heading).color,
         };
