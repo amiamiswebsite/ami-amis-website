@@ -32,7 +32,11 @@ test("Medicair plays, pauses and seeks to the selected time", async ({ page }) =
 });
 
 test("hero videos remain available once in their gallery", async ({ page }) => {
-  for (const { slug: route } of cases.filter((item) => item.slug !== "4allseasons")) {
+  const casesWithHeroVideo = cases.filter((item) =>
+    ["video", "vimeo", "youtube"].includes(item.media?.hero?.type),
+  );
+
+  for (const { slug: route } of casesWithHeroVideo) {
     await page.goto(routeUrl(`/work/${route}/`), { waitUntil: "domcontentloaded" });
     const hero = page.locator('[data-case-video="hero"]');
     const source = await hero.locator("video, iframe").getAttribute("src");

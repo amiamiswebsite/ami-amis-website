@@ -47,11 +47,11 @@ test("horizontal process indicator persists, follows keyboard scrolling and adap
   const indicator = page.locator('[data-scroll-indicator="horizontal"]');
   await steps.scrollIntoViewIfNeeded();
   await expect(indicator).toBeVisible();
-  const initial = await indicator.locator("span").boundingBox();
+  const initial = await indicator.getByRole("button", { pressed: true }).boundingBox();
   await steps.focus();
   await page.keyboard.press("ArrowRight");
   await expect
-    .poll(async () => (await indicator.locator("span").boundingBox()).x)
+    .poll(async () => (await indicator.getByRole("button", { pressed: true }).boundingBox()).x)
     .toBeGreaterThan(initial.x);
   await page.waitForTimeout(1200);
   await expect(indicator).toBeVisible();
