@@ -38791,6 +38791,7 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   --site-menu-size: clamp(48px, 4vw, 58px);
 }
 
+.site-header-logo,
 .hero__logo,
 .work-page__logo,
 .team-hero__logo,
@@ -38812,10 +38813,6 @@ body.collage-ready .case-portfolio-reveal.is-visible {
   aspect-ratio: 1536 / 637 !important;
   animation: none !important;
   transform: none !important;
-}
-
-.hero:not(.hero--home-two) .hero__inner > .hero__logo {
-  left: calc(var(--site-header-inset) - var(--hero-gutter, var(--site-header-inset))) !important;
 }
 
 .menu-toggle,

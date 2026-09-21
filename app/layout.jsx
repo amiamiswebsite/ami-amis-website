@@ -114,7 +114,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="nl">
       <head>
-        <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
+        <style dangerouslySetInnerHTML={{ __html: fontFaces }} suppressHydrationWarning />
         <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
           type="application/ld+json"

@@ -301,8 +301,8 @@ export default function Hero({
             fetchPriority="high"
           />
         </div>
+        <div className="hero__logo site-header-logo" aria-label="AMI AMIS" role="img" />
         <div className="hero__inner">
-          <div className="hero__logo" aria-label="AMI AMIS" role="img" />
           {!isHomeTwo ? (
             <div className="hero__layout">
               <div className="hero__copy">

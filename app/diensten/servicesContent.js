@@ -77,7 +77,7 @@ export const problemFiles = [
     result:
       "content voor, tijdens én na je event, zodat het veel langer meegaat dan de avond zelf.",
     cta: "Haal alles uit mijn event.",
-    cases: [],
+    cases: ["craftails"],
     color: "red",
   },
   {
@@ -108,7 +108,6 @@ export const problemFiles = [
 ];
 
 // Oorspronkelijke editorial note: “Humgy, Tarzan & Jane of X-Oats => iets anders zoeken”
-// TODO: kies later een definitieve eventcase; VDAB was enkel een interne redactionele optie.
 
 export const serviceTools = [
   { label: "video", caseSlug: "billy-bonkers" },

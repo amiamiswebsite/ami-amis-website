@@ -13,7 +13,7 @@ export default function LegalPage({ eyebrow, title, intro, sections, updatedAt }
     <>
       <div className={`site-shell legal-shell ${menuOpen ? "menu-open" : ""}`}>
         <header className="legal-hero">
-          <a className="hero__logo legal-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+          <a className="hero__logo site-header-logo legal-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
           <div className="legal-hero__inner">
             <p>{eyebrow}</p>
             <h1>{title}</h1>

@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
+import CaseVideo from "../components/CaseVideo";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
-import Icon from "../components/ui/Icon";
 import { assetPath } from "../../src/lib/assetPath";
 
 const teamVideoSrc = "/assets/amiamis_teamvideo2026.mp4";
@@ -12,53 +12,35 @@ const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
 const teamGroupPhoto = "/assets/ami-amis-team-group.webp";
 const teamIntroTitle = "Ami Awieee?";
 const teamIntroLetterSizes = [0.48, 0.55, 0.62, 0.3, 0.7, 0.8, 0.92, 1.05, 1.18, 1.32, 1.5];
-const teamHeroVideoSrc = "/assets/amiamis-taskforce-kids-header.mp4";
+const teamHeroVideoId = "1226972066";
+const teamHeroVideoHash = "673cbb1e8d";
+const teamHeroVideoPoster = "/images/team-brent-video-poster.jpg";
 const friendsLetters = "FRIENDS".split("");
 const friendsDotColors = ["red", "blue", "yellow", "red", "yellow", "blue"];
 
 function TeamHeroVideo({ onPointerLeave, onPointerMove }) {
-  const videoRef = useRef(null);
-  const [soundOn, setSoundOn] = useState(false);
-
-  const toggleSound = () => {
-    const nextSoundOn = !soundOn;
-
-    setSoundOn(nextSoundOn);
-    const video = videoRef.current;
-    if (video) {
-      video.muted = !nextSoundOn;
-      video.play().catch(() => {});
-    }
-  };
-
   return (
-    <figure
+    <div
       className="team-intro-static__visual team-story-hero__photo team-story-hero__video"
       onPointerLeave={onPointerLeave}
       onPointerMove={onPointerMove}
     >
-      <div className="team-story-hero__video-viewport">
-        <video
-          autoPlay
-          loop
-          muted={!soundOn}
-          playsInline
-          preload="metadata"
-          ref={videoRef}
-          src={assetPath(teamHeroVideoSrc)}
-          aria-label="Ami Amis Taskforce Kids-video"
-        />
-      </div>
-      <button
-        aria-label={soundOn ? "Zet geluid uit" : "Zet geluid aan"}
-        aria-pressed={soundOn}
-        className="team-story-hero__sound"
-        onClick={toggleSound}
-        type="button"
-      >
-        <Icon name={soundOn ? "volume" : "volumeOff"} />
-      </button>
-    </figure>
+      <CaseVideo
+        className="team-story-hero__case-video"
+        poster={teamHeroVideoPoster}
+        priority
+        variant="gallery-portrait"
+        video={{
+          aspectRatio: "9 / 16",
+          hash: teamHeroVideoHash,
+          id: teamHeroVideoId,
+          orientation: "portrait",
+          poster: teamHeroVideoPoster,
+          title: "Brent van Ami Amis",
+          type: "vimeo",
+        }}
+      />
+    </div>
   );
 }
 
@@ -255,7 +237,7 @@ export default function TeamPage() {
           id="team-intro"
         >
           <a
-            className="hero__logo team-hero__logo team-intro-static__logo"
+            className="hero__logo site-header-logo team-hero__logo team-intro-static__logo"
             href={assetPath("/")}
             aria-label="Ami Amis home"
           />

@@ -596,6 +596,10 @@
   border-top: 1px solid rgba(255, 250, 229, 0.4);
 }
 
+.problemDots {
+  display: none;
+}
+
 .problemArticle {
   scroll-margin-top: clamp(76px, 8vw, 112px);
   padding-block: clamp(54px, 7vw, 96px);
@@ -3103,6 +3107,35 @@
   .problemList::-webkit-scrollbar-thumb {
     border-radius: 999px;
     background: var(--red);
+  }
+
+  .problemDots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 14px;
+  }
+
+  .problemDots button {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition: width 160ms ease, background-color 160ms ease;
+  }
+
+  .problemDots button[aria-pressed="true"] {
+    width: 30px;
+    background: var(--red);
+  }
+
+  .problemDots button:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
   }
 
   .problemArticle {

@@ -419,7 +419,7 @@ export default function CaseExperimentPage({ caseData }) {
     <>
       <div className={`site-shell case-experiment-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className="case-experiments-page">
-          <a className="hero__logo case-experiment-logo" href={assetPath("/")} aria-label="Ami Amis home" />
+          <a className="hero__logo site-header-logo case-experiment-logo" href={assetPath("/")} aria-label="Ami Amis home" />
 
           <section className="case-experiments-intro">
             <p>Case layout experiments</p>

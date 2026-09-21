@@ -1,12 +1,12 @@
 {
   "source": "public/",
-  "totalFiles": 346,
-  "maxTotalBytes": 673422310,
+  "totalFiles": 359,
+  "maxTotalBytes": 675994204,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 134,
-      "bytes": 39308881
+      "count": 140,
+      "bytes": 40368117
     },
     ".json": {
       "count": 1,
@@ -37,8 +37,8 @@
       "bytes": 5036194
     },
     ".webp": {
-      "count": 53,
-      "bytes": 16436190
+      "count": 60,
+      "bytes": 17948848
     }
   },
   "largest": [

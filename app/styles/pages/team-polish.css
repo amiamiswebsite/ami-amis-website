@@ -169,8 +169,15 @@
 }
 
 .team-story-hero__body .team-story-hero__question {
+  position: relative;
+  width: fit-content;
   max-width: 47ch !important;
   margin-top: 0.2rem !important;
+  padding: var(--aa-space-5) var(--aa-space-6) !important;
+  border: 2px solid var(--ink);
+  border-radius: 0.35rem;
+  background: var(--paper);
+  box-shadow: 7px 7px 0 var(--yellow);
   font-family: var(--font-black) !important;
   font-size: clamp(1.12rem, 1.26vw, 1.32rem) !important;
   font-weight: 900 !important;
@@ -231,63 +238,14 @@
   box-shadow: none !important;
 }
 
-.team-story-hero__video-viewport {
-  position: absolute;
-  inset: 0;
+.team-story-hero__case-video {
   width: 100%;
   height: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  transform: none;
-  transform-origin: center;
-  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0.35rem;
 }
 
-.team-story-hero__video-viewport video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border: 0;
-  background: transparent;
-  pointer-events: none;
-}
-
-.team-story-hero__video.is-tracking .team-story-hero__video-viewport {
-  transform: none;
-}
-
-.team-story-hero__sound {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-  display: grid;
-  width: 3.25rem;
-  height: 3.25rem;
-  place-items: center;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: var(--paper);
-  color: var(--ink);
-  cursor: pointer;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.team-story-hero__sound:hover,
-.team-story-hero__sound:focus-visible,
-.team-story-hero__sound[aria-pressed="true"] {
-  background: var(--red);
-  color: var(--paper);
-  transform: translateY(-2px);
-}
-
-.team-story-hero__sound:focus-visible {
-  outline: 3px solid var(--yellow);
-  outline-offset: 4px;
+.team-story-hero__body .team-story-hero__question::after {
+  content: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -839,13 +797,6 @@
     aspect-ratio: 4 / 3 !important;
   }
 
-  .team-story-hero__sound {
-    right: 0.75rem;
-    bottom: 0.75rem;
-    width: 3rem;
-    height: 3rem;
-  }
-
   .team-page {
     --team-section-radius: 2rem;
   }
@@ -926,27 +877,14 @@
     aspect-ratio: 9 / 16 !important;
     justify-self: center !important;
   }
-
-  .team-story-hero__video-viewport {
-    transform: none;
-  }
-
-  .team-story-hero__video.is-tracking .team-story-hero__video-viewport {
-    transform: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .team-story-hero__title-char,
-  .team-story-hero__photo.team-intro-static__visual,
-  .team-story-hero__video-viewport {
+  .team-story-hero__photo.team-intro-static__visual {
     opacity: 1 !important;
     animation: none !important;
     transition-duration: 1ms !important;
-  }
-
-  .team-story-hero__video-viewport {
-    transform: none !important;
   }
 }
 

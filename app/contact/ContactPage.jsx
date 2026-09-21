@@ -263,7 +263,7 @@ export default function ContactPage() {
             className="contact-minimal contact-redesign contact-editorial"
             aria-labelledby="contact-title"
           >
-            <a className="hero__logo contact-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+            <a className="hero__logo site-header-logo contact-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
 
             <div className="contact-minimal__inner">
               <div className="contact-minimal__content contact-editorial__frame contact-overview">

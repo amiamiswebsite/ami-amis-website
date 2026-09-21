@@ -415,7 +415,7 @@ function CaseHero({ data }) {
       className={heroClassName}
       aria-labelledby="case-portfolio-title"
     >
-      <a className="hero__logo case-portfolio-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+      <a className="hero__logo site-header-logo case-portfolio-hero__logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="case-portfolio-hero__copy case-portfolio-reveal">
         <h1 id="case-portfolio-title">{data.title || data.client}</h1>
         {oneLiner ? <p className="case-portfolio-hero__line">{oneLiner}</p> : null}

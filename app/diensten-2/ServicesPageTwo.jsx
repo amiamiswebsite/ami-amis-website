@@ -305,7 +305,7 @@ function ServicesHero({ reducedMotion }) {
     <section className={styles.hero} aria-labelledby="services-two-title">
       <div className={styles.topBar}>
         <a
-          className={`hero__logo ${styles.logo}`}
+          className={`hero__logo site-header-logo ${styles.logo}`}
           href={assetPath("/")}
           aria-label="Ami Amis home"
         />
@@ -662,6 +662,54 @@ function ProblemArticle({ problem, reducedMotion }) {
 }
 
 function Problems({ reducedMotion }) {
+  const listRef = useRef(null);
+  const scrollFrameRef = useRef(0);
+  const [activeProblemIndex, setActiveProblemIndex] = useState(0);
+
+  const syncActiveProblem = () => {
+    scrollFrameRef.current = 0;
+    const list = listRef.current;
+    const cards = Array.from(list?.children || []);
+
+    if (!list || !cards.length) return;
+
+    const listCenter = list.scrollLeft + list.clientWidth / 2;
+    const closestIndex = cards.reduce((closest, card, index) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(cardCenter - listCenter);
+      return distance < closest.distance ? { distance, index } : closest;
+    }, { distance: Number.POSITIVE_INFINITY, index: 0 }).index;
+
+    setActiveProblemIndex(closestIndex);
+  };
+
+  const handleProblemScroll = () => {
+    if (!scrollFrameRef.current) {
+      scrollFrameRef.current = window.requestAnimationFrame(syncActiveProblem);
+    }
+  };
+
+  const scrollToProblem = (index) => {
+    const list = listRef.current;
+    const card = list?.children[index];
+
+    if (!list || !card) return;
+
+    list.scrollTo({
+      behavior: reducedMotion ? "auto" : "smooth",
+      left: card.offsetLeft,
+    });
+  };
+
+  useEffect(
+    () => () => {
+      if (scrollFrameRef.current) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+      }
+    },
+    [],
+  );
+
   return (
     <section className={styles.problems} aria-labelledby="services-two-problems">
       <div className={styles.problemLayout}>
@@ -691,11 +739,24 @@ function Problems({ reducedMotion }) {
         <div
           aria-label="Problemen en oplossingen"
           className={styles.problemList}
+          onScroll={handleProblemScroll}
+          ref={listRef}
           role="region"
           tabIndex={0}
         >
           {serviceTwoProblems.map((problem) => (
             <ProblemArticle key={problem.id} problem={problem} reducedMotion={reducedMotion} />
+          ))}
+        </div>
+        <div className={styles.problemDots} aria-label="Kies een probleem">
+          {serviceTwoProblems.map((problem, index) => (
+            <button
+              aria-label={`Ga naar probleem ${index + 1}: ${problem.title}`}
+              aria-pressed={activeProblemIndex === index}
+              key={`problem-dot-${problem.id}`}
+              onClick={() => scrollToProblem(index)}
+              type="button"
+            />
           ))}
         </div>
       </div>

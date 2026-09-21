@@ -402,6 +402,10 @@
   background: var(--paper);
 }
 
+.imageFrameContain .chromelessVideoScreen img {
+  object-fit: contain;
+}
+
 .externalMediaLink {
   position: absolute;
   inset: 0;
@@ -1189,6 +1193,47 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.galleryLightboxTrigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.galleryContain,
+.galleryContain .galleryLightboxTrigger {
+  background: var(--paper);
+}
+
+.galleryContain img {
+  object-fit: contain;
+}
+
+.galleryZoomCue {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: grid;
+  width: 42px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.galleryLightboxTrigger:focus-visible {
+  outline: 4px solid var(--yellow);
+  outline-offset: -4px;
 }
 
 .galleryGrid {

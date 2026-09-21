@@ -1,11 +1,11 @@
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
-import { extname, relative, resolve } from "node:path";
+import { basename, extname, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const publicRoot = resolve(root, "public");
 const budgetPath = resolve(root, "docs/audits/ASSET_BUDGET.json");
 const mode = process.argv.includes("--write") ? "write" : "check";
-const nonAssetFiles = new Set(["CNAME"]);
+const nonAssetFiles = new Set([".DS_Store", "CNAME"]);
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -19,9 +19,7 @@ async function walk(directory) {
   return files.flat();
 }
 
-const files = (await walk(publicRoot)).filter(
-  (path) => !nonAssetFiles.has(relative(publicRoot, path)),
-);
+const files = (await walk(publicRoot)).filter((path) => !nonAssetFiles.has(basename(path)));
 const inventory = await Promise.all(
   files.map(async (path) => {
     const metadata = await stat(path);

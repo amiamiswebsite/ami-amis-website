@@ -121,7 +121,7 @@ export default function WorkPage() {
     <>
       <div className={`site-shell ${menuOpen ? "menu-open" : ""}`}>
         <main className="work-page">
-          <a className="hero__logo work-page__logo" href={assetPath("/")} aria-label="Ami Amis home" />
+          <a className="hero__logo site-header-logo work-page__logo" href={assetPath("/")} aria-label="Ami Amis home" />
           <h1 className="sr-only">Ons werk</h1>
           <WorkFilters activeFilter={activeFilter} count={filteredCases.length} onFilterChange={setActiveFilter} />
           <WorkGrid cases={filteredCases} />

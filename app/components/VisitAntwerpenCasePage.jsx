@@ -484,7 +484,7 @@ function Hero({ data, onOpen, showVideo = true }) {
 
   return (
     <section className={`va-pdf-hero${heroCollage ? "" : " va-pdf-hero--plain"}${heroSticker ? " va-pdf-hero--has-sticker" : ""}${hasHeroMedia ? "" : " va-pdf-hero--no-media"}`} aria-labelledby="va-pdf-title">
-      <a className="hero__logo va-pdf-logo" href={assetPath("/")} aria-label="Ami Amis home" />
+      <a className="hero__logo site-header-logo va-pdf-logo" href={assetPath("/")} aria-label="Ami Amis home" />
       <div className="va-pdf-hero__inner">
         <div className="va-pdf-hero__copy">
           <h1 className="va-pdf-reveal" id="va-pdf-title">

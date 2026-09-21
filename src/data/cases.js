@@ -2888,12 +2888,462 @@ const rawCases = [
     ],
   },
   {
+    slug: "recenter",
+    template: "x-oats-social",
+    client: "ReCenter",
+    heroTitle: "ReCenter",
+    title: "ReCenter, Rust 🌿",
+    subtitle: "Retreatcontent die rust uitstraalt en bedrijven overtuigt.",
+    category: "Social content",
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "vertical-video-grid",
+    seo: {
+      title: "ReCenter retreatcontent | Ami Amis",
+      description:
+        "Voor ReCenter combineerden we spontane UGC-content met stijlvolle testimonials om ook bedrijven warm te maken voor een retreat.",
+    },
+    intro:
+      "Bij Ami Amis weten we al wat chillen is, maar bij Recenter tillen ze rust naar een hoger niveau. 😌",
+    summary:
+      "Een mix van UGC en high-end content die zowel het gevoel als de kwaliteit van Recenter overbrengt.",
+    introQuote:
+      "En omdat Recenter draait rond vertragen, zorgden we ervoor dat ook de content dat gevoel behoudt.",
+    storyTitle: false,
+    storyBlocks: [
+      {
+        text: "Bij Ami Amis weten we al wat chillen is, maar bij Recenter tillen ze rust naar een hoger niveau. 😌",
+      },
+      {
+        text: "Hun retreats zitten in het weekend al goed vol met mensen die willen vertragen, ontsnappen aan de drukte en even terug de natuur in willen. Alleen bleef het doorheen de week vaak net iets té stil.",
+      },
+      {
+        text: "Dus kwam de vraag: hoe krijgen we ook bedrijven warm voor een retreat bij Recenter?",
+      },
+      {
+        text: "Wij trokken er met een deel van de Ami Amis-squad naartoe en deden vooral wat toekomstige bezoekers zelf ook zouden doen: ervaren. We vlogden ons verblijf en maakten daar zoveel mogelijk verschillende video’s van. Want je kunt natuurlijk zélf vertellen hoe goed je retreat is… maar iemand anders die zichtbaar geniet? Dat verkoopt toch net iets makkelijker. 😉",
+      },
+      {
+        text: "Naast de spontane UGC-content namen we ook twee high-end testimonials op met founder Bert en CFO Jonathan. Zo combineerden we twee werelden: authentieke UGC-content die dichtbij voelt én stijlvolle content die vertrouwen en kwaliteit uitstraalt.",
+      },
+      {
+        text: "En omdat Recenter draait rond vertragen, zorgden we ervoor dat ook de content dat gevoel behoudt. Rustig, warm en sfeervol… Maar wel gemonteerd op een manier die overeind blijft in de iets minder rustige wereld van social media. 🌲📱",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], []],
+    deliverables: ["UGC-content", "Testimonials", "Social video"],
+    hero: {
+      image: "/images/cases/recenter/recenter-video-poster.jpg",
+      poster: "/images/cases/recenter/recenter-video-poster.jpg",
+    },
+    gallery: [
+      {
+        src: "/images/cases/recenter/recenter-video-poster.jpg",
+        alt: "ReCenter retreatvideo in een natuurlijke omgeving",
+      },
+    ],
+    media: {
+      hero: {
+        type: "vimeo",
+        id: "1226965749",
+        title: "ReCenter testimonial",
+        orientation: "portrait",
+        wide: false,
+        aspectRatio: "9 / 16",
+        poster: "/images/cases/recenter/recenter-video-poster.jpg",
+      },
+      verticalVideos: [
+        {
+          type: "vimeo",
+          id: "1226965749",
+          title: "ReCenter testimonial",
+          orientation: "portrait",
+          wide: false,
+          aspectRatio: "9 / 16",
+          poster: "/images/cases/recenter/recenter-video-poster.jpg",
+        },
+      ],
+    },
+    vimeoEmbeds: [
+      {
+        id: "1226965749",
+        title: "ReCenter testimonial",
+        poster: "/images/cases/recenter/recenter-video-poster.jpg",
+      },
+    ],
+    facts: [],
+    question: {
+      title: "Probleem",
+      text: "De weekends van Recenter zaten goed gevuld, maar doorheen de week bleef er nog veel ruimte over. Hoe overtuig je bedrijven dat een retreat niet alleen leuk is, maar ook een waardevolle investering in hun team?",
+    },
+    approach: {
+      title: "Oplossing",
+      text: "We maakten de ervaring zelf het verhaal. Met onze eigen vlogcontent brachten we Recenter spontaan en herkenbaar in beeld, alsof je er zelf al even bij was. Daarnaast capteerden we testimonials met de mensen achter het merk voor extra vertrouwen en diepgang. Uit één draaidag creëerden we verschillende formats, afgestemd op verschillende momenten binnen de customer journey.",
+    },
+    result: {
+      title: "Resultaat",
+      text: "Een mix van UGC en high-end content die zowel het gevoel als de kwaliteit van Recenter overbrengt. Spontaan genoeg om op social media te werken, sterk genoeg om bedrijven te overtuigen en vooral: helemaal in de rustige wereld van Recenter. 🌿",
+    },
+    externalVideoUrls: [
+      "https://vimeo.com/1226965749?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
+    slug: "opnieuw-en-co",
+    template: "x-oats-social",
+    client: "Opnieuw & Co",
+    heroTitle: "Opnieuw & Co",
+    title: "Oude spullen, een nieuwe look. ♻️✨",
+    subtitle: "Seizoenscampagnes met tweedehandsspullen in de hoofdrol.",
+    category: "Design & branding",
+    categories: ["Design & branding", "Marketingstrategie"],
+    year: "2024–2026",
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "image-gallery",
+    seo: {
+      title: "Opnieuw & Co campagnes | Ami Amis",
+      description:
+        "Voor Opnieuw & Co maken we frisse zomer- en wintercampagnes die tweedehandsspullen telkens op een nieuwe manier in de kijker zetten.",
+    },
+    intro:
+      "Voor Opnieuw & Co maken we ondertussen al drie jaar de campagnes voor hun winter- en zomercollecties.",
+    summary:
+      "Een reeks affiches die jaar na jaar herkenbaar blijven voor Opnieuw & Co, maar telkens iets nieuws brengen.",
+    introQuote:
+      "De briefing is telkens simpel: zet onze tweedehandsspullen op een leuke manier in de kijker.",
+    storyTitle: false,
+    storyBlocks: [
+      {
+        text: "Voor Opnieuw & Co maken we ondertussen al drie jaar de campagnes voor hun winter- en zomercollecties. De briefing is telkens simpel: zet onze tweedehandsspullen op een leuke manier in de kijker.",
+      },
+      { text: "Daar kunnen we wel iets mee. 😉" },
+      {
+        text: "Opnieuw & Co bezorgt ons de praktische info, wij krijgen de creatieve vrijheid. Zo bouwden we bijvoorbeeld een kerstboom en kerstkrans volledig uit tweedehandsspullen. 🎄 Voor de zomercampagne hingen we dan weer kleding aan een waslijn om instant dat zonnige gevoel op te roepen. ☀️👕",
+      },
+      {
+        text: "Voor hun 30-jarig bestaan in 2025 mochten we nog een stap verder gaan. We doken in hun oude huisstijl en bouwden de campagne volledig rond die retro-look. Een kleine throwback, maar dan in een nieuw jasje. 📼✨",
+      },
+      {
+        text: "En omdat één affiche zelden genoeg is, trekken we elk concept meteen door naar verschillende toepassingen: banners, A4-posters, prints voor hun camion en andere formaten. Alles wordt meteen technisch correct en printklaar aangeleverd. Geen extra gedoe dus. 🙌",
+      },
+      {
+        text: "En na zo’n vlotte samenwerking? Dan komen ze het jaar erna sowieso opnieuw bij ons aankloppen. 😉",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], []],
+    deliverables: ["Campagneconcept", "Affiches", "Banners", "Printdesign"],
+    hero: {
+      image: "/images/cases/opnieuw-co/dag-van-de-kringloopwinkel-2025.webp",
+      orientation: "portrait",
+      aspectRatio: "1200 / 1684",
+      contain: true,
+      hideCaption: true,
+    },
+    includeHeroInGallery: true,
+    gallery: [
+      {
+        src: "/images/cases/opnieuw-co/dag-van-de-kringloopwinkel-2025.webp",
+        alt: "Retro-affiche voor de Dag van de Kringloopwinkel 2025",
+      },
+    ],
+    imageGalleryTitle: "Campagneaffiches",
+    imageGalleryEyebrow: "2024–2026",
+    imageGallery: [
+      {
+        src: "/images/cases/opnieuw-co/zomert-2024.webp",
+        alt: "Zomert-campagne van Opnieuw & Co uit 2024",
+        orientation: "portrait",
+        width: 1200,
+        height: 1688,
+        contain: true,
+      },
+      {
+        src: "/images/cases/opnieuw-co/dag-van-de-kringloopwinkel-2025.webp",
+        alt: "Retro-affiche voor de Dag van de Kringloopwinkel 2025",
+        orientation: "portrait",
+        width: 1200,
+        height: 1684,
+        contain: true,
+      },
+      {
+        src: "/images/cases/opnieuw-co/zomert-2026.webp",
+        alt: "Zomert-campagne van Opnieuw & Co uit 2026",
+        orientation: "portrait",
+        width: 1200,
+        height: 1697,
+        contain: true,
+      },
+      {
+        src: "/images/cases/opnieuw-co/dag-van-de-kringloopwinkel-2026.webp",
+        alt: "Affiche voor de Dag van de Kringloopwinkel 2026",
+        orientation: "portrait",
+        width: 1200,
+        height: 1733,
+        contain: true,
+      },
+      {
+        src: "/images/cases/opnieuw-co/wintert-2026.webp",
+        alt: "Wintert-campagne van Opnieuw & Co uit 2026",
+        orientation: "portrait",
+        width: 1200,
+        height: 1684,
+        contain: true,
+      },
+    ],
+    facts: [],
+    question: {
+      title: "Probleem",
+      text: "Hoe zorg je ervoor dat een terugkerende zomer- of wintercampagne elk jaar opnieuw fris en verrassend aanvoelt?",
+    },
+    approach: {
+      title: "Oplossing",
+      text: "We vertrekken telkens vanuit het seizoen, de collectie en de identiteit van Opnieuw & Co en bouwen daar een nieuw creatief concept rond. Herkenbaar, maar nooit copy-paste. ♻️",
+    },
+    result: {
+      title: "Resultaat",
+      text: "Een reeks affiches die jaar na jaar herkenbaar blijven voor Opnieuw & Co, maar telkens iets nieuws brengen. Helemaal printklaar afgeleverd. ✨",
+    },
+  },
+  {
+    slug: "craftails",
+    template: "x-oats-social",
+    client: "Craftails",
+    heroTitle: "Craftails",
+    title: "Alles uit één event halen. 🍸🎥",
+    subtitle: "Van aftermovie naar meerdere contentformats op dezelfde draaidag.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Social content", "Marketingstrategie"],
+    year: "2023",
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "vimeo-video",
+    seo: {
+      title: "Craftails eventcontent | Ami Amis",
+      description:
+        "Voor Craftails haalden we uit events en teambuildings meerdere formats: aftermovies, productvideo, interviews en teamcontent.",
+    },
+    intro:
+      "Craftails is een ready-to-serve cocktailmerk met een simpel maar heerlijk principe: ijs, Craftails, garnering… en klaar. 🍹",
+    summary:
+      "Van één simpele aftermovie naar verschillende contentformats die elk een ander stukje van het merk laten zien.",
+    introQuote:
+      "Dus: wil je nét iets meer uit je draaidag halen dan gewoon een leuke recap? Dan weet je ons te vinden. 😉",
+    storyTitle: false,
+    storyBlocks: [
+      {
+        text: "Craftails is een ready-to-serve cocktailmerk met een simpel maar heerlijk principe: ijs, Craftails, garnering… en klaar. 🍹",
+      },
+      {
+        text: "In 2023 werkten we voor het eerst samen tijdens één van hun events. De opdracht? Een aftermovie maken. Maar goed, als we daar toch zijn, kunnen we evengoed nog wat extra content meepikken. 😉",
+      },
+      {
+        text: "Dus zetten we ook een medewerker voor de lens om in een korte video te tonen hoe makkelijk het product werkt. Twee vliegen, één klap.",
+      },
+      { text: "En daar bleef het niet bij." },
+      {
+        text: "Voor een volgende teambuilding klopte Craftails opnieuw bij ons aan. Wat eerst gewoon een aftermovie moest worden, groeide uit tot een persoonlijk interview waarin de medewerkers vertellen over het merk, hoe het ontstaan is en waarom ze er zelf zo hard in geloven. ❤️ Want het enthousiasme van je eigen team zegt soms meer over je merk dan eender welke verkooppraat.",
+      },
+      {
+        text: "Tijdens diezelfde teambuilding speelde het team ook een eigen versie van De Mol, compleet met bodycams. In plaats van die beelden gewoon achter elkaar te plakken, maakten we er een echt verhaal van: spanning, verdenkingen, chaos en vooral héél veel plezier. 🕵️‍♀️🍸",
+      },
+      {
+        text: "Van één simpele aftermovie naar verschillende contentformats die elk een ander stukje van het merk laten zien.",
+      },
+      {
+        text: "Dus: wil je nét iets meer uit je draaidag halen dan gewoon een leuke recap? Dan weet je ons te vinden. 😉",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], [], [], []],
+    deliverables: ["Aftermovie", "Productvideo", "Interview", "Teamcontent"],
+    hero: {
+      image: "/images/cases/craftails/craftails-video-poster.jpg",
+      poster: "/images/cases/craftails/craftails-video-poster.jpg",
+    },
+    gallery: [
+      {
+        src: "/images/cases/craftails/craftails-video-poster.jpg",
+        alt: "Craftails op de horecabeurs in Gent",
+      },
+    ],
+    media: {
+      hero: {
+        type: "vimeo",
+        id: "1226970867",
+        title: "Craftails aftermovie",
+        orientation: "landscape",
+        wide: true,
+        aspectRatio: "16 / 9",
+        poster: "/images/cases/craftails/craftails-video-poster.jpg",
+      },
+      verticalVideos: [
+        {
+          type: "vimeo",
+          id: "1226970867",
+          title: "Craftails aftermovie",
+          orientation: "landscape",
+          wide: true,
+          aspectRatio: "16 / 9",
+          poster: "/images/cases/craftails/craftails-video-poster.jpg",
+        },
+      ],
+    },
+    vimeoEmbeds: [
+      {
+        id: "1226970867",
+        title: "Craftails aftermovie",
+        poster: "/images/cases/craftails/craftails-video-poster.jpg",
+      },
+    ],
+    facts: [],
+    question: {
+      title: "Probleem",
+      text: "Veel bedrijven boeken een aftermovie en klaar. Terwijl er op zo’n event vaak nog véél meer verhalen, mensen en momenten rondlopen die de moeite zijn om vast te leggen.",
+    },
+    approach: {
+      title: "Oplossing",
+      text: "Wij kijken daarom altijd verder. Als we er toch zijn met camera’s, zoeken we mee naar extra content die logisch aansluit bij het moment: een korte productvideo, een sterk interview, spontane teamcontent… zonder er een extra productie van te maken. 🎥🍸",
+    },
+    result: {
+      title: "Resultaat",
+      text: "Craftails kreeg niet gewoon een mooie recap van hun events, maar meerdere video’s met elk een eigen doel. Zo haalden we veel meer uit dezelfde draaidag en bouwden we tegelijk verder aan hun merkverhaal. 😉",
+    },
+    externalVideoUrls: [
+      "https://vimeo.com/1226970867?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
+    slug: "shopwedo",
+    template: "x-oats-social",
+    client: "ShopWeDo",
+    heroTitle: "ShopWeDo",
+    title: "Meer dan een aftermovie 🎥",
+    subtitle:
+      "Een emotionele terugblik op tien jaar ShopWeDo, met het feest als verdiende finale.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Fotografie"],
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "vimeo-video",
+    seo: {
+      title: "ShopWeDo jubileumvideo | Ami Amis",
+      description:
+        "Voor tien jaar ShopWeDo maakten we meer dan een aftermovie: een emotionele terugblik met het jubileumfeest als verdiende finale.",
+    },
+    intro:
+      "10 jaar ShopWeDo. Da’s niet gewoon een verjaardag met taart en een paar kaarsjes. Dat zijn tien jaar ondernemen, groeien, mensen leren kennen, successen vieren en waarschijnlijk hier en daar eens goed vloeken. 😉",
+    summary:
+      "Een jubileumvideo die verder gaat dan ‘kijk eens wat een leuk feestje’. Een emotionele terugblik op tien jaar ShopWeDo, met het feest als verdiende finale.",
+    introQuote:
+      "Zo werd de video geen klassieke recap van één avond, maar een klein eerbetoon aan alles wat eraan voorafging. ❤️",
+    storyTitle: false,
+    storyBlocks: [
+      {
+        text: "10 jaar ShopWeDo. Da’s niet gewoon een verjaardag met taart en een paar kaarsjes. Dat zijn tien jaar ondernemen, groeien, mensen leren kennen, successen vieren en waarschijnlijk hier en daar eens goed vloeken. 😉",
+      },
+      {
+        text: "Voor hun jubileum wilden we daarom méér maken dan gewoon een aftermovie van een feestje.",
+      },
+      {
+        text: "We begonnen bij het begin en blikten terug op de afgelopen tien jaar ShopWeDo. De mensen, de groei, de mijlpalen en alles wat ervoor gezorgd heeft dat ze vandaag staan waar ze staan. Zo bouwden we eerst de emotie op achter die verjaardag, voor we terechtkwamen bij waar die tien jaar samenkwamen: hun jubileumfeest. 🥳",
+      },
+      { text: "En dat feest mocht er zijn." },
+      {
+        text: "In de iconische Maneblusser legden we de avond vast met dynamische videobeelden en sfeervolle fotografie. Niet gewoon wie er stond en wat er gebeurde, maar vooral hoe het voelde om daar samen tien jaar ShopWeDo te vieren. 🎉📸",
+      },
+      {
+        text: "Zo werd de video geen klassieke recap van één avond, maar een klein eerbetoon aan alles wat eraan voorafging. ❤️",
+      },
+    ],
+    storyHighlights: [[], [], [], [], [], []],
+    deliverables: ["Jubileumvideo", "Aftermovie", "Fotografie"],
+    hero: {
+      image: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+      poster: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+    },
+    gallery: [
+      {
+        src: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+        alt: "Gouden jubileumbeeld voor tien jaar ShopWeDo",
+      },
+    ],
+    media: {
+      hero: {
+        type: "vimeo",
+        id: "1228812669",
+        hash: "9869d0b45d",
+        title: "ShopWeDo jubileumvideo",
+        orientation: "landscape",
+        wide: true,
+        aspectRatio: "16 / 9",
+        poster: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+      },
+      verticalVideos: [
+        {
+          type: "vimeo",
+          id: "1228812669",
+          hash: "9869d0b45d",
+          title: "ShopWeDo jubileumvideo",
+          orientation: "landscape",
+          wide: true,
+          aspectRatio: "16 / 9",
+          poster: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+        },
+      ],
+    },
+    vimeoEmbeds: [
+      {
+        id: "1228812669",
+        hash: "9869d0b45d",
+        title: "ShopWeDo jubileumvideo",
+        poster: "/images/cases/shopwedo/shopwedo-video-poster.webp",
+      },
+    ],
+    facts: [],
+    question: {
+      title: "Probleem",
+      text: "Een tienjarig jubileum is meer dan een goed feestje. Hoe zorg je ervoor dat een aftermovie niet alleen toont wat er die avond gebeurde, maar ook voelbaar maakt waarom die avond zoveel betekende?",
+    },
+    approach: {
+      title: "Oplossing",
+      text: "We vertelden het verhaal niet vanaf het feest, maar vanaf tien jaar eerder. We blikten terug op de weg die ShopWeDo had afgelegd en lieten die geschiedenis uitmonden in het jubileumfeest.\n\nTijdens de avond combineerden we video en fotografie om niet alleen de actie, maar vooral de trots, sfeer en connectie tussen de mensen vast te leggen. 🎥✨",
+    },
+    result: {
+      title: "Resultaat",
+      text: "Een jubileumvideo die verder gaat dan ‘kijk eens wat een leuk feestje’. Een emotionele terugblik op tien jaar ShopWeDo, met het feest als verdiende finale.\n\nEen herinnering voor het team, een sterk verhaal voor klanten en partners en vooral: tien jaar werk gevangen in een paar minuten gevoel. ❤️",
+    },
+    externalVideoUrls: [
+      "https://vimeo.com/1228812669?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
     slug: "vdab",
     template: "x-oats-social",
     client: "VDAB",
     heroTitle: "VDAB",
-    title: "Events, jobbeurzen en fotografie",
-    subtitle: "Maandelijkse events vastgelegd in video en foto.",
+    title: "Extra handen nodig? Say less. 🫶",
+    subtitle: "Flexibele video- en fotografiepartner voor jobbeurzen en events.",
     category: "Video & campagnes",
     categories: ["Video & campagnes", "Fotografie", "Social content"],
     year: "2026",
@@ -2905,17 +3355,29 @@ const rawCases = [
     needsEditorialSplit: true,
     mediaType: "mixed-media",
     intro:
-      "Op zoek naar een job? Dan is VDAB absoluut the place to be. Als videovrienden staan we klaar om de maandelijkse jobbeurzen en andere events van VDAB vast te leggen op beeld. Daarnaast hebben we ook al een aantal foto-opdrachten voor hen mogen uitvoeren – iets waar we bijzonder trots op zijn!",
+      "VDAB organiseert maandelijks jobbeurzen, events en andere initiatieven die allemaal in beeld gebracht moeten worden.",
     summary:
-      "Maandelijkse jobbeurzen en events vastgelegd in video, aangevuld met foto-opdrachten.",
+      "Een vaste creatieve partner waarop VDAB kan terugvallen wanneer het druk wordt.",
     introQuote:
-      "VDAB wilde events, jobdates en persoonlijke verhalen inzetten als toegankelijke video- en fotocontent.",
+      "Geen eenmalige productie dus, maar een samenwerking waarbij we klaarstaan wanneer er extra creatieve handen nodig zijn.",
     storyBlocks: [
       {
-        text: "Op zoek naar een job? Dan is VDAB absoluut the place to be. Als videovrienden staan we klaar om de maandelijkse jobbeurzen en andere events van VDAB vast te leggen op beeld. Daarnaast hebben we ook al een aantal foto-opdrachten voor hen mogen uitvoeren – iets waar we bijzonder trots op zijn!",
+        text: "VDAB organiseert maandelijks jobbeurzen, events en andere initiatieven die allemaal in beeld gebracht moeten worden. Alleen: met zoveel op de planning is het niet altijd haalbaar om alles intern te blijven doen.",
+      },
+      {
+        text: "Enter Ami Amis.🚪",
+      },
+      {
+        text: "Wij sprongen bij als vaste videovrienden en namen een deel van die producties uit handen. Van jobbeurzen tot events: we zorgden ervoor dat de sfeer, mensen en verhalen netjes werden vastgelegd zonder dat VDAB daar zelf extra kopzorgen aan had.",
+      },
+      {
+        text: "Bovendien legden we de videocamera af en toe even opzij en namen we de fotocamera erbij. 📸",
+      },
+      {
+        text: "Geen eenmalige productie dus, maar een samenwerking waarbij we klaarstaan wanneer er extra creatieve handen nodig zijn.",
       },
     ],
-    storyHighlights: [[]],
+    storyHighlights: [[], [], [], [], []],
     deliverables: ["Eventvideo", "Social media video", "Fotografie"],
     hero: {
       image: "/work/vdab.webp",
@@ -2942,16 +3404,16 @@ const rawCases = [
       { label: "Type", value: "event en social" },
     ],
     question: {
-      title: "Hoe maak je jobevents en getuigenissen menselijker en concreter?",
-      text: "VDAB wilde events, jobdates en persoonlijke verhalen inzetten als toegankelijke video- en fotocontent.",
+      title: "Probleem",
+      text: "VDAB organiseert heel wat events en initiatieven, maar heeft niet altijd de interne capaciteit om alles zelf in beeld te brengen. Hoe zorg je ervoor dat die content toch consistent en kwalitatief wordt gemaakt, zonder je eigen team extra te belasten?",
     },
     approach: {
-      title: "Authentieke verhalen met duidelijke eventenergie.",
-      text: "We legden jobbeurzen, werkgevers en getuigenissen vast in dynamische formats die tonen wat VDAB mogelijk maakt.",
+      title: "Oplossing",
+      text: "Wij springen flexibel bij als externe videopartner en nemen producties van A tot Z mee over. Van maandelijkse jobbeurzen en events tot fotografie: VDAB geeft de briefing door, wij zorgen dat het in beeld komt. 🎬",
     },
     result: {
-      title: "Content die werkzoekenden sneller mee in het verhaal trekt.",
-      text: "VDAB kreeg herkenbare video- en fotocontent voor events, social en gerichte communicatie.",
+      title: "Resultaat",
+      text: "Een vaste creatieve partner waarop VDAB kan terugvallen wanneer het druk wordt. Minder geregel intern, consistente content en vooral: volledige ontzorging wanneer dat nodig is. 🤝",
       stats: [
         { value: "3", label: "video’s" },
         { value: "job", label: "beurzen" },
@@ -2960,7 +3422,7 @@ const rawCases = [
       ],
     },
     outro:
-      "VDAB kreeg herkenbare video- en fotocontent voor events, social en gerichte communicatie.",
+      "Een vaste creatieve partner waarop VDAB kan terugvallen wanneer het druk wordt.",
     externalVideoUrl: "https://f.io/l92Q995M",
   },
   {

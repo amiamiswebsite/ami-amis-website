@@ -103,6 +103,10 @@ function uniqueMediaItems(items) {
 }
 
 function isPortraitMedia(item = {}) {
+  if (!item) {
+    return false;
+  }
+
   const ratio = String(item.aspectRatio || "").replace(/\s/g, "");
   return item.orientation === "portrait" || ratio === "9/16" || ratio === "4/5";
 }
@@ -131,15 +135,27 @@ function youtubeSource(video) {
 }
 
 function isVimeoMedia(item = {}) {
+  if (!item) {
+    return false;
+  }
+
   return item.type === "vimeo" || Boolean(item.id && !item.type && !getYouTubeId(item));
 }
 
 function isLocalVideoMedia(item = {}) {
+  if (!item) {
+    return false;
+  }
+
   const src = String(item.src || "");
   return item.type === "video" || Boolean(src.match(/\.(mp4|webm|mov)(\?.*)?$/i));
 }
 
 function isImageMedia(item = {}) {
+  if (!item) {
+    return false;
+  }
+
   const src = item.src || item.poster || "";
   return item.type === "image" || Boolean(
     src &&
@@ -195,6 +211,8 @@ function getHeroMedia(caseData) {
         poster: caseData.hero.poster || caseData.hero.image,
         title: caseData.title,
         alt: `${caseData.client} projectbeeld`,
+        contain: caseData.hero.contain,
+        hideCaption: caseData.hero.hideCaption,
         orientation: caseData.hero.orientation || "landscape",
         aspectRatio: caseData.hero.aspectRatio || "16 / 9",
       };
@@ -251,7 +269,9 @@ function getHeroGalleryVideo(caseData, heroMedia) {
 
 function getGalleryGroups(caseData) {
   const groups = [];
-  const seenMedia = new Set([mediaKey(getHeroMedia(caseData))].filter(Boolean));
+  const seenMedia = new Set(
+    caseData.includeHeroInGallery ? [] : [mediaKey(getHeroMedia(caseData))].filter(Boolean),
+  );
 
   if (caseData.campaignGalleryType === "instagramProfile" && caseData.instagramProfile) {
     groups.push({
@@ -942,7 +962,7 @@ function CaseMediaVisual({
 
   if (isImageMedia(item)) {
     return (
-      <InteractiveFigure className={`${styles.chromelessVideo} ${styles.imageFrame} ${className}`}>
+      <InteractiveFigure className={`${styles.chromelessVideo} ${styles.imageFrame} ${item.contain ? styles.imageFrameContain : ""} ${className}`}>
         <div className={`${styles.chromelessVideoScreen} ${styles.chromelessVideoScreenNoAction}`}>
           <img
             alt={item.alt || title || `${client} projectbeeld`}
@@ -1423,7 +1443,7 @@ function StaticProcessSection({ caseData }) {
           </article>
         ))}
       </div>
-      <ScrollIndicator targetId="case-process-steps" />
+      <ScrollIndicator count={steps.length} targetId="case-process-steps" />
     </section>
   );
 }
@@ -1977,11 +1997,20 @@ function EditorialSections({ caseData }) {
 }
 
 function GallerySection({ group, index, total }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+
   if (!group || (group.type !== "instagramProfile" && !group.images?.length)) {
     return null;
   }
 
   const isPaperTheme = index % 2 === 1;
+  const lightboxItems = (group.images || []).map((image, imageIndex) => ({
+    key: `gallery-${image.src}-${imageIndex}`,
+    type: "photo",
+    orientation: image.orientation || "landscape",
+    label: image.alt || `${group.title} ${imageIndex + 1}`,
+    image,
+  }));
 
   return (
     <section
@@ -2003,15 +2032,33 @@ function GallerySection({ group, index, total }) {
           >
             {group.images.map((image, index) => (
               <InteractiveFigure
-                className={image.orientation === "landscape" ? styles.galleryLandscape : ""}
+                className={`${image.orientation === "landscape" ? styles.galleryLandscape : ""} ${image.contain ? styles.galleryContain : ""}`}
                 key={`${image.src}-${index}`}
               >
-                <img alt={image.alt || group.title} loading="lazy" src={mediaPath(image.src || image.poster)} />
+                <button
+                  aria-label={`Open grote versie: ${image.alt || group.title}`}
+                  className={styles.galleryLightboxTrigger}
+                  onClick={() => setActiveIndex(index)}
+                  type="button"
+                >
+                  <img alt={image.alt || group.title} loading="lazy" src={mediaPath(image.src || image.poster)} />
+                  <span aria-hidden="true" className={styles.galleryZoomCue}>
+                    <Icon name="maximize" size="sm" />
+                  </span>
+                </button>
               </InteractiveFigure>
             ))}
           </div>
         )}
       </div>
+      {activeIndex !== null ? (
+        <MediaLightbox
+          activeIndex={activeIndex}
+          items={lightboxItems}
+          onChange={setActiveIndex}
+          onClose={() => setActiveIndex(null)}
+        />
+      ) : null}
     </section>
   );
 }
@@ -2339,7 +2386,7 @@ export default function TarzanServicesCasePage({ caseData }) {
           className={`${styles.page} ${usesModernTemplate ? styles.liersePage : ""} ${caseData.slug === "humgy" ? styles.humgyPage : ""} ${isSjbCase ? styles.sjbPage : ""} ${isImoreCase ? styles.imorePage : ""} ${isBillieBonkersCase ? styles.billieBonkersPage : ""} ${isVideoShowcaseCase ? styles.videoShowcasePage : ""} ${heroPageClass}`}
         >
           <a
-            className={`hero__logo ${styles.logo} ${isSjbCase ? styles.sjbLogo : ""}`}
+            className={`hero__logo site-header-logo ${styles.logo} ${isSjbCase ? styles.sjbLogo : ""}`}
             href={assetPath("/")}
             aria-label="Ami Amis home"
           />
@@ -2397,7 +2444,7 @@ export default function TarzanServicesCasePage({ caseData }) {
                 className={`${styles.heroVideo} ${heroIsPortrait ? styles.heroVideoPortrait : styles.heroVideoLandscape}`}
                 client={caseData.client}
                 item={heroMedia}
-                poster={heroMedia.poster || caseData.hero?.poster || caseData.hero?.image}
+                poster={heroMedia?.poster || caseData.hero?.poster || caseData.hero?.image}
                 priority
                 showControls={usesModernTemplate}
               />

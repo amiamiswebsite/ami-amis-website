@@ -1,13 +1,11 @@
 .indicator {
-  position: relative;
-  width: min(var(--case-max), 100%);
-  height: var(--aa-space-2);
+  display: flex;
+  width: fit-content;
+  min-height: 18px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin: var(--aa-space-5) auto 0;
-  overflow: hidden;
-  border-radius: var(--aa-radius-pill);
-  background: var(--aa-color-background-canvas);
-  box-shadow: inset 0 0 0 var(--aa-border-thin) var(--aa-color-border-strong);
-  pointer-events: none;
   visibility: hidden;
 }
 
@@ -15,23 +13,29 @@
   visibility: visible;
 }
 
-.indicator span {
-  position: absolute;
-  inset: 0 auto auto 0;
-  border-radius: inherit;
-  background: var(--aa-color-background-accent-blue);
-  width: var(--scroll-thumb-size, var(--aa-space-6));
-  height: 100%;
-  transform: translateX(var(--scroll-thumb-offset, 0));
+.indicator button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 2px solid var(--aa-color-border-strong);
+  border-radius: var(--aa-radius-pill);
+  background: transparent;
+  cursor: pointer;
+  transition: width 160ms ease, background-color 160ms ease;
+}
+
+.indicator button[aria-pressed="true"] {
+  width: 30px;
+  background: var(--aa-color-background-accent-yellow, var(--yellow));
+}
+
+.indicator button:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
 }
 
 @media (forced-colors: active) {
-  .indicator {
-    background: Canvas;
-    outline: 1px solid CanvasText;
-  }
-
-  .indicator span {
+  .indicator button[aria-pressed="true"] {
     background: Highlight;
     forced-color-adjust: none;
   }
