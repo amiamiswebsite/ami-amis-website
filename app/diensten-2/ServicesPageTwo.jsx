@@ -258,16 +258,32 @@ function TypingRotator({ reducedMotion }) {
 }
 
 function ServicesHeroVideo({ reducedMotion }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || prefersReducedMotion) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
+
+    void video.play().catch(() => undefined);
+  }, [reducedMotion]);
+
   return (
     <DepthFrame className={`${styles.heroVisual} ${styles.heroVideoFrame}`} reducedMotion={reducedMotion}>
       <video
         aria-label="Ami Amis achter de schermen"
-        autoPlay
         loop
         muted
         playsInline
         poster={assetPath(SERVICES_HERO_POSTER)}
         preload="auto"
+        ref={videoRef}
       >
         <source src={assetPath(SERVICES_HERO_VIDEO)} type="video/mp4" />
       </video>
