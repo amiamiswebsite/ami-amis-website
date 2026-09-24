@@ -3338,6 +3338,127 @@ const rawCases = [
     ],
   },
   {
+    slug: "kunst-en-stad",
+    template: "x-oats-social",
+    client: "Kunst&stad | Stad Antwerpen",
+    heroTitle: "Kunst&stad",
+    title: "Kunst&stad | Stad Antwerpen",
+    subtitle:
+      "Een videoreeks over toegankelijkheid en inclusie in de Antwerpse cultuursector.",
+    category: "Video & campagnes",
+    categories: ["Video & campagnes", "Social content"],
+    year: "2026",
+    sourceUrl: null,
+    sourceType: "manual-new-copy",
+    needsContent: false,
+    needsReview: false,
+    needsAssetDownload: false,
+    needsMedia: false,
+    needsEditorialSplit: false,
+    mediaType: "vimeo-video",
+    seo: {
+      title: "Kunst&stad | Stad Antwerpen | Ami Amis",
+      description:
+        "Voor Kunst&stad van Stad Antwerpen maakten we een videoreeks die cultuurorganisaties inspireert om inclusiever en toegankelijker te werken.",
+    },
+    intro:
+      "Voor Kunst&stad van Stad Antwerpen mochten we een reeks video’s maken rond toegankelijkheid en inclusie in de Antwerpse cultuursector.",
+    summary:
+      "Met compacte draaisessies, gerichte testimonials en een eenvoudig script brachten we inclusie en toegankelijkheid menselijk in beeld.",
+    introQuote:
+      "De bedoeling: andere Antwerpse organisaties inspireren. Interessant!",
+    storyTitle: false,
+    storyBlocks: [
+      {
+        text: "Voor Kunst&stad van Stad Antwerpen mochten we een reeks video’s maken rond toegankelijkheid en inclusie in de Antwerpse cultuursector. De bedoeling: andere Antwerpse organisaties inspireren. Interessant!",
+      },
+      {
+        text: "De omstandigheden maakten het best spannend: een krap budget, organisatorisch veel gepuzzel en weinig marge om tijd te verliezen. Dus: knallen geblazen. Dankzij de open communicatie met de klant konden we snel beslissingen nemen en de productie zo compact mogelijk organiseren.",
+      },
+      {
+        text: "Voor het eerst werkten we samen met blinde en dove mensen. En daar hebben we zelf ook verrassend veel uit meegenomen. Zo ontdekten we onder andere hoe mooi en expressief Vlaamse Gebarentaal is om in beeld te brengen. Het ondertitelen van een testimonial in gebaren was iets moeilijker, maar daar hebben we ook veel uit geleerd!",
+      },
+      {
+        text: "Met een compact script, gerichte testimonials en korte draaisessies brachten we onder andere Zomer van Antwerpen en Meeuw van Olympique Dramatique in beeld.",
+      },
+      {
+        text: "Met succes, want na de eerste video’s werden er meteen extra producties bijgeboekt. Daar zeggen wij geen nee tegen, natuurlijk…",
+      },
+    ],
+    storyHighlights: [[], [], [], [], []],
+    deliverables: ["Videoreeks", "Testimonials", "Ondertiteling"],
+    hero: {
+      image: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+      poster: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+    },
+    gallery: [
+      {
+        src: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+        alt: "Toegankelijke opvoering van Meeuw door Olympique Dramatique",
+      },
+    ],
+    media: {
+      hero: {
+        type: "vimeo",
+        id: "1229899451",
+        title: "Meeuw van Olympique Dramatique",
+        orientation: "landscape",
+        wide: true,
+        aspectRatio: "16 / 9",
+        poster: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+      },
+      verticalVideos: [
+        {
+          type: "vimeo",
+          id: "1229899451",
+          title: "Meeuw van Olympique Dramatique",
+          orientation: "landscape",
+          wide: true,
+          aspectRatio: "16 / 9",
+          poster: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+        },
+        {
+          type: "vimeo",
+          id: "1229900084",
+          title: "Zomer van Antwerpen",
+          orientation: "landscape",
+          wide: true,
+          aspectRatio: "16 / 9",
+          poster: "/images/cases/kunst-en-stad/zomer-van-antwerpen-poster.jpg",
+        },
+      ],
+    },
+    vimeoEmbeds: [
+      {
+        id: "1229899451",
+        title: "Meeuw van Olympique Dramatique",
+        poster: "/images/cases/kunst-en-stad/meeuw-poster.jpg",
+      },
+      {
+        id: "1229900084",
+        title: "Zomer van Antwerpen",
+        poster: "/images/cases/kunst-en-stad/zomer-van-antwerpen-poster.jpg",
+      },
+    ],
+    facts: [],
+    question: {
+      title: "Probleem",
+      text: "Kunst&stad wil Antwerpse cultuurorganisaties inspireren om inclusiever en toegankelijker te werken, met een beperkt productiebudget.",
+    },
+    approach: {
+      title: "Oplossing",
+      text: "Met compacte draaisessies, gerichte testimonials en een eenvoudig script brachten we twee organisaties efficiënt en menselijk in beeld.",
+    },
+    result: {
+      title: "Resultaat",
+      text: "We maakten video’s rond Zomer van Antwerpen en Meeuw van Olympique Dramatique. De samenwerking verliep super en er werden meteen extra video’s besteld.",
+    },
+    externalVideoUrls: [
+      "https://vimeo.com/1229899451?share=copy&fl=sv&fe=ci",
+      "https://vimeo.com/1229900084?share=copy&fl=sv&fe=ci",
+    ],
+  },
+  {
     slug: "vdab",
     template: "x-oats-social",
     client: "VDAB",

@@ -283,8 +283,8 @@ export default function TeamPage() {
                   </div>
                   <div className="team-story-hero__closing">
                     <p className="team-story-hero__question">
-                      Dus, wilt ge samenwerken met een partner die zelfs saaie video’s sexy
-                      maakt?
+                      “Dus, wilt ge samenwerken met een partner die zelfs saaie video’s sexy
+                      maakt?”
                     </p>
                     <p className="team-story-hero__answer">
                       <strong>Zeg dan Ami A-Oui 🇫🇷🥖.</strong>

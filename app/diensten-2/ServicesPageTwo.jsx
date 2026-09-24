@@ -29,10 +29,8 @@ const OTHER_PROBLEM_INTENT = {
   problemNumber: "07",
   problemTitle: "Een ander probleem?",
 };
-const SERVICES_HERO_VIMEO_ID = "1222650905";
-const SERVICES_HERO_VIMEO_HASH = "c9550c4c41";
-const SERVICES_HERO_VIMEO_PLAYER_ID = `services-hero-vimeo-${SERVICES_HERO_VIMEO_ID}`;
-const SERVICES_HERO_VIMEO_SRC = `https://player.vimeo.com/video/${SERVICES_HERO_VIMEO_ID}?h=${SERVICES_HERO_VIMEO_HASH}&autoplay=1&loop=1&muted=1&controls=0&autopause=0&playsinline=1&title=0&byline=0&portrait=0&dnt=1&player_id=${SERVICES_HERO_VIMEO_PLAYER_ID}`;
+const SERVICES_HERO_POSTER = "/images/services/services-header-bts-poster.jpg";
+const SERVICES_HERO_VIDEO = "/videos/services/amiamis-bts-hero.mp4";
 const SHOW_APPROACH_BACKUP = false;
 const SHOW_PROBLEM_PLACEHOLDERS = false;
 
@@ -110,7 +108,9 @@ function getCaseReference(reference) {
 
   return {
     ...workCase,
-    client: typeof reference === "string" ? workCase.client : reference.displayName,
+    client:
+      typeof reference === "string" ? workCase.client : reference.displayName || workCase.client,
+    image: typeof reference === "string" ? workCase.image : reference.image || workCase.image,
   };
 }
 
@@ -129,21 +129,6 @@ function resolveCaseReference(reference) {
 
   const workCase = getCaseReference(reference);
   return workCase ? { type: "case", workCase } : null;
-}
-
-function postVimeoCommand(iframe, method, value) {
-  if (!iframe?.contentWindow) {
-    return;
-  }
-
-  const message = value === undefined ? { method } : { method, value };
-  const payload = JSON.stringify(message);
-
-  try {
-    iframe.contentWindow.postMessage(payload, "https://player.vimeo.com");
-  } catch {
-    iframe.contentWindow.postMessage(payload, "*");
-  }
 }
 
 function ButtonArrow({ className = "" }) {
@@ -273,29 +258,19 @@ function TypingRotator({ reducedMotion }) {
 }
 
 function ServicesHeroVideo({ reducedMotion }) {
-  const iframeRef = useRef(null);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      postVimeoCommand(iframeRef.current, "setMuted", true);
-      postVimeoCommand(iframeRef.current, "setVolume", 0);
-      postVimeoCommand(iframeRef.current, "play");
-    }, 320);
-
-    return () => window.clearTimeout(timer);
-  }, []);
-
   return (
     <DepthFrame className={`${styles.heroVisual} ${styles.heroVideoFrame}`} reducedMotion={reducedMotion}>
-      <div className={styles.heroVideoViewport}>
-        <iframe
-          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-          data-case-vimeo-player={SERVICES_HERO_VIMEO_PLAYER_ID}
-          ref={iframeRef}
-          src={SERVICES_HERO_VIMEO_SRC}
-          title="Ami Amis dienstenvideo"
-        />
-      </div>
+      <video
+        aria-label="Ami Amis achter de schermen"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={assetPath(SERVICES_HERO_POSTER)}
+        preload="auto"
+      >
+        <source src={assetPath(SERVICES_HERO_VIDEO)} type="video/mp4" />
+      </video>
     </DepthFrame>
   );
 }

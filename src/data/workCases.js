@@ -324,6 +324,18 @@ export const workCases = [
     status: "ready",
   },
   {
+    client: "Kunst&stad | Stad Antwerpen",
+    slug: "kunst-en-stad",
+    title: "Kunst&stad | Stad Antwerpen",
+    description:
+      "Een videoreeks die Antwerpse cultuurorganisaties inspireert om inclusiever en toegankelijker te werken.",
+    categories: ["Video & campagnes", "Social content"],
+    image: "/work/kunst-en-stad-work-thumb.jpg",
+    href: "/work/kunst-en-stad/",
+    featured: false,
+    status: "ready",
+  },
+  {
     client: "VDAB",
     slug: "vdab",
     title: "Extra handen nodig? Say less.",

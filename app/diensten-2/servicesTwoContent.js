@@ -136,16 +136,8 @@ export const serviceTwoProblems = [
       "content voor, tijdens én na je event, zodat het veel langer meegaat dan de avond zelf.",
     cta: "Haal alles uit mijn event.",
     cases: [
-      {
-        placeholder: true,
-        displayName: "CRAFTAILS!",
-        placeholderText: "CRAFTAILS! — binnenkort",
-      },
-      {
-        placeholder: true,
-        displayName: "Sugar & Spice",
-        placeholderText: "Sugar & Spice — binnenkort",
-      },
+      "craftails",
+      { slug: "shopwedo", image: "/images/services/shopwedo-case-thumb.jpg" },
     ],
     color: "blue",
   },

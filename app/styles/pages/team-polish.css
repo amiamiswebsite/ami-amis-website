@@ -173,11 +173,11 @@
   width: fit-content;
   max-width: 47ch !important;
   margin-top: 0.2rem !important;
-  padding: var(--aa-space-5) var(--aa-space-6) !important;
-  border: 2px solid var(--ink);
-  border-radius: 0.35rem;
-  background: var(--paper);
-  box-shadow: 7px 7px 0 var(--yellow);
+  padding: 0 !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   font-family: var(--font-black) !important;
   font-size: clamp(1.12rem, 1.26vw, 1.32rem) !important;
   font-weight: 900 !important;

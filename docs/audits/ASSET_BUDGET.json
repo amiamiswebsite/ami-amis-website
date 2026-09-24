@@ -1,20 +1,20 @@
 {
   "source": "public/",
-  "totalFiles": 359,
-  "maxTotalBytes": 675994204,
+  "totalFiles": 365,
+  "maxTotalBytes": 682023463,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".jpg": {
-      "count": 140,
-      "bytes": 40368117
+      "count": 145,
+      "bytes": 40856205
     },
     ".json": {
       "count": 1,
       "bytes": 11766
     },
     ".mp4": {
-      "count": 21,
-      "bytes": 534075801
+      "count": 22,
+      "bytes": 539616972
     },
     ".otf": {
       "count": 3,
@@ -118,6 +118,11 @@
       "extension": ".mp4"
     },
     {
+      "path": "videos/services/amiamis-bts-hero.mp4",
+      "bytes": 5541171,
+      "extension": ".mp4"
+    },
+    {
       "path": "videos/cases/humgy/DMx-wVHhOTA.mp4",
       "bytes": 4859474,
       "extension": ".mp4"
@@ -185,11 +190,6 @@
     {
       "path": "assets/creative-compadre-duo.png",
       "bytes": 2031543,
-      "extension": ".png"
-    },
-    {
-      "path": "team/movieshots/brent.png",
-      "bytes": 2007518,
       "extension": ".png"
     }
   ]
