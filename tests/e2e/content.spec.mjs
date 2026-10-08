@@ -24,6 +24,20 @@ test("canonical namespace and metadata are stable", async ({ page }) => {
   );
 });
 
+test("internal case links use the canonical work namespace", async ({ request }) => {
+  const routes = ["/", "/diensten/", "/team/", "/work/", "/work/x-oats/"];
+  const responses = await Promise.all(routes.map((route) => request.get(routeUrl(route))));
+
+  for (const [index, response] of responses.entries()) {
+    const html = await response.text();
+
+    expect(response.ok(), `${routes[index]} should load`).toBe(true);
+    expect(html, `${routes[index]} should not link to the legacy namespace`).not.toContain(
+      'href="/ons-werk/',
+    );
+  }
+});
+
 test("robots and sitemap are exported with canonical work routes", async ({ request }) => {
   const [robotsResponse, sitemapResponse] = await Promise.all([
     request.get(routeUrl("/robots.txt")),
@@ -37,4 +51,44 @@ test("robots and sitemap are exported with canonical work routes", async ({ requ
   expect(robots).toContain(`${expectedSiteUrl}/sitemap.xml`);
   expect(sitemap).toContain(`${expectedSiteUrl}/work/x-oats/`);
   expect(sitemap).not.toContain("/ons-werk/x-oats/");
+});
+
+test("Google verification and consent-aware Tag Manager are present", async ({ request }) => {
+  const [homeResponse, verificationResponse] = await Promise.all([
+    request.get(routeUrl("/")),
+    request.get(routeUrl("/google8e270ecc7c32cf92.html")),
+  ]);
+  const html = await homeResponse.text();
+  const verification = await verificationResponse.text();
+
+  expect(homeResponse.ok()).toBe(true);
+  expect(verificationResponse.ok()).toBe(true);
+  expect(verification.trim()).toBe("google-site-verification: google8e270ecc7c32cf92.html");
+  expect(html).toContain(
+    '<meta name="google-site-verification" content="y3UjCWtW-1s3zxBBM70_hWwnyLQz4eaMuqx0z3_Rv58"',
+  );
+  expect(html).toContain("GTM-WZ3LC9DC");
+  expect(html).toContain('analytics_storage: storedChoice === "granted" ? "granted" : "denied"');
+  expect(html.indexOf('id="google-consent-mode"')).toBeLessThan(
+    html.indexOf('id="google-tag-manager"'),
+  );
+});
+
+test("every sitemap route loads with a matching self-canonical", async ({ request }) => {
+  const sitemapResponse = await request.get(routeUrl("/sitemap.xml"));
+  const sitemap = await sitemapResponse.text();
+  const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+
+  expect(locations.length).toBeGreaterThan(7);
+
+  for (const location of locations) {
+    const pathname = new URL(location).pathname;
+    const response = await request.get(routeUrl(pathname));
+    const html = await response.text();
+
+    expect(response.ok(), `${pathname} should load`).toBe(true);
+    expect(html, `${pathname} should self-canonicalize`).toContain(
+      `<link rel="canonical" href="${location}"`,
+    );
+  }
 });

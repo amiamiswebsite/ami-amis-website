@@ -7,7 +7,7 @@ import HomeCtaLink from "./ui/HomeCtaLink";
 const testimonials = [
   {
     client: "X-Oats",
-    href: "/ons-werk/x-oats/",
+    href: "/work/x-oats/",
     image: "/work/x-oats-thumb-portrait.jpg",
     imageAlt: "X-Oats productbeeld",
     quote:
@@ -26,7 +26,7 @@ const testimonials = [
 
 const visitAntwerpenTestimonial = {
   client: "Visit Antwerpen",
-  href: "/ons-werk/visit-antwerpen/",
+  href: "/work/visit-antwerpen/",
   image: "/work/visit-antwerpen-work-thumb.jpg",
   imageAlt: "Visit Antwerpen projectbeeld",
   quote: "Ami Amis levert hoogwaardige video’s met mooie, kwaliteitsvolle beelden. De samenwerking verloopt steeds proactief en elke productie wordt benaderd met een aanstekelijk enthousiasme en veel inzet.",

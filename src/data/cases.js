@@ -4074,7 +4074,7 @@ const rawCases = [
     services: ["Concept", "Draaien", "Montage", "Social content"],
     nextCase: {
       title: "Visit Antwerpen",
-      href: "/ons-werk/visit-antwerpen/",
+      href: "/work/visit-antwerpen/",
     },
   },
 ];

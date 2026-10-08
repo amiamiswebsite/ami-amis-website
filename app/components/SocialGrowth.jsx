@@ -3,7 +3,7 @@ import { assetPath } from "../../src/lib/assetPath";
 import ServicePhysicsTags from "./ServicePhysicsTags";
 import HomeCtaLink from "./ui/HomeCtaLink";
 
-const VISIT_ANTWERPEN_CASE_URL = "/ons-werk/visit-antwerpen/";
+const VISIT_ANTWERPEN_CASE_URL = "/work/visit-antwerpen/";
 
 // Optional: sync follower count via Instagram Graph API when authenticated business account access is available.
 const strategyStats = [

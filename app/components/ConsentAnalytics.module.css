@@ -1,0 +1,116 @@
+.banner {
+  position: fixed;
+  z-index: 3999;
+  right: clamp(14px, 2.4vw, 34px);
+  bottom: clamp(14px, 2.4vw, 34px);
+  display: grid;
+  width: min(560px, calc(100vw - 28px));
+  gap: 18px;
+  padding: clamp(18px, 3vw, 26px);
+  border: 4px solid var(--ink);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 8px 8px 0 var(--blue);
+  color: var(--ink);
+}
+
+.copy {
+  display: grid;
+  gap: 8px;
+}
+
+.copy h2 {
+  margin: 0;
+  font-family: var(--font-black);
+  font-size: clamp(1.5rem, 5vw, 2.15rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.copy p {
+  max-width: 48ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.copy a {
+  color: inherit;
+  font-weight: 800;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font: 800 0.95rem/1 var(--font-sans);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.accept {
+  background: var(--yellow);
+}
+
+.button:hover,
+.button:focus-visible {
+  box-shadow: 5px 5px 0 var(--ink);
+  transform: translate(-2px, -2px);
+}
+
+.button:active {
+  box-shadow: 1px 1px 0 var(--ink);
+  transform: translate(2px, 2px);
+}
+
+@media (width <= 480px) {
+  .banner {
+    right: 10px;
+    bottom: 10px;
+    width: calc(100vw - 20px);
+    gap: 14px;
+    padding: 17px;
+    border-width: 3px;
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 var(--blue);
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .button {
+    padding-inline: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
+
+.settingsButton {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-transform: inherit;
+}

@@ -55,8 +55,8 @@ export const privacySections = [
   {
     title: "Gebruik van cookies",
     paragraphs: [
-      "Tijdens uw bezoek aan onze website kunnen cookies op uw computer of mobiele apparaat worden geplaatst. Cookies kunnen niet worden gebruikt om personen te identificeren, maar kunnen wel een apparaat identificeren.",
-      "U kunt uw internetbrowser zo instellen dat cookies niet worden geaccepteerd, dat u een waarschuwing ontvangt wanneer een cookie wordt geplaatst of dat cookies achteraf worden verwijderd. Daardoor kunnen bepaalde onderdelen van de website mogelijk minder goed werken.",
+      "We gebruiken noodzakelijke browseropslag om uw cookievoorkeur te onthouden. Met uw toestemming gebruiken we daarnaast Google Analytics 4 om te begrijpen hoe bezoekers onze website gebruiken. Google Tag Manager beheert de technische plaatsing van deze meettag.",
+      "Analytische opslag staat standaard uit en wordt pas ingeschakeld nadat u op 'Accepteren' klikt. We gebruiken geen advertentiecookies. U kunt uw keuze later aanpassen via 'Cookievoorkeuren' in de footer van iedere pagina.",
     ],
   },
   {

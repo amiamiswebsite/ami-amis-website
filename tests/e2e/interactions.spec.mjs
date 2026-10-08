@@ -3,6 +3,49 @@ import { routeUrl } from "./test-helpers.mjs";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
+test("analytics consent is explicit, persistent and can be changed from the footer", async ({
+  page,
+}) => {
+  await page.goto(routeUrl("/"), { waitUntil: "domcontentloaded" });
+
+  const banner = page.getByTestId("cookie-consent");
+  await expect(banner).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Koekje erbij?" })).toBeVisible();
+
+  await banner.getByRole("button", { name: "Weigeren" }).click();
+  await expect(banner).toBeHidden();
+  await expect
+    .poll(() => page.evaluate(() => window.localStorage.getItem("amiamis_cookie_consent")))
+    .toBe("denied");
+
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(banner).toBeHidden();
+
+  await page.getByRole("button", { name: "Cookievoorkeuren" }).click();
+  await expect(banner).toBeVisible();
+  await banner.getByRole("button", { name: "Accepteren" }).click();
+  await expect(banner).toBeHidden();
+  await expect
+    .poll(() => page.evaluate(() => window.localStorage.getItem("amiamis_cookie_consent")))
+    .toBe("granted");
+
+  const analyticsConsent = await page.evaluate(() => {
+    const consentCommands = window.dataLayer
+      .filter((entry) => Object.prototype.toString.call(entry) === "[object Arguments]")
+      .map((entry) => Array.from(entry));
+    return consentCommands.at(-1);
+  });
+
+  expect(analyticsConsent).toEqual([
+    "consent",
+    "update",
+    expect.objectContaining({
+      ad_storage: "denied",
+      analytics_storage: "granted",
+    }),
+  ]);
+});
+
 test("menu traps focus, makes the page inert and restores focus", async ({ page }) => {
   await page.goto(routeUrl("/"), { waitUntil: "domcontentloaded" });
 

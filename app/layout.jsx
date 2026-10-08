@@ -8,11 +8,48 @@ import "./styles/pages/team-polish.css";
 import "./styles/pages/contact-polish.css";
 import "./styles/pages/legal.css";
 import PixelCursor from "./components/PixelCursor";
+import ConsentAnalytics from "./components/ConsentAnalytics";
 import { assetPath } from "../src/lib/assetPath";
 import { canonicalUrl, siteUrl } from "../src/lib/site";
 
+const GOOGLE_TAG_MANAGER_ID = "GTM-WZ3LC9DC";
+
+const consentModeScript = `
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag(){window.dataLayer.push(arguments);};
+  (function initialiseConsentMode() {
+    var storedChoice = null;
+    try {
+      storedChoice = window.localStorage.getItem("amiamis_cookie_consent");
+    } catch (error) {
+      storedChoice = null;
+    }
+    window.gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: storedChoice === "granted" ? "granted" : "denied",
+      functionality_storage: "granted",
+      personalization_storage: "denied",
+      security_storage: "granted",
+      wait_for_update: 500
+    });
+  })();
+`;
+
+const googleTagManagerScript = `
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','${GOOGLE_TAG_MANAGER_ID}');
+`;
+
 export const metadata = {
   metadataBase: new URL(siteUrl),
+  verification: {
+    google: "y3UjCWtW-1s3zxBBM70_hWwnyLQz4eaMuqx0z3_Rv58",
+  },
   title: {
     default: "Ami Amis | Creatieve groeipartner",
     template: "%s | Ami Amis",
@@ -116,14 +153,33 @@ export default function RootLayout({ children }) {
       <head>
         <style dangerouslySetInnerHTML={{ __html: fontFaces }} suppressHydrationWarning />
         <script
+          dangerouslySetInnerHTML={{ __html: consentModeScript }}
+          id="google-consent-mode"
+        />
+        <script
+          dangerouslySetInnerHTML={{ __html: googleTagManagerScript }}
+          id="google-tag-manager"
+        />
+        <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
           type="application/ld+json"
         />
       </head>
       <body style={assetVariables}>
+        <noscript>
+          <iframe
+            aria-hidden="true"
+            height="0"
+            src={`https://www.googletagmanager.com/ns.html?id=${GOOGLE_TAG_MANAGER_ID}`}
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+            width="0"
+          />
+        </noscript>
         <div id="main-content" tabIndex={-1}>
           {children}
         </div>
+        <ConsentAnalytics />
         <PixelCursor />
       </body>
     </html>

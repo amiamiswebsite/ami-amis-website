@@ -1,9 +1,13 @@
 {
   "source": "public/",
-  "totalFiles": 365,
-  "maxTotalBytes": 682023463,
+  "totalFiles": 366,
+  "maxTotalBytes": 682023516,
   "maxSingleFileBytes": 71244906,
   "extensions": {
+    ".html": {
+      "count": 1,
+      "bytes": 53
+    },
     ".jpg": {
       "count": 145,
       "bytes": 40856205

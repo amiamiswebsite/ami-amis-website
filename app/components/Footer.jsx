@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { assetPath } from "../../src/lib/assetPath";
 import BrandIcon from "./ui/BrandIcon";
+import { COOKIE_SETTINGS_EVENT } from "./ConsentAnalytics";
+import consentStyles from "./ConsentAnalytics.module.css";
 
 const contactLinks = [
   { label: "Mail", value: "brent@amiamis.be", href: "mailto:brent@amiamis.be" },
@@ -77,6 +79,9 @@ export default function Footer({ variant = "dark" }) {
       footerRef.current?.style.setProperty("--footer-gradient-y", "16%");
     });
   }, []);
+  const openCookieSettings = useCallback(() => {
+    window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+  }, []);
 
   useEffect(
     () => () => {
@@ -146,6 +151,13 @@ export default function Footer({ variant = "dark" }) {
                 {link.label}
               </FooterLink>
             ))}
+            <button
+              className={`site-footer__link ${consentStyles.settingsButton}`}
+              onClick={openCookieSettings}
+              type="button"
+            >
+              Cookievoorkeuren
+            </button>
           </div>
         </div>
       </div>

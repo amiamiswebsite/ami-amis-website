@@ -81,10 +81,6 @@ export function trackServiceIntent(intent) {
     cta_label: normalized.ctaLabel,
   };
 
-  if (Array.isArray(window.dataLayer)) {
-    window.dataLayer.push(eventPayload);
-  }
-
   if (typeof window.gtag === "function") {
     window.gtag("event", "service_problem_cta_click", {
       source: normalized.source,
@@ -93,6 +89,8 @@ export function trackServiceIntent(intent) {
       problem_title: normalized.problemTitle,
       cta_label: normalized.ctaLabel,
     });
+  } else if (Array.isArray(window.dataLayer)) {
+    window.dataLayer.push(eventPayload);
   }
 }
 

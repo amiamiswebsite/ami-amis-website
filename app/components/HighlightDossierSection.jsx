@@ -7,7 +7,7 @@ const highlightedCases = [
     title: "Cultuur in 12 uur",
     description: "Een cultuurroute door Antwerpen, snel gemonteerd en social-first gebracht.",
     image: "/work/visit-antwerpen-work-thumb.jpg",
-    href: "/ons-werk/visit-antwerpen/",
+    href: "/work/visit-antwerpen/",
     accent: "blue",
     rotate: "-1.4deg",
   },
