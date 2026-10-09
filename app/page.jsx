@@ -2,7 +2,9 @@ import HomeExperience from "./components/HomeExperience";
 import { canonicalUrl } from "../src/lib/site";
 
 export const metadata = {
-  description: "Ami Amis als creatieve groeipartner voor merken met ambitie.",
+  title: "Videoproductie & creatieve content in Antwerpen",
+  description:
+    "Ami Amis is een creatief video- en contentbureau in Antwerpen. Van videoproductie en social content tot campagnes, fotografie en strategie.",
   alternates: { canonical: canonicalUrl("/") },
 };
 

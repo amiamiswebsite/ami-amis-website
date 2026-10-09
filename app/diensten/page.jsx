@@ -2,9 +2,9 @@ import ServicesPageTwo from "../diensten-2/ServicesPageTwo";
 import { canonicalUrl } from "../../src/lib/site";
 
 export const metadata = {
-  title: "Diensten",
+  title: "Videoproductie, social content & campagnes",
   description:
-    "Wij creëren niet gewoon content. Wij creëren oplossingen voor merken, werkgevers, producten, socials en events.",
+    "Ami Amis helpt merken met videoproductie, social content, campagnes, fotografie en creatieve strategie vanuit Antwerpen.",
   alternates: { canonical: canonicalUrl("/diensten/") },
 };
 

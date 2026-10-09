@@ -2,9 +2,9 @@ import ContactPage from "./ContactPage";
 import { canonicalUrl } from "../../src/lib/site";
 
 export const metadata = {
-  title: "Contact",
+  title: "Contact | Video- en contentbureau in Antwerpen",
   description:
-    "Neem contact op met Ami Amis voor video, marketing, social content, fotografie, design en campagnes.",
+    "Contacteer Ami Amis voor videoproductie, social content, fotografie, campagnes en creatieve strategie in Antwerpen.",
   alternates: { canonical: canonicalUrl("/contact/") },
 };
 

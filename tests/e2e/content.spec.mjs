@@ -24,6 +24,24 @@ test("canonical namespace and metadata are stable", async ({ page }) => {
   );
 });
 
+test("commercial landing pages expose distinct service and location metadata", async ({ page }) => {
+  const pages = [
+    ["/", /^Videoproductie & creatieve content in Antwerpen$/i],
+    ["/diensten/", /Videoproductie, social content & campagnes \| Ami Amis/i],
+    ["/work/", /Cases in videoproductie, campagnes & content \| Ami Amis/i],
+    ["/team/", /Creatief video- en contentbureau in Antwerpen \| Ami Amis/i],
+  ];
+
+  for (const [route, title] of pages) {
+    await page.goto(routeUrl(route), { waitUntil: "domcontentloaded" });
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /(?:Antwerpen|videoproductie|social content)/i,
+    );
+  }
+});
+
 test("internal case links use the canonical work namespace", async ({ request }) => {
   const routes = ["/", "/diensten/", "/team/", "/work/", "/work/x-oats/"];
   const responses = await Promise.all(routes.map((route) => request.get(routeUrl(route))));

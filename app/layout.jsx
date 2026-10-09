@@ -53,18 +53,30 @@ export const metadata = {
     google: "y3UjCWtW-1s3zxBBM70_hWwnyLQz4eaMuqx0z3_Rv58",
   },
   title: {
-    default: "Ami Amis | Creatieve groeipartner",
+    default: "Videoproductie & creatieve content in Antwerpen | Ami Amis",
     template: "%s | Ami Amis",
   },
   description:
-    "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+    "Ami Amis is een creatief video- en contentbureau in Antwerpen voor videoproductie, social content, campagnes, fotografie en strategie.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      maxImagePreview: "large",
+      maxSnippet: -1,
+      maxVideoPreview: -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "nl_BE",
     siteName: "Ami Amis",
-    title: "Ami Amis | Creatieve groeipartner",
+    title: "Videoproductie & creatieve content in Antwerpen | Ami Amis",
     description:
-      "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+      "Creatief video- en contentbureau in Antwerpen voor videoproductie, social content, campagnes, fotografie en strategie.",
+    url: canonicalUrl("/"),
     images: [
       {
         url: canonicalUrl("/assets/hero-composite.png"),
@@ -76,33 +88,61 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ami Amis | Creatieve groeipartner",
+    title: "Videoproductie & creatieve content in Antwerpen | Ami Amis",
     description:
-      "Ami Amis is een creatieve groeipartner in Antwerpen voor merken die durven springen.",
+      "Creatief video- en contentbureau in Antwerpen voor videoproductie, social content, campagnes, fotografie en strategie.",
     images: [canonicalUrl("/assets/hero-composite.png")],
   },
 };
 
 export default function RootLayout({ children }) {
+  const organizationId = `${canonicalUrl("/")}#organization`;
   const organizationData = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Ami Amis",
-    url: canonicalUrl("/"),
-    logo: canonicalUrl("/assets/logo-black.png"),
-    email: "brent@amiamis.be",
-    telephone: "+32472657595",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Meir 78 - Stadsfeestzaal",
-      postalCode: "2000",
-      addressLocality: "Antwerpen",
-      addressCountry: "BE",
-    },
-    sameAs: [
-      "https://www.instagram.com/amiamismedia/",
-      "https://www.linkedin.com/company/ami-amis-malle/",
-      "https://www.facebook.com/AmiAmisMedia",
+    "@graph": [
+      {
+        "@id": organizationId,
+        "@type": "Organization",
+        name: "Ami Amis",
+        legalName: "Ami Amis BV",
+        url: canonicalUrl("/"),
+        logo: canonicalUrl("/assets/logo-black.png"),
+        description:
+          "Creatief video- en contentbureau in Antwerpen voor videoproductie, social content, campagnes, fotografie en strategie.",
+        email: "brent@amiamis.be",
+        telephone: "+32472657595",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Meir 78 - Stadsfeestzaal",
+          postalCode: "2000",
+          addressLocality: "Antwerpen",
+          addressCountry: "BE",
+        },
+        areaServed: {
+          "@type": "City",
+          name: "Antwerpen",
+        },
+        knowsAbout: [
+          "Videoproductie",
+          "Social content",
+          "Creatieve campagnes",
+          "Fotografie",
+          "Marketingstrategie",
+        ],
+        sameAs: [
+          "https://www.instagram.com/amiamismedia/",
+          "https://www.linkedin.com/company/ami-amis-malle/",
+          "https://www.facebook.com/AmiAmisMedia",
+        ],
+      },
+      {
+        "@id": `${canonicalUrl("/")}#website`,
+        "@type": "WebSite",
+        name: "Ami Amis",
+        url: canonicalUrl("/"),
+        inLanguage: "nl-BE",
+        publisher: { "@id": organizationId },
+      },
     ],
   };
   const fontFaces = `

@@ -2,9 +2,9 @@ import WorkPage from "./WorkPage";
 import { canonicalUrl } from "../../src/lib/site";
 
 export const metadata = {
-  title: "Ons werk",
+  title: "Cases in videoproductie, campagnes & content",
   description:
-    "Bekijk cases, campagnes, video's en creatieve projecten van Ami Amis.",
+    "Bekijk hoe Ami Amis merken zichtbaar maakt met videoproductie, social content, fotografie, campagnes en creatieve strategie.",
   alternates: { canonical: canonicalUrl("/work/") },
 };
 
