@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import { createVideoAnalyticsTracker } from "../../src/lib/videoAnalytics";
 import styles from "./CaseVideo.module.css";
 import Icon from "./ui/Icon";
 
@@ -148,6 +149,7 @@ function formatPlaybackTime(seconds) {
 
 export default function CaseVideo({
   className = "",
+  client = "",
   poster,
   priority = false,
   variant = "hero",
@@ -166,6 +168,7 @@ export default function CaseVideo({
   const playbackTimerRef = useRef(0);
   const seekVersionRef = useRef(0);
   const seekingRef = useRef(false);
+  const durationRef = useRef(0);
   const [controlsVisible, setControlsVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -178,6 +181,16 @@ export default function CaseVideo({
   const [playbackError, setPlaybackError] = useState("");
   const instanceId = useId().replaceAll(":", "");
   const provider = getVideoProvider(video);
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: video?.id || video?.src,
+        provider,
+        title: video?.title || video?.alt || "Video",
+      }),
+    [client, provider, video?.alt, video?.id, video?.src, video?.title],
+  );
   const playerId = `case-video-${provider}-${video?.id || instanceId}-${instanceId}`;
   const source =
     provider === "vimeo"
@@ -237,9 +250,10 @@ export default function CaseVideo({
     setIsStarting(false);
     setPlaybackError("");
     setControlsVisible(true);
+    videoAnalytics.start();
     scheduleControlsHide();
     window.dispatchEvent(new CustomEvent(CASE_VIDEO_PLAY_EVENT, { detail: { playerId } }));
-  }, [playerId, scheduleControlsHide]);
+  }, [playerId, scheduleControlsHide, videoAnalytics]);
 
   const markPaused = useCallback(() => {
     if (!isMountedRef.current) return;
@@ -253,15 +267,18 @@ export default function CaseVideo({
   }, [clearControlsTimer, clearPlaybackTimer]);
 
   const markEnded = useCallback(() => {
+    videoAnalytics.complete(durationRef.current);
     markPaused();
     setCurrentTime(0);
-  }, [markPaused]);
+  }, [markPaused, videoAnalytics]);
 
   const syncTime = useCallback((seconds, nextDuration) => {
     if (!isMountedRef.current) return;
+    durationRef.current = Number(nextDuration) || 0;
     if (!seekingRef.current) setCurrentTime(Number(seconds) || 0);
-    setDuration(Number(nextDuration) || 0);
-  }, []);
+    setDuration(durationRef.current);
+    videoAnalytics.progress(seconds, durationRef.current);
+  }, [videoAnalytics]);
 
   const syncVolume = useCallback((nextVolume, muted = false) => {
     if (!isMountedRef.current) return;

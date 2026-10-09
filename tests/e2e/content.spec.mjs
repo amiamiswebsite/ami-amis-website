@@ -53,7 +53,9 @@ test("robots and sitemap are exported with canonical work routes", async ({ requ
   expect(sitemap).not.toContain("/ons-werk/x-oats/");
 });
 
-test("Google verification and consent-aware Tag Manager are present", async ({ request }) => {
+test("Google verification and consent-first analytics bootstrap are present", async ({
+  request,
+}) => {
   const [homeResponse, verificationResponse] = await Promise.all([
     request.get(routeUrl("/")),
     request.get(routeUrl("/google8e270ecc7c32cf92.html")),
@@ -67,11 +69,10 @@ test("Google verification and consent-aware Tag Manager are present", async ({ r
   expect(html).toContain(
     '<meta name="google-site-verification" content="y3UjCWtW-1s3zxBBM70_hWwnyLQz4eaMuqx0z3_Rv58"',
   );
-  expect(html).toContain("GTM-WZ3LC9DC");
+  expect(html).not.toContain("https://www.googletagmanager.com/gtm.js");
+  expect(html).toContain("amiamis_cookie_consent");
+  expect(html).toContain("2026-10-09");
   expect(html).toContain('analytics_storage: storedChoice === "granted" ? "granted" : "denied"');
-  expect(html.indexOf('id="google-consent-mode"')).toBeLessThan(
-    html.indexOf('id="google-tag-manager"'),
-  );
 });
 
 test("every sitemap route loads with a matching self-canonical", async ({ request }) => {

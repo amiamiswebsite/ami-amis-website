@@ -9,10 +9,14 @@ import "./styles/pages/contact-polish.css";
 import "./styles/pages/legal.css";
 import PixelCursor from "./components/PixelCursor";
 import ConsentAnalytics from "./components/ConsentAnalytics";
+import AnalyticsInteractions from "./components/AnalyticsInteractions";
 import { assetPath } from "../src/lib/assetPath";
+import {
+  COOKIE_CONSENT_MAX_AGE_MS,
+  COOKIE_CONSENT_STORAGE_KEY,
+  COOKIE_CONSENT_VERSION,
+} from "../src/lib/consentPreferences";
 import { canonicalUrl, siteUrl } from "../src/lib/site";
-
-const GOOGLE_TAG_MANAGER_ID = "GTM-WZ3LC9DC";
 
 const consentModeScript = `
   window.dataLayer = window.dataLayer || [];
@@ -20,7 +24,13 @@ const consentModeScript = `
   (function initialiseConsentMode() {
     var storedChoice = null;
     try {
-      storedChoice = window.localStorage.getItem("amiamis_cookie_consent");
+      var storedPreference = JSON.parse(window.localStorage.getItem(${JSON.stringify(COOKIE_CONSENT_STORAGE_KEY)}));
+      var updatedAt = Date.parse(storedPreference && storedPreference.updatedAt);
+      var age = Date.now() - updatedAt;
+      var isCurrent = Number.isFinite(updatedAt) && age >= 0 && age <= ${COOKIE_CONSENT_MAX_AGE_MS};
+      var hasCurrentVersion = storedPreference && storedPreference.version === ${JSON.stringify(COOKIE_CONSENT_VERSION)};
+      var hasValidChoice = storedPreference && (storedPreference.choice === "granted" || storedPreference.choice === "denied");
+      storedChoice = isCurrent && hasCurrentVersion && hasValidChoice ? storedPreference.choice : null;
     } catch (error) {
       storedChoice = null;
     }
@@ -35,14 +45,6 @@ const consentModeScript = `
       wait_for_update: 500
     });
   })();
-`;
-
-const googleTagManagerScript = `
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','${GOOGLE_TAG_MANAGER_ID}');
 `;
 
 export const metadata = {
@@ -157,29 +159,16 @@ export default function RootLayout({ children }) {
           id="google-consent-mode"
         />
         <script
-          dangerouslySetInnerHTML={{ __html: googleTagManagerScript }}
-          id="google-tag-manager"
-        />
-        <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
           type="application/ld+json"
         />
       </head>
       <body style={assetVariables}>
-        <noscript>
-          <iframe
-            aria-hidden="true"
-            height="0"
-            src={`https://www.googletagmanager.com/ns.html?id=${GOOGLE_TAG_MANAGER_ID}`}
-            style={{ display: "none", visibility: "hidden" }}
-            title="Google Tag Manager"
-            width="0"
-          />
-        </noscript>
         <div id="main-content" tabIndex={-1}>
           {children}
         </div>
         <ConsentAnalytics />
+        <AnalyticsInteractions />
         <PixelCursor />
       </body>
     </html>

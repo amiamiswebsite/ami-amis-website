@@ -2,13 +2,14 @@ export const privacySections = [
   {
     title: "Inleiding",
     paragraphs: [
-      "Dit privacybeleid beschrijft hoe Ami Amis (hierna 'wij', 'ons' of 'onze') persoonsgegevens verwerkt wanneer u onze website bezoekt en gebruikmaakt van onze diensten. We hechten veel waarde aan uw privacy en streven ernaar uw persoonsgegevens te beschermen in overeenstemming met de geldende privacywetgeving, waaronder de Algemene Verordening Gegevensbescherming (AVG).",
+      "Dit privacybeleid beschrijft hoe Ami Amis BV (hierna 'wij', 'ons' of 'onze') persoonsgegevens verwerkt wanneer u onze website bezoekt, contact opneemt of een afspraak boekt. Wij verwerken persoonsgegevens in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).",
     ],
   },
   {
-    title: "Registratie op onze site",
+    title: "Welke gegevens verwerken we?",
     paragraphs: [
-      "Om gebruik te kunnen maken van de digitale diensten van Ami Amis, vragen wij gebruikers om zich te registreren door bepaalde gegevens online in te vullen. De gegevens die u invult, zoals uw naam, bedrijf, eventueel adres, e-mailadres en telefoonnummer, worden beschouwd als registratiegegevens.",
+      "Wanneer u ons contactformulier gebruikt, verwerken we de gegevens die u zelf invult: naam, e-mailadres, eventueel telefoonnummer en uw bericht. Wanneer u rechtstreeks mailt of belt, verwerken we de gegevens die nodig zijn om uw vraag te beantwoorden.",
+      "Na uw toestemming meten we het gebruik van de website met Google Analytics 4. Daarbij kunnen technische gegevens, bezochte pagina's, interacties, globale locatie- en apparaatgegevens en campagneparameters worden verwerkt. We sturen geen inhoud uit contactformulieren, e-mailadressen of telefoonnummers naar Google Analytics.",
     ],
   },
   {
@@ -20,24 +21,25 @@ export const privacySections = [
   {
     title: "Doel en rechtsgrond van de gegevensverwerking",
     paragraphs: [
-      "We gebruiken de verzamelde gegevens alleen voor de doeleinden waarvoor we ze hebben verkregen.",
+      "We gebruiken persoonsgegevens alleen voor de doeleinden waarvoor ze werden verzameld.",
     ],
     items: [
-      "Om deel te kunnen nemen aan de activiteiten van Ami Amis, op basis van de uitvoering van de overeenkomst.",
-      "Voor het versturen van nieuwsbrieven en uitnodigingen, op basis van de toestemming van de betrokkene.",
+      "Om vragen en contactaanvragen te beantwoorden en afspraken voor te bereiden, op basis van uw verzoek en ons gerechtvaardigd belang om onze dienstverlening te organiseren.",
+      "Om overeenkomsten uit te voeren en onze wettelijke en boekhoudkundige verplichtingen na te komen.",
+      "Om na uw toestemming de website te analyseren en te verbeteren met Google Analytics 4. U kunt die toestemming altijd wijzigen via 'Cookievoorkeuren' in de footer.",
     ],
   },
   {
-    title: "Verstrekking aan derden",
+    title: "Dienstverleners en doorgifte",
     paragraphs: [
-      "De gegevens die u aan ons verstrekt, kunnen wij delen met derde partijen indien dit noodzakelijk is voor de uitvoering van de hierboven beschreven doeleinden. Wij geven persoonsgegevens alleen door aan partijen waarmee de nodige afspraken over beveiliging en verwerking zijn gemaakt.",
-      "Wij geven uw gegevens niet aan andere derden door, tenzij dit wettelijk verplicht en toegestaan is. Wij verstrekken geen persoonsgegevens aan partijen die buiten de Europese Unie zijn gevestigd.",
+      "We delen gegevens alleen met dienstverleners die nodig zijn voor de werking van de website en onze dienstverlening, of wanneer de wet dit vereist. Voor webanalyse gebruiken we Google Analytics 4 en Google Tag Manager. Wie zelf op 'Agenda Brent' klikt, gaat naar Calendly om een afspraak te boeken; op die omgeving geldt ook het privacybeleid van Calendly.",
+      "Sommige technische dienstverleners kunnen gegevens buiten de Europese Economische Ruimte verwerken. In dat geval gebruiken zij de toepasselijke waarborgen voor internationale doorgifte, zoals een adequaatheidsbesluit of standaardcontractbepalingen.",
     ],
   },
   {
     title: "Bewaartermijn",
     paragraphs: [
-      "Ami Amis bewaart persoonsgegevens maximaal vijf jaar na het laatste gebruik, tenzij een langere bewaartermijn vereist is op grond van de wet.",
+      "Contactgegevens en correspondentie bewaren we zolang dat nodig is om uw vraag op te volgen, onze samenwerking uit te voeren en wettelijke verplichtingen na te komen. Analytische eventgegevens worden in Google Analytics maximaal veertien maanden bewaard. Uw cookievoorkeur vervalt na zes maanden; daarna vragen we opnieuw om uw keuze.",
     ],
   },
   {
@@ -55,8 +57,8 @@ export const privacySections = [
   {
     title: "Gebruik van cookies",
     paragraphs: [
-      "We gebruiken noodzakelijke browseropslag om uw cookievoorkeur te onthouden. Met uw toestemming gebruiken we daarnaast Google Analytics 4 om te begrijpen hoe bezoekers onze website gebruiken. Google Tag Manager beheert de technische plaatsing van deze meettag.",
-      "Analytische opslag staat standaard uit en wordt pas ingeschakeld nadat u op 'Accepteren' klikt. We gebruiken geen advertentiecookies. U kunt uw keuze later aanpassen via 'Cookievoorkeuren' in de footer van iedere pagina.",
+      "We gebruiken noodzakelijke browseropslag om uw cookievoorkeur te onthouden. Pas nadat u op 'Accepteren' klikt, laden we Google Tag Manager en Google Analytics 4. Voor dezelfde browsersessie bewaren we dan ook eventuele UTM-campagneparameters, zodat een contact- of Calendly-klik correct aan een campagne kan worden gekoppeld.",
+      "We gebruiken geen advertentie- of remarketingcookies. U kunt uw keuze later aanpassen via 'Cookievoorkeuren' in de footer van iedere pagina. Bij weigeren wordt Google Tag Manager niet geladen en bewaren we geen campagneparameters.",
     ],
   },
   {

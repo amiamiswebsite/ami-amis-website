@@ -15,7 +15,7 @@ export default function Page() {
       title="Privacy policy"
       intro="Hoe we persoonsgegevens verwerken en beschermen."
       sections={privacySections}
-      updatedAt="27 september 2023"
+      updatedAt="9 oktober 2026"
     />
   );
 }

@@ -10,6 +10,7 @@ import NavOverlay from "./NavOverlay";
 import Icon from "./ui/Icon";
 import { workCases } from "../../src/data/workCases";
 import { assetPath } from "../../src/lib/assetPath";
+import { createVideoAnalyticsTracker } from "../../src/lib/videoAnalytics";
 import styles from "./TarzanServicesCasePage.module.css";
 
 const stepConfig = [
@@ -483,12 +484,21 @@ function formatPlaybackTime(seconds) {
   return `${minutes}:${remainingSeconds}`;
 }
 
-function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = false, video, ...figureProps }) {
+function ChromelessVideo({
+  className = "",
+  client = "",
+  itemLabel,
+  onOpen,
+  showControls = false,
+  video,
+  ...figureProps
+}) {
   const figureRef = useRef(null);
   const iframeRef = useRef(null);
   const isPlayingRef = useRef(false);
   const lastAudibleVolumeRef = useRef(1);
   const sdkPlayerRef = useRef(null);
+  const durationRef = useRef(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -498,6 +508,16 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
   const instanceId = useId().replaceAll(":", "");
   const playerId = `tarzan-chromeless-${video.id}-${instanceId}`;
   const src = cleanVimeoSource(video, playerId);
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: video.id,
+        provider: "vimeo",
+        title: video.title || itemLabel || "Video",
+      }),
+    [client, itemLabel, video.id, video.title],
+  );
 
   useEffect(() => {
     const onOtherVimeoPlay = (event) => {
@@ -529,6 +549,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
       const eventData = data.data || {};
 
       if (data.event === "play") {
+        videoAnalytics.start();
         setHasStarted(true);
         isPlayingRef.current = true;
         setIsPlaying(true);
@@ -540,12 +561,16 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
       }
 
       if (data.event === "ended") {
+        videoAnalytics.complete(Number(eventData.duration) || durationRef.current);
         setCurrentTime(0);
       }
 
       if (data.event === "timeupdate") {
+        const nextDuration = Number(eventData.duration) || 0;
+        durationRef.current = nextDuration;
         setCurrentTime(Number(eventData.seconds) || 0);
-        setDuration(Number(eventData.duration) || 0);
+        setDuration(nextDuration);
+        videoAnalytics.progress(eventData.seconds, nextDuration);
       }
 
       if (data.event === "volumechange") {
@@ -593,7 +618,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
       window.removeEventListener("case-vimeo-play", onOtherVimeoPlay);
       window.removeEventListener("message", onVimeoMessage);
     };
-  }, [playerId]);
+  }, [playerId, videoAnalytics]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -622,6 +647,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
       sdkPlayerRef.current = player;
 
       player.on("play", () => {
+        videoAnalytics.start();
         setHasStarted(true);
         isPlayingRef.current = true;
         setIsPlaying(true);
@@ -631,13 +657,16 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
         setIsPlaying(false);
       });
       player.on("ended", () => {
+        videoAnalytics.complete(durationRef.current);
         isPlayingRef.current = false;
         setIsPlaying(false);
         setCurrentTime(0);
       });
       player.on("timeupdate", ({ duration: nextDuration, seconds }) => {
+        durationRef.current = Number(nextDuration) || 0;
         setCurrentTime(Number(seconds) || 0);
-        setDuration(Number(nextDuration) || 0);
+        setDuration(durationRef.current);
+        videoAnalytics.progress(seconds, durationRef.current);
       });
       player.on("volumechange", ({ muted, volume: nextVolume }) => {
         const normalizedVolume = muted ? 0 : Number(nextVolume);
@@ -663,6 +692,7 @@ function ChromelessVideo({ className = "", itemLabel, onOpen, showControls = fal
       }
 
       setDuration(Number(nextDuration) || 0);
+      durationRef.current = Number(nextDuration) || 0;
       setVolume(Number(nextVolume) || 0);
       isPlayingRef.current = !isPaused;
       setIsPlaying(!isPaused);
@@ -933,6 +963,7 @@ function CaseMediaVisual({
     return (
       <CaseVideo
         className={className}
+        client={client}
         poster={poster || item.poster}
         priority={priority}
         variant={caseVideoVariant || (isPortraitMedia(item) ? "gallery-portrait" : "gallery-landscape")}
@@ -983,12 +1014,53 @@ function CaseMediaVisual({
   return null;
 }
 
-function LightboxVideo({ video }) {
+function LightboxVideo({ client = "", iframeRef, video }) {
+  const localIframeRef = useRef(null);
+  const frameRef = iframeRef || localIframeRef;
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: video.id,
+        provider: "vimeo",
+        title: video.title || "Video",
+      }),
+    [client, video.id, video.title],
+  );
+
+  useEffect(() => {
+    const iframe = frameRef.current;
+    if (!iframe) return undefined;
+
+    let disposed = false;
+    let player;
+
+    import("@vimeo/player")
+      .then(({ default: VimeoPlayer }) => {
+        if (disposed || !iframe.isConnected) return;
+        player = new VimeoPlayer(iframe);
+        player.on("play", () => videoAnalytics.start());
+        player.on("timeupdate", ({ duration = 0, seconds = 0 } = {}) => {
+          videoAnalytics.progress(seconds, duration);
+        });
+        player.on("ended", ({ duration = 0 } = {}) => {
+          videoAnalytics.complete(duration);
+        });
+      })
+      .catch(() => {});
+
+    return () => {
+      disposed = true;
+      player?.destroy().catch(() => {});
+    };
+  }, [frameRef, videoAnalytics]);
+
   return (
     <iframe
       allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
       allowFullScreen
       className={styles.mediaLightboxPlayer}
+      ref={frameRef}
       src={lightboxVimeoSource(video)}
       title={video.title}
     />
@@ -1021,7 +1093,7 @@ function HeroIntroText({ onOpenVideo, text, videoLabel = "Zuidvideo" }) {
   );
 }
 
-function IntroVideoModal({ onClose, video }) {
+function IntroVideoModal({ client = "", onClose, video }) {
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const iframeRef = useRef(null);
@@ -1029,6 +1101,16 @@ function IntroVideoModal({ onClose, video }) {
   const videoSrc = video?.id ? lightboxVimeoSource(video) : "";
   const fallbackSrc = video?.fallbackSrc || "";
   const videoTitle = video?.label || video?.title || "Zuidvideo";
+  const fallbackAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: fallbackSrc,
+        provider: "local",
+        title: videoTitle,
+      }),
+    [client, fallbackSrc, videoTitle],
+  );
   const orientationClass = isPortraitMedia(video)
     ? styles.mediaLightboxPortrait
     : styles.mediaLightboxLandscape;
@@ -1166,19 +1248,26 @@ function IntroVideoModal({ onClose, video }) {
                 autoPlay
                 className={`${styles.mediaLightboxPlayer} ${styles.introVideoFallback}`}
                 controls
+                onEnded={(event) =>
+                  fallbackAnalytics.complete(event.currentTarget.duration)
+                }
+                onPlay={() => fallbackAnalytics.start()}
+                onTimeUpdate={(event) =>
+                  fallbackAnalytics.progress(
+                    event.currentTarget.currentTime,
+                    event.currentTarget.duration,
+                  )
+                }
                 playsInline
                 poster={video.poster ? mediaPath(video.poster) : undefined}
               >
                 <source src={mediaPath(fallbackSrc)} type="video/mp4" />
               </video>
             ) : (
-              <iframe
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                allowFullScreen
-                className={styles.mediaLightboxPlayer}
-                ref={iframeRef}
-                src={videoSrc}
-                title={videoTitle}
+              <LightboxVideo
+                client={client}
+                iframeRef={iframeRef}
+                video={{ ...video, title: videoTitle }}
               />
             )}
           </div>
@@ -1189,7 +1278,7 @@ function IntroVideoModal({ onClose, video }) {
   );
 }
 
-function MediaLightbox({ activeIndex, items, onChange, onClose }) {
+function MediaLightbox({ activeIndex, client = "", items, onChange, onClose }) {
   const dialogRef = useRef(null);
   const item = items[activeIndex];
   const previousIndex = (activeIndex - 1 + items.length) % items.length;
@@ -1298,7 +1387,7 @@ function MediaLightbox({ activeIndex, items, onChange, onClose }) {
           >
             <div className={styles.mediaLightboxVisual}>
               {item.type === "video" ? (
-                <LightboxVideo key={item.key} video={item.video} />
+                <LightboxVideo client={client} key={item.key} video={item.video} />
               ) : (
                 <img
                   alt={item.image.alt}
@@ -1996,7 +2085,7 @@ function EditorialSections({ caseData }) {
   });
 }
 
-function GallerySection({ group, index, total }) {
+function GallerySection({ client, group, index, total }) {
   const [activeIndex, setActiveIndex] = useState(null);
 
   if (!group || (group.type !== "instagramProfile" && !group.images?.length)) {
@@ -2054,6 +2143,7 @@ function GallerySection({ group, index, total }) {
       {activeIndex !== null ? (
         <MediaLightbox
           activeIndex={activeIndex}
+          client={client}
           items={lightboxItems}
           onChange={setActiveIndex}
           onClose={() => setActiveIndex(null)}
@@ -2159,6 +2249,7 @@ function MixedMediaGridSection({ caseData }) {
         <div className={styles.mediaGrid}>
           <ChromelessVideo
             className={`${styles.mediaGridItem} ${styles.mediaGridFeature}`}
+            client={caseData.client}
             itemLabel="Videoclip"
             onOpen={() => setActiveIndex(0)}
             video={caseData.media.hero}
@@ -2167,6 +2258,7 @@ function MixedMediaGridSection({ caseData }) {
           {caseData.media.verticalVideos.map((video, index) => (
             <ChromelessVideo
               className={`${styles.mediaGridItem} ${styles.mediaGridPortraitVideo}`}
+              client={caseData.client}
               itemLabel={`Social video ${index + 1}`}
               key={video.id}
               onOpen={() => setActiveIndex(index + 1)}
@@ -2191,6 +2283,7 @@ function MixedMediaGridSection({ caseData }) {
       {activeIndex !== null ? (
         <MediaLightbox
           activeIndex={activeIndex}
+          client={caseData.client}
           items={mediaItems}
           onChange={setActiveIndex}
           onClose={() => setActiveIndex(null)}
@@ -2459,6 +2552,7 @@ export default function TarzanServicesCasePage({ caseData }) {
           <EditorialSections caseData={caseData.editorialBeforeVideo ? { ...caseData, editorialSections: caseData.editorialSections.filter(section => !section.beforeVideo) } : caseData} />
           {galleryGroups.map((group, index) => (
             <GallerySection
+              client={caseData.client}
               group={group}
               index={index}
               key={group.key}
@@ -2476,7 +2570,11 @@ export default function TarzanServicesCasePage({ caseData }) {
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
       <NavOverlay activePage="work" open={menuOpen} onClose={() => setMenuOpen(false)} />
       {introVideoOpen && introVideo ? (
-        <IntroVideoModal onClose={() => setIntroVideoOpen(false)} video={introVideo} />
+        <IntroVideoModal
+          client={caseData.client}
+          onClose={() => setIntroVideoOpen(false)}
+          video={introVideo}
+        />
       ) : null}
     </>
   );

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import CaseVideo from "../components/CaseVideo";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
+import { createVideoAnalyticsTracker } from "../../src/lib/videoAnalytics";
 
 const teamVideoSrc = "/assets/amiamis_teamvideo2026.mp4";
 const teamVideoPoster = "/assets/amiamis_teamvideo2026-poster.jpg";
@@ -27,6 +28,7 @@ function TeamHeroVideo({ onPointerLeave, onPointerMove }) {
     >
       <CaseVideo
         className="team-story-hero__case-video"
+        client="Ami Amis"
         poster={teamHeroVideoPoster}
         priority
         variant="gallery-portrait"
@@ -69,6 +71,16 @@ function FriendsWordmark({ id }) {
 function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef(null);
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client: "Ami Amis",
+        id: teamVideoSrc,
+        provider: "local",
+        title,
+      }),
+    [title],
+  );
 
   const playTeamVideo = () => {
     const video = videoRef.current;
@@ -103,9 +115,21 @@ function TeamVideoSection({ id, title, subtitle, tone = "blue" }) {
           <video
             aria-label={`${title} van Ami Amis`}
             controls={isVideoPlaying}
-            onEnded={() => setIsVideoPlaying(false)}
+            onEnded={(event) => {
+              videoAnalytics.complete(event.currentTarget.duration);
+              setIsVideoPlaying(false);
+            }}
             onPause={() => setIsVideoPlaying(false)}
-            onPlay={() => setIsVideoPlaying(true)}
+            onPlay={() => {
+              videoAnalytics.start();
+              setIsVideoPlaying(true);
+            }}
+            onTimeUpdate={(event) => {
+              videoAnalytics.progress(
+                event.currentTarget.currentTime,
+                event.currentTarget.duration,
+              );
+            }}
             playsInline
             poster={assetPath(teamVideoPoster)}
             preload="metadata"

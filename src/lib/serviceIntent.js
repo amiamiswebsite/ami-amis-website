@@ -1,4 +1,5 @@
 import { assetPath } from "./assetPath";
+import { trackAnalyticsEvent } from "./analytics";
 
 export const SERVICE_INTENT_STORAGE_KEY = "amiamis_service_intent";
 
@@ -72,26 +73,13 @@ export function trackServiceIntent(intent) {
     // Session storage can be unavailable in private browser contexts.
   }
 
-  const eventPayload = {
-    event: "service_problem_cta_click",
+  trackAnalyticsEvent("service_problem_cta_click", {
     source: normalized.source,
     problem_id: normalized.problemId,
     problem_number: normalized.problemNumber,
     problem_title: normalized.problemTitle,
     cta_label: normalized.ctaLabel,
-  };
-
-  if (typeof window.gtag === "function") {
-    window.gtag("event", "service_problem_cta_click", {
-      source: normalized.source,
-      problem_id: normalized.problemId,
-      problem_number: normalized.problemNumber,
-      problem_title: normalized.problemTitle,
-      cta_label: normalized.ctaLabel,
-    });
-  } else if (Array.isArray(window.dataLayer)) {
-    window.dataLayer.push(eventPayload);
-  }
+  });
 }
 
 export function readServiceIntentFromSearch(search = "") {

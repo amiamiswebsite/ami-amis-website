@@ -444,7 +444,8 @@
   background: transparent;
 }
 
-.contact-redesign.contact-editorial .contact-overview__secondary .contact-overview__legal a {
+.contact-redesign.contact-editorial .contact-overview__secondary .contact-overview__legal a,
+.contact-redesign.contact-editorial .contact-overview__legal-button {
   color: var(--ink);
   font-size: 0.74rem;
   line-height: 1.2;
@@ -455,7 +456,9 @@
 .contact-redesign.contact-editorial
   .contact-overview__secondary
   .contact-overview__legal
-  a:focus-visible {
+  a:focus-visible,
+.contact-redesign.contact-editorial .contact-overview__legal-button:hover,
+.contact-redesign.contact-editorial .contact-overview__legal-button:focus-visible {
   color: var(--red);
   text-decoration: underline;
   text-underline-offset: 3px;

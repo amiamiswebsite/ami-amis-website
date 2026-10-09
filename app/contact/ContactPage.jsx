@@ -3,9 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import MenuToggle from "../components/MenuToggle";
 import NavOverlay from "../components/NavOverlay";
+import { COOKIE_SETTINGS_EVENT } from "../components/ConsentAnalytics";
 import BrandIcon from "../components/ui/BrandIcon";
 import Icon from "../components/ui/Icon";
+import consentStyles from "../components/ConsentAnalytics.module.css";
 import { assetPath } from "../../src/lib/assetPath";
+import { trackAnalyticsEvent } from "../../src/lib/analytics";
+import { readStoredCampaignParameters } from "../../src/lib/campaignTracking";
 import {
   readServiceIntentFromSearch,
   readStoredServiceIntent,
@@ -56,6 +60,10 @@ const legalLinks = [
   { label: "Algemene voorwaarden", href: assetPath("/algemene-voorwaarden/") },
 ];
 
+function openCookieSettings() {
+  window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT));
+}
+
 function ContactInfoList() {
   return (
     <ul className="contact-info-list" aria-label="Contactgegevens">
@@ -100,19 +108,42 @@ function getMailHref(intent, fields) {
 
 function ContactForm({ intent }) {
   const formRef = useRef(null);
+  const hasStartedRef = useRef(false);
   const [state, setState] = useState("idle");
   const [fallbackHref, setFallbackHref] = useState(getMailHref(intent));
+  const serviceInterest = /^[a-z0-9-]{1,64}$/i.test(intent?.problemId || "")
+    ? intent.problemId
+    : "";
+
+  const trackFormStart = () => {
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
+    trackAnalyticsEvent("contact_form_start", {
+      form_name: "main_contact",
+      service_interest: serviceInterest,
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const fields = Object.fromEntries(new FormData(form).entries());
+    const marketingAttribution = readStoredCampaignParameters();
     const mailtoHref = getMailHref(intent, fields);
 
     setFallbackHref(mailtoHref);
 
     if (!contactEndpoint) {
       setState("fallback");
+      trackAnalyticsEvent("contact_form_fallback", {
+        form_name: "main_contact",
+        service_interest: serviceInterest,
+      });
+      trackAnalyticsEvent("contact_click", {
+        contact_method: "email",
+        link_context: "contact_form_fallback",
+        source_path: window.location.pathname,
+      });
       window.location.assign(mailtoHref);
       return;
     }
@@ -122,13 +153,28 @@ function ContactForm({ intent }) {
       const response = await fetch(contactEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fields),
+        body: JSON.stringify({
+          ...fields,
+          ...(Object.keys(marketingAttribution).length
+            ? { marketing_attribution: marketingAttribution }
+            : {}),
+        }),
       });
       if (!response.ok) throw new Error(`Contact endpoint returned ${response.status}`);
       formRef.current?.reset();
       setState("success");
+      trackAnalyticsEvent("generate_lead", {
+        form_name: "main_contact",
+        lead_method: "contact_form",
+        service_interest: serviceInterest,
+      });
     } catch {
       setState("error");
+      trackAnalyticsEvent("contact_form_error", {
+        error_type: "delivery_failed",
+        form_name: "main_contact",
+        service_interest: serviceInterest,
+      });
     }
   };
 
@@ -139,6 +185,7 @@ function ContactForm({ intent }) {
       action={getMailHref(intent)}
       method="post"
       encType="text/plain"
+      onFocusCapture={trackFormStart}
       onSubmit={handleSubmit}
       ref={formRef}
     >
@@ -174,7 +221,7 @@ function ContactForm({ intent }) {
         disabled={state === "submitting"}
         type="submit"
       >
-        Verstuur
+        {contactEndpoint ? "Verstuur" : "Verstuur via e-mail"}
       </button>
       <div aria-live="polite" className="contact-form-card__status aa-visually-hidden">
         {state === "success" ? "Bedankt. Je bericht is verstuurd." : null}
@@ -250,6 +297,7 @@ export default function ContactPage() {
   const handleContactChoice = (choice) => {
     if (choice === "no") setNoConverted(true);
     setContactChoice(choice);
+    trackAnalyticsEvent("contact_choice", { choice });
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(focusContactForm);
     });
@@ -391,6 +439,13 @@ export default function ContactPage() {
                             {link.label}
                           </a>
                         ))}
+                        <button
+                          className={`contact-overview__legal-button ${consentStyles.settingsButton}`}
+                          onClick={openCookieSettings}
+                          type="button"
+                        >
+                          Cookievoorkeuren
+                        </button>
                       </div>
                       <p>&copy; 2026 Ami Amis</p>
                     </div>

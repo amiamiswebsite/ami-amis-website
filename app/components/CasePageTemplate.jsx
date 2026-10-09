@@ -6,6 +6,7 @@ import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import TarzanServicesCasePage from "./TarzanServicesCasePage";
 import { assetPath } from "../../src/lib/assetPath";
+import { createVideoAnalyticsTracker } from "../../src/lib/videoAnalytics";
 
 const pillarKeys = [
   { key: "question", fallback: "vraag", label: "Vraag" },
@@ -158,6 +159,37 @@ function getOneLiner(data) {
   return data.oneLiner || data.summary || data.subtitle || data.heroIntro || "";
 }
 
+function CaseNativeVideo({ client, item, muted = true, priority }) {
+  const tracker = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: item.src,
+        provider: "local",
+        title: item.title || item.alt || `${client} projectvideo`,
+      }),
+    [client, item.alt, item.src, item.title],
+  );
+
+  return (
+    <video
+      aria-label={item.alt || item.title || `${client} projectvideo`}
+      controls
+      muted={muted}
+      onEnded={(event) => tracker.complete(event.currentTarget.duration)}
+      onPlay={() => tracker.start()}
+      onTimeUpdate={(event) =>
+        tracker.progress(event.currentTarget.currentTime, event.currentTarget.duration)
+      }
+      playsInline
+      poster={item.poster ? mediaSrc(item.poster) : undefined}
+      preload={priority || !item.poster ? "metadata" : "none"}
+    >
+      <source src={mediaSrc(item.src)} type="video/mp4" />
+    </video>
+  );
+}
+
 function CaseMedia({ item, client, priority = false }) {
   if (!item?.src && !item?.poster) {
     return null;
@@ -166,18 +198,7 @@ function CaseMedia({ item, client, priority = false }) {
   const type = item.type || (item.src?.endsWith(".mp4") ? "video" : "image");
 
   if (type === "video") {
-    return (
-      <video
-        aria-label={item.alt || item.title || `${client} projectvideo`}
-        controls
-        muted
-        playsInline
-        poster={item.poster ? mediaSrc(item.poster) : undefined}
-        preload={priority || !item.poster ? "metadata" : "none"}
-      >
-        <source src={mediaSrc(item.src)} type="video/mp4" />
-      </video>
-    );
+    return <CaseNativeVideo client={client} item={item} priority={priority} />;
   }
 
   return (
@@ -247,6 +268,59 @@ function VimeoFrame({ embed, index, client, featured = false }) {
   const hash = typeof embed === "string" ? "" : embed.hash || embed.h || "";
   const playerId = id ? `case-vimeo-${id}-${featured ? "featured" : index}-${slugifyPlayerId(title)}` : "";
   const src = id ? getVimeoFrameSrc({ hash, id, playerId }) : "";
+  const videoAnalytics = useMemo(
+    () => createVideoAnalyticsTracker({ client, id, provider: "vimeo", title }),
+    [client, id, title],
+  );
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe || !id) {
+      return undefined;
+    }
+
+    let player;
+    let disposed = false;
+    const onPlay = () => {
+      if (disposed) return;
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+      videoAnalytics.start();
+    };
+    const onPause = () => {
+      if (disposed) return;
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+    };
+    const onEnded = ({ duration = 0 } = {}) => {
+      if (disposed) return;
+      isPlayingRef.current = false;
+      setIsPlaying(false);
+      videoAnalytics.complete(duration);
+    };
+    const onTimeUpdate = ({ duration = 0, seconds = 0 } = {}) => {
+      if (!disposed) videoAnalytics.progress(seconds, duration);
+    };
+
+    import("@vimeo/player")
+      .then(({ default: VimeoPlayer }) => {
+        if (disposed || !iframe.isConnected) return;
+        player = new VimeoPlayer(iframe);
+        player.on("play", onPlay);
+        player.on("pause", onPause);
+        player.on("ended", onEnded);
+        player.on("timeupdate", onTimeUpdate);
+      })
+      .catch(() => {});
+
+    return () => {
+      disposed = true;
+      player?.off("play", onPlay);
+      player?.off("pause", onPause);
+      player?.off("ended", onEnded);
+      player?.off("timeupdate", onTimeUpdate);
+    };
+  }, [id, videoAnalytics]);
 
   useEffect(() => {
     if (!playerId) {
@@ -691,15 +765,7 @@ function CaseMediaHubItem({ item, imageIndex, onOpenImage, client }) {
     return (
       <figure className={`case-media-hub__item case-media-hub__item--${orientation}`}>
         {item.src ? (
-          <video
-            aria-label={item.alt || caption || `${client} video`}
-            controls
-            playsInline
-            poster={item.poster ? mediaSrc(item.poster) : undefined}
-            preload="none"
-          >
-            <source src={mediaSrc(item.src)} type="video/mp4" />
-          </video>
+          <CaseNativeVideo client={client} item={item} muted={false} priority={false} />
         ) : (
           <div className="case-media-hub__placeholder">{item.fallbackLabel || "Video volgt"}</div>
         )}
@@ -924,10 +990,20 @@ function CaseCTA({ data }) {
   );
 }
 
-function CaseVideoModal({ data, open, onClose }) {
+function CaseVideoModal({ client, data, open, onClose }) {
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const videoRef = useRef(null);
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        client,
+        id: data?.src,
+        provider: "local",
+        title: data?.label || `${client || "Case"} video`,
+      }),
+    [client, data?.label, data?.src],
+  );
 
   useEffect(() => {
     if (!open) {
@@ -1001,7 +1077,21 @@ function CaseVideoModal({ data, open, onClose }) {
             Sluit
           </button>
         </div>
-        <video controls playsInline poster={data.poster ? assetPath(data.poster) : undefined} preload="metadata" ref={videoRef}>
+        <video
+          controls
+          onEnded={(event) => videoAnalytics.complete(event.currentTarget.duration)}
+          onPlay={() => videoAnalytics.start()}
+          onTimeUpdate={(event) =>
+            videoAnalytics.progress(
+              event.currentTarget.currentTime,
+              event.currentTarget.duration,
+            )
+          }
+          playsInline
+          poster={data.poster ? assetPath(data.poster) : undefined}
+          preload="metadata"
+          ref={videoRef}
+        >
           <source src={assetPath(data.src)} type="video/mp4" />
         </video>
       </section>
@@ -1069,7 +1159,12 @@ function GenericCasePage({ caseData }) {
       </div>
 
       {hasQuoteModal ? (
-        <CaseVideoModal data={caseData.media.zuidVideo} onClose={() => setModalOpen(false)} open={modalOpen} />
+        <CaseVideoModal
+          client={caseData.client}
+          data={caseData.media.zuidVideo}
+          onClose={() => setModalOpen(false)}
+          open={modalOpen}
+        />
       ) : null}
       <MenuToggle open={menuOpen} onToggle={() => setMenuOpen((open) => !open)} />
       <NavOverlay open={menuOpen} onClose={() => setMenuOpen(false)} activePage="work" />

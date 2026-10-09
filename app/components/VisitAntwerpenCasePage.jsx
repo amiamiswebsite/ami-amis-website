@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Footer from "./Footer";
 import MenuToggle from "./MenuToggle";
 import NavOverlay from "./NavOverlay";
 import { assetPath } from "../../src/lib/assetPath";
+import { createVideoAnalyticsTracker } from "../../src/lib/videoAnalytics";
 
 const summaryItems = [
   {
@@ -167,6 +168,7 @@ function VideoFrame({ featured = false, priority = false, video }) {
   const videoRef = useRef(null);
   const iframeRef = useRef(null);
   const isVimeoPlayingRef = useRef(false);
+  const durationRef = useRef(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const vimeoId = getVimeoId(video);
   const youTubeId = getYouTubeId(video);
@@ -183,6 +185,67 @@ function VideoFrame({ featured = false, priority = false, video }) {
   const vimeoSrc = vimeoId ? getVimeoEmbedSrc({ hash, id: vimeoId, playerId: vimeoPlayerId }) : "";
   const youTubeSrc = youTubeId ? `https://www.youtube.com/embed/${youTubeId}?rel=0&modestbranding=1` : "";
   const orientation = video.orientation || (video.wide ? "landscape" : "portrait");
+  const provider = isVimeo ? "vimeo" : isYouTube ? "youtube" : "local";
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        id: vimeoId || youTubeId || rawSrc,
+        provider,
+        title: video?.title || "Video",
+      }),
+    [provider, rawSrc, video?.title, vimeoId, youTubeId],
+  );
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!isVimeo || !iframe || !vimeoId) {
+      return undefined;
+    }
+
+    let player;
+    let disposed = false;
+    const onPlay = () => {
+      if (disposed) return;
+      isVimeoPlayingRef.current = true;
+      setIsPlaying(true);
+      videoAnalytics.start();
+    };
+    const onPause = () => {
+      if (disposed) return;
+      isVimeoPlayingRef.current = false;
+      setIsPlaying(false);
+    };
+    const onEnded = ({ duration = 0 } = {}) => {
+      if (disposed) return;
+      isVimeoPlayingRef.current = false;
+      setIsPlaying(false);
+      videoAnalytics.complete(duration || durationRef.current);
+    };
+    const onTimeUpdate = ({ duration = 0, seconds = 0 } = {}) => {
+      if (disposed) return;
+      durationRef.current = Number(duration) || 0;
+      videoAnalytics.progress(seconds, durationRef.current);
+    };
+
+    import("@vimeo/player")
+      .then(({ default: VimeoPlayer }) => {
+        if (disposed || !iframe.isConnected) return;
+        player = new VimeoPlayer(iframe);
+        player.on("play", onPlay);
+        player.on("pause", onPause);
+        player.on("ended", onEnded);
+        player.on("timeupdate", onTimeUpdate);
+      })
+      .catch(() => {});
+
+    return () => {
+      disposed = true;
+      player?.off("play", onPlay);
+      player?.off("pause", onPause);
+      player?.off("ended", onEnded);
+      player?.off("timeupdate", onTimeUpdate);
+    };
+  }, [isVimeo, videoAnalytics, vimeoId]);
 
   useEffect(() => {
     if (!isVimeo || !vimeoPlayerId) {
@@ -315,9 +378,21 @@ function VideoFrame({ featured = false, priority = false, video }) {
         ) : (
           <video
             aria-label={`${video.title} video`}
-            onEnded={() => setIsPlaying(false)}
+            onEnded={(event) => {
+              videoAnalytics.complete(event.currentTarget.duration);
+              setIsPlaying(false);
+            }}
             onPause={() => setIsPlaying(false)}
-            onPlay={() => setIsPlaying(true)}
+            onPlay={() => {
+              videoAnalytics.start();
+              setIsPlaying(true);
+            }}
+            onTimeUpdate={(event) =>
+              videoAnalytics.progress(
+                event.currentTarget.currentTime,
+                event.currentTarget.duration,
+              )
+            }
             playsInline
             poster={video.poster ? mediaPath(video.poster) : undefined}
             preload={priority || !video.poster ? "metadata" : "none"}
@@ -359,6 +434,15 @@ function ZuidvideoModal({ data, onClose, open }) {
   const dialogRef = useRef(null);
   const closeRef = useRef(null);
   const videoRef = useRef(null);
+  const videoAnalytics = useMemo(
+    () =>
+      createVideoAnalyticsTracker({
+        id: data?.src,
+        provider: "local",
+        title: data?.label || "Zuidvideo",
+      }),
+    [data?.label, data?.src],
+  );
 
   useEffect(() => {
     if (!open) {
@@ -436,7 +520,18 @@ function ZuidvideoModal({ data, onClose, open }) {
             Sluit
           </button>
         </div>
-        <video controls playsInline poster={data.poster ? mediaPath(data.poster) : undefined} preload="metadata" ref={videoRef}>
+        <video
+          controls
+          onEnded={(event) => videoAnalytics.complete(event.currentTarget.duration)}
+          onPlay={() => videoAnalytics.start()}
+          onTimeUpdate={(event) =>
+            videoAnalytics.progress(event.currentTarget.currentTime, event.currentTarget.duration)
+          }
+          playsInline
+          poster={data.poster ? mediaPath(data.poster) : undefined}
+          preload="metadata"
+          ref={videoRef}
+        >
           <source src={mediaPath(data.src)} type="video/mp4" />
         </video>
       </section>

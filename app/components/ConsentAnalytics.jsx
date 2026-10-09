@@ -2,10 +2,17 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { assetPath } from "../../src/lib/assetPath";
+import {
+  COOKIE_CONSENT_CHANGED_EVENT,
+  COOKIE_CONSENT_STORAGE_KEY,
+  COOKIE_SETTINGS_EVENT,
+  createAnalyticsConsentPreference,
+  readAnalyticsConsent,
+} from "../../src/lib/consentPreferences";
+import { loadGoogleTagManager } from "../../src/lib/googleTagManager";
 import styles from "./ConsentAnalytics.module.css";
 
-export const COOKIE_CONSENT_STORAGE_KEY = "amiamis_cookie_consent";
-export const COOKIE_SETTINGS_EVENT = "amiamis:open-cookie-settings";
+export { COOKIE_SETTINGS_EVENT };
 
 function updateGoogleConsent(choice) {
   if (typeof window.gtag !== "function") {
@@ -30,7 +37,9 @@ export default function ConsentAnalytics() {
     let storedChoice = null;
 
     try {
-      storedChoice = window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY);
+      storedChoice = readAnalyticsConsent(
+        window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY),
+      );
     } catch {
       // The default consent state remains denied when storage is unavailable.
     }
@@ -38,6 +47,10 @@ export default function ConsentAnalytics() {
     const openBannerFrame = window.requestAnimationFrame(() => {
       setIsOpen(storedChoice !== "granted" && storedChoice !== "denied");
     });
+
+    if (storedChoice === "granted") {
+      loadGoogleTagManager();
+    }
 
     const openSettings = () => setIsOpen(true);
     window.addEventListener(COOKIE_SETTINGS_EVENT, openSettings);
@@ -50,12 +63,21 @@ export default function ConsentAnalytics() {
 
   const saveChoice = useCallback((choice) => {
     try {
-      window.localStorage.setItem(COOKIE_CONSENT_STORAGE_KEY, choice);
+      window.localStorage.setItem(
+        COOKIE_CONSENT_STORAGE_KEY,
+        createAnalyticsConsentPreference(choice),
+      );
     } catch {
       // Consent still applies to this page view when storage is unavailable.
     }
 
     updateGoogleConsent(choice);
+    window.dispatchEvent(
+      new CustomEvent(COOKIE_CONSENT_CHANGED_EVENT, { detail: { choice } }),
+    );
+    if (choice === "granted") {
+      loadGoogleTagManager();
+    }
     setIsOpen(false);
   }, []);
 
