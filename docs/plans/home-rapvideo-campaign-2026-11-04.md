@@ -100,3 +100,25 @@ expliciet goedgekeurd. De gerichte campagnecommit gaat naar
 in die commit telt uitsluitend de nieuwe campagnestill mee. De schone
 controlekopie wordt vóór de push apart gebouwd, getest en onafhankelijk
 gereviewd. De push naar deze werkbranch activeert geen productie-deployment.
+
+## Productiepublicatie en CI-correctie
+
+Op expliciet verzoek is de geteste campagnecommit via fast-forward in `main`
+opgenomen. De vorige live commit is bewaard als
+`live-before-rapvideo-2026-11-04` (`423c083`). De productiejob behoudt de
+verplichte dependency `deploy.needs: quality`.
+
+GitHub meldde op 4 november 2026 verminderde prestaties bij Actions en API-
+verzoeken. De productie-workflow is via de normale GitHub-sessie gestart.
+Run `41819704994` keurde één bestaande test af: de navigatietest liep alle
+26 actieve cases binnen één limiet van 120 seconden af en overschreed die
+limiet op de CI-runner, ook bij de herkansing. De overige 364 tests slaagden.
+De deployjob werd overgeslagen; de bestaande site bleef HTTP 200 geven.
+
+Dezelfde navigatiecontroles zijn daarom verdeeld over één test per actieve
+case. Alle assertions, wraparound-volgorde en de mobiele test zijn behouden.
+Er zijn geen tests overgeslagen en geen tijdslimieten verruimd. Alleen de
+testindeling wijzigt; de goedgekeurde websitecode blijft gelijk. Alle 27
+gerichte navigatietests slaagden lokaal en de onafhankelijke reviewer heeft
+de correctie goedgekeurd. Publicatie vereist een nieuwe volledig groene
+productierun en aansluitende controle van amiamis.com.

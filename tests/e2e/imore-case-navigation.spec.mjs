@@ -5,10 +5,10 @@ import { routeUrl } from "./test-helpers.mjs";
 const activeCases = workCases.filter((item) => item.status === "ready");
 
 test.describe("Case navigation", () => {
-  test("uses the active work-case order on every case page", async ({ page }) => {
-    await page.setViewportSize({ width: 768, height: 900 });
+  for (const [index, currentCase] of activeCases.entries()) {
+    test(`uses the active work-case order: ${currentCase.href}`, async ({ page }) => {
+      await page.setViewportSize({ width: 768, height: 900 });
 
-    for (const [index, currentCase] of activeCases.entries()) {
       const previous = activeCases[(index - 1 + activeCases.length) % activeCases.length];
       const next = activeCases[(index + 1) % activeCases.length];
 
@@ -48,8 +48,8 @@ test.describe("Case navigation", () => {
       expect(await navigation.evaluate((node) => node.previousElementSibling?.id)).toBe(
         "case-contact-cta",
       );
-    }
-  });
+    });
+  }
 
   test("uses the mobile order without overflow or undersized touch targets", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
