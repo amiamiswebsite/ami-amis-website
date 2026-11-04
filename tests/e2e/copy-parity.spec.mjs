@@ -2,10 +2,18 @@ import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { publicRoutes } from "../../scripts/public-routes.mjs";
 import { routeUrl } from "./test-helpers.mjs";
+import { homeRapVideoCampaign } from "../../src/data/homeRapVideoCampaign.js";
 
 const baseline = JSON.parse(
   readFileSync(new URL("../fixtures/visible-copy-baseline.json", import.meta.url), "utf8"),
 );
+
+// Keep the permanent content fixture intact; the approved temporary heading
+// exists only while its server-side campaign switch is enabled.
+const homeCopy = [...baseline["/"]];
+if (homeRapVideoCampaign.enabled) {
+  homeCopy.splice(homeCopy.indexOf("Creatieve"), 0, "Check onze", "rapvideo!");
+}
 
 test.use({ reducedMotion: "reduce", viewport: { width: 1440, height: 1000 } });
 
@@ -47,6 +55,8 @@ for (const route of publicRoutes) {
   test(`visible copy remains unchanged: ${route}`, async ({ page }) => {
     await page.goto(routeUrl(route), { waitUntil: "domcontentloaded" });
 
-    await expect.poll(() => pageCopy(page), { timeout: 10_000 }).toEqual(baseline[route]);
+    await expect
+      .poll(() => pageCopy(page), { timeout: 10_000 })
+      .toEqual(route === "/" || route === "/home-2/" ? homeCopy : baseline[route]);
   });
 }

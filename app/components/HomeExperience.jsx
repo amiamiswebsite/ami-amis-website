@@ -12,9 +12,10 @@ import Projects from "./Projects";
 import SocialGrowth from "./SocialGrowth";
 import Testimonials from "./Testimonials";
 
-export default function HomeExperience({ variant = "default" }) {
+export default function HomeExperience({ variant = "default", campaignSlot = null }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const isHomeTwo = variant === "home2";
+  const hasCampaign = Boolean(campaignSlot);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -49,17 +50,22 @@ export default function HomeExperience({ variant = "default" }) {
       observer.disconnect();
       document.body.classList.remove("collage-ready");
     };
-  }, []);
+  }, [hasCampaign]);
 
   return (
     <>
       <div className={`site-shell ${isHomeTwo ? "home-two" : ""} ${menuOpen ? "menu-open" : ""}`}>
         {isHomeTwo ? (
-          <Hero id="home-two-proposal-header" proposal="new" />
+          <Hero
+            id="home-two-proposal-header"
+            proposal="new"
+            scrollTargetId={hasCampaign ? "home-rapvideo" : "intro"}
+          />
         ) : (
           <Hero id="hero-new-proposal" proposal="new" />
         )}
         <main className="collage-flow">
+          {campaignSlot}
           <Intro variant={variant} />
           <Projects />
           <SocialGrowth variant={variant} />

@@ -1,7 +1,7 @@
 {
   "source": "public/",
-  "totalFiles": 366,
-  "maxTotalBytes": 682023516,
+  "totalFiles": 367,
+  "maxTotalBytes": 684082185,
   "maxSingleFileBytes": 71244906,
   "extensions": {
     ".html": {
@@ -9,8 +9,8 @@
       "bytes": 53
     },
     ".jpg": {
-      "count": 145,
-      "bytes": 40856205
+      "count": 146,
+      "bytes": 42914874
     },
     ".json": {
       "count": 1,
@@ -187,13 +187,13 @@
       "extension": ".png"
     },
     {
-      "path": "assets/creative-compadre-sunglasses.png",
-      "bytes": 2053665,
-      "extension": ".png"
+      "path": "assets/campaigns/rapvideo-2026/still033.jpg",
+      "bytes": 2058669,
+      "extension": ".jpg"
     },
     {
-      "path": "assets/creative-compadre-duo.png",
-      "bytes": 2031543,
+      "path": "assets/creative-compadre-sunglasses.png",
+      "bytes": 2053665,
       "extension": ".png"
     }
   ]

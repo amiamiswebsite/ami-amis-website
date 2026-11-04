@@ -1,5 +1,7 @@
 import HomeExperience from "./components/HomeExperience";
+import HomeRapVideoCampaign from "./components/HomeRapVideoCampaign";
 import { canonicalUrl } from "../src/lib/site";
+import { homeRapVideoCampaign } from "../src/data/homeRapVideoCampaign";
 
 export const metadata = {
   title: "Videoproductie & creatieve content in Antwerpen",
@@ -9,5 +11,10 @@ export const metadata = {
 };
 
 export default function Home() {
-  return <HomeExperience variant="home2" />;
+  return (
+    <HomeExperience
+      variant="home2"
+      campaignSlot={homeRapVideoCampaign.enabled ? <HomeRapVideoCampaign campaign={homeRapVideoCampaign} /> : null}
+    />
+  );
 }
